@@ -1,0 +1,30 @@
+% (This file is included by thesis.tex; you do not latex it by itself.)
+
+\begin{abstract}
+
+% The text of the abstract goes here.  If you need to use a \section
+% command you will need to use \section*, \subsection*, etc. so that
+% you don't get any numbering.  You probably won't be using any of
+% these commands in the abstract anyway.
+
+This dissertation addresses fundamental challenges in experimental particle physics by introducing a unified framework of novel machine learning approaches for differential cross section measurements.
+%
+Accurate determination of cross sections is essential for testing Standard Model predictions and searching for new physics, yet detector distortions introduce systematic uncertainties that must be corrected through a process known as unfolding or deconvolution.
+%
+Traditional binned unfolding methods face significant limitations in high-dimensional phase spaces and introduce discretization artifacts that can obscure underlying physics.
+
+To address these challenges, this work integrates a comprehensive suite of methodologies to provide a cohesive framework that progressively advances the state-of-the-art in unfolding techniques. Beginning with Neural Posterior Unfolding, I demonstrate how normalizing flows can enhance binned approaches through implicit regularization. We then introduce Moment Unfolding, a technique that directly extracts distribution moments without binning, enabling more precise constraints on effective field theories and phenomenological models. 
+%
+Building on this, Reweighting Adversarial Networks (RANs), perform full spectral unfolding using adversarial training to implement particle-level reweighting function steered by a detector-level classifier, overcoming the limitations of binning, and providing theoretical and computational advantages over unbinned iterative methods.
+
+A critical statistical analysis of event correlations in unfolded data reveals a systematic misestimation of uncertainties when these correlations are ignored, leading to methodological recommendations for robust inference in unbinned contexts.
+%
+Complementing these techniques, the dissertation also explores the role of symmetries in measurement processes through SymmetryGAN, providing a rigorous statistical foundation for symmetry discovery with applications to constraining unfolding problems.
+
+Validated using both idealized Gaussian distributions and realistic Large Hadron Collider jet substructure data, these methods demonstrate significant improvements in precision, accuracy, and computational efficiency compared to traditional approaches.
+%
+Collectively, this work establishes a unified framework for understanding unfolding that bridges theoretical physics, experimental techniques, and modern machine learning.
+%
+The methodologies developed here enable more reliable extraction of fundamental physics parameters from complex detector data, advancing our ability to test theoretical models and potentially discover new phenomena at current and future high-energy physics experiments.
+
+\end{abstract}

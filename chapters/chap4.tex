@@ -1,0 +1,439 @@
+\chapter{Neural Posterior Unfolding}
+\label{chap:npu}
+\begin{itemize}
+    \item Physics motivation for improved binned unfolding - degeneracy, null spaces
+    \item Normalizing flows and applications to inverse problems
+    \item Neural posterior estimation and degeneracy + Implicit regularization
+    \item Substructure example
+    \item Inference advantages and computational efficiency: compare FBU
+    \item Set the stage for unbinned methods
+\end{itemize}
+
+\section{Motivation for Improved Binned Unfolding}
+Differential cross section measurements represent the fundamental currency of scientific exchange in particle and nuclear physics.
+%
+They quantify the probability density of specific particle interactions as a function of kinematic variables, providing the essential link between theoretical predictions and experimental observations.
+%
+However, a critical challenge in these measurements arises from detector effects that distort the underlying physics distributions.
+%
+Unfolding, or deconvolution, is the process of statistically removing these distortions to recover the true particle--level distributions from the measured detector--level data.
+
+When measuring a physical observable, the detector response can be mathematically expressed as the forward mapping,
+\begin{equation}
+    p_{\textrm{detector}}(x) = \int R(x|z) \cdot p_{\textrm{particle}}(z) \, \dd z
+\end{equation}
+Here, $p_{\textrm{detector}}(x)$ represents the detector--level distribution, $p_{\textrm{particle}}(z)$ is the true particle-level distribution, and $R(x|z)$ is the response kernel that encodes the detector effects \kd{cite}.
+%
+Unfolding aims to invert this relationship to reconstruct \(p_{\textrm{particle}}(z)\) from the observed \(p_{\textrm{detector}}(y)\).
+%
+A binned method is one in which both the particle--level and detector--level distributions are discretized into histograms, transforming the integral equation into a matrix equation:
+
+\begin{equation}
+\boldsymbol{\mu} = \mathbf{R} \boldsymbol{\nu} + \boldsymbol{\epsilon}
+\end{equation}
+
+Where \(\boldsymbol{\mu}\) represents the detector--level bin counts, \(\boldsymbol{\nu}\) represents the particle--level bin counts to be estimated, $\mathbf{R}$ is the discretized response matrix, and \(\boldsymbol{\epsilon}\) accounts for measurement uncertainties \kd{cite}.
+
+\subsection{Degeneracy and Null Spaces in Unfolding}
+    One of the fundamental challenges in unfolding collider data comes from degeneracies in the response matrix.
+    %
+    Consider a case where two particle--level bins $\alpha$ and $\beta$ are indistinguishable at the detector level.
+    %
+    Formally, there exists a detector-level bin $\kappa$ such that for all detector-level bins $\iota$:
+    \begin{equation}
+        R_{\iota\alpha} = R_{\iota\beta} = \delta_{\iota\kappa}
+    \end{equation}
+    where $\delta$ is the Kronecker delta \kd{cite}.
+    %
+    In such scenarios, traditional methods like Iterative Bayesian Unfolding (IBU) face a critical limitation.
+    %
+    The unfolded result becomes entirely dependent on the simulation, and learns no information from the data.
+    %
+    The update rule for IBU takes the form
+    \begin{equation}
+        t_{\alpha}^{(n)} = \left(\frac{t_\alpha^{(0)}}{t_\alpha^{(0)} + t_{\beta}^{(0)}}\right) \cdot m_\kappa
+        \qquad
+        t_{\beta}^{(n)} = \left(\frac{t_\beta^{(0)}}{t_\alpha^{(0)} + t_{\beta}^{(0)}}\right) \cdot m_\kappa
+    \end{equation}
+
+    This means the relative contributions of bins $\alpha$ and $\beta$ to the unfolded result are entirely determined by the MC, regardless of the observed data \kd{cite}.
+    %
+    Even worse, traditional methods will report zero uncertainty on the ratio \(\frac{t_\alpha}{t_\alpha+t_\beta}\) when in reality this ratio should have maximal uncertainty since the detector cannot distinguish between these contributions.
+\subsection{Regularization Limitations}
+    To address the ill-posedness detailed in Sec.~\ref{sec:ill-posed}, traditional methods employ various forms of regularization, examples of which are provided in Sec.~\ref{sec:binned-methods}.
+    %
+    However, all these approaches require a careful balance between fidelity to the data and conformity to the regularization constraints.
+    %
+    Furthermore, these methods typically do not provide a natural framework for propagating uncertainties and can significantly underestimate the true uncertainty in degenerate regions.
+    %
+    These limitations motivate the development of new unfolding methods that can
+    \begin{enumerate}
+        \item Naturally handle degeneracies and null spaces in the response matrix
+        \item Provide proper uncertainty quantification, especially in poorly constrained regions
+        \item Reduce dependence on arbitrary regularization parameters
+        \item Offer computational efficiency for large-scale problems
+    \end{enumerate}
+    Neural Posterior Unfolding addresses these challenges head on, by leveraging normalizing flows for neural posterior estimation.
+    %
+    Unlike traditional methods that provide point estimates, NPU yields a full posterior distribution over the unfolded parameters, naturally capturing uncertainties in poorly constrained regions \kd{cite}. 
+    %
+    Furthermore, the regularization in NPU emerges implicitly from the neural network architecture and training protocol, reducing the need for manual tuning of regularization parameters.
+
+    In the following sections, we introduce normalizing flows and neural posterior estimation as the foundation for the NPU method, demonstrating how these modern machine learning techniques address the fundamental challenges of binned unfolding.
+You're right - since we've already covered normalizing flows in detail in Chapter 3, we should focus this section specifically on how they apply to inverse problems like unfolding rather than repeating information. Here's what I suggest we cover in this section:
+
+\section{Normalizing Flows for Inverse Problems}
+\subsection{A Bayesian Perspective on Inverse Problems}
+    The unfolding problem can be naturally framed in Bayesian terms.
+    %
+    Given detector--level measurements \(x\), we aim to reconstruct the posterior distribution over particle--level quantities \(z\),
+    \[
+    p(z|x) = \frac{p(x|z)p(z)}{p(x)}
+    \]
+    Where $p(x|z)$ is the detector response, \(r(x|z)\) (likelihood), $p(z)$ is the prior for particle--level quantities, and $p(x)$ is the evidence.
+    %
+    Traditional methods typically focus on finding a point estimate that maximizes this posterior, but a full Bayesian treatment would characterize the entire posterior distribution to properly account for uncertainties and degeneracies.
+
+    Normalizing flows offer several key advantages for modeling the posterior distribution in inverse problems.
+    \begin{itemize}
+        \item \textbf{Complex Distribution Modeling} Unlike standard parametric approaches, normalizing flows can represent multimodal, asymmetric posteriors that often arise in inverse problems with degeneracies where multiple particle--level configurations can lead to similar detector-level observations.
+        \item \textbf{Amortized Inference}: Once trained, normalizing flows enable rapid posterior sampling without requiring new optimization runs for each new observation.
+            This is particularly valuable when processing large datasets or when rerunning statistical analyses with different systematic variations.
+        \item \textbf{End-to-End Differentiability}: The entire posterior estimation process can be optimized end--to--end, enabling gradient--based learning approaches that are more efficient than traditional MCMC methods for high--dimensional unfolding.
+        \item \textbf{Implicit Regularization}: Neural network architectures naturally introduce an inductive bias that serves as implicit regularization, potentially reducing overfitting to statistical fluctuations compared to direct matrix inversion approaches without requiring explicit regularization parameters.
+    \end{itemize}
+\subsection{Conditional Normalizing Flows for Inverse Problems}
+    In the context of unfolding, we're particularly interested in modeling the conditional distribution $p(z|x)$, the particle--level distribution given detector--level observations.
+    %
+    Conditional normalizing flows are specifically designed for this task.
+    %
+    A flow \(f_\theta\) with learnable parameters \(\theta\) can be trained to model the particle--level distribution \(z\),
+    \[
+        z = f_\theta(u|y),
+    \]
+    where $u$ is drawn from a simple base distribution (typically a standard normal), and $x$ is the conditioning variable (detector--level data).
+    %
+    This conditional structure allows the flow to learn the posterior distribution specifically tailored to each detector--level observation, capturing the uncertainty and potential multimodality of the solution even in regions where the detector response is non--injective.
+
+    While Markov Chain Monte Carlo (MCMC) methods have traditionally been used for Bayesian inference in inverse problems (as in Fully Bayesian Unfolding)\kd{cite}, normalizing flows have some unique properties that make them especially well suited to this task.
+    %
+    No burn--in period is required once the flow is trained,
+    %
+    and samples are generated independently rather than in a correlated chain.
+    %
+    The computational cost of generating samples does not increase with the dimensionality of the parameter space, and perhaps most importantly,
+    %
+    due to the fully differentiable structure of the network, training can leverage GPU acceleration and parallelization.
+    %
+    These advantages make normalizing flows particularly attractive for inverse problems where MCMC methods may face mixing and convergence ch  allenges or become computationally prohibitive.
+\section{The Neural Posterior Unfolding Algorithm}
+Neural Posterior Unfolding (NPU) is a novel approach to unfolding that combines the rigor of Bayesian statistics with the flexibility and computational efficiency of modern machine learning.
+%
+Rather than focusing solely on point estimates, NPU aims to characterize the full posterior distribution over particle--level observables, providing comprehensive uncertainty quantification while addressing the key limitations of traditional unfolding methods.
+\subsection{Statistical foundation}
+    At its core, NPU leverages normalizing flows for neural posterior estimation in the context of binned unfolding.
+    %
+    The fundamental insight is to directly learn the conditional posterior distribution \(p(t|m)\), the probability density of the true particle--level histogram counts, $t$ given the measured detector--level histogram counts, $m$.
+
+    The relevant statistical quantities are
+    \begin{itemize}
+    \item A detector--level histogram $m = \{m_j\}_{j=1}^{N_D}$, where $m_j$ is the number of events in detector-level bin $j$
+    \item A particle--level histogram $t = \{t_i\}_{i=1}^{N_T}$, where $t_i$ is the number of events in particle-level bin $i$
+    \item A response matrix $\mathbf{R}$ with elements $R_{ji} = P(m_j|t_i)$, the probability of an event in particle--level bin $i$ being measured in detector--level bin $j$
+    \end{itemize}
+    The forward model relating these quantities is
+    \[
+    m_j = \sum_{i=1}^{N_T} R_{ji} t_i + \epsilon_j,
+    \]
+    where $\epsilon_j$ represents statistical fluctuations, typically modeled as Poisson noise.
+    %
+    In a Bayesian framework, the posterior distribution is given by
+    \[
+        p(t|m) = \frac{p(m|t)p(t)}{p(m)}
+    \]
+    where $p(m|t)$ is the likelihood, $p(t)$ is the prior, and $p(m)$ is the evidence.
+    %
+    For Poisson--distributed measurements, the likelihood takes the form:
+    \[
+        p(m|t) = \prod_{j=1}^{N_D} \frac{(\sum_i R_{ji}t_i)^{m_j} e^{-\sum_i R_{ji}t_i}}{m_j!}
+    \]
+    NPU is conceptually similar to Fully Bayesian Unfolding (FBU), but replaces the traditional Markov Chain Monte Carlo (MCMC) sampling with normalizing flows for neural posterior estimation, providing computational advantages and increased flexibility while maintaining the same full Bayesian treatment of the problem. \kd{cite}.
+\subsection{Machine Learning Architecture}
+    NPU builds upon the neural posterior estimation framework, which uses conditional normalizing flows to directly model the posterior distribution.
+    %
+    The NPE framework comprises a base distribution, a simple distribution (typically a multivariate standard normal) $p_u(u)$ that is easy to sample from,
+    %
+    an invertible transformation, a learnable, invertible function $f_\theta(u|m)$ that transforms samples from the base distribution into samples from the approximate posterior, conditioned on the measured data $m$, and
+    %
+    a density transformation, encoding the the change of variables formula,
+    \[
+        p_\theta(t|m) = p_u(f_\theta^{-1}(t|m)) \left|\det\left(\frac{\partial f_\theta^{-1}(t|m)}{\partial t}\right)\right|
+    \]
+    The neural network parameters $\theta$ are optimized to maximize the likelihood of the true posterior, using pairs of simulated $(t, m)$ examples.
+    %
+    The training objective is to minimize the loss function
+    \[
+        \mathcal{L}(\theta) = \mathbb{E}_{(t,m) \sim p_{\text{sim}}(t,m)} \left[ \log p_\theta(t|m)]\right]
+    \]
+    This approach allows the model to learn complex posterior distributions, including multimodal and highly correlated structures that often arise in unfolding problems \kd{cite}.
+
+    In practical implementations, uses a normalizing flow based on the MADE (Masked Autoencoder for Distribution Estimation) architecture.
+    %
+    The network is made up of an invertible transformation network with three fully connected layers, each containing \(50-100\) nodes with Swish activation functions.
+    %
+    Conditional inputs incorporated through an auxiliary fully connected layer.
+    %
+    The network is then trained for \(1000-1500\) epochs using the \textsc{Adam} optimizer with a learning rate of \(10^{-4}\) and a batch size of \(10^4\).
+    %
+    The loss function is the negative log likelihood described above.
+    
+    This architecture provides sufficient flexibility to model complex posterior distributions while remaining computationally tractable \kd{cite}.
+    %
+    After training the normalizing flow, the unfolded response is obtained through a Maximum Likelihood Estimation (MLE) step, where the negative log-likelihood of the observed data conditioned on the learned model is minimized.
+    %
+    This optimization process uses the same \textsc{Adam} optimizer.
+\subsection{Addressing Degeneracy with NPU}
+    A key advantage of NPU over traditional unfolding methods is its ability to naturally handle degeneracies in the response matrix.
+    %
+    Consider the two-bin degenerate example presented earlier, where two particle-level bins $\alpha$ and $\beta$ are indistinguishable at the detector level.
+    %
+    In traditional methods like IBU, the unfolded result becomes entirely dependent on the prior and incorrectly report zero uncertainty on the ratio \(t_\alpha/(t_\alpha+t_\beta).\)
+
+    In contrast, NPU naturally returns a broad posterior distribution that properly reflects the uncertainty.
+    %
+    This is demonstrated in\kd{NPU} with a two--bin example where the response becomes increasingly degenerate (with correlation coefficient \(\rho\to 0\)).
+    %
+    As the detector loses its ability to differentiate between truth bins, NPU produces credible intervals that encompass all values consistent with the total counts, appropriately reflecting the inherent uncertainty.
+    %
+    Simultaenously, while allowing for uncertainty in degenerate directions, NPU maintains constraints in well-determined directions, such as the total sum $t_\alpha + t_\beta$.
+    %
+    This behavior emerges naturally from the Bayesian formulation, without requiring explicit identification of the degenerate subspaces.
+    %
+    By modeling the full posterior, NPU provides a principled way to represent uncertainty in precisely those directions where the data provides little or no constraint \kd{cite}.
+
+\subsection{Implicit Regularization in NPU}
+    A significant advantage of NPU is its implicit regularization, which arises naturally from the neural network architecture and training procedure rather than requiring explicit regularization terms or early stopping rules.
+    %
+    Several mechanisms contribute to this implicit regularization.
+    \begin{itemize}
+        \item \textbf{Network Capacity}: The finite capacity of the neural network limits the complexity of the posterior approximation, preventing overfitting to statistical noise in a manner similar to how traditional regularization constrains solution complexity.
+        \item \textbf{Smooth Transformations}: Normalizing flows use smooth transformation functions, which naturally bias the solution toward smooth posterior distributions rather than ones with sharp, unphysical features.
+        \item \textbf{Amortized Inference}: By learning a conditional distribution that applies across many possible measurements, NPU averages over many training examples, reducing sensitivity to outliers or statistical fluctuations in any single measurement.
+        \item \textbf{Architectural Inductive Bias}: The specific architecture of the normalizing flow introduces an inductive bias.
+        %
+        For instance, MADE architectures model dependencies between variables in a structured way that can align with physical correlations between bins.
+        \item \textbf{Optimization Dynamics}: The stochastic gradient descent training process itself provides regularization through early stopping based on validation performance, preventing overfitting to the training data.
+    \end{itemize}
+    This implicit regularization offers some advantages over the explicit regularization used in traditional methods.
+    %
+    It adapts automatically to the complexity of the problem rather than requiring manual tuning of regularization parameters,
+    %
+    it can handle different degrees of regularization for different regions of the solution space, providing stronger regularization where constraints are weak and less regularization where data provides strong constraints, and
+    it emerges from general principles rather than specific assumptions about the solution (such as smoothness or proximity to a prior), potentially leading to less biased results.
+    %
+    The effectiveness of this implicit regularization can be observed empirically in cases where NPU produces unfolded distributions with excellent agreement with the truth, despite the ill--posed nature of the problem \kd{cite}.
+
+In the following section, we will demonstrate the application of NPU to concrete examples, including both controlled Gaussian distributions and realistic jet substructure measurements, to illustrate its performance in practice.
+\section{Numerical Results}
+    This section presents comprehensive empirical validation of Neural Posterior Unfolding (NPU) through a series of increasingly complex examples.
+    %
+    We first consider a simple two--bin degenerate case to illustrate NPU's advantages in handling unconstrained regions of phase space, then move to a Gaussian example to systematically assess statistical performance, and finally demonstrate the method's efficacy on realistic jet substructure simulation from the Large Hadron Collider (LHC).
+    \subsection{2-Bin Degenerate Response Example}
+        Our first example illustrates NPU's behavior by honing in degenerate scenarios where traditional methods struggle.
+        %
+        We construct a two--bin setup where $t, m \in \mathbb{R}^2$ with a response matrix $\mathbf{R} \in \mathbb{R}^{2 \times 2}$.
+        %
+        We fix the truth values at $t_0 = t_1 = 5 \times 10^4$ and parameterize the response matrix using a correlation coefficient $\rho$ and diagonal elements $\sigma_0 = \sigma_1 \equiv \sigma = 0.8$.
+
+        When $\rho = 1$, the response matrix is well-conditioned with small off--diagonal terms, meaning each detector bin primarily receives readout from a single truth bin.
+        %
+        In this case, both IBU (with uncertainty quantification via bootstrapping) and NPU yield unfolded distributions that align well with the truth, with statistically consistent confidence regions.
+        %
+        These results are demonstrated in \kd{fig:2bin:a}.
+        %
+        However, as $\rho$ approaches zero, the detector loses its ability to differentiate between the two truth bins.
+        %
+        This creates a degeneracy where multiple truth configurations produce identical detector--level observations.
+        %
+        Under these conditions, IBU provides only a point estimate based on the prior, with incorrectly estimated zero uncertainty on the ratio $t_0/(t_0+t_1)$.
+        %
+        In contrast, NPU returns a full posterior distribution with credible intervals that appropriately span all values consistent with the total counts, accurately reflecting the inherent degeneracy of the problem as seen in \kd{fig:2bin:b}.
+
+        This example highlights a fundamental advantage of NPU and other Bayesian methods;
+        %
+        they naturally capture uncertainty in unconstrained regions of phase space, while traditional methods like IBU can dramatically underestimate uncertainties when degeneracies are present.
+\subsection{Gaussian Example}
+    Our second test employs a Gaussian distribution, allowing us to systematically evaluate NPU's performance with varying levels of detector smearing. 
+    \subsubsection{Experimental Setup}
+        We create two pairs of datasets drawn from one--dimensional Gaussian distributions,
+        %
+        an generated ``MC" dataset ($D_\text{MC}$) with $10^6$ events drawn from a Gaussian with mean $\mu = 0$ and standard deviation $\sigma = 1$ at particle level, and a ``natural'' dataset ($D_\text{nature}$) with $10^5$ events drawn from the same Gaussian
+    
+        For detector effects, we apply Gaussian smearing to the generated data with parameter $\epsilon = 0.5$, resulting in detector--level distributions with the same mean but increased width, $\sigma_\text{detector} = \sqrt{1^2 + 0.5^2} \approx 1.12$.
+        %
+        The response matrix is constructed from $D_\text{MC}$.
+        %
+        We then use this response matrix to unfold the detector--level distribution of $D_\text{nature}$ and compare the results with the known particle--level truth.
+        %
+        The initial setup is illustrated in \kd{fig:gaus-init}.
+    \subsubsection{Results and Comparison}
+        The unfolded distributions from NPU (Maximum Likelihood Estimate), IBU, and FBU all recover the truth distribution accurately \kd{fig:gaus:a}.
+        %
+        The NPU posterior provides a full characterization of the uncertainty, including bin--to--bin correlations visible in the corner plot \kd{fig:gaus:b}, which shows pairwise relationships between bins.
+        %
+        The corner plot demonstrates strong agreement between the posterior distributions from NPU and FBU, with both encompassing the true distribution.
+
+        To assess the statistical properties of NPU more rigorously, we evaluate pull distributions across 100 pseudo--experiments.
+        %
+        For each bin $i$ in pseudo-experiment $j$, we compute
+        \[
+        \text{Pull}_{ij} = \frac{\mu^{\text{method}}_{ij} - t_i}{\sigma^{\text{method}}_{ij}}
+        \]
+        where $\mu^{\text{method}}_{ij}$ and $\sigma^{\text{method}}_{ij}$ are the mean and standard deviation of the posterior in that bin.
+        %
+        For properly calibrated uncertainty estimates, these pulls should follow a standard normal distribution with mean zero and unit variance.
+
+        The pull distributions for both NPU and FBU with moderate smearing ($\epsilon = 0.5$) are indeed centered at zero with unit width, as demonstraed in \kd{fig:pulls:a}, confirming proper calibration.
+        %
+        We also tested the robustness of this calibration by varying the smearing parameter across the range $\epsilon \in [0.3, 0.6]$, finding that both methods maintain proper coverage throughout this range.
+        %
+        These results are presented in \kd{fig:pulls:b}.
+
+        An important practical advantage of NPU is its computational efficiency for repeated unfolding tasks.
+        %
+        For 100 pseudo-experiments, FBU with 10,000 MCMC draws requires approximately 40 seconds per experiment, totaling around 67 minutes.
+        %
+        In contrast, NPU requires approximately 280 seconds for initial training, after which new datasets can be processed in just a few seconds each, resulting in a total time of approximately 5 minutes for all 100 experiments.
+        %
+        This efficiency gain stems from NPU's amortized inference approach, which eliminates the need for repeated MCMC sampling when processing additional datasets \kd{cite}.
+
+\subsection{Particle Physics Example}
+    Our final evaluation demonstrates NPU's application to a realistic high--energy physics scenario, focusing on jet substructure measurements at the Large Hadron Collider (LHC).
+    \subsubsection{Dataset and Observables}
+        We analyze simulated proton--proton collision data at $\sqrt{s} = 14$ TeV, following the setup in Andreassen et al. \kd{cite}.
+        %
+        Two simulation generators are employed,
+        \begin{itemize}
+            \item \textsc{Herwig 7.1.5} \kd{cite} serves as our ``natural" data and truth distributions
+            \item \textsc{Pythia 8.243} with Tune 21 \kd{cite} is used to construct the response matrices.
+        \end{itemize}
+        
+        To emulate detector effects, we use \textsc{Delphes 3.4.2} \kd{cite} fast simulation of the CMS detector with particle flow reconstruction.
+        %
+        Jets are clustered using the anti$-k_T$ algorithm \kd{cite} with radius parameter $R = 0.4$, as implemented in \textsc{FastJet 3.3.2} \kd{cite}.
+        %
+        To minimize acceptance effects, we analyze only the leading jets in events containing a Z boson with transverse momentum $p_T^Z > 200$ GeV.
+        %
+        After selection, approximately 1.6 million events from each simulation are retained.
+
+        We focus on four key jet substructure observables that are widely used in LHC analyses.
+        \begin{enumerate}
+            \item Jet width ($\omega$): the transverse-momentum-weighted first radial moment of radiation within a jet,
+            \item Jet constituent multiplicity ($M$): the number of constituents in a jet
+            \item \(N-\)subjettiness ratio ($\tau_{21} = \tau_2^{\beta=1}/\tau_1^{\beta=1}$): quantifies the compatibility of a jet with a two--prong substructure hypothesis relative to a one--prong hypothesis \kd{cite}
+            \item Groomed momentum fraction ($z_g$): the momentum sharing between subjets after soft drop grooming \kd{cite}
+        \end{enumerate}
+        These observables span a diverse range of physical characteristics and detector sensitivities, providing a comprehensive test of NPU's capabilities.
+    \subsubsection{Results}
+        Figure \kd{fig:substructure} presents the unfolded distributions for each observable, comparing results from NPU, FBU, and IBU against the known truth.
+        %
+        For the FBU implementation in this more complex scenario, we needed to increase the number of MCMC steps ten-fold compared to the Gaussian example, using 100,000 tuning steps and 500,000 draws.
+
+        For all observables, NPU accurately recovers the truth distributions, with uncertainty bands that properly account for statistical uncertainties.
+        %
+        The results demonstrate a few different characteristics of NPU.
+        %
+        First, we can see that NPU effectively handles the complex detector effects present in realistic LHC measurements.
+        %
+        Second, the method remains robust despite differences between the simulation used for response matrix construction (\textsc{Pythia}) and the ``truth" distribution (\textsc{Herwig}).
+        %
+        Finally, full posterior information enables rigorous uncertainty quantification across the entire distribution.
+        %
+        The corner plots for these distributions \kd{fig:phys-corner} reveal the complex correlation structure between bins, information that is typically unavailable with traditional unfolding methods unless explicitly computed via bootstrapping or similar approaches.
+
+        These results highlight NPU's value for practical cross--section measurements at the LHC, where detector effects are complex and true distributions may differ significantly from simulation.
+        %
+        In a full experimental analysis, uncertainties in the response matrix itself could also be incorporated, either by repeating the procedure with varied response matrices or by including these uncertainties directly in the likelihood.
+        
+\subsection{Summary of Numerical Results}
+    These numerical studies demonstrate that NPU provides appropriate uncertainty quantification in degenerate scenarios where traditional methods fail, while maintaining proper statistical coverage across varying degrees of detector smearing.
+    %
+    NPU efficiently processes multiple datasets through amortized inference, and accurately recovers truth distributions in both targeted degenerate toy examples and realistic high--energy physics scenarios.
+    %
+    The method combines the Bayesian foundations of FBU with several architectural and computational advantages.
+    %
+    The normalizing flow architecture can represent a wide range of posterior distributions, including multimodal, asymmetric, and strongly correlated distributions that may be challenging for traditional MCMC methods.
+    %
+    By providing differentiable access to the posterior density, NPU enables gradient--based optimization for finding maximum likelihood estimates or other derived quantities.
+
+    While FBU requires MCMC sampling for each new measurement, NPU's amortized inference approach front--loads computational cost into the training phase.
+    %
+    Once trained, inference with NPU requires only forward passes through the neural network, making it particularly valuable for analyzing large datasets, performing multiple analyses with different systematic variations, bootstrapping for uncertainty estimation, and studies requiring many unfolding runs
+    %
+    NPU also scales more favorably to high--dimensional problems compared to MCMC--based methods, which often suffer from the curse of dimensionality and mixing problems in complex posterior landscapes.
+    
+    However, several limitations should be kept in mind.
+    %
+    The flexibility of normalizing flows comes with increased model complexity, requiring careful architecture design and hyperparameter tuning.
+    %
+    While less explicit than in traditional methods, NPU's results still depend on the distribution of the generated data, which implicitly defines a prior over the particle--level histograms.
+    %
+    As with any Bayesian method, it's important to validate that the posterior credible intervals have the correct frequentist coverage properties for critical analyses.
+    
+    Despite these considerations, NPU represents a significant advancement in unfolding methodology, combining the statistical rigor of Bayesian inference with the flexibility and computational efficiency of modern deep learning approaches.
+    %
+    The method combines the statistical rigor of fully Bayesian approaches with the computational efficiency of neural network-based inference, making it a promising tool for cross--section measurements in particle and nuclear physics.
+
+\section{Beyond Binning: The Path Forward}
+    The Neural Posterior Unfolding method presented in this chapter represents a significant advancement in binned unfolding approaches.
+    %
+    By incorporating normalizing flows for posterior estimation, NPU addresses several limitations of traditional methods while maintaining the established binning paradigm that has served particle physics for decades.
+    %
+    However, binning itself introduces fundamental constraints that motivate the development of alternative, unbinned methodologies.
+
+    First, binning inherently discards information about the precise location of events within each bin, reducing statistical precision.
+    %
+    As Cowan notes, "The choice of binning is subjective and can introduce biases in the unfolded results"\kd{cite} a sentiment that is oft repeateed in widely-cited statistical treatments of the unfolding problem.\kd{cite}
+    %
+    This discretization is particularly problematic for observables with sharp features or resonances that may be obscured by bin boundaries.
+
+    Second, the curse of dimensionality severely restricts binned methods' applicability to multivariate problems.
+    %
+    The number of bins grows exponentially with the dimensionality of the observable space, quickly becoming computationally intractable and statistically limited by available data.
+    %
+    For a typical analysis with 20 bins per dimension, a modest six--dimensional measurement would require \(6.4\times10^7\) bins.
+    %
+    Even with the large datasets available at modern colliders, this invariably leads to untenably sparsely populated bins, creating statistical challenges for traditional unfolding methods.
+
+    Third, binned methods require separate unfolding procedures for each differential distribution of interest.
+    %
+    This approach is inefficient when multiple observables derived from the same dataset need to be unfolded, as is common in comprehensive physics analyses.
+    
+    \subsection{The Promise of Unbinned Methods}
+        Unbinned unfolding approaches aim to overcome these limitations by operating directly on event-level data, preserving the full information content of the measurement. Recent advances in machine learning have enabled significant progress in this direction as reviewed in comprehensive surveys of machine learning applications for unfolding.
+
+The key conceptual shift in unbinned methods is to reframe unfolding as a density reweighting problem rather than a histogram correction procedure. Instead of inverting a binned response matrix, unbinned methods typically aim to learn a transformation or reweighting function that maps the simulated particle-level distribution to the true one.
+
+Several advantages emerge from this approach:
+
+1. **Information preservation**: By avoiding binning altogether, unbinned methods retain the full resolution of the data across the entire phase space.
+
+2. **Multidimensional capability**: Machine learning techniques can naturally handle high-dimensional inputs, enabling simultaneous unfolding of multiple observables without combinatorial explosion.
+
+3. **Flexibility**: Once an unbinned unfolding model is trained, it can be used to derive any distribution or summary statistic from the unfolded data without requiring repeated unfolding procedures.
+
+4. **Efficiency**: Modern ML techniques can leverage efficient data representations and parallelized computation for faster inference, particularly for high-dimensional problems.
+
+### Emerging Approaches
+
+Recent years have seen rapid development of unbinned unfolding methods powered by advances in deep learning. Key methodologies include:
+
+**OmniFold** represents a breakthrough in unbinned unfolding, iteratively reweighting simulated events using neural network classifiers in a pioneering approach that has been deployed in several experimental measurements. It implements an unbinned version of Iterative Bayesian Unfolding and can handle complex, high-dimensional phase spaces.
+
+**Generative models** leverage architectures such as normalizing flows, variational autoencoders, and generative adversarial networks to directly model the mapping between detector-level and particle-level distributions enabling novel approaches to the unfolding problem. These methods can naturally represent complex probability densities and provide uncertainty quantification through sampling.
+
+**Optimal transport** formulations recast unfolding as finding the minimum-cost mapping between detector-level and particle-level distributions providing a theoretically-grounded framework for the problem. These approaches have connections to both classical methods and modern machine learning techniques.
+
+The next chapters will explore these unbinned methodologies in detail, examining their theoretical foundations, practical implementations, and performance characteristics on realistic physics examples. We will see how these methods build upon the insights from binned approaches like NPU while transcending their fundamental limitations to enable new capabilities for precision measurements in high-energy physics.
+
+As experimental datasets grow larger and theoretical predictions become more precise, unbinned methods will play an increasingly important role in extracting the full physics potential from collider experiments. The transition from binned to unbinned unfolding represents not just a technical evolution but a paradigm shift in how we approach the measurement and interpretation of differential cross sections.
