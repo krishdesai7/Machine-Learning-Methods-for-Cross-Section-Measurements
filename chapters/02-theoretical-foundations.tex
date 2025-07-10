@@ -1,0 +1,757 @@
+\chapter{Theoretical Foundations}
+\label{chap:theoretical-foundations}
+\section{Statistical Formulation of the Unfolding Problem}
+
+Unfolding, also known as deconvolution, is the process of correcting detector distortions in experimental data to recover the true particle--level distributions.
+%
+This procedure is critical for comparing experimental results with theoretical predictions and for enabling detector--independent analyses.
+%
+The unfolding problem is inherently statistical and presents unique challenges due to its ill-posed nature.
+
+\subsection{The Detector Response and Forward Problem}
+
+The relationship between the particle--level truth distribution \(p_{\text{truth}}(z)\) and the detector--level measured distribution \(p_{\text{measured}}(x)\) is governed by the detector response function \(R(x|z)\), which encapsulates the effects of resolution, efficiency, and acceptance:
+\begin{equation}
+    p_{\text{measured}}(x) = \int R(x|z)\; p_{\text{truth}}(z) \, \dd z.
+\end{equation}
+This equation describes the \textbf{forward problem}, where the true distribution \(p_{\text{truth}}(z)\) is mapped to the measured distribution \(p_{\text{measured}}(x)\). The detector response function \(R(x|z)\) can often be determined through detailed simulations.
+
+\subsection{The Inverse Problem: Unfolding}
+
+The goal of unfolding is to invert the forward problem and estimate \(p_{\text{truth}}(z)\) from observed data \(p_{\text{measured}}(x)\). Mathematically, this requires solving:
+\begin{equation}
+    p_{\text{truth}}(z) = \int R^{-1}(z|x) \;p_{\text{measured}}(x) \, \dd x,
+\end{equation}
+where \(R^{-1}(z|x)\) represents the inverse response function.
+%
+However, this inversion is ill--posed because small fluctuations in \(p_{\text{measured}}(x)\) can lead to large variations in \(p_{\text{truth}}(z)\).
+%
+Regularization techniques are therefore essential to stabilize the solution.
+
+\subsection{Likelihood-Based Formulation}
+
+In practice, unfolding is performed using statistical inference methods.
+%
+Given a set of measured data \(\mathbf{X}_{i=1}^N\), the likelihood function for a proposed truth distribution \(p_{\text{truth}}(z; \theta)\), parameterized by \(\theta\), is:
+\begin{equation}
+    \mathcal{L}(\theta; \mathbf{X}) = \prod_{i=1}^{N} p_{\text{measured}}(x_i;\; \theta),
+\end{equation}
+where
+\begin{equation}
+    p_{\text{measured}}(x; \theta) = \int R(x|z) \;p_{\text{truth}}(x; \theta) \, \dd z.
+\end{equation}
+
+Maximizing this likelihood yields an estimate of the parameters \(\theta\), which define the unfolded truth distribution.
+%
+Regularization can be incorporated into this framework by adding penalty terms to the likelihood or by constraining the parameter space.
+
+\subsection{Regularization Techniques}
+
+Regularization mitigates the instability of unfolding by imposing constraints on the solution.
+%
+Common approaches include Tikhonov Regularization, in which one adds a penalty term proportional to the norm of the second derivative of \(p_{\text{truth}}(z)\), enforcing smoothness, and Iterative Methods which gradually refine estimates of \(p_{\text{truth}}(z)\), regularizing by stopping before convergence.
+%
+These techniques balance fidelity to the measured data (prior independence) with stability of the unfolded solution.
+
+\subsection{Challenges in High-Dimensional Phase Spaces}
+
+Traditional unfolding methods rely on binning to discretize phase spaces into histograms.
+%
+However, binning introduces artifacts such as bias and loss of resolution, particularly in high-dimensional phase spaces where binning becomes computationally prohibitive.
+%
+These limitations motivate unbinned approaches that operate directly on event--level data.
+
+Unbinned methods leverage machine learning or statistical techniques to model \(R(x|z)\) and infer \(p_{\text{truth}}(z)\) without discretization.
+%
+While promising, these methods must contend with increased computational complexity and sensitivity to model assumptions.
+%
+This framework lays the foundation for exploring modern machine learning approaches that address these challenges, as discussed in subsequent sections.
+
+\section{Forward and Inverse Problems in HEP}
+
+The measurement process in high-energy physics experiments inherently involves two complementary mathematical challenges: the forward problem of predicting detector responses from particle-level interactions, and the inverse problem of recovering true physics distributions from observed detector measurements. These twin challenges form the conceptual foundation for understanding detector effects and developing unfolding methodologies.
+
+\subsection{Mathematical Formulation}
+
+The relationship between particle--level truth distributions and detector--level observations is governed by the Fredholm integral equation of the first kind\kd{cite}:
+\begin{equation}
+    g(s) = \int_\Omega K(s,y)f(y) \, \dd y + \epsilon(s),
+\end{equation}
+where \(f(y)\) represents the true particle-level distribution, \(K(s,y)\) is the detector response kernel encoding resolution effects and acceptance, \(g(s)\) is the observed detector-level distribution, and \(\epsilon(s)\) accounts for measurement noise.\kd{cite} This equation encapsulates the \textit{forward problem} when predicting \(g(s)\) given \(f(y)\), and the \textit{inverse problem} when estimating \(f(y)\) from measurements of \(g(s)\).
+
+For discrete histogram representations, this becomes a matrix equation:
+\begin{equation}
+    \boldsymbol{\mu} = \mathbf{K}\boldsymbol{\nu} + \boldsymbol{\epsilon},
+\end{equation}
+where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and observed bin counts, respectively, and \(\mathbf{K}\) is the smearing matrix containing conditional probabilities \(K_{ij} = P(\text{observed bin } i | \text{true bin } j)\)\kd{cite}.
+
+\subsection{Challenges in Inverse Problems}
+The inverse problem in HEP is fundamentally and intrinsically ill-posed.
+%
+The response kernel is non--injective, i.e. different true distributions can produce identical observed distributions after detector smearing\kd{cite}.
+%
+Furthermore, the distributions are ill--conditioned; small measurement errors \(\boldsymbol{\epsilon}\) amplify into large fluctuations in unfolded solutions due to small singular values in \(\mathbf{K}\)\kd{cite}.
+%
+These intrinsic challenges with inverse problems are compounded by the fact that modern analyses involve a large number of observables, making brute-force phase space discretization computationally prohibitive\kd{cite}.
+
+
+These challenges necessitate regularization techniques that impose physical constraints on solutions, such as Tikhonov regularization or iteration cut-offs before convergence, described above.
+
+\subsection{HEP Specific Considerations}
+
+Three unique aspects complicate inverse problems in particle physics compared to other domains.
+%
+First, Poisson statistics dominate in low-count regions of histograms.\kd{cite}.
+%
+Second, detector response models contain large numbers of correlated nuisance parameters, complicating the systematics.\kd{cite}.
+%
+Finally, the smearing matrix \(\mathbf{R}\) itself depends on Monte Carlo simulations of detector physics.\kd{cite}
+
+A representative example is top quark mass measurement, where the true mass \(m_t\) affects both production kinematics and decay signatures.
+%
+The forward problem involves simulating \(pp \to t\bar{t}\) events through PYTHIA and detector response via GEANT, while the inverse problem requires extracting \(m_t\) from reconstructed jet energies and lepton momenta, while suitably handling the correlated systematics \kd{cite}.
+
+\subsection{Applications and Implications}
+
+Proper handling of forward/inverse problems enables precision Standard Model tests.
+%
+Unfolded \(W\) boson mass measurements test electroweak theory predictions\kd{cite} and are a classic example of high--precision tests of Standard Model predictions that require unfolding.
+%
+Unfolding also plays a crucial role in analyses involved in searches for new physics. Resonance searches in \(H \to \gamma\gamma\) require correcting detector diphoton mass resolution\kd{cite} as a fundamental step in the analysis.
+
+Although in some cases, it can be feasible to instead forward fold theoretical predictions, unfolding is unavoidable in theory agnostic experiment--to--experiment comparisions, and detector-corrected results remain comparable to future theoretical calculations enabling legacy analyses.\kd{cite}
+
+Recent advances leverage machine learning to address traditional limitations. For example, Neural Conditional Density Estimators model \(p(z|\theta)\) directly using normalizing flows, and differentiable simulation methods enable gradient-based optimization through approximate detector models.\kd{cite}
+
+The tension between statistical rigor and computational feasibility remains acute, particularly for high--dimensional phase spaces.
+%
+Modern solutions increasingly combine traditional regularization with learned representations that encode physical constraints implicitly through neural network architectures.
+
+\section{Historical development: From matrix inversion to modern approaches}
+\label{sec:ill-posed}
+
+The problem of unfolding has a rich history in high energy physics, with methods evolving alongside computational capabilities and statistical sophistication.
+%
+Early approaches relied primarily on simple correction factors applied to individual bins of histograms, appropriate only when detector effects were minimal.
+
+As measurements became more precise, matrix inversion techniques emerged as the standard approach.
+%
+These methods discretize both the particle-level and detector-level distributions into bins, relating them through a response matrix \(\mathbf{R}_{ij}\) that describes the probability for an event in particle--level bin \(j\) to be observed in detector--level bin \(i\).
+%
+The unfolding problem then becomes
+
+\begin{equation}
+\mu_i{\text{detector}} = \sum_j R_{ij} \nu_j{\text{particle}}
+\end{equation}
+
+where \(\mu_{i, \textrm{detector}}\) is the expected number of counts in detector--level bin \(i\) and \(\nu_{j, \textrm{particle}}\) is the expected number of events in particle--level bin $j$.
+%
+Naively, one might attempt to solve this system by simply inverting the response matrix:
+\begin{equation}
+\nu_j^{\text{particle}} = \sum_i (R^{-1})_{ji} \mu_i^{\text{detector}}
+\end{equation}
+However, this direct inversion leads to wildly oscillating solutions with large variances---a manifestation of the ill-posed nature of the unfolding problem.
+%
+To address this issue, regularization techniques were developed to stabilize the solution by imposing additional constraints.
+
+Several regularized unfolding methods emerged as standards in the field:
+
+\begin{itemize}
+\item \textbf{Iterative Bayesian unfolding} \kd{cite}: Uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularization strength.
+\item \textbf{SVD unfolding} \kd{cite}: Applies singular value decomposition to the response matrix and suppresses contributions from small singular values that amplify statistical fluctuations.
+\item \textbf{TUnfold}\kd{cite}: Formulates unfolding as a least-squares problem with Tikhonov regularization to penalize large second derivatives, preserving smoothness.
+\end{itemize}
+
+These methods have served the field well for decades, particularly for one--dimensional measurements where binning is manageable.
+%
+However, they all share the common limitation of requiring discretization of the underlying distributions, which becomes increasingly problematic as measurements probe higher--dimensional spaces and more complex observables.
+
+
+\section{Traditional Unfolding Methods in Experimental Analyses}
+\label{sec:binned-methods}
+Traditional unfolding methods form the bedrock of detector corrections in high-energy physics (HEP), balancing statistical rigor with computational practicality.
+%
+This section provides an overview of established techniques, their mathematical foundations, implementation nuances, and limitations.
+
+\subsection{Bin--by--Bin Correction}  
+The simplest unfolding approach applies multiplicative correction factors to observed bin counts:  
+\begin{equation}
+    \hat{\nu}_j = \frac{\mu_j - b_j}{C_j}, \quad C_j = \frac{\nu^{\text{MC}}_j}{\mu^{\text{MC}}_j},
+\end{equation}  
+where \(\mu_j\) is the observed count in bin \(j\), \(b_j\) the estimated background, and \(C_j\) the correction factor derived from Monte Carlo (MC) simulations relating particle--level generated (\(\nu^{\text{MC}}_j\)) and detector--level simulated (\(\mu^{\mathrm{MC}}_j\)) events\kd{cite}. 
+
+This method has the advantange of being computationally trivial, with no bin-to-bin correlations.
+%
+However, it assumes perfect MC agreement with data migration patterns and fails to account for a non-diagonal response matrix (\(\exists i \neq j: \mathbf{R}_{ij} \ne 0\).
+%
+This is illustrated most dramatically by the observation that biases persist even with \(C_j \rightarrow 1\) due to ignored cross-bin migrations.\kd{cite}
+
+Used primarily in early LHC analyses (e.g., ATLAS jet cross-sections\kd{cite}), bin--by--bin correction remains viable only for coarse binnings with negligible migration (\(<5\%\)) between adjacent bins.
+
+\subsection{Matrix Inversion}  
+When \(n_{\text{bins, truth}} = n_{\text{bins, reco}}\), the response matrix $$\mathbf{R}$$ is square.
+%
+Formally one can write the unfolded solution as  
+\begin{equation}
+    \hat{\boldsymbol{\nu}} = \mathbf{R}^{-1}\vb*{\mu},
+\end{equation}  
+and even propograte the covariance as  
+\begin{equation}
+    V_{\hat{\boldsymbol{\nu}}} = \mathbf{R}^{-1} V_{\vb*{\mu}} (\mathbf{R}^{-1})^T.
+\end{equation}  
+However, in practice, direct inversion is highly pathological.
+%
+This pathology can be quantified by the condition number
+\begin{equation}
+    \kappa(R\inv) = \frac{|\lambda_{\mathrm{max}}(R\inv)|}{|\lambda_{\mathrm{min}}(R\inv)|} \sim 10^3 - 10^6
+\end{equation}
+where $\lambda_{\mathrm{max}}(R\inv)$ and $\lambda_{\mathrm{min}}(R\inv)$ are the largest and smallest eigenvalues of $R\inv$ respectively.
+%
+The condition number measures how much a perturbation in the measured counts $\delta\mu$ perturbs the predicted truth counts $\delta\nu$.
+%
+The large condition number amplifies statistical fluctuations.\kd{cite}
+Further, unphysical solutions such as negative bin count values can arise from noise-dominated eigenvectors.
+
+Methods have been suggested to control this variance, such as Truncated SVD, involving discard singular values \(\sigma_i < \lambda_{\text{cut}}\)\kd{cite}, and Wiener-SVD, a frequency-domain filtering method to maximize signal-to-noise ratio.\kd{cite}
+%
+Despite this, matrix inversion's instability limits utility to toy models.
+%
+No modern analysis uses pure inversion without regularization.
+
+\subsection{Iterative Bayesian Unfolding (D’Agostini)}  
+This Expectation-Maximization (EM) algorithm iteratively updates truth estimates:  
+\begin{equation}
+    \nu_j^{(k+1)} = \nu_j^{(k)} \sum_{i=1}^{N_{\text{Data}}} \frac{R_{ij}\; \mu_i}{\sum_{l=1}^{N_{\text{Truth}}} R_{il} \;\nu_l^{(k)}}
+\end{equation}  
+
+This method regularization via stopping, by terminating at \(k \sim 4-6\) iterations before noise amplification\kd{cite}.
+%
+The initial guess \(\boldsymbol{\nu}^{(0)}\) biases the solution.
+%
+Some common choices include Generation \(\boldsymbol{\nu}_{\text{MC}}\), a uniform distribution, and Data-driven backwards folding \(\mathbf{R}^T \mathbf{mu}\).
+
+IBU is Dominant in LHC analyses (e.g., ATLAS top mass measurements\kd{cite}) because it balances simplicity with moderate-dimensional phase spaces (\(N_{\text{Truth}} \leq 20\)).
+
+\subsection{Tikhonov Regularization}  
+Tikhonov regularization is a penalized least-squares minimization method
+\begin{equation}
+    \hat{\boldsymbol{\nu}} =\underset{\boldsymbol{\nu}}{\arg\min} \left[ ||\vb*{\mu} - \mathbf{R}\boldsymbol{\nu}||^2 + \lambda ||\mathbf{L}(\boldsymbol{\nu} - \boldsymbol{\nu}_0)||^2 \right]
+\end{equation}  
+where \(\mathbf{L}\) is typically the discrete curvature operator and \(\boldsymbol{\mu}_0\) a prior estimate.\kd{cite}  
+%
+L-curve optimization balances residual norm vs. solution norm to choose \(\lambda\).\kd{cite}
+%
+The choice of \(\lambda\) sets the bias variance tradeoff.
+%
+\(\lambda \rightarrow 0\) represents the high variance, low bias limit and \(\lambda \rightarrow \infty (\implies \hat{\boldsymbol{\nu}} \rightarrow \boldsymbol{\nu}_0)\) represents the low variance, high bias limit.
+%
+This method is implemented through the TUnfold package, which also provides automated \(\lambda\) tuning via global correlation minimization.\kd{cite}
+
+Tikhonov regularization is the preferred method for precision SM measurements (e.g., W boson mass\kd{cite}), because it excels when smooth spectra are expected.
+%
+However this method struggles with non-differentiable features like threshold effects.
+
+\subsection{Template Fitting}  
+Template fitting is a method suitable in cases where \(N_{\text{Data}} \gg N_{\text{Truth}}\).
+%
+In this case, one can construct detector--level templates for each truth bin:  
+\begin{equation}
+    \mu_i = \sum_{j=1}^{N_{\text{Truth}}} R_{ij} \nu_j + b_i
+\end{equation}  
+with \(\chi^2\) minimization:  
+\begin{equation}
+    \chi^2 = \sum_{i=1}^{N_{\text{Data}}} \frac{(\mu_i - \sum_j R_{ij}\nu_j - b_i)^2}{\sigma_i^2}
+\end{equation}  
+
+The solution then is overconstrained, since we leverage \(N_{\text{Data}}/N_{\text{Truth}} \sim 2-3\) for stability.\kd{cite}
+%
+Nuisance parameters are systematically modeled via template morphing.\kd{cite}
+%
+Template fitting requires dense detector-level binning, which inflates statistical uncertainties. Template fitting is commonly used in Higgs coupling measurements where broad mass resolutions necessitate wide truth bins.
+
+\subsection{Summary}  
+\begin{table}
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        Method & Dimensionality & MC Dependence & Uncertainty Propagation \\
+        \hline
+        Bin-by-bin & 1D & Extreme & Underestimated \\
+        Matrix Inversion & $\leq$10D & None & Exact but unstable \\
+        D’Agostini & $\leq$20D & Moderate & Partial \\
+        Tikhonov & $\leq$50D & Moderate & Full \\
+        Template Fit & $\leq$10D & Low & Full \\
+        \hline
+    \end{tabular}
+    \label{tab:binned_comp}
+    \caption{Traditional unfolding method capabilities. Dimensionality refers to practical limits.}
+\end{table}
+
+Table~\ref{tab:binned_comp} summarizes the strengths and limitations of the methods discussed above.
+%
+These limitations motivated the use of machine learning in unfolding, a transition explored in subsequent sections.
+%
+However, traditional methods remain indispensable for validation and low--dimensional precision measurements where interpretability is crucial.
+
+
+\subsection{Regularization: Need, Approaches, and Limitations}  
+The inherent ill--posedness of unfolding necessitates regularization to stabilize solutions against statistical fluctuations while preserving physical meaning.
+%
+This section systematically examines the theoretical justification for regularization, surveys dominant methodologies, and critically evaluates their limitations in high energy physics applications.
+
+\subsubsection{The Necessity of Regularization}  
+ As discussed earlier, unfolding inverse problems in HEP exhibit pathological characteristics that demand regularization.
+%
+Regularization counteracts these issues by introducing prior knowledge about \(p(z)\), typically favoring smoothness or similarity to Monte Carlo (MC) predictions.
+%
+However, as Zech emphasizes in \kd{cite}, this unavoidably discards information---regularized solutions cannot resolve features finer than the detector resolution or distinguish theories predicting distributions within the regularization bias.
+
+\subsubsection{Established Regularization Approaches}  
+
+\paragraph{Tikhonov Regularization}  
+This widespread method minimizes the penalized least-squares functional:  
+\begin{equation}
+    \min_{\boldsymbol{\mu}} ||\mathbf{mu} - \mathbf{R}\boldsymbol{\nu}||^2 + \lambda ||\mathbf{L}(\boldsymbol{\nu} - \boldsymbol{\nu}_{\text{MC}})||^2
+\end{equation}  
+where \(\mathbf{L}\) imposes smoothness (e.g., discrete second derivatives) and \(\boldsymbol{\nu}_{\text{MC}}\) anchors solutions to MC predictions.\kd{cite}.
+%
+Singular Value Decomposition (SVD) implementations truncate small singular values \(\sigma_i < \lambda\), suppressing high-frequency noise\kd{cite}.
+%
+While effective for moderate dimensions, Tikhonov methods introduce model dependence through directly on \(\boldsymbol{\mu}_{\text{MC}}\) (rather than for instance on $\mathbf{R}$)\kd{cite}, struggle with sharply falling spectra due to biased curvature penalties \kd{cite}, and require ad hoc $$\lambda$$ selection, often via L-curve curvature maximization\kd{cite}.
+
+\paragraph{Bayesian Unfolding}  
+Bayesian methods regularize through prior distributions \(p(z)\), yielding posterior estimates:  
+\begin{equation}
+    p({z}|{x}) \propto \mathcal{L}({x}|{z})p({z})
+\end{equation}  
+%
+Common priors include entropy maximization \(p(z) \propto \exp(-\sum z_j \log z_j)\)\kd{cite} and Gaussian processes enforcing smoothness\kd{cite}.
+%
+These provide natural uncertainty quantification but suffer from high computational cost, scaling poorly with dimensionality \kd{cite},sensitivity to prior misspecification, especially in low-statistics regions\kd{cite}, and difficulty interpreting credible intervals as frequentist coverage\kd{cite}
+
+\paragraph{Iterative Methods}  
+The D’Agostini algorithm\kd{cite}, also known as Iterative Bayesian Unfolding (IBU)\kd{cite} applies expectation--maximization iterations:  
+\begin{equation}
+    z_j^{(k+1)} = z_j^{(k)} \sum_i \frac{R_{ij}\;x_i}{\sum_l R_{il}\;z_l^{(k)}}
+\end{equation}  
+Early termination (typically \(k \sim 4-6\)) acts as implicit regularization by preventing overfitting\kd{cite}. While computationally efficient, this approach lacks objective stopping criteria, requiring heuristic cross-validation\kd{cite} and underestimates uncertainties due to ignored iteration-dependent covariance\kd{cite}.
+
+\paragraph{Regularized Poisson Likelihood}  
+For low-statistics regions, Gaponenko\kd{cite} advocates minimizing:  
+\begin{equation}
+     -\log \mathcal{L}({x}|z) + \lambda S({z})
+\end{equation}  
+\(S(z)\) penalizes non-monotonicity in sharply falling spectra.
+%
+Using cubic B-splines with entropy regularization, this method avoids binning artifacts through continuous representations\kd{cite}.
+%
+However, it requires careful basis function placement to prevent endpoint spikes\kd{cite} and demands specialized optimization protocols (e.g., cooling schedules for \(\lambda\)).\kd{cite}  
+
+\subsubsection{Limitations and Practical Challenges}  
+\paragraph{Subjectivity-Objectivity Trade-off}  
+All regularization methods inject subjective choices---smoothness scales, prior distributions, stopping criteria and so on---that bias results.
+%
+As shown in Figure 3 of \kd{cite}, Tikhonov regularization artificially suppresses true peaks when \(\lambda\) over-penalizes curvature.
+%
+Zech\kd{cite} and Kuusela\kd{cite} argue this necessitates publishing unregularized results for theory comparisons, reserving regularization only for visualization.
+
+\paragraph{High-Dimensional Regimes}  
+Traditional methods fail catastrophically in $$d \geq 4$$ phase spaces for multiple reasons.
+%
+Binned approaches require \(n^d\) histogram bins, running up against memory limits\kd{cite}, and struggling to effectively sample an increasingly sparse phase space.
+%
+Global smoothness assumptions become untenable for multi-scale features\kd{cite} straining regularization methods that rely on them. 
+
+As the number of dimensions increases, the binning also increasingly distorts error propagation. 
+%
+Bayesian credible intervals exhibit poor frequentist coverage (Figure 4 in \kd{cite}), and correlated systematic uncertainties (e.g., jet energy scale) introduce non-convex likelihoods.\kd{cite}  
+
+\paragraph{Spectrum-Dependent Biases}  
+Sharply falling spectra (e.g., proton momentum in \kd{cite}) exacerbate regularization artifacts.
+%
+Entropic priors overweight high-$$z$$ regions, distorting tails\kd{cite},
+%
+Finite sample sizes truncate measurable phase space, creating cutoff-induced spikes,\kd{cite}
+%
+and curvature penalties conflict with natural spectral shapes, requiring physics-informed \(S(z)\)\kd{cite}.  
+
+Recent advances aim to mitigate these limitations in various ways.
+For example, adversarial regularization involves training discriminators to enforce physical consistency rather than explicit smoothness\kd{cite}.
+%
+Differentiable unfolding methods embed detector response in neural networks enabling gradient-based \(\lambda\) optimization\kd{cite}.
+%
+However, no universal solution exists. The choice of regularization must align with analysis--specific priorities: theory comparison, visualization, or parameter extraction.
+%
+As detector granularity increases, developing dimension--agnostic regularization schemes remains an open challenge requiring collaboration between statisticians and physicists.
+
+\section{Limitations of Traditional Binned Methods}
+
+While binned unfolding methods remain workhorses of experimental particle physics, they face significant limitations that have motivated the development of new approaches:
+
+\begin{itemize}
+\item \textbf{Curse of dimensionality}: As the dimensionality of the measurement increases, the number of bins required to cover the phase space grows exponentially, leading to sparsely populated bins and unstable unfolding.
+\item \textbf{Binning bias}: The subjective choice of binning scheme biases the result and can obscure fine features in the distributions.
+\item \textbf{Binning artifacts}: Binning inherently discards information about the precise values of observables within each bin, reducing statistical power, and introducing binning artifacts.
+\item \textbf{Regularization ambiguity}: The choice of regularization scheme and strength significantly impacts results, with no universally accepted procedure for regularizing the unfolding.
+\item \textbf{Cross--bin correlations}: Binned methods often struggle to properly account for correlations between bins as the dimension of the phase space increases.
+\end{itemize}
+These limitations become particularly acute in modern analyses that target complex, high dimensional observables with non--trivial correlations.
+%
+For instance, in jet substructure measurements, the relationship between different substructure variables contains valuable information about the underlying physics that can be obscured by independent binning of each variable \kd{cite}.
+
+Moreover, many theoretical predictions in particle physics are at the level of statistical moments or other distribution properties rather than full differential spectra.
+%
+Traditional unfolding methods require first unfolding the full distribution and then calculating these properties, which can lead to reduced precision in the moment predictions.
+
+
+\section{From Binned to Unbinned Methods: Statistical Considerations}  
+The evolution from binned to unbinned unfolding methodologies represents a paradigm shift in high-energy physics, driven by the need to preserve fine-grained kinematic information while managing the statistical and computational complexities of high-dimensional phase spaces. This section systematically analyzes the theoretical foundations, practical challenges, and performance trade-offs that this transition entails.
+
+\subsection{Statistical Foundations of Binned Unfolding}  
+Traditional binned methods discretize particle-level (\(Z\)) and detector-level (\(X\)) observables into histograms, reducing the Fredholm integral equation to matrix form:
+\begin{equation}
+\boldsymbol{\mu} = \mathbf{R}\boldsymbol{\nu} + \boldsymbol{\epsilon},
+\end{equation}
+
+where \(\boldsymbol{\nu} \in \mathbb{R}^{N_{\text{Truth}}}\) and \(\boldsymbol{\mu} \in \mathbb{R}^{N_{\text{Data}}}\) are truth and data histogram counts, \(\mathbf{R}\) is the smearing matrix, and \(\boldsymbol{\epsilon}\) models statistical noise.\kd{cite} Maximum likelihood estimation via Poisson statistics remains the gold standard:
+\begin{equation}
+\mathcal{L}(\boldsymbol{\nu}) = \prod_{i=1}^{N_{\text{Data}}} \frac{(\mathbf{R}\boldsymbol{\nu})_i^{\mu_i} e^{-(\mathbf{R}\boldsymbol{\nu})_i}}{\mu_i!}.
+\end{equation}
+In addition to the limitations discussed in earlier sections, integrated correlations between observables due to binning obscure multi-differential features.\kd{cite}
+%
+In binned analyses, sharp spectral features (e.g., resonance peaks) are artificially broadened.\kd{cite}
+%
+In the case of TUnfold, Tikhonov smoothing also conflates detector resolution effects with physical spectral curvature,\kd{cite} further compounding the artifacts.
+
+Sparse bin populations in high dimensions amplify statistical uncertainties, destabilizing inversion:
+\begin{equation}
+\text{Relative uncertainty} \propto \frac{1}{\sqrt{N_{\text{events}}} \cdot \prod_{i=1}^d \Delta z_i},
+\end{equation}
+where \(\Delta z_i\) are bin widths.
+%
+This forces analysts to integrate over variables, discarding critical correlations needed for precision Standard Model tests or new physics searches.\kd{cite}
+
+\subsection{Unbinned Methodologies: Principles and Implementations}  
+Unbinned unfolding operates directly on event tuples \(\{(z_1, x_1), ..., (z_N, x_N)\}\), preserving full kinematic information.
+%
+One class of implementations leverages machine learning to estimate probability density ratios:
+\begin{equation}
+w(z) = \frac{p_{\text{Truth}}(z)}{p_{\text{Gen.}}(z)}, \quad \nu(m) = \frac{p_{\text{Data}}(x)}{p_{\text{Sim.}}(x)},
+\end{equation}
+where \(w(z)\) reweights particle--level MC to match data, and \(v(x)\) corrects detector--level distributions.\kd{cite}
+%
+A classic example of such an approach is OmniFold.
+
+\subsubsection{OmniFold (Iterative Reweighting)}  
+OmniFold trains classifiers iteratively in an IBU--style, unbinned, expectation--maximization algorithm:
+\begin{align}
+w^{(k+1)}(z) &= \frac{p_{\text{Data}}(x)}{p_{\text{Sim.}}^{(k)}(x)} \bigg|_{x=f_{\text{det}}(z)}, \\
+p_{(k+1)}(z) &= w^{(k+1)}(z)\; p^{(k)}(z),
+\end{align}
+where \(f_{\text{det}}(z)\) is the function that maps a particular \(z\) to the corresponding \(x\) via detector simulation.\kd{cite}
+
+\subsubsection{cINN (Conditional Invertible Networks)}
+A distinct class of methods seek to train generative models to learn the diffeomorphic mapping 
+\begin{equation}
+g_\theta: \mathcal{Z} \to \mathcal{X},
+\end{equation}
+with a tractable Jacobian,
+\begin{equation}
+p(z|x) = p(x|z) \frac{p(z)}{p(x)} = \left|\det \frac{\partial g_\theta}{\partial z}\right|^{-1} p(g_\theta(z)).
+\end{equation}
+This enables direct sampling from \(p(z|m)\) without iterations.\kd{cite}
+%
+Generative models however, are susceptible to mode collapse.\kd{cite}
+%
+Schr\"odinger Bridge Unfolding is an method deleloped to address mode collapse.\kd{cite}
+%
+It is an optimal transport formulation minimizing KL divergence between joint distributions:
+\begin{equation}
+    \inf_{p(z,x)} D_{\text{KL}}\Big(p(z,x) \parallel p_{\text{MC}}(z,x)\Big) \text{ s.t. } p(x) = p_{\text{Data}}(x).
+\end{equation}
+
+
+\subsection{Statistical Considerations in Unbinned Regimes}  
+
+Neural networks implicitly regularize via inductive controls. 
+%
+E.g., convolutional layers enforce translational symmetry in jet images.\kd{cite}
+%
+However, this introduces model-dependent smoothing scales requiring careful validation against closure tests.\kd{cite}
+
+Reweighting based methods propagate uncertainties through event weights:
+\begin{equation}
+\text{Cov}[O] = \sum_{i=1}^N w_i^2 O(z_i)^2 - \left(\sum_{i=1}^N w_i O(z_i)\right)^2,
+\end{equation}
+for observable \(O(z)\)\kd{cite}.
+%
+While avoiding binning-induced correlations, unbinned inference requires re-conceptualizing what the unbinned equivalent of the covariance matrix would be in order to appropriately account for correlations in the unfolded data.
+
+\paragraph{Acceptance Effects}  
+Detector fiducial volumes impose phase space cuts \(A(z) \in \{0,1\}\).
+%
+Unbinned methods can correct acceptance via reweighting:
+\begin{equation}
+w_{\text{acc}}(z) = \frac{A_{\text{data}}(z)}{A_{\text{MC}}(z)},
+\end{equation}
+but require dense coverage of \(Z\) near boundaries to avoid edge artifacts.\kd{cite}
+
+\subsection{Limitations in Complex Phase Spaces}  
+
+
+
+\subsubsection{Model Misspecification}  
+Generative models assume \(p_{\text{Gen.}}(z) > 0 \implies p_{\text{Truth}}(z) > 0\).
+%
+New physics signatures outside the support of Generation (\(p_{\text{Gen.}}(z) = 0\)) is difficult to detect.\kd{cite}
+%
+Hybrid approaches combining discriminative and generative components show promise for anomaly detection.\kd{cite}
+
+\subsubsection{Computational Scaling}  
+While unbinned methods avoid exponential bin scaling, neural network training time grows super-linearly with event multiplicity.
+%
+For \(N_{\text{events}} \sim 10^8\), distributed training across GPU clusters becomes essential.\kd{cite}
+%
+Noise-smeared likelihoods in \(d \geq 4\) phase spaces also complicate posterior calibration.
+%
+The \textit{statistical coverage gap}--where 68\% credible intervals contain true values only 50\% of the time--persists despite adaptive methods.\kd{cite}
+
+\subsection{Future Directions}  
+Machine Learning for unfolding is a rapidly evolving field, and emerging techniques might have the potential to mitigate current limitations. Some examples are
+\begin{itemize}
+    \item \textbf{Differentiable detectors}: End-to-end gradient propagation through approximate detector simulations enables precise Jacobian calculations.\kd{cite}
+    \item \textbf{Equivariant architectures}: Built-in symmetry constraints (e.g., Lorentz invariance) reduce hypothesis space while preserving physical consistency.\kd{cite}
+    \item \textbf{Foundational models}: Pre-trained on broad MC datasets, these allow rapid fine-tuning for specific analyses, amortizing computational costs.\kd{cite}
+\end{itemize}
+
+A summary comparison between binned and unbinned methods is provided in Table~\ref{tab:binned_vs_unbinned}.
+%
+The values in the table should be treated as order of magnitude estimates provided to suggest rough scales, rather than precise reports.
+%
+The transition to unbinned methodologies represents not merely a technical advancement but a fundamental reorientation toward maximal information preservation. As experimental statistics grow at the HL-LHC and future colliders, these methods will become indispensable tools for precision physics.\kd{cite.}
+
+\begin{table}
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Metric} & \textbf{Binned} & \textbf{Unbinned} \\
+\hline
+Computational complexity & \(\mathcal{O}(n^{2d})\) & \(\mathcal{O}(N_{\text{events}})\) \\
+Memory footprint (4D, \(n=10\)) & 100 GB & 1 GB \\
+Systematic uncertainty propagation & Analytical & Monte Carlo \\
+Feature resolution limit & \(\sim 2\sigma_{\text{det}}\) & \(\sim \sigma_{\text{det}}/\sqrt{N}\) \\
+Multi-observable correlations & Integrated & Preserved \\
+\hline
+\end{tabular}
+\caption{Comparative performance of unfolding methods in high-dimensional regimes}
+\label{tab:binned_vs_unbinned}
+\end{table}
+
+\section{Evaluation metrics for unfolding}
+The evaluation of unfolding methods presents unique challenges due to the ill-posed nature of the inverse problem.
+%
+While the goal of unfolding is conceptually straightforward, to recover the true particle--level distribution from detector--level observations, quantifying the success of this recovery requires careful consideration.
+%
+This chapter discusses various metrics and approaches for evaluating unfolding performance, considering both traditional binned techniques and modern unbinned methods.
+%
+We examine metrics for assessing accuracy, precision, and uncertainty quantification, as well as practical considerations for their application in high-energy physics analyses.
+
+\subsection{Statistical Metrics for Evaluating Point Estimates}
+\subsubsection{Residual-Based Metrics}
+The most intuitive approach to evaluating an unfolding method is to compare the unfolded distribution to the true distribution when it is known (e.g., in simulation studies).
+%
+Simple residual--based metrics quantify the difference between the estimated and true distributions.
+%
+For binned methods, the bin--by--bin residual is defined as:
+\begin{equation}
+\delta_i = \hat{t}_i - t_i
+\end{equation}
+where \(\hat{t}_i\) is the unfolded count in bin \(i\) and \(t_i\) is the true count.
+%
+Various summary statistics of these residuals can be computed, including:
+\begin{align}
+\text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\\
+\text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\\
+\text{MAE} &= \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|
+\end{align}
+While these metrics are straightforward, they have limitations in the context of unfolding.
+%
+In particular, they treat all bins equally, even though certain regions of phase space may be physically more significant than others.
+%
+Additionally, these metrics do not account for the correlations between bins introduced by the unfolding process.
+
+For unbinned methods, where the output is a set of weights or a continuous probability density, these metrics must be adapted.
+%
+One approach is to bin the unbinned unfolded distributions and then apply the above metrics, though this introduces binning artifacts that the unbinned method was designed to avoid.
+
+\subsubsection{Distributional Distance Metrics}
+Given the limitations of simple residual metrics, distributional distance measures provide a more comprehensive assessment of unfolding performance.
+%
+These metrics compare the entire unfolded distribution to the true distribution.
+
+The Kullback-Leibler (KL) Divergence measures the information lost when using the unfolded distribution to approximate the true distribution.
+
+\begin{equation}
+D_{\text{KL}}(p||q) = \int p(x) \log \frac{p(x)}{q(x)} \;\dd x,
+\end{equation}
+where \(p\) is the true distribution and
+\(q\) is the unfolded distribution.
+%
+While theoretically sound, KL divergence can be numerically unstable when the support of the distributions differs.
+
+
+The Vincze-Le Cam (VLC) Divergence is symmetric alternative to KL divergence that is both bounded and highly convex.
+
+\begin{equation}
+\Delta(p, q) = \frac{1}{2}\int \frac{(p(\lambda) - q(\lambda))^2}{p(\lambda) + q(\lambda)} \;\dd\lambda.
+\end{equation}
+This metric is particularly useful for comparing unfolding methods as it provides a balanced assessment of differences across the entire distribution and has been used in comparative analyses of various unfolding approaches.
+
+The Wasserstein Distance, also known as the ``Earth Mover's Distance," provides a measure of the minimum ``work" required to transform one distribution into another.
+\begin{equation}
+W_p(p, q) = \left(\inf_{\gamma \in \Gamma(p, q)} \int\int |x-y|^p d\gamma(x, y)\right)^{1/p},
+\end{equation}
+where \(\Gamma(p, q)\) is the set of all joint distributions with marginals \(p\) and \(q\).
+%
+This metric is particularly useful for unfolding evaluations as it accounts for both the magnitude and location of discrepancies between distributions.
+
+Table~\ref{tab:dist_metrics} summarizes the various distributional metrics and their relative strengths for unfolding evaluation.
+\begin{table}
+\centering
+\caption{Distributional distance metrics for unfolding evaluation}
+\label{tab:dist_metrics}
+\begin{tabular}{lcccc}
+\hline
+ & Symmetric & Bounded & Support sensitivity & Compute Cost \\
+\hline
+\(D_{\textrm{KL}}\) & No & No & High & Low \\
+\(\Delta_{\textrm{VLC}}\) & Yes & Yes & Medium & Low \\
+\(W_2\) & Yes & No & Low & High \\
+\hline
+\end{tabular}
+\end{table}
+\subsection{Uncertainty Quantification Metrics}
+Beyond point estimates, properly evaluating unfolding methods requires assessing the accuracy of their uncertainty estimates. 
+%
+This is particularly important in particle physics, where uncertainties propagate to downstream analyses such as parameter fitting.
+\subsubsection{Pull Distributions}
+Pull distributions offer a rigorous way to evaluate the calibration of reported uncertainties.
+%
+For a given unfolded bin or parameter \(\theta\), the pull is defined as:
+
+\begin{equation}
+\text{Pull}\,{\theta} = \frac{\hat{\theta} - \theta_{\text{true}}}{\sigma_{\hat{\theta}}}
+\end{equation}
+where \(\hat{\theta}\) is the unfolded estimate, \(\theta_{\text{true}}\) is the true value, and \(\sigma_{\hat{\theta}}\) is the reported uncertainty.
+%
+For a well-calibrated method, the pull distribution across many pseudo--experiments should follow a standard normal distribution, \(\mathcal{N}(0,1)\).
+%
+Deviations from this indicate either overestimation or underestimation of uncertainties.
+
+In the context of binned unfolding, pull distributions can be computed for each bin, while for unbinned methods, they can be applied to derived quantities or parameters of interest.
+%
+For Bayesian methods, pulls can be calculated using the mean and standard deviation of the posterior distribution.
+
+\subsubsection{Coverage Properties}
+Related to pulls but more direct is the evaluation of coverage properties of confidence or credible intervals.
+%
+For a nominal 68\% confidence interval, approximately 68\% of intervals computed across many pseudo-experiments should contain the true value.
+%
+Systematic deviations from nominal coverage indicate issues with the uncertainty estimation.
+%
+Coverage can be assessed through closure tests. These involve generating multiple datasets from a known truth, applying the unfolding procedure, and checking the fraction of times the true value falls within the reported confidence intervals.
+%
+Coverage plots plot the actual coverage versus the nominal coverage across different confidence levels.
+%
+The example in Figure \kd{find a suitable figure} shows expected coverage properties for both well-calibrated and miscalibrated unfolding methods.
+\subsubsection{Variance and Bias Decomposition}
+The total error of an unfolding method can be decomposed into bias and variance components,
+\begin{equation}
+\text{MSE}(\hat{t}) = \text{Bias}^2(\hat{t}) + \text{Var}(\hat{t})
+;,
+\end{equation}
+where \(\text{Bias}(\hat{t}) = \mathbb{E}[\hat{t}] - t\) and \(\text{Var}(\hat{t}) = \mathbb{E}[(\hat{t} - \mathbb{E}[\hat{t}])^2]\). 
+
+This decomposition is particularly valuable for understanding the trade--offs inherent in regularized unfolding methods, where stronger regularization typically reduces variance at the expense of increased bias.
+%
+Different applications might prioritize minimizing one component over the other, making this decomposition essential for method selection.
+
+\subsection{Evaluation of Correlation Structure}
+Traditional evaluation metrics often focus on marginal distributions, overlooking an important aspect of unfolding: the correlation structure between different bins or events. Properly accounting for these correlations is crucial for downstream analyses.
+\subsubsection{Covariance Matrix Assessment}
+For binned methods, the full covariance matrix of the unfolded distribution provides information about bin-to-bin correlations. A useful visualization is the correlation matrix, defined as:
+\begin{equation}
+\text{Corr}_{ij} = \frac{\text{Cov}_{ij}}{\sqrt{\text{Cov}_{ii}\text{Cov}_{jj}}}
+\end{equation}
+Comparing the correlation structure of the unfolded distribution to that of the true distribution (when known) can reveal systematic distortions introduced by the unfolding procedure.
+\subsubsection{Event-to-Event Correlation Metrics}
+For unbinned methods event--to--event correlations in the unfolded weights can significantly impact downstream inference.
+%
+These correlations can be quantified by studying the weight correlation as a function of distance.
+%
+For any pair of events, one can compute the correlation between their weights as a function of their distance in feature space.
+%
+One can also estimate the reduction in statistical power due to correlated weights:
+
+\begin{equation}
+N_{\text{eff}} = \frac{\left(\sum_{i} w_i\right)^2}{\sum_{i} w_i^2 + 2\sum_{i<j} w_i w_j \text{Corr}(w_i, w_j)}
+\end{equation}
+Figure~\kd{Pick a figure} illustrates how event correlations typically decay with distance, with the correlation length scale increasing with detector resolution effects.
+
+\subsection{Method specific evaluation metrics}
+\subsubsection{Iterative Methods}
+For iterative methods like Iterative Bayesian Unfolding (IBU) or OmniFold, convergence behavior provides important diagnostic information.
+%
+To study the convergence behavior, we plot metric values (e.g., \(\chi^2\) or NLL) as a function of iteration number.
+%
+We then compare unfolded distributions at different iterations to assess stability and analyze how the bias--variance tradeoff evolves with iteration number.
+
+\subsubsection{Bayesian Methods}
+For Bayesian unfolding methods such as Fully Bayesian Unfolding (FBU) or Neural Posterior Unfolding (NPU), additional posterior--specific metrics are relevant.
+%
+We can compare detector--level data to detector--level predictions generated from the posterior.
+%
+We assess convergence using standard MCMC based diagnostics like Gelman-Rubin statistics or effective sample size.
+%
+The width of the posterior allows us to evaluate the posterior uncertainty in relation to the true frequentist variance.
+
+\subsection{Practical Considerations}
+In general, when comparing different unfolding methods, a structured evaluation framework ensures fair and comprehensive assessment. Such a framework should consider
+\begin{itemize}
+    \item Computational efficiency: Measure training time, inference time, and memory requirements.
+    \item Dimensionality scaling: Assess how performance metrics change as the dimensionality of the problem increases.
+    \item Prior dependence: Evaluate robustness to different initial simulations.
+    \item Regularization parameter sensitivity: Compare how performance varies with changes in regularization strength.
+\end{itemize}
+
+In real experimental settings where the truth is unknown, evaluation presents additional challenges that require alternative pragmatic approaches.
+%
+For example, when the true distribution is unavailable, data-splitting techniques can provide useful validation.
+%
+The two most commonly used techniques are cross-validation, where we split the detector--level data, unfold one portion, then refold it, and compare predictions against the held--out portion; and boostrapping where we generate multiple resampled datasets to assess the stability of the unfolding procedure.
+
+Closure tests involve applying the full analysis chain (forward model followed by unfolding) to a known input distribution.
+%
+While not a direct evaluation of performance on real data, closure tests provide confidence in the methodology.
+%
+The simplest kinds of closure tests involve apply detector simulation to a known particle--level distribution, then unfolding the resulting detector--level distribution and compare with the original input.
+%
+This procedure can then be modified by using a different particle-level input than the one used to train the unfolding method, testing robustness to prior misspecification.
+
+Evaluating how unfolding methods propagate systematic uncertainties is crucial for real-world applications.
+%
+We can test the sensitivity of the method to systematic uncertainties by applying variations to the response matrix based on known systematic uncertainties and assessing the impact on unfolded distributions.
+%
+For methods that support nuisance parameter profiling, evaluating how effectively nuisance parameters are profiled out is a gold standard test for the effectiveness of the method.
+
+Rigorous evaluation of unfolding methods requires a multi--faceted approach that considers accuracy, uncertainty quantification, and computational performance.
+%
+The metrics and frameworks presented in this section provide a comprehensive foundation for assessing both traditional and machine learning-based unfolding techniques.
+%
+For binned methods, established metrics like \(\chi^2\) and coverage tests remain valuable, while for unbinned approaches, distributional metrics like Wasserstein distance and VLC divergence offer more appropriate evaluation.
+%
+Regardless of the method, uncertainty calibration through pull distributions and correlation structure assessment are important to validate any measurement.
+%
+As unfolding methods continue to evolve, particularly with the advent of machine learning approaches, evaluation metrics must adapt accordingly.
+%
+The framework presented here is designed to be extensible, accommodating new methods and application domains while maintaining rigor and comparability.

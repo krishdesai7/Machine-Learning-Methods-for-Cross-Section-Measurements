@@ -1,0 +1,144 @@
+\documentclass[arxiv]{ucbthesis}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+
+\usepackage{geometry}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage[protrusion=false, expansion=true,factor=1100,final,tracking=true,kerning=true,spacing=true,stretch=40,shrink=10, babel=true]{microtype}
+\microtypecontext{spacing=nonfrench}
+\SetExtraKerning[unit=space]
+    {encoding={*}, family={bch}, series={*}, size={footnotesize,small,normalsize}}
+    {\textendash={800,800}, % en-dash, add more space around it
+     "28={ ,150}, % left bracket, add space from right
+     "29={150, }, % right bracket, add space from left
+     \textquotedblleft={ ,150}, % left quotation mark, space from right
+     \textquotedblright={150, }} % right quotation mark, space from left
+\SetTracking{encoding={*}, shape=sc}{40}
+\microtypesetup{protrusion=false}
+% \usepackage[T1]{fontenc}
+% \usepackage[bitstream-charter]{mathdesign}
+
+\usepackage{biblatex}
+\usepackage{pgffor}
+\usepackage{appendix}
+\usepackage{color}
+\usepackage{nicefrac}
+\usepackage{graphicx, tabularx}
+\usepackage{physics}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[capitalise]{cleveref}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{darkred}{rgb}{1.0,0.1,0.1}
+\definecolor{darkgreen}{rgb}{0.1,0.7,0.1}
+\newcommand{\kd}[1]{\textbf{\color{darkred}[#1 --kd]}}
+\newcommand{\bn}[1]{\textbf{\color{darkgreen}[#1 --bn]}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\qt}{\widetilde{q}}
+\newtheorem{theorem}{Theorem}[section]
+\renewcommand{\[}{\begin{equation}}
+\renewcommand{\]}{\end{equation}}
+\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
+
+% To compile this file, run "latex thesis", then "biber thesis"
+% (or "bibtex thesis", if the output from latex asks for that instead),
+% and then "latex thesis" (without the quotes in each case).
+
+% Double spacing, if you want it.  Do not use for the final copy.
+
+
+% If the Grad. Division insists that the first paragraph of a section
+% be indented (like the others), then include this line:
+\usepackage{indentfirst}
+
+\addtolength{\abovecaptionskip}{\baselineskip}
+
+\bibliography{references}
+
+
+\begin{document}
+
+% Declarations for Front Matter
+
+\title{Machine Learning Methods for Cross Section Measurements}
+\author{Krish Desai}
+\degreesemester{Spring}
+\degreeyear{2025}
+\degree{Doctor of Philosophy}
+\cochairs{Doctor Benjamin Nachman}{Professor Uros Seljak}
+\othermembers{Professor Joshua Bloom \\
+  Professor Saul Perlmutter}
+% For a co-chair who is subordinate to the \chair listed above
+% \cochair{Professor Benedict Francis Pope}
+% For two co-chairs of equal standing (do not use \chair with this one)
+% \cochairs{Professor Richard Francis Sony}{Professor Benedict Francis Pope}
+\numberofmembers{4}
+% Previous degrees are no longer to be listed on the title page.
+% \prevdegrees{B.A. (University of Northern South Dakota at Hoople) 1978 \\
+%   M.S. (Ed's School of Quantum Mechanics and Muffler Repair) 1989}
+\field{Physics}
+% Designated Emphasis -- this is optional, and rare
+% \emphasis{Colloidal Telemetry}
+% This is optional, and rare
+% \jointinstitution{University of Western Maryland}
+% This is optional (default is Berkeley)
+% \campus{Berkeley}
+
+% For a masters thesis, replace the above \documentclass line with
+% \documentclass[masters]{ucbthesis}
+% This affects the title and approval pages, which by default calls this
+% document a "dissertation", not a "thesis".
+
+\maketitle
+% Delete (or comment out) the \approvalpage line for the final version.
+%\approvalpage
+\copyrightpage
+
+\include{abstract}
+
+\begin{frontmatter}
+
+\begin{dedication}
+\null\vfil
+\begin{center}
+To name\\\vspace{12pt}
+text
+\end{center}
+\vfil\null
+\end{dedication}
+
+% You can delete the \clearpage lines if you don't want these to start on
+% separate pages.
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+
+\begin{acknowledgements}
+Acknowledgements
+
+\end{acknowledgements}
+
+\end{frontmatter}
+
+\pagestyle{headings}
+
+% (Optional) \part{First Part}
+
+
+\foreach \i in {1,...,11} {
+    \include{chapters/chap\i}
+}
+
+\printbibliography
+
+\appendix
+\foreach \i in {1, 2, 3}{
+    \include{appendices/app\i}
+}
+\end{document}

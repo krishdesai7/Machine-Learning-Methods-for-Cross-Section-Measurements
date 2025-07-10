@@ -1,0 +1,785 @@
+\chapter{Moment Unfolding: Direct Deconvolution of Distribution Moments}
+\label{chap:moment-unfolding}
+\section{Why Moments: Physics Context and QCD Calculations}
+    Statistical moments of probability distributions serve as powerful tools in physics, providing a concise and theoretically meaningful way to characterise complex phenomena.
+    %
+    In the context of particle physics, and particularly in quantum chromodynamics (QCD), working at the level of moments rather than distributions offers significant advantages for both theoretical calculations and experimental measurements.
+    %
+    This section explores the fundamental importance of moments in physics, their theoretical foundations, and their specific applications in QCD.
+    \subsection{The Theoretical Significance of Moments in Physics}
+        Statistical moments represent a systematic way to characterize probability distributions, with each successive moment providing additional information about the shape and properties of the distribution.
+        %
+        The $k$-th moment of a probability density $p(z)$ is defined as
+        \[
+            \langle Z^k \rangle = \int_{-\infty}^{\infty} z^k p(z) dz
+        \]
+        While the complete probability distribution contains all available information, working with moment is often much more tractable.
+        %
+        In many physical theories, moments can be calculated analytically even when full distributions cannot.
+        %
+        Each moment has a direct physical interpretation--the first moment corresponds to the mean, the second moment to the variance, and higher moments characterize asymmetry (skewness) and peakedness (kurtosis).
+        %
+        Moments therefore provide much more concrete insight into the properties of an observable than distributions.
+        
+        In many physical theories, including QCD, there exist relatively simple evolution equations for how moments change as a function of energy scale.
+        %
+        If certain moments exhibit universal behaviour across different physical systems, this too reveals universality in the fundamental underlying principles.
+        %
+        For many physical systems, including those governed by QCD, moments provide a natural language for connecting theoretical predictions with experimental measurements, particularly when examining how observables scale with energy.
+    \subsection{Moments in QCD Calculations}
+        In quantum chromodynamics, moments play a particularly crucial role in understanding the scaling behaviour of parton distributions and fragmentation functions.
+        %
+        The DGLAP equations form the theoretical framework for parton distribution function evolution. 
+        \subsubsection{DGLAP Evolution Equations}
+            The Dokshitzer--Gribov--Lipatov--Altarelli--Parisi (DGLAP) evolution equations\kd{cite} govern how parton distribution functions evolve with energy scale.
+            %
+            While these equations are integro--differential equations in their most general form, they transform into ordinary differential equations when expressed in terms of moments, significantly simplifying their solution \kd{cite}.
+
+            For a parton distribution function $f(x,Q^2)$, where $x$ is the momentum fraction and $Q^2$ is the energy scale, the $n-$th moment is defined as
+            \[
+                M_n(Q^2) = \int_0^1 x^{n-1}\;f(x,Q^2) \dd x.
+            \]
+            The DGLAP equations for these moments take the form
+            \[
+            \frac{\dd M_n(Q^2)}{\dd \ln Q^2} = \frac{\alpha_s(Q^2)}{2\pi}\; P_n\;M_n(Q^2).
+            \]
+            where $P_n$ are the moments of the splitting functions.
+            %
+            This formulation converts the complex integro--differential evolution equations into a set of simple ordinary differential equations, one for each moment independently.
+
+        \subsubsection{Operator Product Expansion}
+            The Operator Product Expansion (OPE) in QCD naturally expresses deep inelastic scattering structure functions in terms of moments \kd{cite}.
+            %
+            In this formalism, the moments of structure functions are related to matrix elements of local operators, which have clear physical interpretations and scaling properties.
+            %
+            For example, the moments of the structure function $F_2(x,Q^2)$ can be expressed as
+            \[
+                M_n(Q^2) = \int_0^1 x^{n-2}\;F_2(x,Q^2)\;\dd x = \sum_i C_n^i(Q^2) \;\langle O_n^i \rangle.
+            \]
+            where $C_n^i$ are Wilson coefficients calculable in perturbation theory, and $\langle O_n^i \rangle$ are matrix elements of local operators.
+        \subsubsection{Event Shape Moments}
+            Event shape observables, which characterize the geometrical properties of energy flow in collisions, are often studied through their moments.
+            %
+            Moments of event shapes like thrust, broadening, and jet mass distributions provide sensitive tests of perturbative QCD and allow precise extractions of the strong coupling constant $\alpha_s$ \kd{cite}.
+            %
+            The moments of these event shapes can be calculated as
+            \[
+                \langle e^n \rangle = \int_0^{e_{\text{max}}} e^n \;\frac{1}{\sigma}\; \frac{\dd\sigma}{\dd e}\; \dd e,
+            \]
+            where $e$ is the event shape variable, and $\frac{1}{\sigma} \frac{\dd\sigma}{\dd e}$ is its normalized differential cross section.
+            %
+            These moments can be predicted in perturbative QCD, typically expressed as power series in $\alpha_s$:
+            \[
+                \langle e^n \rangle = A_n \left(\frac{\alpha_s}{2\pi}\right) + B_n \left(\frac{\alpha_s}{2\pi}\right)^2 + \mathcal{O}(\alpha_s^3),
+            \]
+            plus non--perturbative corrections that scale as inverse powers of the centre--of--mass energy.
+    \subsection{Experimental Significance of Moments in QCD}
+        From an experimental perspective, moments offer several advantages that make them particularly valuable for QCD studies.
+
+        Some of the most precise determinations of the strong coupling constant $\alpha_s$ come from measurements of moments.
+        %
+        For example, moments of event shapes measured at LEP have provided determinations of $\alpha_s$ with uncertainties at the few-percent level \kd{cite}.
+        %
+        Studies by AMY, TASSO, OPAL, DELPHI, L3, and ALEPH collaborations have all used moment--based analyses to extract $\alpha_s$ values that contribute significantly to the world average \kd{cite}.
+
+        The scaling behavior of moments with energy provides a direct and robust window into the running of QCD couplings.
+        %
+        By measuring how moments of distributions change with energy scale, experiments can observe the logarithmic scaling violations that are a hallmark of asymptotic freedom in QCD \kd{cite}.
+
+        Many theoretical QCD calculations are more readily available (and more precise) for moments than for full distributions.
+        %
+        For certain observables, perturbative calculations may exist to next--to--next--to--leading order (NNLO) or beyond for moments, while full distribution calculations may only be available at lower orders \kd{cite}.
+        
+        In practice, measuring moments directly can reduce certain experimental uncertainties, particularly those related to detector resolution and acceptance effects in regions of phase space with sparse statistics.
+
+        Traditionally, there was no straightforward method to directly unfold moments.
+        %
+        Instead, moments were computed after first measuring and unfolding the full distribution.
+        %
+        This typically involved binning the data, unfolding the binned distribution, and then computing moments from the unfolded histogram.
+        %
+        The limitation of this approach though, is the binning itself, not the moments qua moments.
+        
+        The use of discrete bins introduces a bias in moment calculations.
+        %
+        For a variable $z$ binned into $n_{\text{bins}}$ with centers $z_{\text{bin},i}$ and counts $N_i$, the binned approximation of the $k-$th moment is
+        \[
+            \langle z^k \rangle_{\text{bin}} = \frac{1}{N} \sum_{i=1}^{n_{\text{bins}}} N_i z_{\text{bin},i}^k
+        \]
+        This approximation introduces a bias relative to the true moment, which grows with the order of the moment computed, and is particularly large in regions where the distribution varies rapidly within bins \kd{cite}.
+
+        These limitations motivate the development of unbinned approaches that can directly unfold moments without first discretizing the data, which is precisely the focus of the Moment Unfolding method described in this chapter.
+    \subsection{Applications in Jet Physics}
+        In the context of jet physics specifically---a central arena for testing QCD---moments of jet substructure observables provide particularly powerful probes of QCD dynamics \kd{cite}>.
+        %
+        Several notable applications deserve special mention.
+        
+        The energy scale dependence of jet properties is best studied through their moments.
+        %
+        The moments of jet substructure observables such as jet mass, width, and multiplicity exhibit characteristic scaling with jet energy that can be predicted by perturbative QCD. For example, the first moment of the jet mass scales approximately as \kd{cite}>
+        \[
+            \langle m^2 \rangle \propto \alpha_s(p_T) \;p_T^2 \;\ln(R/R_0)
+        \]
+        where $p_T$ is the jet transverse momentum, $R$ is the jet radius, and $R_0$ is the reference scale.
+        %
+        Higher moments have different scaling behaviours, providing multiple handles on the underlying QCD dynamics.
+
+        The moments of jet substructure variables are also used in the classification of jets.
+        %
+        This is because jet moments differ characteristically between quark--initiated and gluon--initiated jets, making them valuable for jet flavour tagging.
+        %
+        For instance, gluon jets typically have higher multiplicity and broader mass distributions than quark jets, reflected in the moments of these distributions \kd{cite}.
+    
+        Jet substructure moments also provide a window to study non--perturbative effects and hadronization.
+        %
+        The interplay between perturbative and non-perturbative effects in QCD is particularly evident in moments of jet observables.
+        %
+        Lower moments often capture the perturbative, large--angle radiation physics, while higher moments become increasingly sensitive to non--perturbative effects like hadronization \kd{cite}.
+    
+        In the context of Soft-Collinear Effective Theory (SCET), moments of jet substructure observables provide direct constraints on the parameters of the effective theory, offering a bridge between first--principles QCD and phenomenological models of jet formation \kd{cite}.
+
+        \subsubsection{Moments in Physics Beyond the Standard Model}
+            While moments are crucial for precision QCD studies, their utility extends to searches for BSM physics.
+            %
+            Certain moments of distributions can exhibit enhanced sensitivity to new physics scales.
+            %
+            For example, higher moments of mass distributions can be more sensitive to heavy particle contributions than the full distribution average \kd{cite}.
+    
+            Moments can therefore provide a model--independent way to parametrize deviations from Standard Model predictions, similar to the role of effective field theory coefficients.
+            %
+            By measuring a series of moments, experiments can place constraints on a wide class of possible new physics scenarios without committing to specific models \kd{cite}.
+            %
+            Hence, changes in the moment structure of distributions can serve as an early indicator of anomalous physics, even before the full nature of the anomaly is understood <kd{cite}>.
+
+    \subsection{The Case for Direct Moment Unfolding}
+        Given the theoretical significance of moments in QCD and their experimental advantages, there is a strong motivation for developing methods that can directly unfold moments from detector--level data without first unfolding the entire distribution.
+        %
+        Such methods would eliminate binning biases inherent in traditional approaches, while potentially improving precision and reducing computational cost by focusing directly on the quantities of interest.
+        %
+        They would enable moment measurements in higher--dimensional phase spaces where binned approaches become impractical to provide more direct comparisons with theoretical predictions that are formulated at the level of moments.
+
+        The remainder of this chapter presents the Moment Unfolding method, a novel approach that addresses precisely this need by directly deconvolving moments of distributions using machine learning techniques inspired by the Boltzmann distribution and implemented through a GAN--like architecture.
+        %
+        This method offers a significant advance in precision moment measurements, enabling more stringent tests of QCD predictions and potentially uncovering subtle effects that might be obscured in traditional analyses.
+\section{A GAN--like Method to Unfold Moments}
+    The direct extraction of distribution moments without first reconstructing the entire distribution presents a unique challenge in unfolding methodology.
+    %
+    Traditional approaches typically reconstruct the full differential cross--section before computing moments, introducing unnecessary computational complexity.
+    %
+    The Moment Unfolding technique presented in this chapter takes an entirely different approach by directly targeting the moments themselves.
+
+    The basic idea underlying Moment Unfolding is the connection between statistical moments and the Boltzmann distribution from statistical mechanics.
+    %
+    In thermodynamics, the Boltzmann distribution represents the probability distribution that maximizes entropy while satisfying certain constraints on average quantities (internal energy). 
+    %
+    This principle can be adapted for our unfolding problem, where we seek to find a reweighting of simulated events that accurately reproduces the moments of the true particle--level distribution.
+    \subsection{Boltzmann inspired reweighting}
+        The central mathematical construction of Moment Unfolding is a reweighting function inspired by the Boltzmann factor,
+        \[
+            \label{eq:moment-generator}
+            g(z) = \frac{1}{P(\vb*{\beta})} \exp\left(-\sum_{a=1}^n \beta_a \; z^a\right)
+        \]
+        where $z$ is the particle--level observable whose moments we wish to unfold, $\beta_a$ are parameters to be determined (analogous to Lagrange multipliers in statistical mechanics), $P$ is a normalization factor similar to the partition function, and $n$ is the number of moments we aim to unfold simultaneously.
+
+        This form is particularly powerful because it directly connects to the maximum entropy principle in statistical mechanics.
+        %
+        Just as the Boltzmann distribution maximizes entropy subject to constraints on average energy, this reweighting function maximizes the binary cross entropy loss between the discriminator's classification output between the reweighted distribution and the prior distribution while enforcing constraints on the moments.
+        %
+        When applied to a simulated particle--level distribution with probability density $q_{\text{Gen.}}(z)$, this reweighting function produces a modified distribution
+        \[
+            \widetilde{q}(z) = g(z) \cdot q_{\text{Gen.}}(z)
+        \]
+        The training objective then is to determine the optimal values of the parameters $\beta_a$ such that the moments of $\widetilde{q}(z)$ match those of the true underlying distribution \(p(z)\).
+    \subsection{Adversarial Training Framework}
+        Given the theoretical foundation provided by the Boltzmann form, we now need a practical method to determine the optimal parameters.
+        %
+        The task can very naturally be framed as a two--level optimization problem:
+        \begin{enumerate}
+            \item The parameters $\beta_a$ control the reweighting at the particle level
+            \item The quality of the reweighting must be assessed at the detector level
+        \end{enumerate}
+        This task is highly non--trivial because the detector response function—which maps particle-level to detector--level observables—-is typically stochastic and known only implicitly through simulation.
+    
+        To address this, Moment Unfolding employs an adversarial training architecture inspired by Generative Adversarial Networks (GANs), but with significant modifications tailored to the unfolding problem.
+        %
+        Unlike traditional GANs that generate new samples, our ``generator" $g(z)$ reweights existing particle-level simulated events according to the Boltzmann form.
+        %
+        The discriminator is a neural network classifier $d(x)$ that attempts to distinguish between real detector--level data and the reweighted simulation at detector level.
+
+        The system is then trained adversarially, with the generator attempting to fool the discriminator while the discriminator attempts to correctly classify events.
+        %
+        This setup is illustrated in Figure~\kd{fig:moment-unfolding-architecture}, showing the flow of information and the adversarial training process.
+        %
+        In this framework, the optimal parameters $\beta_a$ are those that make the reweighted detector--level simulation indistinguishable from the real detector--level data.
+        %
+        Once these parameters are found, the moments of the particle--level reweighting are the unfolded moments.
+    \subsection{Mathematical Formalism}
+        We can formalize the Moment Unfolding approach as follows.
+        %
+        Let $p(x)$ be the detector--level data distribution and f$q(z,x)$ be the joint distribution of particle--level and detector--level variables in the MC, Generation and Simulation.
+        %
+        Then $q(z)$ and $q(x)$ are the marginal distributions of Generation and Simulation respectively.
+        %
+        Let $r(x|z)$ be the detector response function.
+        %
+        The assumption of a universal detector response can be formalized as
+        \[
+            p(x|z) = q(x|z) = r(x|z).
+        \]
+        The goal is to find parameters $\beta_a$ such that the moments of the reweighted distribution $g(z) \cdot q(z)$ match the true moments of the underlying particle--level distribution, \(p(z)\).
+
+        The detector--level distribution after reweighting is
+        \[
+            \qt(x) = \int g(z)\; \cdot q(z, x) \, \dd z.
+        \]
+        The adversarial training process optimizes a weighted binary cross entropy loss function,
+        \[
+            \mathcal{L}[g,d] = -\mathbb{E}_{X \sim p(x)}[\log d(X)] - \mathbb{E}_{X \sim\qt(X) }[(1-d(x))]
+        \]
+        This loss function encourages the discriminator to output high values for real data and low values for reweighted simulation, while the generator tries to make the reweighted simulation indistinguishable from real data.
+
+        Once the optimal parameters $\beta_a$ are determined, the unfolded moments can be computed directly from the reweighted Generation
+        \[
+            \langle Z^k \rangle_{\text{unfolded}} = \frac{\sum_{z \in \text{Gen.}} g(z) \cdot z^k}{\sum_{z \in \text{Gen.}} g(z)}
+        \]
+        This approach differs fundamentally from traditional unfolding methods that first reconstruct the full distribution and then compute moments.
+        %
+        By directly targeting the moments themselves, we avoid both the binning artifacts and dimensionality challenges associated with binned methods, and the computational complexity associated with unbinned full distribution unfolding.
+    \subsection{Theoretical Properties}
+        The Moment Unfolding method possesses several important theoretical properties that justify its application to physics problems.
+        %
+        Under certain conditions (detailed in Appendix\kd{ref}), the Moment Unfolding method provably converges to the correct moments.
+
+        The parameter $n$ (the number of moments being unfolded) serves as an implicit regularization parameter.
+        %
+        By limiting the number of moments, we constrain the complexity of the reweighting function, helping to stabilize the unfolding process against statistical fluctuations.
+        %
+        This creates a natural bias-variance tradeoff: including more moments allows for a more flexible reweighting function but increases sensitivity to statistical fluctuations.
+        %
+        In practice, the optimal choice of $n$ depends on the physics application and available statistics.
+        \subsubsection{Connection to the Maximum Entropy Principle}
+            The Boltzmann form of the reweighting function has a deep connection to the maximum entropy principle in statistical mechanics.
+            %
+            The reweighting function maximizes the entropy of the reweighted distribution relative to the prior (simulation) distribution, subject to constraints on the moments.
+            %
+            This provides a principled physical and informational theoretic basis for the method: among all possible reweighting functions that reproduce the target moments, the Boltzmann form is the one that introduces the least additional information beyond what is required by the moment constraints.
+
+    \subsection{Comparison with Traditional GAN Architectures}
+        While Moment Unfolding draws inspiration from GANs, it differs from traditional GAN architectures, in that the so--called ``generator" does not generate data; it generates weights.
+        %
+        Traditional GANs generate new samples by mapping random noise through a neural network.
+        %
+        In contrast, Moment Unfolding reweights existing simulated events, preserving the physics correlations already present in the simulation and focusing only on correcting the distribution's moments.
+    
+        Furthermore, unlike conventional GANs where the generator can represent any function within the capacity of the neural network, our generator has an extremely specific parametric form constrained by the Boltzmann expression.
+        %
+        This constraint massively reduces the effective degrees of freedom in the optimization process and encodes our prior knowledge about the problem structure.
+        %
+        The parameters $\beta_a$ in the Moment Unfolding approach have clear physical interpretations as Lagrange multipliers enforcing moment constraints.
+        %
+        This interpretability contrasts with the typically opaque nature of neural network weights in traditional GANs.
+    
+        Finally, traditional GANs operate at a single level, with the generator and discriminator acting on the same ``type" of data.
+        %
+        Moment Unfolding operates across two levels, particle--level and detector--level, which might not even have the same dimensionality, which is the source of the additional complexity but is essential for addressing the detector response effect.
+    \subsection{Practical Considerations}
+        While theoretically elegant, the Moment Unfolding method has practical considerations and limitations that must be understood in order to apply the method correctly and effectively.
+
+        Like all reweighting--based methods, Moment Unfolding requires that the Generation distribution has overlapping support with the Truth distribution.
+        %
+        Regions of phase space not covered by the MC cannot be properly unfolded.
+        %
+        With finite statistics, extremely large weights can arise, in regions of phase space with sparse MC coverage as the generator tries and fails to reweight a zero density into a non--zero density.
+        %
+        Various regularization techniques must be employed to mitigate these effects if they arise in a given analysis.
+        
+        The optimal number of moments to unfold depends on the physics application, available statistics, and the complexity of the true distribution.
+        %
+        Too few moments may miss important features of the distribution, while too many may lead to overfitting and numerical instabilities.
+    \subsection{Extension to Differential Measurements}
+        An extension of the Moment Unfolding approach is to study moments as a function of another observable, such as transverse momentum.
+        %
+        This is achieved by making the parameters $\beta_a$ functions of the conditional variable,
+        \[
+            \label{eq:pt-moment-gen}
+            g(z; p_T) = \frac{1}{P\qty(\vb*{\beta}\qty(p_T))} \exp\left(-\sum_{a=1}^n \beta_a(p_T)\; z^a\right)
+        \]
+        This allows the study of how moments evolve with energy scale or other experimental conditions, providing direct comparisons with theoretical predictions of scaling behaviors in QCD.
+
+        The parameters $\beta_a(p_T)$ can be modeled as polynomials, splines, or neural networks, depending on the expected complexity of their dependence on $p_T$.
+        %
+        This extension significantly enhances the physics applications of the method, enabling studies of how observable moments scale with energy.
+
+    \subsection{Theoretical Foundations in Statistical Mechanics}
+        The mathematical form at the heart of Moment Unfolding has deep connections to statistical mechanics and information theory, providing a solid theoretical foundation for the method.
+        %
+        In statistical mechanics, the Boltzmann distribution arises as the solution to the maximum entropy problem.
+        %
+        The maximum entropy problem is the problem of finding the probability distribution that maximizes entropy subject to constraints on expectation values (typically energy).
+        %
+        The solution takes the form
+        \[
+            p(s) = \frac{1}{Z} e^{-\beta E(s)}
+        \]
+        where $E(s)$ is the energy of state $s$, $\beta$ is the inverse temperature, and $Z$ is the partition function.
+
+        The Moment Unfolding algorithm borrows this idea to include multiple constraints on different moments, with each $\beta_a$ serving as a Lagrange multiplier for the constraint on the $a$-th moment.
+        %
+        This connection to maximum entropy principles provides a theoretical justification for the specific form of the reweighting function and suggests that it is, in some sense, the most natural choice for the moment unfolding problem.
+        %
+        The success of this approach in practical applications, as will be demonstrated in subsequent sections, confirms the value of this theoretical grounding and highlights the power of cross-disciplinary approaches in developing new data analysis techniques for particle physics.
+\section{Machine Learning Implementation}
+    The theoretical framework introduced in the previous section provides the foundation for Moment Unfolding, but implementing this approach in practice requires careful architectural design and optimization strategies.
+    %
+    This section details the machine learning implementation that enables robust moment extraction through our GAN--like approach.
+
+    The generator in Moment Unfolding differs fundamentally from traditional GAN generators.
+    %
+    Instead of producing new samples through a complex neural network, our generator implements the Boltzmann--inspired weighting function, Eq.~\ref{eq:moment-generator}.
+    %
+    This function is applied to existing simulated particle--level events to reweight them, producing a weighted distribution that matches the moments of the true distribution.
+    %
+    The parameters $\beta_a$ are the trainable parameters of the generator, and $P$ is a normalization constant estimated at the batch level,
+    \[
+        \hat P = \sum_{z \in \text{batch}} \exp\left(-\sum_{a=1}^n\beta_a z^a\right).
+    \]
+
+    For differential moment measurements, where we study the dependence of moments on another variable like transverse momentum ($p_T$), the $\beta_a$ parameters become functions of $p_T$, as described in Eq.~\ref{eq:pt-moment-gen}.
+    %
+    In our implementation, we parameterize $\beta_a(p_T)$ as linear functions, 
+    \[
+        \beta_a(p_T) = \beta_a^{(0)} + \beta_a^{(1)}p_T
+    \]
+    This linear parameterization is motivated by empirical observations that the ratios of spectra between different simulations often exhibit approximately linear dependence on kinematic variables \kd{cite}.
+
+    The discriminator network $d(x)$ takes detector--level features as input and outputs a probability that a given event came from the real data rather than the reweighted simulation.
+    %
+    For our implementation, we use a dense neural network with three fully--connected hidden layers with 50 nodes per layer.
+    %
+    ReLU activation functions are applied to intermediate layers, and a sigmoid activation function is applied to the output layer.
+
+    This relatively simple architecture provides sufficient capacity to distinguish between data and simulation distributions.
+
+    The training objective is formulated as a weighted version of the Maximum Likelihood Classifier (MLC) loss \kd{cite},
+    \[
+        L[g,d] = -\sum_{x \in \text{Data}} \log d(x) - \sum_{(z,x) \in (\text{Gen., Sim.})} g(z)(1-d(x))
+    \]
+    where the first sum is over detector-level events from real data, and the second sum is over matched pairs of particle--level and detector--level events from simulation, weighted by the generator function $g(z)$.
+
+    This loss function differs from the standard Binary Cross Entropy (BCE) loss often used in GANs, providing smoother gradients and better convergence properties for our specific application.
+    %
+    While the BCE loss function could also be used (and indeed gives similar empirical performance), the MLC loss function provides certain theoretical guarantees about the convergence of the method to the correct moments \kd{cite}.
+    \subsection{Training Procedure}
+        The training procedure for Moment Unfolding follows the standard adversarial approach, but with specific adaptations for the reweighting framework.
+        
+        The generator parameters $\beta_a$ are initialized to small random values near zero, corresponding to minimal reweighting (i.e., starting close to the original simulation).
+        %
+        The discriminator weights are initialized using standard neural network initialization techniques\kd{cite HeNormal initialization}.
+        
+        During each training step, we sample batches of events from Data, Generation, and Simulation.
+        %
+        The training proceeds by alternating between optimizing the discriminator and the generator.
+        %
+        First, with the generator parameters fixed, the discriminator weights are updated to minimize the loss function.
+        %
+        Then with the discriminator weights fixed, the generator parameters are updated to maximize the loss function.
+        %
+        This alternating optimization continues for a fixed number of epochs, or until convergence criteria are met.
+
+        We employ the \textsc{Adam} optimizer \kd{cite} with an initial learning rate of $5 \times 10^{-4}$ for both the discriminator and generator
+        %
+        The learning rate is reduced by a factor of 0.5 every 20 epochs to ensure stable convergence.
+
+        To ensure stable training and prevent overfitting, a few regularization techniques are employed.
+        %
+        Gradient values are clipped to the range $[-1, 1]$ to prevent large updates that could destabilize training, particularly important for the generator parameters which can be sensitive to statistical fluctuations.
+        %
+        Batch normalization \kd{cite} is applied after each hidden layer in the discriminator to stabilize training and reduce sensitivity to weight initialization and learning rates.
+    \subsection{Gradient Updates}
+        For the discriminator, gradient computation follows standard backpropagation through the neural network.
+        %
+        For the generator, gradients are computed with respect to the parameters $\beta_a$ by differentiating the loss function.
+        \[ 
+            \frac{\partial L}{\partial \beta_a} = -\sum_{(z,x) \in (\text{Gen., Sim.})} \frac{\partial g(z)}{\partial \beta_a}(1-d(x)),
+        \]
+        where
+        \[
+            \frac{\partial g(z)}{\partial \beta_a} = -g(z)\left(z^a - \frac{1}{P}\frac{\partial P}{\partial \beta_a}\right) = -g(z)(z^a - \langle z^a \rangle_{g})
+        \]
+        Here, $\langle z^a \rangle_{g}$ represents the $a-$th moment computed from the reweighted distribution.
+        %
+        This formulation provides a direct connection between the gradient updates and the moment matching objective of the method.
+    \subsection{Implementation Details}
+        he method is implemented using \textsc{Keras} \kd{cite} with the \textsc{TensorFlow2} backend \kd{cite}, leveraging their automatic differentiation capabilities for efficient gradient computation.
+        %
+        \textsc{NumPy} \kd{cite} is used for data manipulation, and \textsc{Matplotlib} \kd{cite} is employed for visualization.
+
+        The computational requirements of Moment Unfolding are remarkably light compared to many deep learning applications.
+        %
+        Training typically takes less than five minutes per observable on an NVIDIA RTX6000 GPU for the case studies presented in this dissertation.
+        %
+       Even the potentially computationally intensive calculation of the partition function $P$, which requires summation over all events in a batch is implemented efficiently using vectorized operations in \textsc{TensorFlow}.
+
+        Tab.~\ref{tab:moment-unfolding-hyperparams} summarizes the key hyperparameters used in our implementation.
+        %
+        These hyperparameter values were determined through systematic experimentation and provide a good balance between training stability and model performance across a range of physics scenarios.
+
+\begin{table}
+\centering
+\begin{tabular}{|l|c|p{8cm}|}
+\hline
+\textbf{Hyperparameter} & \textbf{Value} & \textbf{Description} \\
+\hline
+Discriminator layers     & 3             & Number of hidden layers in the discriminator \\
+Discriminator nodes      & 50            & Number of nodes per hidden layer \\
+Activation function      & ReLU          & Activation function for hidden layers \\
+Output activation        & Sigmoid       & Activation function for the output layer \\
+Optimizer                & \textsc{Adam}          & Optimization algorithm used for training \\
+Learning rate            & $5 \times 10^{-4}$ & Initial learning rate for the optimizer \\
+Batch size              & 10,000        & Number of training events in each batch \\
+Training epochs          & 50--100       & Number of full passes through the training dataset \\
+Gradient clip value      & 1.0           & Maximum allowed gradient norm for clipping \\
+\hline
+\end{tabular}
+\caption{Summary of training hyperparameters used in the model.
+%
+These values control the architecture, optimization behaviour, and regularization of the training process.}
+\label{tab:moment-unfolding-hyperparams}
+\end{table}
+
+    \subsection{Extensions to Multiple Observables}
+        While the basic formulation of Moment Unfolding applies to moments of a single observable, the method can be extended to handle multiple observables simultaneously.
+        %
+        For multiple observables $z_1, z_2, ..., z_d$, we can define joint moments as \(\langle z_1^{k_1} z_2^{k_2} \cdots z_d^{k_d} \rangle.\)
+        %
+        The reweighting function then takes the form,
+        \[
+            g(z_1, z_2, ..., z_d) = \frac{1}{P}\exp\left(-\sum_{k_1, k_2, ..., k_d} \beta_{k_1, k_2, ..., k_d} z_1^{k_1} z_2^{k_2} \cdots z_d^{k_d}\right)
+        \]
+        In practice, including all possible joint moments can quickly become intractable as the number of observables increases.
+        %
+        To address this, one can employ strategies such as
+        \begin{itemize}
+            \item Limiting the total order of moments (e.g., $k_1 + k_2 + ... + k_d \leq K_{max}$),
+            \item Including only specific joint moments known to be physically relevant, and
+            \item Using factorized forms that capture the most important correlations while maintaining computational feasibility.
+        \end{itemize}
+    \subsection{Uncertainty Estimation}
+        Accurate uncertainty estimation is crucial for meaningful physics measurements.
+        %
+        In Moment Unfolding, uncertainties on the extracted moments are obtained through bootstrap resampling.
+        %
+        Statistical uncertainties are estimated by generating $N$ bootstrap replicas of the data by resampling with replacement,
+        %
+        applying Moment Unfolding to each replica, and
+        %
+        computing the standard deviation of the resulting moment values across all replicas.
+        %
+        This procedure accounts for statistical uncertainties in both the data and the simulation.
+        
+        Systematic uncertainties related to theoretical modeling, detector effects, and other sources are evaluated by
+        %
+        varying the underlying simulation according to systematic uncertainty sources, applying Moment Unfolding to each variation, and
+        %
+        taking the envelope of the resulting moment values as the systematic uncertainty.
+
+        This approach allows for comprehensive uncertainty quantification that accounts for all relevant sources of uncertainty in the measurement.
+    \subsection{Validation Procedures}
+        Several validation procedures are employed to ensure the reliability of the Moment Unfolding method.
+        %
+        Closure tests verify that the method can correctly recover known moments from simulated data.
+        %
+        The method's internal consistency is verified by checking that the moments computed from the reweighted Generation match the target moments,
+        %
+        the reweighted Simulation reproduces the features of the Data, and
+        %
+        that the discriminator is unable to distinguish between Simulation and Data.
+        
+        Results from Moment Unfolding are also compared with those from traditional unfolding methods like Iterative Bayesian Unfolding followed by moment calculation.
+        %
+        Agreement between different methods provides additional confidence in the results, while disagreement may indicate methodological issues that require further investigation.
+    \subsection{Code Availability and Reproducibility}
+        The implementation of Moment Unfolding is available as open--source Python code, facilitating reproducibility and adoption by the scientific community.
+        %
+        This open--source approach promotes transparency, enables independent verification of results, and facilitates improvements and extensions to the method by the broader scientific community.
+        %
+        The full code repository can be found at [GitHub URL] \kd{cite}, and the specific datasets used for the studies in this dissertation are archived on Zenodo \kd{cite}.
+
+    By combining a theoretically motivated approach with practical machine learning implementation details, Moment Unfolding provides a robust and efficient method for extracting moments directly from data.
+    %
+    The next sections will demonstrate the application of this method to jet substructure measurements, showcasing its performance on realistic physics problems.
+    
+\section{Case studies}
+    \subsection{Gaussian experiments}
+        Before applying Moment Unfolding to jet physics scenarios, it is essential to validate the method in a controlled environment where the ground truth is precisely known.
+        %
+        To this end, the approach is first demonstrated using a one--dimensional Gaussian example, providing a clear illustration of the method's capabilities while establishing a benchmark for its performance.
+        \subsubsection{Experimental Setup}
+            For this controlled study, we generate datasets from Gaussian distributions with known parameters.
+            %
+            The Truth dataset comprises \(10,000\) events drawn from a Gaussian distribution with mean \(\mu_{\textrm{Truth}} = 0.0\) and variance \(\sigma^2_{\textrm{Truth}} = 1\).
+            %
+            The Generation dataset comprises \(100,000\) events drawn from a Gaussian distribution with mean $\mu_{\textrm{Gen.}} = -0.5$ and variance $\sigma^2_{\textrm{Gen.}} = 1.0$.
+            %
+            Both distributions are then subjected to detector effects modelled as additive Gaussian noise with resolution parameter $\sigma_{\textrm{det}} = 0.5$.
+            %
+            This setup mimics the typical scenario in particle physics where the MC differs from the true distribution, and both are observed through an imperfect detector.
+
+            Figure \kd{fig:gaussian-setup} illustrates the particle--level and detector--level distributions, showing how the detector resolution affects both the truth and simulation datasets.
+        \subsubsection{Results}
+            Figure \kd{fig:gaussian-results} shows the results of applying Moment Unfolding to the Gaussian example.
+            %
+            The left panel displays the particle--level distributions, the Truth distribution (blue), the Generation (orange), and the reweighted Generation (black dashed line). 
+            %
+            Even visually, the close overlap between the Truth histogram and the reweighted Generation demonstrates the success of the Moment Unfolding procedure.
+
+            The right panel of Figure \kd{fig:gaussian-results} provides a more quantitative perspective by showing the discriminator--optimized loss landscape as a function of the Boltzmann parameters $\beta_1$ and $\beta_2$.
+            %
+            This landscape visualization allows us to verify that the maximum of the loss function (red star) aligns with the parameter values that produce the correct moments, providing empirical confirmation of the method's theoretical properties.
+
+            These results confirm that Moment Unfolding successfully recovers the true moments of normal distributions.
+            %
+            Since normal distributions are fully characterized by their first two moments, the reweighted distribution closely matches the entire truth distribution in this Gaussian case even though the method explicitly targets only the first two moments.
+            %
+            We should not expect this to be the case for more complex distributions with non--trivial higher moments.
+
+        This controlled study confirms that Moment Unfolding performs as expected in a well--understood scenario, providing confidence to extend the method to more complex physics environments.
+    \subsection{Jet Substructure in Collider Physics}
+    \label{subsec:jet-moments}
+        Having validated Moment Unfolding in a controlled environment, we now apply the method to a realistic high--energy physics scenario: measuring moments of jet substructure observables in proton--proton collisions at the Large Hadron Collider (LHC).
+        \subsubsection{Datasets}
+            The simulated samples used for this study follow the setup from Andreassen et al. \kd{cite}.
+            %
+            Proton--proton collisions at $\sqrt{s} = 14$ TeV are simulated using \textsc{Pythia 8.243} with Tune 26 \kd{cite} (standing in for MC) and \textsc{Herwig 7.1.5} \kd{cite} (standing in for nature).
+            %
+            The \textsc{Delphes 3.4.2} \kd{cite} fast simulation of the CMS detector is used to model detector effects, configured with particle flow reconstruction \kd{cite}.
+            %
+            Jets are clustered using the anti-$k_T$ algorithm \kd{cite} with radius parameter $R = 0.4$, implemented in \textsc{FastJet 3.3.2}\kd{cite}.
+            %
+            To reduce acceptance effects, only leading jets in events with a Z boson having transverse momentum $p_T^Z > 200$ GeV are studied.
+            %
+            This setup allows us to test Moment Unfolding in a realistic environment where the ``Truth" (\textsc{Herwig} particle--level) and ``Generation" (\textsc{Pythia} particle--level) are different generators with distinct physics models, and both are observed through an imperfect detector to produce ``Data", \textsc{Herwig + Delphes} and ``Simulation", \textsc{Pythia + Delphes}.
+            \subsubsection{Observables}
+                Four key jet substructure observables are unfolded, each providing different insights into the internal structure of jets.
+                \begin{enumerate}
+                \item \textbf{Jet Mass} ($m$): The invariant mass of the jet, calculated as
+                \[
+                    m = \sqrt{\sum_k E_k^2 - \sum_k \mathbf{p}_k^2},
+                \]
+                where the sum runs over all constituents of the jet, and $E_k$ and $\mathbf{p}_k$ are their energies and three--momenta.
+            \item \textbf{Jet Charge} ($q$): An infrared--safe but not collinear--safe observable that measures the jet's electric charge \kd{cite}.
+            \[
+                q = \frac{1}{\sum_k \sqrt{p_{T,k}}}\sum_k q_k \sqrt{p_{T,k}},
+            \]
+            where $q_k$ is the electric charge of constituent $k$.
+            \item \textbf{Jet Width} ($w$): A measure of the radial distribution of radiation within the jet.
+            \[
+                w = \frac{1}{p_{T,\text{jet}}}\sum_k p_{T,k} \Delta R_k,
+            \]
+            where $\Delta R_k$ is the angular distance between constituent $k$ and the jet axis.
+            \item \textbf{Groomed Momentum Fraction} ($z_g$): The momentum sharing between subjets after Soft Drop grooming \kd{cite} with $z_{\text{cut}} = 0.1$ and $\beta = 0$.
+            \[
+                z_g = \frac{p_{T,\text{subleading}}}{p_{T,\text{leading}} + p_{T,\text{subleading}}}
+            \]
+            \end{enumerate}
+            These observables span a diverse range of jet properties, including both infrared--and--collinear safe observables ($m$ and $w$), a Sudakov safe observable, \(z_g\)\kd{cite}, and \(q\), which is only infrared safe.
+        \subsubsection{Results}
+            \begin{table}
+              \centering
+              \label{tab:inclusive-moments}
+              \caption{
+                  Moments of jet observables at particle level.
+                  %
+                  First and second moments of \(m, q, w\) and \(z_g\) are shown for truth (\textsc{Herwig}), generation (\textsc{Pythia}) and Moment Unfolding.
+                  %
+                  Uncertainties in the truth and generation columns are estimated via bootstrap resampling; uncertainties in the unfolding column combine in quadrature the generation bootstrap uncertainty with the empirical \(1\sigma\) spread from repeated unfolding on the same dataset.
+              }
+              \begin{tabular}{|c|c|c|c|}
+                \hline
+                              & Truth (\textsc{Herwig})                   & Generation (\textsc{Pythia})               & Moment Unfolding                  \\
+                \hline
+                \hline
+                $\langle m \rangle$   & $(2.182 \pm 0.030)\times10^{1}$   & $(2.064 \pm 0.043)\times10^{1}$   & $(2.173 \pm 0.047)\times10^{1}$   \\
+                $\langle m^2 \rangle$ & $(6.049 \pm 0.222)\times10^{2}$   & $(5.360 \pm 0.350)\times10^{2}$   & $(6.115 \pm 0.364)\times10^{2}$   \\
+                \hline
+                $\langle q \rangle$   & $(1.006 \pm 0.037)\times10^{-2}$  & $(1.582 \pm 0.038)\times10^{-2}$  & $(1.090 \pm 0.040)\times10^{-2}$  \\
+                $\langle q^2 \rangle$ & $(1.216 \pm 0.082)\times10^{-2}$  & $(1.508 \pm 0.074)\times10^{-2}$  & $(1.207 \pm 0.074)\times10^{-2}$  \\
+                \hline
+                $\langle w \rangle$   & $(1.498 \pm 0.025)\times10^{-1}$  & $(1.231 \pm 0.029)\times10^{-1}$  & $(1.499 \pm 0.029)\times10^{-1}$  \\
+                $\langle w^2 \rangle$ & $(3.370 \pm 0.113)\times10^{-2}$  & $(2.421 \pm 0.128)\times10^{-2}$  & $(3.374 \pm 0.128)\times10^{-2}$  \\
+                \hline
+                $\langle z_g \rangle$ & $(2.334 \pm 0.029)\times10^{-1}$  & $(2.457 \pm 0.030)\times10^{-1}$  & $(2.353 \pm 0.059)\times10^{-1}$  \\
+                $\langle z_g^2 \rangle$ & $(6.789 \pm 0.166)\times10^{-2}$ & $(7.425 \pm 0.165)\times10^{-2}$  & $(6.767 \pm 0.330)\times10^{-2}$  \\
+                \hline
+              \end{tabular}
+            \end{table}
+            Table~\ref{tab:inclusive-moments} presents the first and second moments of each jet observable extracted using Moment Unfolding, compared with the true values (from \textsc{Herwi}g) and those from the original generation (\textsc{Pythia}).
+            %
+            The uncertainties in the Truth and Generation columns are computed by bootstrapping the respective datasets.
+            %
+            For the Moment Unfolding column, the uncertainty includes the bootstrap uncertainty from the Generation and the empirical uncertainty from the unfolding process added in quadrature.
+            
+            These results demonstrate that Moment Unfolding successfully recovers the true moments from the data for all observables within statistical uncertainties.
+            %
+            The method effectively corrects for both the differences between the \textsc{Pythia} and \textsc{Herwig} physics models and the detector distortions introduced by \textsc{Delphes}.
+
+            Figure \kd{fig:jet-substructure-distributions} shows the particle--level distributions for each observable, comparing the truth, generation, and reweighted generation after applying Moment Unfolding
+            %
+            While the method explicitly targets only the first two moments, it produces reasonable agreement across the entire distribution, particularly for the regions that contribute most significantly to the moments.
+            %
+            Figure \kd{fig:jet-loss-landscapes} displays the discriminator--optimized loss landscapes for each observable, confirming that the maximum of the loss function aligns with the parameter values that produce the correct moments.
+            %
+            The blue ellipses represent the \(1\sigma\) confidence intervals for the Moment Unfolding parameters, and they all contain the true parameter values (red dots), indicating proper uncertainty estimation.
+
+    
+    \subsection{Momentum--Dependent Unfolding}
+        One of the most powerful features of Moment Unfolding is its ability to extract moments as a function of another observable, such as jet transverse momentum.
+        %
+        When implemented with momentum--dependent parameters in the Boltzmann weight function,
+        \[
+            g(z; p_T) = \frac{1}{P(p_T)}\exp\left(-\sum_{a=1}^n\beta_a(p_T)z^a\right),
+        \]
+        the generator unfolds moments conditional on the jet \(p_T\).
+        
+        This ability to unfold moments as functions of \(p_T\) is a necessary feature for any modern unfolding method.
+        %
+        Many QCD phenomena exhibit strong scale dependence, including parton shower evolution, hadronization effects, and detector response.
+        %
+        Understanding the momentum--dependence is necessary to account for these variations.
+        %
+        Jets at different \(p_T\) values populate different regions of the substructure phase space.
+        %
+        A momentum--dependent reweighting is therefore important for better coverage of the phase space.
+        %
+        As we will see, the momentum--dependent approach effectively leverages the statistical power of the entire dataset while allowing for local adaptations in different \(p_T\) regions, resulting in more precise measurements overall.
+
+        The implementation of momentum--dependent parameters, \(\beta_a(p_T)\) introduces additional complexity that must be carefully managed.
+        %
+        We found that linear parametrization of \(\beta_a(p_T)\) provides a good balance between flexibility and stability for the jet substructure observables studied.\footnote{Moment Unfolding can be run as a binned method by parametrizing \(\beta_a(p_T)\) as a piecewise constant function.}
+        %
+        More complex parametrizations might be warranted for observables with a strongly non--linear \(p_T\) dependence.
+        %
+        However, increasing the number of parameters in the momentum--dependent approach must be approached with caution, since that precisely undoes the regularisation imposed by the Moment Unfolding method.
+        %
+        If the training remains unstable despite appropriately constraining the functional form of \(\beta_a(p_T)\) regularization in the neural network training may become necessary.
+        
+        \subsubsection{Inclusive Distributions}
+            Figure \kd{fig} presents the inclusive distributions of jet mass, jet charge, jet width, and groomed momentum fraction after applying momentum--dependent Moment Unfolding.
+            %
+            Compared to the non-momentum-dependent results shown in Figure \kd{fig}, these distributions demonstrate markedly better agreement with the truth.
+            %
+            This improvement occurs because the momentum-dependent approach effectively implements a more refined correction, allowing the reweighting function to adapt to the changing detector response and physics differences across the \(p_T)\) spectrum.
+            %
+            By parametrising \(\beta_a\) as a function of \(p_T\), we account for the fact that both detector effects and physics modelling discrepancies can vary significantly with jet energy.
+
+            The inclusive distributions obtained through momentum--conditioned unfolding also reveal subtle physical features that might be obscured in the non--conditioned approach.
+            %
+            For example, in the jet mass distribution, the shape of the low--mass region shows better agreement with truth when using momentum conditioning, correctly capturing the interplay between soft radiation and resolution effects that varies with jet \(p_T\).
+        \subsubsection{Differential analysis}
+            When the momentum--dependent unfolding approach is used for a differential analysis of moments as a function of \(p_T\), it provides a comprehensive understanding of scaling behaviours.
+            %
+            This dual perspective offers particularly powerful constraints on theoretical models, as it simultaneously tests the overall distribution shapes and their evolution with energy scale.
+            %
+            Figure \kd{fig:pt-dependent-moments} shows the first and second moments of each observable as a function of $p_T$.
+
+            The results demonstrate that Moment Unfolding successfully recovers the $p_T$--dependent moments of all the observables, capturing the variations in these quantities with jet \(p_T\).
+            %
+            This capability is particularly valuable for testing theoretical predictions of how jet properties scale with energy, a fundamental aspect of QCD phenomenology.
+
+            These momentum--dependent results allow us to analyze the scaling behaviour of each observable.
+            %
+            The jet mass shows expected direct scaling with $p_T$, consistent with theoretical expectations from perturbative QCD \kd{cite},
+            %
+            the mean jet charge decreases slightly with increasing $p_T$, reflecting the increased role of gluon radiation at higher energies \kd{cite},
+            %
+            the jet width decreases with $p_T$, consistent with the collimation of high--energy jets due to the Lorentz boost \kd{cite}, and
+            %
+            the groomed momentum fraction shows minimal $p_T$ dependence, a feature expected from the scale--invariant nature of the splitting functions in QCD \kd{cite}.
+
+            These results not only validate the Moment Unfolding method but also demonstrate its utility for extracting physically meaningful insights about jet formation and evolution.
+            %
+            These scaling behaviours, when applied to real collider data, serve as stringent tests of perturbative QCD and provide constraints on Monte Carlo tuning parameters.
+\section{Comparison with Alternative Methods}
+    To assess the performance of Moment Unfolding relative to existing approaches, we compare our results with those obtained from two alternative methods,
+    \begin{enumerate}
+        \item \textbf{OmniFold}: A state--of--the--art unbinned unfolding method that reconstructs the full distribution \kd{cite}, and 
+        \item \textbf{Iterative Bayesian Unfolding (IBU)}: A traditional binned unfolding method followed by moment calculation \kd{cite}.
+    \end{enumerate}
+    For a comprehensive comparison, we also include a variation on IBU that applies bin--by--bin corrections to account for binning effects in the moment calculation.
+    %
+    Figure \kd{fig:method-comparison} shows the moments of each observable as a function of jet $p_T$ for all methods, comparing them to the true values.
+    %
+    The lower panels show the ratio to truth, highlighting differences between methods.
+
+    This comparison highlights some of Moment Unfolding's most important properties.
+    %
+    The Moment Unfolding algorithm achieves comparable or better precision than OmniFold for most observables, despite, or perhaps due to, its more targeted approach.
+    %
+    This demonstrates the advantage of directly targeting the moments without having to unfold the entire distribution.
+    %
+    Both unbinned methods (Moment Unfolding and OmniFold) significantly outperform the binned approaches (IBU and IBU+Correction) in precision, highlighting the benefits of avoiding binning artifacts.
+    %
+    The bin--by--bin correction improves the performance of IBU but still does not match the precision of the unbinned methods, indicating that the fundamental limitations of binning cannot be fully mitigated by post--hoc corrections.
+    
+    However, Moment Unfolding requires significantly less computational resources than OmniFold due to its non--iterative nature.
+    %
+    On average, Moment Unfolding can be run in about 1\% of the time required for OmniFold, while achieving comparable or better precision.
+    %
+    IBU is about \(10^4\) times faster than Moment Unfolding.
+    %
+    This comparison highlights the practical advantages of Moment Unfolding in scenarios where computational resources are limited or where multiple unfolding tasks need to be performed, such as in systematic uncertainty studies.
+    %
+    That said, in analyses where computation is at a high premium, and the binning artifacts introduced by IBU are acceptable, IBU continues to offer a low--tech, light unfolding procedure.
+
+    These results establish Moment Unfolding as a powerful tool for precision measurements of statistical moments in high-energy physics, offering advantages in both statistical precision and computational efficiency compared to existing methods.
+
+\section{Conclusion}
+    Moment Unfolding represents a significant advancement in the statistical toolkit for particle physics measurements, providing a novel approach to directly extract moments of distributions without the intermediate step of reconstructing the full spectrum.
+    %
+    This methodology addresses several challenges in traditional unfolding techniques while offering unique advantages for theoretical comparison and interpretation.
+    %
+    An intrinsically unbinned method, Moment Unfolding eliminates binning artifacts and dimensionality limitations that affect traditional methods.
+    %
+    By using a physically--motivated reweighting function based on the Boltzmann distribution, it provides a principled approach to the unfolding problem, with clear connections to the maximum entropy principle from statistical mechanics.
+
+    The adversarial training framework effectively addresses the two--level nature of the unfolding problem, allowing particle--level corrections to be optimized based on detector--level comparisons.
+    %
+    By extending this basic architecture to unfold moments conditional on momentum, Moment Unfolding can be used for detailed studies of how moments scale with energy, providing powerful constraints on theoretical models.
+    
+    As a non-iterative method that is designed specifically to unfold moments rather than full spectra, Moment Unfolding offers significant computational advantages over iterative approaches, particularly for systematic uncertainty studies that require multiple unfolding runs.
+    %
+    The application to jet substructure measurements in Sec.~\ref{subsec:jet-moments} demonstrates the practical utility of Moment Unfolding for real physics analyses.
+    %
+    The method successfully recovers both inclusive and differential moments of diverse jet observables, providing enhanced precision compared to traditional binned approaches and comparable or better accuracy than full-distribution unbinned methods.
+    %
+    These capabilities make Moment Unfolding particularly valuable for precision tests of QCD, where theoretical predictions are often most precise at the level of moments rather than full distributions.
+    
+    Although Moment Unfolding excels at extracting moments, it does not guarantee optimal reconstruction of the full distribution, particularly when higher moments are significant.
+    %
+    The choice of how many moments to unfold represents a regularization parameter that must be carefully selected based on the physics application and available statistics.
+    %
+    The basic formulation discussed above is designed for moments of a single observable, though extensions to joint moments are possible.
+    \subsection{Towards Unfolding Distributions}
+        While Moment Unfolding offers significant advantages for moment--specific measurements, many analyses require the full unfolded distribution rather than just its moments.
+        %
+        This raises the question: can the Boltzmann--inspired approach be extended to unfold entire distributions?
+        %
+        In a sense, this should be relatively straightforward.
+        %
+        If the degree of the polynomial in the exponent of the Boltzmann factor governs the number of moments unfolded, by simply replacing the polynomial with a Taylor series,
+        \[
+            g(z) = \frac{1}{P}\exp\left(-\sum_{a=1}^{\infty}\beta_a z^a\right),
+        \]
+        we could, in principle, constrain all moments simultaneously, thereby unfolding the entire distribution.
+        %
+        However, since the degree of the polynomial was the regularizing parameter for the inverse problem, by setting it to infinity this approach removes the regularisation central to the algorithm.
+        %
+        The resulting ill-posed inverse problem requires significant regularization.
+
+        These challenges motivate the development of the Reweighting Adversarial Network (RAN) method, which will be introduced in the next chapter.
+        %
+        RAN builds upon the foundations laid by Moment Unfolding, extending the approach to full distribution unfolding while maintaining its unbinned, non--iterative, adversarial nature.
+        %
+        By incorporating more flexible neural network parameterizations and Wasserstein metrics for distribution comparison, RAN addresses the limitations of Moment Unfolding while preserving its core strengths.
+        %
+        This evolution from moment--specific to full--distribution unfolding represents a natural progression in developing a comprehensive framework for unbinned cross-section measurements in particle physics.

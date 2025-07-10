@@ -1,0 +1,1534 @@
+\chapter{Machine Learning for Unfolding}
+\label{chap:ml-for-unfolding}
+\section{The Emergence of Machine Learning in Particle Physics}
+\subsection{A Paradigm Shift in Data Analysis}
+The past decade has witnessed a remarkable transformation in how particle physicists analyze data, driven by the adoption and adaptation of machine learning (ML) techniques.
+%
+This revolution has been catalyzed by the confluence of three factors: the growing volume and complexity of data from modern collider experiments, the substantial increase in available computing resources, and the rapid advancement of ML algorithms and frameworks.
+%
+The Large Hadron Collider (LHC) alone produces petabytes of data annually, with individual collisions generating thousands of particles across multiple detector subsystems—creating a rich, high-dimensional dataset that traditional analysis methods struggle to fully exploit.\kd{cite}
+%
+Particle physics presents unique analytical challenges that align particularly well with the strengths of modern machine learning approaches.
+%
+The field routinely deals with high--dimensional feature spaces, complex non--linear correlations between observables, rare signal processes buried within overwhelming backgrounds, and some of the largest scientific datasets in existence.\kd{cite}
+%
+These characteristics create an ideal testbed for advanced ML techniques, which excel at discovering patterns in precisely such environments.
+%
+
+The relationship between particle physics and machine learning is not entirely new.
+%
+Neural networks were first applied to high energy physics problems in the late 1980s and 1990s.\kd{cite}
+%
+However, these early applications were limited by computational resources and algorithmic capabilities.
+%
+The contemporary renaissance began around 2012--2014, coinciding with the broader deep learning revolution across computer science.\kd{cite}
+%
+This timing allowed particle physicists to leverage developments in computer vision, reinforcement learning, and generative modeling, adapting these techniques to the unique requirements of high-energy physics.
+\subsection{Evolution of ML Applications in HEP}
+\subsubsection{Classification Tasks}
+The first wave of modern ML applications in particle physics focused predominantly on classification tasks, particularly signal/background discrimination and particle identification.
+%
+These problems are naturally framed as binary or multi--class classification, making them accessible entry points for machine learning techniques.
+%
+Boosted decision trees initially dominated these applications, particularly in the analysis chains that led to the Higgs boson discovery.\kd{cite}
+%
+However, deep neural networks quickly demonstrated superior performance by automatically discovering complex patterns in high--dimensional data, often outperforming carefully hand--crafted physics--inspired variables.\kd{cite}
+%
+For example, neural networks trained on low--level detector information have been shown to match or exceed the performance of approaches using physics--motivated high--level features for tasks like quark--gluon discrimination\kd{cite} and top quark tagging.\kd{cite}
+%
+The ATLAS and CMS experiments have now incorporated deep learning based taggers for identifying hadronically decaying W/Z bosons, top quarks, and Higgs bosons, significantly enhancing their sensitivity to new physics.\kd{cite}
+%
+These applications benefit from convolutional neural networks' ability to exploit spatial correlations in calorimeter deposits, and recurrent or graph neural networks' capacity to handle variable--length, unordered collections of particles.
+
+\subsubsection{Regression and Anomaly Detection}
+As the field matured, ML applications expanded beyond classification to include regression tasks, such as energy calibration\kd{cite}, pileup mitigation\kd{cite}, and particle momentum reconstruction\kd{cite}.
+%
+These applications require models to predict continuous quantities rather than discrete classes, introducing additional complexity but extendomg ML based methods to a larger class of problems.
+%
+Simultaneously, unsupervised and weakly--supervised learning techniques emerged as powerful tools for anomaly detection, identifying potential new physics without explicit models\kd{cite}.
+%
+These methods include autoencoders that flag events with high reconstruction loss, density estimation techniques that identify low--probability regions of phase space, and weakly--supervised classifiers that can distinguish data mixtures without event--by--event labels.
+
+\subsubsection{Generative Models}
+Perhaps the most significant recent development in ML for HEP has been the adoption of generative models, which learn to produce samples from complex probability distributions.
+%
+This capability is particularly valuable in particle physics, where accurate simulation is crucial but computationally expensive.
+
+Generative adversarial networks (GANs)\kd{cite}, variational autoencoders (VAEs)\kd{cite}, and normalizing flows\kd{cite} have all been successfully applied to particle physics problems. These models can generate synthetic collision events\kd{cite}, simulate detector responses\kd{}, and model complex differential distributions,\kd{} often accelerating these processes by orders of magnitude compared to traditional Monte Carlo techniques.
+
+The development of these generative models opened new possibilities for addressing inverse problems in particle physics, including the unfolding problem at the center of this dissertation.
+%
+By learning complex, high--dimensional probability distributions directly from data, these methods offer a natural framework for tackling unfolding without the limitations of binning.
+
+\subsection{Machine Learning Approaches to Unfolding}
+
+The application of machine learning to unfolding represents a particularly promising frontier.
+%
+Traditional unfolding methods face significant challenges when dealing with high--dimensional spaces, correlated variables, and complex detector effects.
+%
+Machine learning approaches offer several potential advantages compared to traditional statistical methods.
+
+Neural networks excel at capturing patterns in high-dimensional spaces, helping to mitigate the curse of dimensionality that plagues binned methods.
+%
+While traditional approaches become computationally prohibitive beyond a few dimensions, ML-based methods can effectively unfold many variables simultaneously.\kd{}
+%
+This capability enables jointly unfolding multi--differential measurements that would be impractical with conventional techniques.
+
+Many ML--based unfolding methods operate directly on continuous distributions, eliminating binning bias and the need to predetermine bin boundaries.
+%
+This approach preserves fine--grained information that might otherwise be lost through discretization, and it enables the extraction of arbitrary derived observables from the unfolded distribution.\kd{}
+%
+Furthermore, the architecture and training procedure of neural networks provide natural regularization without requiring explicit constraints.
+%
+Rather than manually tuning regularization parameters as in traditional methods, ML approaches incorporate regularization through network depth, width, dropout rates, and early stopping.\kd{}
+%
+This implicit regularization can adapt more naturally to the varying complexity across different regions of phase space.
+
+ML methods can directly optimize for the quantities of interest, potentially reducing error propagation between steps.
+%
+While traditional unfolding can involve separate stages for inversion and regularization, neural networks can learn the transformation from detector--level to particle--level in a single end--to--end process.\kd{}
+%
+Once trained, many ML models also enable rapid inference on new data without retraining.
+%
+This amortized approach is particularly valuable for unfolding tasks that need to be repeated with slight variations, such as systematic uncertainty studies or detector condition changes.\kd{}
+\subsection{Early Successes and Current Challenges}
+Machine learning approaches to unfolding, such as OmniFold\kd{}, have demonstrated promising results on jet substructure measurements, showing improved performance in high-dimensional spaces compared to traditional methods.
+%
+OmniFold has been successfully applied in experimental analyses at H1\kd{}, ATLAS\kd{}, CMS\kd{}, and LHCb\kd{}, validating its practical utility.
+%
+However, these methods also face significant challenges.
+%
+Unlike traditional techniques with decades of validation, ML--based unfolding is relatively new and requires careful validation to ensure physical consistency.
+%
+Key concerns include proper uncertainty quantification, interpretability of the results, sensitivity to the training data, and potential biases introduced by the neural network architecture or training process.\kd{}
+%
+Additionally, the field is still developing consensus on best practices for hyperparameter selection, architecture design, and evaluation metrics specific to unbinned unfolding.
+%
+The balance between flexibility and stability remains an active area of research, with new approaches continuing to emerge.\kd{}
+
+As machine learning continues to evolve, both within particle physics and in the broader scientific community, we can expect further innovations in unfolding techniques.
+%
+Promising directions include physics--informed neural networks that incorporate known conservation laws or symmetries\kd{}, uncertainty--aware models that provide more reliable error estimates\kd{}, and techniques that combine the strengths of traditional and ML-based approaches\kd{}.
+%
+The rapid progress in this field demonstrates the synergistic relationship between particle physics and machine learning.
+%
+Particle physics provides challenging problems and unique datasets that drive methodological innovations;
+%
+machine learning offers powerful tools that enable new measurements and insights.
+%
+This dissertation builds upon this foundation, exploring novel machine learning approaches to improve the precision and scope of differential cross--section measurements through novel unfolding techniques.
+
+\section{Introduction to Neural Networks}
+Neural networks are the fundamental building blocks of modern machine learning applications.
+%
+This section provides a rigorous mathematical framework for understanding neural networks, from their basic architecture to training methodologies.
+
+    \subsection{Essential Concepts}
+        \subsubsection{Neural Network Fundamentals}
+            At its core, a neural network is a parametric function approximator loosely inspired by biological neural systems.
+            %
+            The fundamental unit, a neuron or node, computes a weighted sum of its inputs followed by a non-linear transformation:
+            \begin{equation}
+            y = \sigma(w^T x + b)
+            \end{equation}
+            where \(x \in \mathbb{R}^n\) is the input vector, \(y\in\R^{m}\) is the output vector, \(w \in \mathbb{R}^{n\times m}\) is a weight matrix, \(b \in \mathbb{R}^m\) is a bias term, and \(\sigma(\cdot)\) is a (typically non--linear) activation function.
+            
+            The \emph{depth} of a neuron is defined as the length of the longest path between the input and the neuron.
+            %
+            The set of all neurons at depth \(l\) is called \emph{layer} \(l\) of the network.
+            %
+            This organization of neurons into layers, creates a hierarchical structure.
+            %
+            The \emph{depth}, \(d = l_{\max}\), of a neural network is defined as the depth of its deepest layer.\kd{add figure to explain}
+
+            Any layer of a neural network except the input layer (often labeled layer \(0\)) and the output layer (\(l_{\max}\) is called a hidden layer.
+            %
+            A \emph{deep neural network} is a neural network with depth, \(d > 2\).
+            %
+            That is to say standard feedforward neural network consists of an input layer, \emph{more than one} hidden layers, and an output layer.
+            
+            For a network with \(d\) layers, at each layer \(l\) the neural network computes
+            \begin{equation}
+                y^{(l)} = \sigma^{(l)}(W^{(l)} y^{(l-1)} + b^{(l)})
+            \end{equation}
+            where \(y^{(l)}\) represents the output of layer \(l, W^{(l)}\) is the weight matrix, \(b^{(l)}\) is the bias vector, and \(\sigma^{(l)}\) is the activation function of later \(l\).
+            %
+            By convention, \(y^{(0)} = x\) is the input, and \(y^{(d)} = y\) is the output.
+
+            This architecture enables neural networks to approximate arbitrarily complex functions, as formalized in the Universal Approximation Theorem, which states that a deep neural network containing a finite number of neurons can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) given certain mild conditions on the activation function.
+
+        
+        \subsubsection{Forward Propagation}
+            The process of computing the network's output given an input is called forward propagation.
+            %
+            From its input \(y^{(0)} = x\) the network sequentially computes the output of each layer
+            \begin{align}
+                z^{(1)} &= W^{(1)}y^{(0)} + b^{(1)} \\
+                y^{(1)} &= \sigma^{(1)}(z^{(1)}) \\
+                &\nonumber \vdots \\
+                z^{(d)} &= W^{(d)}y^{(d-1)} + b^{(d)} \\
+                y^{(d)} &= \sigma^{(d)}(z^{(d)})
+            \end{align}
+            where \(z^{(l)}\) represents the pre--activation values at layer \(l\)
+        \subsubsection{Training objectives and loss functions}
+            In order to quantify the accuracy with which a neural network \(f\) models a desired target function \(g\) for any particular input \(x\), a suitable measure of the error between \(f(x)\) and \(g(x)\) is required.
+            %
+            The \emph{divergence} \(\operatorname{Div}(x)\) is a continuous valued proxy for this error.
+            %
+            The goal of training can then be defined to be to learn the values of \(W\) that minimize the expected divergence.
+            %
+            (For notational convenience, from here on out, \(b\) will be collapsed into \(W\) as its \(0^{\textrm{th}}\) column;
+            %
+            the corresponding input, \(x_0 = 1\).)
+            \begin{equation}
+                \widehat{W} = \underset{W}{\arg\min}\int_X \operatorname{Div}\Big(f(x;\,W), g(x)\Big)\;p_X(x)\;\dd x
+            \end{equation}
+
+            In practice however, \(g\) is often not known for all \(x\in X,\) it is only known at some subset \(\qty{x_i}\subseteq X\).
+            %
+            The \emph{Loss function} \(\mathcal{L}\) is defined as the unbiased empirical average divergence between the neural network output and the target output over all training instances.
+            \begin{equation}
+                \mathcal{L}(W) = \frac{1}{N_X}\sum_{i=1}^{N_X}\operatorname{Div}\Big(f(x_i;\,W), g(x_i)\Big).
+            \end{equation}
+            The expected value of the loss function can be proved to be the expected divergence, which is precisely what it means for the loss function to be an unbiased estimate of the expected divergence.
+            %
+            However, this does not guarantee that minimizing the loss function will minimize the expected divergence.
+        \subsubsection{Backpropagation and Parameter Learning}
+            The training of neural networks revolves around finding the optimal values for weights and biases that minimize the loss function \(\mathcal{L}\)
+            %
+            Backpropagation is the algorithm used to efficiently compute gradients of the loss function with respect to each network parameter.
+            %
+            The core idea of backpropagation relies on the chain rule of calculus.
+            %
+            For a loss function \(\mathcal{L}\) and parameters \(\{W^{(l)}\}_{l=1}^d\) the network computes
+            \begin{equation}
+            \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}} = \delta^{(l)} (y^{(l-1)})^T 
+            \end{equation}
+            
+            where \(\delta^{(l)} = \frac{\partial \mathcal{L}}{\partial z^{(l)}}\) is the error term for layer \(l\).
+            %
+            These error terms are computed recursively, starting from the output layer.
+            \begin{align}
+                \delta^{(L)} &= \frac{\partial \mathcal{L}}{\partial y^{(L)}} \odot \sigma'^{(L)}(z^{(L)}) \\
+                \delta^{(l)} &= ((W^{(l+1)})^T \delta^{(l+1)}) \odot \sigma'^{(l)}(z^{(l)})
+            \end{align}
+            where \(\odot\) denotes the Hadamard (element-wise) product and \(\sigma'\) is the derivative of the activation function.
+            %
+            These derivatives are thus propagated backwards through the network, beginning at the output layer, propagated to the input layer.
+
+        
+        \subsubsection{Batching and Training Dynamics}
+            In practice, neural networks are trained using mini--batch gradient descent, where parameter updates are performed using gradients computed on subsets (batches) of the training data. For a batch of size \(B\), the loss is
+            \begin{equation}
+                \mathcal{L}_{\text{batch}} = \frac{1}{B}\sum_{i=1}^B\mathcal{L}(x_i, y_i, W)
+            \end{equation}
+            Training proceeds in \emph{epochs}, where each epoch represents one complete pass through the training dataset.
+            %
+            To prevent overfitting, a separate validation dataset is typically used to monitor performance, and techniques such as early stopping may be applied when validation performance plateaus or degrades.
+    \subsection{Neural Networks as Universal Approximators}
+        The power of neural networks in physics applications stems from their ability to approximate arbitrary functions.
+        %
+        This property is formalized in the Universal Approximation Theorem, which has several variations but fundamentally states that feed-forward networks with a single hidden layer can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision, given sufficient depth and width.
+        \begin{theorem}[Universal Approximation Theorem]
+        \begin{align}
+            &\forall \sigma\in C^0(\R)\; \forall g\in C^0([0, 1]^n)\;\forall\epsilon > 0\;\exists M\in \R\\
+            &\Bigg[\forall x\in\R\;|\sigma(x)| < M\implies \exists N\in\mathbb{N}\;\exists c, b\in \R^N\;\exists W\in \R^{N\times n}\\
+            &\Big\{\forall z\in[0, 1]^n |c^T\sigma(Wz + b) - f(z)|<\epsilon\Big\} \lor \exists A\in\R\;\forall x\in\R\;\sigma(x) = A\Bigg].
+            \end{align}
+        \end{theorem}
+        This theorem was first proved by Cybenko for sigmoid activation functions\kd{} and later extended by Hornik to include a broader class of activation functions.\kd{} Modern versions of the theorem have relaxed various assumptions and expanded the results to deeper networks.
+        \subsubsection{Relevance to Physics Applications}
+            The universal approximation property is particularly significant in physics.
+            %
+            Many physical systems are governed by complex, non-linear differential equations that lack closed-form solutions.
+            %
+            Neural networks can approximate these solutions without explicitly knowing the underlying equations, hence serving as excellent implicit simulators.
+            %
+            Additionally, physics problems often involve high--dimensional spaces (e.g., the phase space for jet physics).
+            %
+            Neural networks excel at learning in such spaces, where traditional numerical methods become computationally intractable.
+            %
+            The universal approximation property makes neural networks well--suited for these tasks, where the mappings to be learned are highly complex.
+
+            When theoretical descriptions are incomplete, neural networks can discover patterns in data that suggest new physical models or refinements to existing ones.
+            %
+            Neural networks as universal approximators are also helpful for simulation based inference.
+            %
+            Modern physics often relies on computer simulations rather than closed--form likelihood functions.
+            %
+            Neural networks can approximate these implicit models for fast posterior inference.
+
+            While the Universal Approximation Theorem guarantees the existence of a neural network capable of approximating any continuous function, it does not provide guidance on architecture design or training procedures.
+            %
+            Nor does the theorem provide any guarantees about the rate of convergence of training procedures.
+            %
+            In practice, deeper networks with multiple hidden layers have provide faster convergence, and greater parameter efficiency.
+            %
+            However, the benefits of increasing depth are bounded, and decay exponentially, and hence the choice of architecture can involve carefully balancing the increased computational cost of a deeper network with the gains it provides.
+            %
+            Extensions of the theorem show that depth can exponentially reduce the number of neurons required to approximate certain function classes, explaining the empirical success of deep learning in physics applications.
+            %
+            These theoretical insights have motivated the development of specialized architectures tailored to specific physics problems, as will be discussed in subsequent sections.
+    \subsection{Activation Functions, Optimization, and Regularization}
+        \subsubsection{Activation Functions}
+            Activation functions introduce non--linearity into neural networks, enabling them to learn complex patterns.
+            %
+            Several activation functions are commonly used in high energy physics applications.
+            \begin{itemize}
+                \item Sigmoid:
+                    \[\sigma(z) = \frac{1}{1 + e^{-z}}\]
+                    An activation function that outputs values between \(0\) and \(1\), it is most often used in problems involving binary classification.
+                    %
+                    The sigmoid activation function has a rich and important history as one of the earliest activation functions to be used in machine learning applications.
+                    %
+                    However, it suffers from vanishing gradient problems, where training instances far from its inflection point do not provide much information to the system.
+
+                \item Hyperbolic Tangent (tanh): \[\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\]
+                    The hyperbolic tangent function is very similar to sigmoid, except that it outputs values between \(-1\) and \(1\).
+                    %
+                    It is preferred in some applications because it is zero--centered, which can help in training dynamics, but it also suffers from the same vanishing gradient problems as the sigmoid.
+                \item Rectified Linear Unit (ReLU): \[\text{ReLU}(z) = \max(0, z)\]
+                    Simple, and incredibly computationally efficient, ReLU has become one of the most frequently used activation functions both within HEP and in the AI/ML space more broadly.
+                    %
+                    It addresses the vanishing gradient problem for positive inputs.
+                    %
+                    However, since it is simply zero for half its support, it can suffer from the ``dying ReLU" problem where units can become permanently inactive.
+                \item Leaky ReLU: \[\text{LeakyReLU}(z) = \max(\alpha z, z)\]
+                    \(\alpha\) is a small positive constant.
+                    %
+                    LeakyReLU is a modification of ReLU to allow small negative valued outputs, which helps mitigate the dying ReLU problem
+                \item Softmax: \[\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}\]
+                        Softmax is most often used for multi--class classification output layers because it produces a probability distribution over classes
+            \end{itemize}
+            These a but a few examples of the most common activation functions.
+            %
+            The choice of activation function significantly impacts network performance, convergence speed, and the occurrence of issues like vanishing or exploding gradients.
+        \subsubsection{Optimization Techniques}
+            As we discussed, neural network training is fundamentally an optimization problem.
+            %
+            Various algorithms have been developed to find optimal parameters efficiently.
+            
+            \paragraph{Gradient Descent}is the oldest and simplest approach to optimization.
+            %
+            It involves updating parameters in the direction of the negative gradient:
+           \begin{equation}
+                W_{t+1} = W_t - \eta \nabla_W \mathcal{L}(W_t)
+           \end{equation}
+            \(\eta\) is the learning rate.
+            %
+            While conceptually simple, gradient descent can be slow to converge and may get trapped in suboptimal solutions such as local minima.
+            
+            \paragraph{Stochastic Gradient Descent (SGD)}is an adaptation of gradient descent that updates parameters using gradients computed on mini--batches, introducing noise that can help escape local minima.
+            \begin{equation}
+            W_{t+1} = W_t - \eta \nabla_W \mathcal{L}_{\text{batch}}(W_t)
+            \end{equation}
+            \paragraph{Momentum based methods}accelerate convergence by accumulating a ``velocity" vector in directions of persistent reduction in the loss function.
+               \begin{align}
+                   v_{t+1} &= \gamma v_t + \eta \nabla_W \mathcal{L}(W_t) \\
+                   W_{t+1} &= W_t - v_{t+1}
+               \end{align}
+               where \(\gamma\) is the momentum coefficient.
+               %
+               In HEP applications, a typical value of \(\gamma\) is \(0.9\).
+            
+            \paragraph{Adaptive Methods}are methods that vary the learning rate \(\eta\) over the course of the training rather than keeping it constant, and allow different learning rates for different dimensions of the input, rather than the traditional scalar learning rate that was constant across dimensions.
+                %
+                One of the earliest adaptive methods proposed was AdaGrad, which adapts learning rates per-parameter based on historical gradients.
+                %
+                AdaGrad was however limited by its aggressive learning rate reduction that slowed down training considerably.
+                %
+                It was soon replaced in almost all applications by RMSProp, which addresses AdaGrad's aggressive learning rate reduction.
+                %
+                Today, RMSProp is a widely used optimizer in ML applications, and is especially effective at stabilizing training when gradients are sparse and/or the loss function is dominated by saddle points.
+            
+            \paragraph{Adam}combines momentum based methods and RMSProp, and is currently the most widely used optimizer in ML applications.
+            %
+                Adam's optimization procedure is can be described as
+                 \begin{align}
+                     m_t &= \beta_1 m_{t-1} + (1 - \beta_1) \nabla_W \mathcal{L}(W_t) \\
+                     v_t &= \beta_2 v_{t-1} + (1 - \beta_2) (\nabla_W\mathcal{L}(W_t))^2 \\
+                     \hat{m}_t &= \frac{m_t}{1 - \beta_1^t} \\
+                     \hat{v}_t &= \frac{v_t}{1 - \beta_2^t} \\
+                     W_{t+1} &= W_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t
+                 \end{align}
+                Typical values in HEP applications are \(\beta_1 = 0.9, \beta_2 = 0.999, \epsilon = 10^{-8}\).
+            
+            
+            
+            \paragraph{Learning Rate Scheduling}is the process of dynamically adjusting the learning rate during training.
+                %
+                Some of the more common variants are step decay (reducing learning rate by a fixed factor after a set number of epochs), exponential decay (\(\eta_t = \eta_0 e^{-kt}\), and cosine annealing(\(\eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})(1 + \cos(\frac{t\pi}{T}))\)).
+        \subsubsection{Regularization Techniques}
+            To improve stabilize the training, prevent overfitting, and increase generalization, various regularization methods are employed.
+
+            \paragraph{\(L^p\) Regularization} involves adding penalty terms to the loss function to penalize large weights.
+                \begin{equation}
+                    \mathcal{L}_{\textrm{reg}} = \mathcal{L} + \lambda_p\;\norm{W}^p.
+                \end{equation}
+                The most common values of $p$ are $1$ and $2.$
+                %
+                For certain applications, a hybrid $L1-L2$ regulariztion may also be appropriate.\kd{cite}
+            \paragraph{Dropout}is a form of regularization that involves randomly setting a fraction of neuron outputs to zero during training:
+               \begin{equation}
+                    y^{(l)}_{\text{dropout}} = m \odot y^{(l)}
+               \end{equation}
+               where \(m\) is a binary mask with entries drawn from a Bernoulli distribution with parameter $p\in [0, 1)$
+
+            \paragraph{Batch Normalization} is the process of normalizing the inputs of a layer to have zero mean and unit variance.
+                   \begin{align}
+                   \hat{y}^{(l)} &= \frac{y^{(l)} - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}} \\
+                   z_{\text{BN}}^{(l+1)} &= W^T \hat{y}^{(l)} + b
+                   \end{align}
+                   where \(\mu_B\) and \(\sigma_B^2\) are the batch mean and variance.
+
+
+        These regularization techniques, combined with appropriate optimization strategies and activation functions, form the foundation for effectively training neural networks for high energy physics applications.
+        %
+        The principles outlined here will be applied in subsequent sections focusing on specific neural network architectures and their applications to unfolding problems.
+\section{Supervised Learning Approaches for Unfolding}
+    Supervised learning provides a powerful framework for addressing the unfolding problem in particle physics. 
+    %
+    Unlike traditional matrix inversion methods, supervised learning approaches can leverage the flexibility and expressiveness of machine learning models to handle high-dimensional data and complex detector responses without requiring explicit binning schemes.
+    \subsection{Mathematical Framework}
+        Before exploring specific applications to unfolding, it is essential to establish what supervised learning is from a mathematical and statistical perspective.
+        %
+        Supervised learning represents one of the primary paradigms in machine learning where an algorithm learns a mapping from inputs to outputs using labeled training data.
+        %
+        Supervised learning involves using a dataset, \(\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)\}\) consisting of \(n\) input--output pairs.
+        %
+        Each input \(x_i \in \mathcal{X}\) is a feature vector, and each output \(y_i \in \mathcal{Y}\) is a label or target value.
+        %
+        The objective is to learn a function \(f: \mathcal{X} \rightarrow \mathcal{Y}\) that approximates the true relationship between inputs and outputs.
+    
+        Supervised learning searches over a space of functions \(f_\theta\)parameterized by \(\theta\) that minimizes the expected risk,
+        %
+        \begin{equation}\mathcal{R}(f_\theta) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\operatorname{Div}(y, f_\theta(x))]
+        \end{equation}
+        %
+        where \(\operatorname{Div}\) is the divergence between the predicted output \(f_\theta(x)\) and the true output \(y\) y, and \(P(X,Y)\) is the joint probability distribution of inputs and outputs.
+        %
+        Since the true distribution \(P(X,Y)\) is unknown, we typically minimize the empirical risk
+        %
+        \begin{equation}
+        \hat{\mathcal{R}}(f_\theta) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(y_i, f_\theta(x_i))
+        \end{equation}
+        %
+        Where \(\mathcal{L}\) is the loss function, the empirical expected divergence.
+        %
+        This empirical risk minimization is accomplished through the optimization of the loss functions described in the previous section using techniques like stochastic gradient descent and backpropagation.
+    \subsection{Statistical Interpretation}
+    \label{subsec:supervised_learning.statistical_interpretation}
+        From a statistical standpoint, supervised learning can be viewed as conditional density estimation.
+        %
+        For classification problems, we estimate \(P(Y|X)\), the probability of a particular class given the input features.
+        %
+        For regression problems, we estimate the conditional expectation \(\mathbb{E}[Y|X]\) or the full conditional distribution \(P(Y|X)\).
+
+        The choice of divergence function directly relates to the statistical assumptions being made.
+        %
+        The mean squared error, \(\operatorname{Div}(x) = (y - f_\theta(x))^2\), corresponds to maximum likelihood estimation under Gaussian noise assumptions. The cross--entropy, \(-y\log f_\theta(x) - (1-y)\log(1 - f_\theta(x))\) corresponds to maximum likelihood estimation for categorical distributions.
+        %
+        Quantile divergences correspond to estimating specific quantiles of the conditional distribution
+
+    \subsection{Types of Supervised Learning}
+        Supervised learning problems broadly fall into two categories:
+        \begin{enumerate}
+            \item \textbf{Classification}:
+            %
+            When the output space \(\mathcal{Y}\) is discrete (categorical), the task is to predict the class label of a given input.
+            %
+            Common loss functions include cross--entropy and hinge loss.
+            \item \textbf{Regression}:
+            %
+            When the output space \(\mathcal{Y}\) is continuous, the task is to predict a real--valued output.
+            %
+            Common loss functions include mean squared error, mean absolute error, and Huber loss.
+        \end{enumerate}
+        For unfolding problems, both paradigms can be relevant.
+        %
+        Classification approaches often estimate density ratios between distributions, while regression approaches directly estimate mappings between detector--level and particle--level observables.
+    \subsection{Learning and Generalization}
+        A fundamental aspect of supervised learning is generalization i.e. the ability of the model to perform well on unseen data.
+        %
+        This requires balancing two competing concerns, underfitting, when the model is too simple to capture the underlying structure of the data, and overfitting, when the model captures noise in the training data rather than the underlying structure.
+        %
+        Regularization techniques help prevent overfitting by constraining the complexity of the model.
+        %
+        For unfolding problems, regularization is particularly important due to the ill--posed nature of the inverse problem, where small variations in the data can lead to large variations in the prediction.
+    \subsection{Evaluation}
+        Supervised learning models are typically evaluated by measuring their performance on a separate test set not used during training.
+        %
+        Common evaluation metrics include accuracy, precision, recall, F1-scores, and ROC curves for classification problems; mean squared error, mean absolute error, and R-squared for regression problems
+
+        In the context of unfolding, additional evaluation criteria can include physical consistency, preservation of known symmetries, and robustness to statistical fluctuations.
+        %
+    \subsection{Unfolding as a Supervised Learning Problem}
+        At its core, unfolding seeks to recover the mapping from detector--level distributions to particle--level truth distributions.
+        %
+        This can be naturally framed as a supervised learning task where the model learns from pairs of detector--level and particle--level data generated through simulation.
+        %
+        The supervised learning approach to unfolding typically uses paired data \((z, x)\), where \(z\) represents particle--level quantities and \(x\) represents detector--level observations.
+        %
+        The forward problem (detector simulation) maps \(z \mapsto x\) through some response function, while unfolding attempts to estimate the inverse mapping.
+
+        \subsubsection{Classification--Based Approaches}
+            A prominent class of supervised learning methods for unfolding uses binary classification as its foundation.
+            %
+            This approach leverages the ability of classifiers to estimate likelihood ratios between distributions.
+            %
+            Of this class, OmniFold is perhaps the most widely adopted classification--based unfolding method and has been applied to several experimental measurements.
+            %
+            It uses an iterative procedure inspired by Iterative Bayesian Unfolding (IBU), generalizing it to the unbinned case.
+
+            First, a classifier is trained to distinguish detector--level data from detector--level simulation.
+            %
+            The classification outputs are used to reweight simulation events.
+            %
+            Then another classifier is trained at particle level to transfer these weights back to the particle--level simulation.
+            %
+            These steps are repeated for some fixed number of iterations.
+
+            This approach is particularly powerful for handling high--dimensional phase spaces where traditional binned methods become impractical.
+            %
+            OmniFold effectively retains the full phase space information without requiring dimensionality reduction.
+        \subsubsection{Regression--Based Approaches}
+            While classification methods focus on reweighting simulation events, regression--based approaches aim to directly predict particle--level quantities from detector--level inputs.
+            %
+            Neural networks can be trained to directly predict particle--level quantities from detector--level observations.
+            %
+            This approach attempts to learn the function \(f: X \rightarrow Z\) that maps detector--level features to particle--level truth values.
+            %
+            However, this direct approach often struggles with the ill--posed nature of the unfolding problem.
+
+            More sophisticated regression approaches employ conditional density estimation to predict the full distribution of possible particle--level values given detector measurements.
+            %
+            These methods recognize that the detector response introduces uncertainty, and hence the mapping from detector to particle level should be probabilistic rather than deterministic.
+            %
+            Techniques such as Mixture Density Networks, \kd{cite} Normalizing Flows,\kd{} and Gaussian processes\kd{} have been explored to model these conditional distributions, providing both point estimates and uncertainty quantification.
+    \subsection{Regularization Strategies}
+        Supervised learning approaches to unfolding must address the inherently ill--posed nature of the inverse problem.
+        %
+        This requires effective regularization strategies to prevent the amplification of statistical fluctuations.
+
+        Neural network architectures themselves provide implicit regularization.
+        %
+        The choice of network depth, width, activation functions, and training protocols significantly impacts the solution's smoothness properties.
+        %
+        Convolutional layers, for instance, can encode physical priors such as translational invariance, constraining the space of possible solutions.
+
+        In iterative approaches like OmniFold, early stopping serves as a form of regularization.
+        %
+        By halting the iteration process before full convergence, the method prevents overfitting to statistical fluctuations in the data.
+
+        Domain--specific physics knowledge can also be incorporated into the learning process through custom loss functions, model architectures, or constraints.
+        %
+        For example, conservation laws, symmetries, or known theoretical behaviors can be encoded to guide the supervised learning process toward physically plausible solutions.
+    \subsection{Advantages and Challenges}
+        Supervised learning approaches to unfolding can operate directly on unbinned data, avoiding information loss and artifacts from binning.
+        %
+        They scale better to high--dimensional observables and can effectively capture complex non--linear detector responses.
+        %
+        Additionally, they provide flexible regularization through model architecture and training.
+
+        However, supervised approaches also face challenges.
+        %
+        They require large amounts of simulated training data with accurate detector modeling.
+        %
+        Unless designed carefully for interpretability, the black--box nature of neural networks can obscure the physical interpretation of the results.
+        %
+        For unbinned unfolding methods, uncertainty quantification remains challenging, particularly in capturing the correlations between events when computing confidence intervals.
+        %
+        Finally, validating the unfolding performance requires careful cross--checks and closure tests.
+
+        Despite these challenges, supervised learning approaches represent a significant advancement in unfolding methodology, enabling measurements that would be impractical with traditional binned techniques,  in high--dimensional phase spaces relevant to modern particle physics analyses.
+
+
+
+\section{Deep Learning Architectures}
+High Energy Physics (HEP) presents unique data analysis challenges that have inspired the adoption and adaptation of specialized deep learning architectures.
+%
+These architectures are designed to handle the distinctive properties of particle physics data, including high dimensionality, sparsity, permutation invariance, and complex correlations.
+%
+This section explores the most prominent deep learning architectures employed in HEP applications, with particular emphasis on their relevance to unfolding tasks.
+\subsection{Convolutional Neural Networks}
+    Convolutional Neural Networks (CNNs) have found extensive application in HEP, particularly for analyzing data with inherent spatial or geometric structure.
+    %
+    Originally developed for image recognition tasks, CNNs are well--suited for handling detector data that can be represented in image--like formats.
+    
+    A prominent application of CNNs in HEP is in the analysis of ```jet images" --- representations of energy deposits in calorimeters.
+    %
+    Treating jet constituents as ``pixels" in a coordinate system of pseudorapidity (\(\eta\)) and azimuthal angle (\(\phi\)) creates image--like representations that CNNs can process effectively.
+    %
+    For unfolding applications, CNNs can learn complex mappings between detector--level jet images and their corresponding particle--level representations.
+    %
+    The translation invariance property of CNNs naturally encodes physical symmetries, providing implicit regularization that is beneficial for the ill--posed unfolding problem.\kd{}
+    
+    CNNs have also been successfully applied to model energy depositions in calorimeters.\kd{}
+    %
+    These architectures can capture the spatial correlations in shower development patterns, enabling more accurate unfolding of particle energies and types from detector responses.
+    %
+    Three--dimensional CNNs have been employed to handle the full volumetric nature of calorimeter data, treating detector cells as voxels in a 3D space.\kd{}
+    %
+    These approaches have shown promising results in reconstructing particle properties from complex shower patterns.\kd{}
+\subsection{Recurrent Neural Networks}
+    Recurrent Neural Networks (RNNs), particularly Long Short-Term Memory (LSTM) networks and Gated Recurrent Units (GRUs), have been applied to sequential aspects of HEP data analysis.
+    %
+    In many HEP applications, particles can be naturally ordered by properties such as transverse momentum or angular distance from a reference axis.
+    %
+    RNNs can process these ordered sequences while maintaining information about dependencies between particles.
+
+    For unfolding tasks involving sequential data, RNNs can model the mapping between detector--level sequences and their particle--level counterparts, capturing complex ordered dependencies that might be lost in other architectures.
+    %
+    RNNs are also applicable to time--dependent detector responses or beam conditions that evolve over time.
+    %
+    By incorporating time information, these models could help unfold distributions that are affected by time--varying detector effects.
+\subsection{Graph Neural Networks}
+    Graph Neural Networks (GNNs) have emerged as one of the most promising architectural paradigms for HEP applications.
+    %
+    These networks explicitly model relationships between particles or detector elements as graphs, with nodes representing individual entities and edges representing their interactions or relationships.
+
+    Particle interactions naturally form graph--like structures, where each particle can be considered a node with properties (features) such as momentum, energy, and charge.
+    %
+    GNNs can process these "particle clouds" directly, without requiring conversion to image or sequence formats.
+    %
+    The key advantage of GNNs for unfolding is their ability to preserve the permutation invariance of particle collections;
+    %
+    the physical properties of a jet should not depend on the arbitrary order in which particles are processed.
+    %
+    By operating directly on graphs, GNNs respect this physical constraint.
+
+    GNNs have also been applied to model the complex geometry of particle detectors, where detector elements can be represented as nodes and their physical or electronic connections as edges.\kd{}
+    %
+    This approach enables more accurate modeling of detector responses, which is crucial for reliable unfolding.
+    %
+    A specialized class of GNNs called Message Passing Neural Networks (MPNNs) has shown particular promise in physics applications.\kd{}
+    %
+    These networks iteratively update node representations by passing information along edges, mimicking the way physical interactions propagate through a system.
+\subsection{Transformer-Based Architectures}
+    Transformer architectures, which have revolutionized natural language processing, are increasingly being applied to HEP problems due to their ability to model complex dependencies through self-attention mechanisms.\kd{}
+    %
+    Transformers can naturally process sets of particles by using self--attention to capture relationships between all pairs of particles.
+    %
+    This makes them particularly well--suited for unfolding tasks involving collections of particles with complex inter--relationships.
+
+    The Particle Transformer (ParT) architecture,\kd{} specifically designed for HEP applications, incorporates physics--motivated constraints and has demonstrated strong performance on jet classification tasks.\kd{}
+    %
+    Similar principles can be applied to develop transformer--based unfolding methods.
+
+    The attention mechanisms in transformers provide an additional benefit.
+    %
+    They can highlight which detector--level features are most informative for reconstructing particle--level properties.
+    %
+    This interpretability is valuable for understanding the unfolding process and identifying potential biases or limitations.
+\subsection{Physics-Informed Neural Networks}
+    A growing trend in HEP applications is the development of physics--informed neural networks that explicitly incorporate domain knowledge about physical laws, conservation principles, and symmetries.
+    %
+    Networks that preserve known physical symmetries, such as Lorentz invariance or gauge symmetry, can provide more physically plausible unfolding results.
+    %
+    Architectures such as Lorentz Group Equivariant Networks\kd{} ensure that the neural network respects these fundamental symmetries by design.
+    %
+    For unfolding problems where energy conservation is essential, specialized architectures can enforce this constraint by design.
+    %
+    These networks ensure that the total energy is preserved between detector--level and particle--level representations, reducing the space of possible solutions and improving physical consistency.
+    %
+    Beyond specialized architectures, physical constraints can be incorporated into the loss function or network design.
+    %
+    For example, constraints on momentum conservation, charge conservation, or known physical boundaries of observables can guide the network toward physically plausible solutions.
+    \subsubsection{Energy Flow Networks and Particle Flow Networks}
+        Energy Flow Networks (EFNs) and Particle Flow Networks (PFNs)\kd{} represent specialized architectures developed specifically for HEP applications, grounded in the theoretical framework of Energy Flow Polynomials and the infrared and collinear safety properties essential for jet physics.
+        %
+        EFNs and PFNs are based on the principle that jets can be represented as collections of particles, each characterized by its energy (or transverse momentum) and angular coordinates.
+        %
+        These architectures directly incorporate the Energy Flow basis, a complete, linear basis for infrared and collinear safe observables, into their design.
+        %
+        The key insight of these networks is the decomposition of jet observables into products of per--particle functions (capturing individual particle features) and pairwise or multi--particle correlators (capturing relationships between particles).
+        %
+        This decomposition aligns with how QCD radiation patterns physically manifest in jet structure.
+
+        Both EFNs and PFNs operate on sets of particles with the following structure:
+        \begin{enumerate}
+            \item \textbf{Per--particle feature extraction:} Each particle is processed independently through a shared neural network \(\Phi\) (called the ``particle embedding network"), mapping individual particle features to a latent representation.
+            \item \textbf{Permutation--invariant aggregation:} The individual particle embeddings are combined through a permutation--invariant operation, typically summation, weighted by particle energies in the case of EFNs.
+            \item \textbf{Global processing:} The aggregated representation is processed by another neural network \(F\) (the ``latent space network") to produce the final output.
+        \end{enumerate}
+        EFNs process only the geometric information of particles (\(\eta,\phi\) coordinates), weighted by their energies or transverse momenta during aggregation.
+        %
+        This architecture is specifically designed for infrared and collinear safe observables.
+        %
+        PFNs can incorporate additional per--particle features beyond just angular coordinates (e.g., particle type, charge, or identification probabilities), making them more flexible but potentially less theoretically constrained.
+
+        For unfolding applications, by respecting infrared and collinear safety in their design, EFNs ensure that unfolded distributions preserve important theoretical properties of QCD.
+        %
+        Jets naturally contain varying numbers of particles.
+        %
+        EFNs and PFNs handle this variable--length input natively without padding or truncation.
+        %
+        The architectural constraints of EFNs/PFNs serve as implicit regularization aligned with physical principles, helping to constrain the ill--posed nature of unfolding.
+
+        In unfolding contexts, EFNs and PFNs can be employed either as components within classification-based approaches (like OmniFold) or as direct mappings between detector-level and particle-level representations.
+        %
+        EFNs and PFNs can be understood as specialized implementations of the Deep Sets paradigm, which provides a theoretical foundation for processing sets of varying sizes.
+        %
+        This connection to a broader machine learning framework can facilitate theoretical analysis of these architectures and inspire further developments.
+
+
+The deep learning architectures discussed in this section provide a rich toolkit for addressing the challenges of unfolding in HEP.
+%
+By selecting and adapting architectures based on the specific properties of the data and the physics requirements of the analysis, researchers can develop more accurate and physically consistent unfolding methods.
+%
+The next section will explore advanced machine learning frameworks that build upon these architectures to provide even more powerful approaches to unfolding.
+
+\section{Modern Machine Learning Frameworks}
+This section explores sophisticated machine learning frameworks that have demonstrated significant potential for addressing the unfolding problem in high energy physics.
+%
+We examine three principal categories, generative models, discriminative models, and adversarial frameworks, each offering distinct approaches to learning complex distributions and relationships in particle physics data.
+\subsection{Generative Models}
+    Generative models represent a powerful class of machine learning techniques that aim to learn and characterize the underlying probability distribution of observed data.
+    %
+    Unlike discriminative models that focus on decision boundaries between classes, generative models capture the full data--generation process, enabling them to produce new samples that resemble the training distribution \kd{cite}.
+    %
+    The defining characteristic of these models is their ability to generate new, synthetic data points that follow the same statistical patterns as the training data.
+    %
+    This capability makes them particularly valuable for applications in particle physics where simulation of complex physical processes is essential \kd{cite}.
+    %
+    In the context of unfolding, generative models offer a natural framework for modeling the mapping between particle-level and detector-level distributions.
+    
+    Generative models typically approach the learning task either by modeling the probability density function of the data explicitly, or by learning to generate samples from the target distribution without explicitly estimating the density.
+    %
+    Training the model involves maximizing the likelihood of the data.
+    \begin{equation}
+        \hat{\theta} = \underset{\theta}{\arg\max} \prod_{i=1}^{n} p(x_i | \theta)
+    \end{equation}
+    
+    where \(p(x | \theta)\) is the conditional probability density function at \(x\) given \(\theta\) and \(\{x_i\}_{i=1}^{n}\)\ are the training data.
+    
+    Variational Autoencoders and Normalizing Flows are two commonly used generative models that have demonstrated significant potential for unfolding applications in particle physics.
+
+    \subsubsection{Variational Autoencoders (VAEs)}
+        Variational Autoencoders represent a class of deep generative models that combine the principles of variational inference with neural network-based autoencoders \kd{cite}.
+        %
+        First introduced by Kingma and Welling in 2013 \kd{cite}, VAEs provide a principled probabilistic framework for learning complex data distributions while enabling both generation of new samples and inference of latent representations.
+        %
+        Fundamentally, VAEs extend traditional autoencoders by imposing a probabilistic structure on the latent space.
+        %
+        While standard autoencoders learn deterministic encodings, VAEs encode inputs as probability distributions in the latent space.
+        %
+        This probabilistic approach enables principled sampling and uncertainty quantification, which are critical requirements for unfolding applications.
+
+        The VAE architecture consists of two primary components, an encoder network \(q_{\phi}(z|x)\) which maps inputs \(x\) to a latent space distribution, typically parameterized as a multivariate Gaussian:
+        \begin{equation}
+        q_{\phi}(z|x) = \mathcal{N}(z|\mu_{\phi}(x), \text{diag}(\sigma^2_{\phi}(x)))
+        \end{equation}
+        where \(\mu_{\phi}(x)\) and \(\sigma^2_{\phi}(x)\) are parameters learned by the network, and a  decoder network \(p_{\theta}(x|z)\), which reconstructs inputs from latent samples, often parameterized as a Gaussian for continuous data,
+        \begin{equation}
+            p_{\theta}(x|z) = \mathcal{N}(x|\mu_{\theta}(z), \text{diag}(\sigma^2_{\theta}(z))),
+        \end{equation}
+        or a multivariate Bernoulli distribution\kd{cite} for categorical data.
+
+        VAEs are trained by maximizing the Evidence Lower Bound (ELBO), which serves as a tractable lower bound on the log-likelihood of the data:
+        \begin{equation}
+            \mathcal{L}(\theta, \phi; x) = \mathbb{E}_{q{\phi}(z|x)}[\log p_{\theta}(x|z)] - D_{KL}(q_{\phi}(z|x) | p(z))
+        \end{equation}
+        This objective balances two competing terms, the \emph{reconstruction term} \(\mathbb{E}_{q_{\phi}(z|x)}[\log p_{\theta}(x|z)]\) encourages accurate reconstruction, and the KL divergence term \(D_{KL}(q_{\phi}(z|x) \| p(z))\) that acts as a regularizer, encouraging the learned latent distribution to match a prior distribution (typically a standard normal)
+        %
+        The ELBO has deep connections to statistical mechanics and information theory.
+        %
+        The KL divergence term bears striking resemblance to the free energy minimization principle, where \(p(z)\) serves as an analog to the ``ground state" or ``vacuum state" distribution \kd{cite}.
+
+        Once trained, VAEs enable principled sampling by first sample from the prior distribution:\(z \sim p(z) = \mathcal{N}(0, 1)\), and then generating a new observation by passing \(z\) through the decoder: \(x \sim p_{\theta}(x|z)\)
+        %
+        This generative capability is particularly valuable for modeling the detector response in particle physics, where the mapping from particle--level to detector--level observables involves complex transformations and uncertainties.
+        %
+        Therefore in high energy physics, VAEs have found numerous applications including
+        \begin{itemize}
+            \item Fast detector simulation, where the VAE learns to map particle--level quantities to detector--level observables, \kd{cite}
+            \item Anomaly detection for beyond Standard Model physics searches,\kd{cite}
+            \item Dimensionality reduction of for processing collider data, \kd{cite}
+            \item Unfolding detector effects.\kd{cite}
+        \end{itemize}
+        For unfolding applications specifically, several features of VAEs make them naturally suited for the task.
+        %
+        VAEs model the uncertainty in the inverse mapping from detector-level to particle-level distributions providing a direct probabilistic framework for downstream analysis.
+        %
+        One can regularize the problem by constraining the latent space to accord with the physics of the problem, which helps stabilize the training and reduce the variance.
+        %
+        Once trained, VAEs provide fast amortized inference, enabling efficient processing of large collision datasets
+        %
+        Recent work has demonstrated VAEs' effectiveness for unfolding tasks, particularly when combined with adversarial training components to enhance the physical consistency of the unfolded distributions \kd{cite}.
+
+        Certain challenges posed by VAEs must be considered when selecting the appropriate model for a problem.
+        %
+        VAEs with Gaussian latent spaces can have limited expressivity because the latent space may be too restrictive for complex physical distributions.
+        %
+        Conversely, selecting a feature dense latent space (a) can deregularize the problem and (b) cause a loss of interpretability.
+        %
+        VAEs also tend to produce smoothed--out samples, potentially losing fine details in particle distributions.
+        %
+        Finally, balancing the reconstruction and KL terms requires careful tuning, and small changes in the hyperparameters can lead to significant changes in the learned function.
+
+    \subsubsection{Normalizing Flows}
+        Normalizing flows represent a powerful class of generative models that learn the exact likelihood computation through a series of invertible, differentiable transformations \kd{cite}.
+        %
+        Unlike VAEs, which approximate the likelihood, normalizing flows directly learn a bijective mapping between the data distribution and a simple base distribution, typically a multivariate Gaussian.
+        %
+        The core principle behind normalizing flows is the change of variables formula from probability theory.
+        %
+        Given a random variable \(z\) with density \(p_Z(z)\) and an invertible, differentiable transformation \(f:\mathbb{R}^d \rightarrow \mathbb{R}^d\) the density of the transformed variable \(x = f(z)\) is
+        \begin{equation}
+            p_X(x) = p_Z(f^{-1}(x)) \cdot \left|\det\left(\frac{\partial f^{-1}(x)}{\partial x}\right)\right|
+        \end{equation}
+        where \(\left|\det\left(\frac{\partial f^{-1}(x)}{\partial x}\right)\right|\) is the absolute value of the determinant of the Jacobian of \(f^{-1}\), which accounts for the change in volume elements due to the transformation.
+
+        Normalizing flows chain together multiple such transformations to create highly expressive mappings while maintaining invertibility:
+        \begin{equation}
+            f = f_K \circ f_{K-1} \circ \cdots \circ f_1
+        \end{equation}
+        The resulting density is
+        \begin{equation}
+            p_X(x) = p_Z(z) \cdot \prod_{k=1}^{K} \left|\det\left(\frac{\partial f_k^{-1}}{\partial f_{k-1}}\right)\right|
+        \end{equation}
+        where \(z = f^{-1}(x) = f_1^{-1} \circ \cdots \circ f_K^{-1}(x)\).
+
+        Since they were first proposed, several architectural innovations have expanded the expressivity and computational efficiency of normalizing flows.
+        %
+        Coupling Layers (e.g. NICE \kd{cite}, RealNVP \kd{cite}) partition the input dimensions and apply transformations to one part conditioned on the other, ensuring tractable Jacobian determinants
+        \begin{gather}
+            y_{1} = x_{1} \\
+            y_{d+1} = x_{d+1} \odot \exp(s(x_{1})) + t(x_{1})
+        \end{gather}
+        where \(s\) and \(t\) are scale and translation networks.
+        %
+        Autoregressive Flows (e.g. IAF \kd{cite}, MAF \kd{cite}) model dependencies between dimensions through an autoregressive structure
+        \begin{equation}
+            y_i = x_i \cdot \exp(s_i(x_{1})) + t_i(x_{1}).
+        \end{equation}
+        Continuous Normalizing Flows \kd{cite} formulate the transformation as an ordinary differential equation (ODE), offering increased flexibility
+
+        Each version of the model makes different trade--offs between expressivity, computational efficiency, and ease of training.
+        %
+        In general, normalizing flows are trained by directly maximizing the log-likelihood of the data:
+        \begin{equation}
+            \mathcal{L}(\theta) = \frac{1}{N} \sum_{i=1}^{N} \log p_X(x_i; \theta)
+        \end{equation}
+        where \(\theta\) parameterizes the flow transformations.
+        %
+        This direct likelihood maximization contrasts with the variational approach of VAEs and the adversarial approach of GANs, offering a more stable optimization objective in many cases.
+
+        Normalizing flows have gained significant traction in particle physics applications, including
+        \begin{itemize}
+            \item Simulation-based inference: Using flows to perform likelihood--free inference for physics parameters, \kd{cite}
+            \item Fast detector simulation: Modeling the detector response through invertible mappings, \kd{cite}
+            \item Phase space integration: Computing complex multi--dimensional integrals in perturbative calculations, \kd{cite}
+            \item Unfolding detector effects.\kd{cite}
+        \end{itemize}
+        For unfolding specifically, normalizing flows provide several compelling advantages.
+        %
+        The exact likelihood computation provided by the model enables principled uncertainty quantification in the unfolded distributions.
+        %
+        The chain of bijective mappings also naturally aligns with the physical process of detector effects and their inversion.
+        %
+        Capable of capturing complex, multi--modal distributions common in particle physics, flow--based models have been shown to be effective vehicles for unfolding, showing improved performance particularly for high--dimensional and complex distributions \kd{cite}.
+
+        A particularly promising approach for unfolding involves conditional normalizing flows, where the transformation depends on additional conditioning variables:
+        \begin{equation}
+            p_X(x|c) = p_Z(f^{-1}(x; c)) \cdot \left|\det\left(\frac{\partial f^{-1}(x; c)}{\partial x}\right)\right|
+        \end{equation}
+        In the unfolding context, the detector--level observables can serve as the conditioning variables, with the flow mapping from a base distribution to the particle-level distribution conditioned on detector measurements \kd{cite}.
+        %
+        This approach enables explicit modeling of the posterior distribution 
+        \(p(\text{particle} | \text{detector})\) that unfolding aims to estimate.
+
+        Despite their theoretical elegance, normalizing flows face several practical challenges in HEP applications.
+        %
+        The invertibility requirement limits the types of transformations that can be used.
+        %
+        The computational cost of evaluating Jacobian determinants for high--dimensional data can impose practical limits on the dimensionality of the unfolding problem flow based methods can be applied to.
+        %
+        Ongoing research continues to address these challenges through improved architectures and training procedures.
+
+    
+\subsection{Discriminative Models}
+    Discriminative models directly learn the mapping from input features to output labels, modeling the conditional distribution \(p(y|x)\) rather than the joint distribution.
+    %
+    In the context of particle physics, these models excel at classification, regression, and decision tasks that underpin many key analyses, from particle identification to unfolding.
+    %
+    Discriminative models parameterize the conditional distribution, \(p(y|x)\) using a function \(f_\theta(x)\), where \(\theta\) represents the model parameters.
+    \begin{equation}
+        p(y|x) = p(y|f_\theta(x))
+    \end{equation}
+    For classification tasks with K classes, this typically takes the form of a categorical distribution,
+    \begin{equation}
+        p(y=k|x) = \frac{\exp(f_\theta^k(x))}{\sum_{j=1}^K \exp(f_\theta^j(x))}.
+    \end{equation}
+    The optimization objective is to maximize the conditional likelihood
+    \begin{equation}
+        \mathcal{L}(\theta) = \prod_{i=1}^N p(y_i|x_i; \theta)
+    \end{equation}
+    or equivalently, minimizing the negative log--likelihood
+    \begin{equation}
+        -\log \mathcal{L}(\theta) = -\sum_{i=1}^N \log p(y_i|x_i; \theta).
+    \end{equation}
+    This formulation provides a principled approach for both probabilistic classification and regression tasks that dominate HEP analyses.
+    
+    Modern discriminative models in particle physics typically employ neural networks with various architectures tailored to specific data structures.
+    %
+    The most common of these are fully connected networks, traditional deep neural networks with dense connections that transform inputs through a series of nonlinear functions,
+    \begin{equation}
+        y_l = \sigma(W_l y_{l-1} + b_l)
+    \end{equation}
+    %
+    Convolutional Neural Networks (CNNs) are useful for exploiting translational invariance in detector data through localized feature extraction.
+    \begin{equation}
+        y_{l,i,j}^k = \sigma\left(\sum_{m}\sum_{p,q} W_{p,q}^{k,m} y_{l-1,i+p,j+q}^m + b_l^k\right)
+    \end{equation}
+    where \(y_{l,i,j}^k\) represents the output of the \(k-\)th feature map at position \((i,j)\) in layer \(l\).
+    %
+    Recurrent Neural Networks (RNNs) are most often used to capture sequential information in particle trajectories.
+    \begin{equation}
+        y_t = \sigma(W_x x_t + W_y y_{t-1} + b)
+    \end{equation}
+    where \(y_t\) is the hidden state at step \(t\).
+    \subsubsection{Training Dynamics and Optimization}
+        Training discriminative models involves gradient--based optimization with regularization techniques to prevent overfitting.
+        %
+        The cross--entropy loss described in Sec.~\ref{subsec:supervised_learning.statistical_interpretation}, derived from maximum likelihood is the most commonly used loss function to train discriminative models.
+        %
+        In some cases, specialized losses are like focal loss are used address class imbalances in rare physics processes.
+        \begin{equation}
+            L_{focal} = -\sum_{i=1}^N (1-p_i)^\gamma \log(p_i)
+        \end{equation}
+        where \(p_i\) is the predicted probability of the correct class and \(\gamma\) is a focusing parameter.
+
+    \subsubsection{Applications in HEP and Unfolding}
+        Discriminative models serve multiple critical functions in particle physics analyses.
+        \begin{itemize}
+            \item Event Classification: Separating signal from background events, with area under the ROC curve (AUC) values exceeding 0.99 in many recent LHC analyses,
+            \item Particle Identification: Distinguishing particle types based on detector signatures with significantly improved efficiency compared to cut--based methods,
+            \item Jet Tagging: Identifying jets originating from specific particles with significant performance gains over traditional approaches,
+            \item Unfolding: Estimating reweighting functions between detector-level and particle-level distributions, as implemented in OmniFold.
+        \end{itemize}
+        Despite their successes, the use of discriminative models can pose a series of challenges.
+        %
+        Neural network outputs often require calibration to provide accurate probability estimates for downstream statistical analysis.
+        %
+        The performance of discriminative models critically depends on simulation quality, with domain shifts between simulation and data requiring specialized approaches.
+        %
+        These models are typically considerably more complex than their generative counterparts, and may identify features that lack clear physical interpretation.
+        %
+        Quantifying model uncertainties remains challenging, particularly for ensemble approaches, when bootstrapping is computationally unfeasible.
+
+    \subsubsection{Support Vector Machines}
+        SVMs find the maximum--margin hyperplane separating classes by solving the primary optimization problem
+        \begin{equation}
+            \min_{w,b} \frac{1}{2}\|w\|^2 \quad \text{subject to } y_i(w^T x_i + b) \geq 1
+        \end{equation}
+        The dual formulation of this problem leads to the kernel trick, enabling nonlinear decision boundaries:
+        \begin{equation}
+            \max_{\alpha} \sum_{i=1}^N \alpha_i - \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j K(x_i,x_j)\quad\text{subject to }\alpha_i\ge0 \text{and } \sum_{i=1}^N \alpha_i y_i = 0
+        \end{equation}
+        where\(K(x_i,x_j)\) is a kernel function.
+    
+        The choice of kernel dramatically affects SVM performance. The most common choices in particle physics problems are the
+        \begin{itemize}
+            \item Linear Kernel, \(K(x_i,x_j) = x_i^T x_j\), which is efficient for high--dimensional but linearly separable data,
+            \item Radial Basis Function (RBF), \(K(x_i,x_j) = \exp(-\gamma\|x_i-x_j\|^2)\), which is capable of capturing nonlinear detector responses, and
+            \item Polynomial Kernel \(K(x_i,x_j) = (x_i^T x_j + c)^d\), which models polynomial relationships in feature space.
+        \end{itemize}
+        SVMs have been applied across various particle physics processes.
+        %
+        Early applications in the Higgs discovery process demonstrated competitive performance and propelled these models forward in the discourse.\kd{cite}
+        %
+        Around the same time, in analyses involving quark--gluon discrimination, SVMs with RBF kernels achieved discrimination power comparable to dedicated physics--inspired variables.\kd{cite}
+        %
+        Attempts to construct SVMs for unfolding focus on their potential to estimate the density ratio between detector--level and particle--level distributions
+        
+        A persistent roadblock to their more widespread adoption has been the fact that traditional SVM implementations scale poorly with dataset size, \(\mathcal O(n^2)\) to \(\mathcal O(n^3)\).
+        %
+        Unlike deep networks, SVMs also require careful feature selection, and standard SVMs don't provide natural probability estimates, limiting their usefulness.
+
+    \subsubsection{Boosted Decision Trees}
+        Historically one of the most popular models employed in jet physics analyses, Boosted Decision Trees (BDTs) combine weak learners (shallow decision trees) into a powerful ensemble.
+        \begin{equation}
+            F(x) = \sum_{m=1}^M \beta_m h_m(x)
+        \end{equation}
+        where \(h_m\) is the \(m-\)th tree and \(\beta_m\) is its corresponding weight.
+        %
+        Each tree recursively partitions the feature space according to information gain criteria,
+        \begin{equation}
+            \text{Gain} = \text{Impurity(parent)} - \sum_{j \in \{\text{children}\}} \frac{N_j}{N} \text{Impurity}(j)
+        \end{equation}
+        Several boosting algorithms have either been developed specifically for HEP or been employed in HEP analyses.
+        \begin{itemize}
+            \item \textbf{AdaBoost} iteratively reweights misclassified samples.
+            \begin{equation}
+                w_i^{(t+1)} = w_i^{(t)} \cdot e^{\alpha_t \cdot \mathbf{1}(y_i \neq h_t(x_i))}
+            \end{equation}
+            where \(\alpha_t = \frac{1}{2}\ln\left(\frac{1-\epsilon_t}{\epsilon_t}\right)\) and \(\epsilon_t\) is the weighted error rate.
+            \item \textbf{Gradient Boosting} fits each tree to the negative gradient of the loss function with respect to the current prediction.
+            \begin{equation}
+                h_m = \arg\min_h \sum_{i=1}^N L(y_i, F_{m-1}(x_i) + h(x_i))
+            \end{equation}
+            \item \textbf{XGBoost} incorporates second--order derivatives and regularization into the above schema.
+            \begin{equation}
+                \mathcal{L}^{(t)} \approx \sum_{i=1}^n [g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i)] + \Omega(f_t)
+            \end{equation}
+        where \(g_i\) and \(h_i\) are the first and second derivatives of the loss.
+        \end{itemize}
+        
+        BDTs have been extensively deployed in particle physics analyses.
+        %
+        The Toolkit for Multivariate Analysis (TVMA) integrated BDTs into the ROOT framework, cementing their place as a staple in HEP analyses.
+        %
+        BDTs were instrumental in the Higgs boson discovery by improving signal--to--background discrimination.
+        %
+        They can also be used in unfolding tasks, since they can model complex response matrices and estimate reweighting functions
+        
+        Despite their success, BDTs present several challenges, causing them to be eclipsed more recently by deep learning methods.
+        %
+        They struggle with highly correlated features common in detector data, and performance typically degrades in very high-dimensional spaces.
+        %
+        Tree--based models also introduce discontinuities in the mapping function that can complicate uncertainty propagation.
+
+    \subsubsection{Graph Neural Networks}
+        GNNs operate on graph--structured data, represented as\(G = (V, E)\)
+        with nodes \(v_i \in V\) and edges \(e_{ij} \in E\).
+        %
+        The message--passing framework updates node representations through the rule
+        \begin{equation}
+            y_i^{(l+1)} = \phi\left(y_i^{(l)}, \bigoplus_{j \in \mathcal{N}(i)} \psi(y_i^{(l)}, y_j^{(l)}, e_{ij})\right)
+        \end{equation}
+        where \(\phi, \psi\) are learnable functions, \(\mathcal{N}(i)\) denotes neighbors of node\(i\), and \(\bigoplus\) is the permutation--invariant aggregation operator.
+
+        A few different specialized GNN variants have been developed with an eye towards specific physics applications.
+        For example,
+        %
+        Interaction Networks model physical interactions between particles with explicit edge functions.
+        %
+        Dynamic Graph CNNs construct graphs dynamically based on spatial proximity in detector space, and
+        %
+        Particle Flow Networks incorporate physics-informed constraints into the message-passing mechanism.
+        %
+        Similarly, HEP specific objectives functions have also been developed to train GNNs for HEP applications. 
+        %
+        These include node--level classification for identifying individual particles,
+        %
+        graph--level classification for categorizing entire events,
+        %
+        edge prediction for reconstructing particle interaction vertices,
+        %
+        and energy regression for estimating particle energies and momenta.
+
+        Through these specialized architectures and objective functions, GNNs have shown remarkable performance across a range physics use cases.
+        \begin{itemize}
+            \item Jet Tagging: Representing jets as graphs of constituents for improved identification performance
+            \item Event Reconstruction: Modeling entire collision events as interaction graphs
+            \item Tracking: Reconstructing particle trajectories from detector hits
+            \item Unfolding: Learning mappings between detector--level and particle--level observables while preserving physical symmetries
+        \end{itemize}
+        
+        The most significant constraint on the use of GNNs in HEP is their computational complexity.
+        %
+        Message--passing operations scale with graph size and connectivity.
+        %
+        While their ability to naturally handle variable--sized inputs can be incredibly useful, implementing them requires careful batching strategies to maintain the differentiable structure of the network that backpropagation relies on.
+
+    \subsection{Transformer Models}
+        Transformers process sequences through self--attention mechanisms,
+        \begin{equation}
+            \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+        \end{equation}
+        where \(Q, K, V\) are query, key, and value matrices derived from input embeddings.
+        %
+        In HEP applications, self--attention enables modeling various relationships between particles, such as
+        %
+        permutation invariance for the natural handling of varying particle multiplicities,
+        %
+        long--range dependencies, for capturing correlations between distant detector regions,
+        %
+        and interpretable attention maps for visualizing learned physical interactions.
+
+        Transformer models, which revolutionized the field of natural language processing, are increasingly being adopted for complex HEP tasks.
+        %
+        They have been used for jet classification, because they naturally allow the processing of jets as sequences of constituents.
+        %
+        Entire collision events have been modeled with particle transformers, aiding event--level analysis.
+
+        However, despite their potential, some of the characteristics of transformer models have hindered their widespread adoption in HEP.
+        %
+        Self-attention operations scale quadratically with sequence length, constraining the size of attention modules.
+        %
+        Transformer models typically require large training datasets, as a consequence of which, training runs can rarely exceed one epoch.
+        %
+        Hence, while transformers can learn surface level relationships extremely effectively, they are limited in their ability to learn deeper structure that would require multiple passes over each data point to discover.
+
+\subsection{Adversarial Models}
+    Adversarial models leverage the competitive dynamics between two neural networks to achieve powerful generative and discriminative capabilities.
+    %
+    These models have revolutionized high energy physics applications by enabling novel approaches to simulation, unfolding, and domain adaptation.
+    %
+    Fundamentally different from traditional architectures, adversarial models employ a game--theoretic framework that can capture complex, high--dimensional distributions and transformations relevant to particle physics.
+
+    Adversarial models are typically constructed using two competing neural networks, a generator \(g\) and a discriminator \(d\).
+    %
+    The generator attempts to produce outputs that the discriminator cannot distinguish from real data, while the discriminator attempts to correctly classify inputs as either real or generated.
+    %
+    This minimax game is formalized as
+    \begin{equation}
+        \max \min L(d, g) = -\mathbb{E}_{x \sim p_{\text{data}}(x)}[\log d(x)] - \mathbb{E}_{z \sim p_z(z)}[\log(1 - d(d(z)))]
+    \end{equation}
+    where \(p_{\text{data}}(x)\) is the true data distribution, \(p_Z(z)\) is a latent space distribution (typically Gaussian noise), \(g(z)\) maps the latent space to the data space, and \(d(x)\) outputs the probability that
+    \(x\) came from the real data rather than the generator.
+
+    In the context of particle physics, this framework can be extended to incorporate domain--specific constraints and physical laws, leading to specialized variants such as
+    \begin{equation}
+        \max_g \min_d L(d, g) = -\mathbb{E}_{x \sim p_{\text{data}}(x)}[\log d(x)] - \mathbb{E}_{z \sim p_z(z)}[\log(1 - d(g(z)))] + \lambda \mathcal{R}(g)
+    \end{equation}
+    where \(\mathcal{R}(g)\) represents physics--informed regularization terms that enforce conservation laws, symmetries, or other physical constraints, weighted by hyperparameter \(\lambda\).
+    
+    \subsubsection{Generative Adversarial Networks (GANs)}
+    \label{subsubsec:GANs}
+        Generative Adversarial Networks (GANs) represent a fundamentally different approach to generative modeling, employing an adversarial training framework rather than explicit density estimation \kd{cite}.
+        %
+        First introduced by Goodfellow et al. in 2014 \kd{cite}, GANs have revolutionized generative modeling through their ability to produce remarkably realistic samples, particularly for high--dimensional data like images.
+        %
+        By training the two networks simulteneously in the aforementioned minimax game, the generator learns to produce increasingly realistic samples that can fool the discriminator, while the discriminator improves its ability to distinguish real from generated samples.
+    
+        From a theoretical perspective, the GAN objective can be interpreted as minimizing the Jensen--Shannon divergence between the data distribution and the generator distribution \kd{cite}.
+        %
+        Training proceeds by alternating between optimizing the two networks using opposing gradient information, \textit{viz.} \(d\) is updated using gradient descent,
+        \begin{equation}
+            \theta_d \leftarrow \theta_d - \eta \nabla_{\theta_d} L(d, g),
+        \end{equation}
+        and \(g\) is updated using gradient ascent,
+        \begin{equation}
+            \theta_g \leftarrow \theta_g + \eta \nabla_{\theta_g} L(d, g).
+        \end{equation}
+        
+        In equilibrium, the generator produces samples indistinguishable from the real data distribution, and the discriminator outputs a probability of 0.5 for all inputs.
+        %
+        Formally the optimal discriminator computes
+        \begin{equation}
+            d(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}\quad\text{for all } x
+        \end{equation}
+        and the optimal generator perfectly captures the data distribution
+        \begin{equation}
+            p_g(x) = p_{\text{data}}(x)
+        \end{equation}
+        
+        In practice, reaching this optimum can be challenging due to the min--max nature of the objective, leading to training instabilities like mode collapse and oscillations.
+        %
+        For this reason numerous GAN variants have been proposed to address stability issues and enhance performance.
+        %
+        The Wasserstein GAN (W-GAN) \kd{cite} replaces JS divergence with Wasserstein distance, providing more stable gradients.
+        \begin{equation}
+        \max_g\min_{d\in D}\mathbb{E}_{z\sim p_Z(z)} \qty[d(g(z))] - \mathbb{E}_{x\sim p_{\text{data}}(x)} \qty[d(x)],
+        \end{equation}
+        where $D$ is the set of 1-Lipschitz functions.
+        %
+        Conditional GANs \kd{cite} enable conditioning the generation process on auxiliary information, and
+        %
+        Progressive GANs \kd{cite} gradually increases model complexity during training, improving stability and quality.
+    
+        Methods such a \emph{feature matching,} which encourages the generator to match statistics of intermediate discriminator activations,
+        \begin{equation}
+            \mathcal{L}_{\text{feature}} = \|\mathbb{E}_{x \sim p_{\text{data}}}[f(x)] - \mathbb{E}_{z \sim p_z}[f(G(z))]\|_2^2,
+        \end{equation}
+        where \(f(x)\) represents activations from an intermediate layer of the discriminator, and
+        %
+        \emph{spectral normalization,} which controls the Lipschitz constant of the discriminator by normalizing its weights,
+        \begin{equation}
+            W_{\text{SN}} = \frac{W}{\sigma(W)},
+        \end{equation}
+        where \(\sigma(W)\) is the spectral norm of weight matrix \(W\), provide additional tools to avoid training instabilities.
+        %
+        These advances have made GANs more practical for scientific applications like those in particle physics.
+    
+        In high-energy physics, GANs have found diverse applications.
+        \begin{itemize}
+            \item \textbf{Fast detector simulation:} GANs can approximate the mapping from particle-level to detector-level observables, significantly accelerating the simulation process \kd{cite}
+            \item \textbf{Event generation:} GANs can generate collision events, potentially replacing or augmenting traditional Monte Carlo approaches \kd{cite}
+            \item \textbf{Anomaly detection:} Identifying rare or anomalous collision events that deviate from Standard Model predictions \kd{cite}
+        \end{itemize}
+        For unfolding specifically, GANs offer a unique perspective through their ability to learn complex mappings between distributions.
+    
+        GANs are however infamous for their training instability.
+        %
+        The adversarial objective can lead to convergence issues, particularly for the sparse, high--dimensional distributions common in particle physics.
+        %
+        Even when the two networks are well balanced, the minmax optimization can lead to oscillatory behavior rather than convergence.
+        %
+        Another particularly well studied failure mechanism is mode collapse, in which GANs may fail to capture the full diversity of the target distribution, focusing instead on a limited subset of modes.
+        %
+        This occurs when the generator network is too powerful, and discriminator is unable to provide receive gradient information from it.
+        %
+        Conversely, when the discriminator is too powerful and only provides minimal gradient information to the generation, the training stalls due to the vanishing gradients.
+        
+        These challenges have motivated hybrid approaches that combine the strengths of GANs with other novel architectural design choices to use them more effectively for unfolding\kd{cite}.
+    \subsubsection{Conditional Adversarial Networks}
+        Conditional GANs (cGANs) extend the standard GAN by incorporating conditioning information \(y\) into both generator and discriminator,
+        \begin{equation}
+            \max_g \min_d L(d, g) = -\mathbb{E}_{x,y \sim p_{\text{data}}(x,y)}[\log d(x|y)] - \mathbb{E}_{z \sim p_Z(z), y \sim p_{\text{data}}(y)}[\log(1 - d(g(z|y)|y))]
+        \end{equation}
+        This formulation enables the generation of samples conditioned on specific physical parameters, detector configurations, or particle properties.
+        
+        Conditioning information can be in GANs in a few different ways.
+        %
+        Most directly, conditioning information can be concatenated as additional input features
+        \begin{equation}
+             g(z,y) = g_{\theta}([z,y])\quad d(x,y) = d_{\phi}([x,y])
+        \end{equation}
+        Conditional normalization is an approach that involves modulating normalization parameters based on conditioning
+        \begin{gather}
+            \gamma(y) = \text{NN}_{\gamma}(y),\quad\beta(y) = \text{NN}_{\beta}(y),\\
+            \text{CN}(h,y) = \gamma(y) \cdot \frac{h - \mu(h)}{\sigma(h)} + \beta(y).
+        \end{gather}
+        A more recent approach is to incorporate conditioning information instead through Feature-wise Linear Modulation (FiLM) layers, that scale and shift feature maps.
+        \begin{equation}
+            \text{FiLM}(h_i,y) = \gamma_i(y) \cdot h_i + \beta_i(y)
+        \end{equation}
+
+        Conditional GANs provide powerful tools for physics--constrained generation.
+        %
+        In HEP studies, they have been used for
+        \begin{itemize}
+        \item \textbf{Parameterized Simulation:} Generating detector responses across different operating conditions,
+        \item \textbf{Conditional Unfolding:} Correcting detector effects with explicit energy dependence,
+        \item \textbf{Systematic Variation Generation:} Creating samples with varied systematic uncertainties,
+        \item \textbf{Model Parameterization:} Generating samples across theoretical model parameter spaces.
+        \end{itemize}
+
+    \subsubsection{Adversarial Autoencoders}
+        Adversarial Autoencoders (AAEs) combine autoencoder reconstruction with adversarial training.
+        \begin{equation}
+            \mathcal{L}_{\text{AAE}} = \mathcal{L}_{\text{recon}} + \lambda \mathcal{L}_{\text{adv}}
+        \end{equation}
+        where \(\mathcal{L}_{\text{recon}} = \|x - \text{Dec}(\text{Enc}(x))\|^2\) measures reconstruction quality, and \(\mathcal{L}_{\text{adv}}\) is the adversarial loss that forces the encoder's latent space distribution to match the sample distribution,
+        \begin{equation}
+            \mathcal{L}_{\text{adv}} = \mathbb{E}_{z \sim p(z)}[\log d(z)] + \mathbb{E}_{x \sim p_{\text{data}}(x)}[\log(1 - d(\text{Enc}(x)))].
+        \end{equation}
+
+        AAEs are trained in two phases per iteration.
+        \begin{enumerate}
+            \item \textbf{Reconstruction Phase:} Update encoder and decoder to minimize reconstruction error,
+            \item \textbf{Regularization Phase:}
+            \begin{itemize}
+                \item Update discriminator to distinguish between samples from the prior and encoded data,
+                \item Update encoder to fool the discriminator.
+            \end{itemize}
+        \end{enumerate}
+        AAEs have been used especially in applications involving dimensionality deduction, to learn physics--preserving low--dimensional representations;
+        anomaly detection, to identify unusual events through reconstruction errors or latent space deviations; and simulation enhancement, to improving the fidelity of simplified simulations.
+    \subsubsection{Cycle--Consistent Adversarial Networks}
+        Cycle--GANs enable unpaired domain translation through cycle consistency.
+        \begin{gather}
+            \mathcal{L}_{\text{CycleGAN}} = \mathcal{L}_{\text{GAN}}(G, D_Y, X, Y) + \mathcal{L}_{\text{GAN}}(F, D_X, Y, X) + \lambda \mathcal{L}_{\text{cyc}}(G, F)
+        \end{gather}
+        where \(G: X \rightarrow Y, F: Y \rightarrow X\) are mapping functions between domains, and the cycle consistency loss is
+        \begin{gather}
+            \mathcal{L}_{\text{cyc}}(G, F) = \mathbb{E}_{x \sim p_{\text{data}}(x)}[\|F(G(x)) - x\|_1] + \mathbb{E}_{y \sim p_{\text{data}}(y)}[\|G(F(y)) - y\|_1]
+        \end{gather}
+        
+        Cycle--GANs employ two generators and two discriminators.
+        %
+        Generator \(G\): Maps domain \(X\) to domain \(Y\), generator \(F\): maps domain \(Y\) back to domain \(X\), discriminator \(D_X\) distinguishes real \(X\) from generated \(F(Y)\), and discriminator \(D_Y\) distinguishes real \(Y\)from generated \(G(X)\).
+        
+
+        In HEP, Cycle-GANs enable several important applications, such as
+        \begin{itemize}
+            \item \textbf{Sim2Real Translation:} Mapping between simulated and real detector data without paired examples,
+            \item \textbf{Cross-Experiment Translation:} Translating measurements between different experimental setups,
+            \item \textbf{Systematic Variation Generation:} Creating physically plausible variations for systematics studies.
+        \end{itemize}
+    Research addressing the challenges adversarial models pose continues to expand the applicability of adversarial models in particle physics, with recent advances incorporating invariant representations, equivariant architectures, and physics-informed losses to enhance both performance and reliability.
+\section{ML--based Unfolding: Advantages and Challenges}
+Machine learning approaches to unfolding offer several compelling advantages over traditional methods while introducing new challenges that must be carefully addressed.
+%
+This section examines both perspectives to provide a comprehensive view of ML--based unfolding techniques.
+\subsection{Advantages}
+    ML-based approaches excel at capturing patterns in high--dimensional spaces, thereby addressing a fundamental limitation of traditional binned methods.
+    %
+    As the dimensionality of the measurement increases, traditional binning methods suffer from the ``curse of dimensionality"---the number of bins grows exponentially with the number of dimensions, leading to sparsely populated bins and unstable unfolding results.
+    %
+    Neural networks can effectively extract patterns from high--dimensional data with limited sampling, enabling unfolding in previously intractable phase spaces.
+    %
+    By operating directly on event--level data without the need for binning, ML methods also eliminate binning artifacts such as bias and resolution loss.
+    %
+    This is particularly advantageous for observables with complex structures such as resonance peaks or threshold effects, where binning might obscure important features.
+    %
+    Unbinned approaches preserve the full information content of the data and enable more flexible downstream analyses that are not tied to specific binning schemes.
+
+    Neural networks provide inherent regularization through their architecture, training procedure, and hyperparameters.
+    %
+    Unlike traditional methods that require explicit regularization terms (such as Tikhonov regularization) or stopping criteria (as in IBU), the complexity of neural networks can be controlled through architectural choices such as layer width, depth, and activation functions.
+    %
+    This implicit regularization can be more adaptive to the data than explicitly imposed constraints.
+
+    Traditional unfolding pipelines often involve multiple discrete steps that propagate errors and may introduce biases.
+    %
+    ML approaches allow for end--to--end optimization, where the entire unfolding process can be optimized jointly.
+    %
+    This integrated approach can reduce error propagation and potentially improve overall performance by directly optimizing for the quantities of interest rather than intermediate objectives.
+    
+    Once trained, many ML models enable rapid inference on new data without retraining.
+    This ``amortized" inference is particularly valuable in experimental settings where multiple unfolding procedures may need to be performed with different systematic variations.
+    %
+    Methods like Neural Posterior Unfolding provide a function approximation of the likelihood that can be efficiently evaluated for different data configurations, reducing the computational burden compared to traditional methods.
+\subsection{Challenges}
+    ML models, particularly deep neural networks, often function as ``black boxes," making it difficult to interpret their internal workings.
+    %
+    This lack of transparency can complicate validation and uncertainty quantification, which are crucial for scientific measurements.
+    %
+    Establishing robust validation procedures and developing more interpretable ML architectures remains an active area of research.
+
+    While ML models provide implicit regularization, selecting appropriate hyperparameters and architectural elements introduces its own form of regularization tuning.
+    %
+    Unlike traditional methods where regularization parameters have clear physical interpretations, the relationship between neural network hyperparameters and the resulting regularization strength is often less direct.
+    %
+    This can make it challenging to select optimal configurations and compare results across different studies.
+
+    ML--based unfolding methods, like their traditional counterparts, are sensitive to the distribution modeled by the simulation.
+    %
+    Mismodeling in the simulation can lead to biases in the unfolded results.
+    %
+    Some methods, such as OmniFold, employ iterative procedures to mitigate prior dependence, on the individual simulated distributions, but the dependence on the simulated response kernel is unavoidable.
+    
+    Training complex neural networks can require substantial computational resources, especially for high--dimensional problems and large datasets.
+    %
+    The need for multiple training runs to evaluate uncertainties, such as in ensemble methods, further increases the computational burden.
+    %
+    Methods like bootstrapping or Monte Carlo dropout can help estimate uncertainties, but they are still be computationally intensive for at--scale applications.
+    %
+    Propagating systematic uncertainties themselves through ML-based unfolding pipelines while maintaining interpretability presents unique challenges.
+    %
+    Traditional approaches often involve repeating the unfolding procedure with varied inputs to assess systematic effects.
+    %
+    For ML methods, this can mean retraining models multiple times, which besides being computationally expensive, rarely provides any physical insight into the nature of the errors.
+    %
+    Developing efficient methods for systematic uncertainty estimation in ML--based unfolding remains an important research direction.
+
+    A significant challenge in ML--based unfolding is the proper treatment of correlations in the unfolded data.
+    %
+    Traditional covariance matrices for binned methods have clear statistical interpretations, but quantifying correlations in unbinned or high-dimensional unfolded distributions is more complex.
+    %
+    There is no universally accepted unbinned analogue of the correlation matrix.
+    %
+    Nevertheless, these correlations can significantly impact downstream analyses and uncertainty estimation, and therefore cannot be ignored.
+    %
+    Chapter~\ref{chap:unbinned_correlations} will show that event correlations in unfolded data may lead to misestimation of uncertainties when these correlations are ignored, emphasizing the need for careful statistical treatment of unfolded results.
+
+    The field of ML-based unfolding is rapidly evolving, with new methods continuously being developed.
+    %
+    While these innovations offer exciting possibilities for more precise and comprehensive measurements, they must be balanced with the rigorous validation and uncertainty quantification required for scientific results.
+    %
+    As these methods mature, establishing best practices for validation, uncertainty estimation, and systematic assessment will be crucial for their wider adoption in experimental analyses.
+    %
+    The combination of traditional insights with modern ML capabilities presents a promising path forward for addressing the unfolding problem in increasingly complex measurement contexts.
+
+\section{Case Studies: ML Based Unfolding in HEP Analyses}
+
+This section examines how machine learning--based unfolding methods have been successfully applied in recent high energy physics analyses, demonstrating their practical utility and impact on physics measurements.
+
+\subsection{OmniFold}  
+    The OmniFold algorithm has become one of the most widely applied ML--based unfolding methods in experimental particle physics.
+    %
+    The H1 Collaboration at HERA pioneered its experimental use, applying OmniFold to measure multivariate jet substructure observables in deep inelastic electron-proton scattering \kd{cite}.
+    %
+    This landmark analysis demonstrated for the first time that unbinned, ML--based unfolding could be successfully implemented in a high profile experimental measurement
+    %
+    The H1 results showed that OmniFold could handle correlations between multiple observables while maintaining precision comparable to traditional methods but with reduced model dependence.
+
+    Building on this success, the LHCb experiment applied OmniFold to unfold charged particle multiplicity distributions in proton-proton collisions \kd{cite}.
+    %
+    This analysis showcased the method's ability to handle measurements with significant statistical and systematic uncertainties while providing model--independent results across a wide kinematic range.
+    %
+    More recently, ATLAS has employed OmniFold to perform measurements of jet substructure in large--radius jets \kd{cite}.
+    %
+    These measurements benefit particularly from the unbinned nature of OmniFold, as they involve complex multi--dimensional phase spaces where traditional binned methods would either lose information or become computationally intractable. 
+    %
+    Notably, this analysis demonstrated OmniFold's ability to unfold multiple observables simultaneously, preserving correlations that would be lost in separate one-dimensional unfoldings.
+
+\subsection{Neural Posterior Unfolding in Practice}
+    Neural Posterior Unfolding (NPU) represents an emerging direction in ML-based unfolding, combining normalizing flows with Bayesian inference to provide principled uncertainty quantification.
+    %
+    While newer than OmniFold, NPU has shown promise in preliminary studies of jet mass distributions on simulated LHC data\kd{cite}. 
+    %
+    These applications highlight NPU's ability to capture complex posterior distributions and provide natural regularization through its neural network architecture.
+    %
+    A key advantage demonstrated in these studies is NPU's amortized inference capability, which significantly reduces computational costs when performing repeated unfolding procedures for systematic uncertainty evaluation, a crucial consideration for practical experimental analyses.
+    %
+    NPU is discussed in greater detail in Chapter~\ref{chap:npu}.
+    
+\subsection{Invertible Neural Networks for Unfolding}
+    Invertible Neural Networks (INNs) and their conditional variants (cINNs) represent another significant direction in ML--based unfolding.
+    %
+    Unlike discriminative approaches like OmniFold, these models learn bijective mappings between data spaces, offering natural probabilistic interpretations.
+    %
+    The ATLAS collaboration has explored cINNs for unfolding jet measurements, demonstrating their ability to model complex, non-linear detector response functions while maintaining computational efficiency \kd{cite}.
+
+    Bellagente et al. pioneered the application of cINNs to high energy physics unfolding, showing that these models could effectively handle the inverse problem of reconstructing particle--level distributions from detector measurements \kd{cite}.
+    %
+    Their approach leveraged normalizing flows to model the conditional probability of particle--level quantities given detector measurements, providing both point estimates and uncertainty quantification through the learned probability distribution.
+
+    Recent extensions have incorporated physical constraints directly into INN architectures, ensuring that conservation laws and symmetries are preserved in the unfolded results \kd{cite}.
+    %
+    This physics--informed approach has shown particular promise in jet physics applications where momentum conservation and Lorentz invariance provide strong constraints on the unfolded distributions.
+
+    \subsection{Moment Unfolding}
+    Moment Unfolding is a recently proposed method, focusing specifically on unfolding statistical moments of distributions rather than entire spectra \kd{cite}.
+    %
+    This method is particularly valuable when theoretical predictions are at the level of moments rather than differential distributions, as is often the case in QCD calculations.\kd{cite}
+
+    Moment Unfolding employs a GAN--inspired structure with a generator that implements Boltzmann weighting factors to constrain the moments of the unfolded distribution.
+    %
+    By focusing only on a small number of moments, this method provides natural regularization and has demonstrated excellent precision in jet substructure applications where scaling behaviors and moments are of primary interest \kd{cite}.
+
+     Moment Unfolding unfolds statistical moments as a function of another observable (e.g., jet transverse momentum), enabling detailed studies of energy--scale dependence without requiring full spectral unfolding \kd{cite}.
+     %
+     Feature specific methods like Moment Unfolding have the potential to offer precision and computation cost improvements over generalized unfolding methods for comparisons focused on individual features rather than the entire density.
+     %
+     Moment Unfolding is discussed in further detail in \cref{chap:moment-unfolding}.
+
+\subsection{Reweighting Adversarial Networks (RAN)}
+
+    Building on the conceptual framework introduced in Moment Unfolding, Reweighting Adversarial Networks (RAN) extend the methodology to unfold full spectra through an adversarial learning framework \kd{cite}.
+    %
+    RAN implements particle--level reweighting functions guided by detector--level classifiers, enabling non--iterative full spectral unfolding.
+
+    Unlike OmniFold, which requires multiple iterations and separate classifiers at each step, RAN employs a single adversarial training process to determine optimal weights.
+    %
+    This approach offers computational advantages while maintaining performance comparable to iterative methods \kd{cite}.
+
+    RAN has been used to successfully unfolding jet substructure observables in multi-dimensional spaces, on simulated data where its non-iterative nature provides significant computational advantages \kd{cite}.
+    %
+    Studies on real collider examples are left to future work.
+    %
+    Implemented specifically as a Wasserstein GAN, RANs are effective in scenarios with limited detector--level overlap between simulation and data, a challenging regime for other reweighting-based methods \kd{cite}.
+    %
+    Chapter~\ref{chap:ran} delves into more detail about RANs.
+
+\subsection{Schrödinger Bridge Unfolding}
+    The application of Schrödinger Bridge processes to unfolding represents a theoretically elegant approach based on optimal transport theory.
+    %
+    Schrödinger Bridge Unfolding (SBU) \kd{cite} frames the unfolding problem as finding the most likely path between probability distributions under entropy constraints.
+
+    This approach has shown particular promise in handling multi--modal distributions and cases with significant detector non-linearity \kd{cite}.
+    %
+    SBU provides theoretical guarantees on the transport map between detector and particle spaces, offering a principled approach to regularization through its entropic formulation.
+
+    Recent applications have demonstrated SBU's effectiveness in unfolding complex jet structures and rare decay topologies \kd{cite}, with particular strength in preserving multi--modal features that might be smoothed over by other regularization approaches.
+\section{ML Upstream and Downstream of Unfolding}
+\subsection{Uncertainty Quantification in ML Unfolding}
+
+    Robust uncertainty quantification remains a central challenge in ML--based unfolding.
+    %
+    Several recent developments in the field have addressed this challenge specifically.
+    %
+    Bayesian Neural Networks (BNNs) have been applied to unfolding to provide natural uncertainty estimates through posterior sampling \kd{cite}.
+    %
+    These methods capture both statistical and model uncertainties in a unified framework, though at increased computational cost.
+
+    Ensembling techniques have proven effective in practice, with the CMS collaboration implementing ML unfolding with multiple network initializations to estimate modeling uncertainties \kd{cite}.
+    %
+    This approach balances computational feasibility with comprehensive uncertainty estimation.
+    %
+    For unbinned unfolding results, it is important to highlight the importance of accounting for event correlations in downstream analyses \kd{cite}.
+    %
+    Standard statistical procedures that assume independence can significantly misestimate uncertainties when applied to correlated unfolded events, necessitating specialized approaches for uncertainty propagation.
+    %
+    Results demonstrating this, alongside a discussion on uncertainty quantification methods in general are provided in Chapter~\ref{chap:unbinned_correlations}.
+
+\subsection{Hybrid Approaches and Integration with Simulation}
+
+    Hybrid approaches that combine traditional and ML--based unfolding have emerged as popular, pragmatic solutions in experimental settings.
+    %
+    The ATLAS collaboration has explored methods that use ML techniques for response modeling while employing traditional matrix inversion for the actual unfolding step \kd{cite}, leveraging the strengths of both approaches.
+    %
+    Integration of differentiable simulation into the unfolding pipeline represents another promising direction.
+    %
+    By making detector simulations differentiable, these approaches enable end--to--end optimization of the entire measurement chain \kd{cite}.
+    %
+    Early results have demonstrated improved precision and reduced systematic uncertainties, particularly for complex final states.
+
+    Recent work has also explored direct integration of theory predictions into ML-based unfolding \kd{cite}, enabling simultaneous unfolding and parameter fitting.
+    %
+    This unified approach can provide more direct constraints on physical parameters while properly accounting for all experimental effects.
+
+\subsection{Domain Adaptation Techniques for Unfolding}
+    Domain adaptation methods have been applied to address cases where simulation and data distributions differ significantly.
+    %
+    These techniques, adapted from computer vision research, aim to learn domain--invariant features that facilitate unfolding despite simulation--data discrepancies.
+
+    The ALICE collaboration has employed domain adversarial neural networks to perform unfolding in heavy--ion collisions where detector effects are particularly complex and challenging to simulate accurately \kd{cite}.
+    %
+    These methods have shown robustness to modeling uncertainties that would significantly impact traditional approaches.
+    %
+    Similarly, CMS has explored gradient reversal techniques to mitigate simulation biases in unfolding jet measurements \kd{cite}, demonstrating improved robustness to mismodeling effects while maintaining good statistical precision.
+
+\subsection{Equivariant Networks for Physics-Informed Unfolding}
+    Equivariant neural networks, which preserve symmetry transformations by design, have recently been applied to unfolding problems in particle physics.
+    %
+    These architectures incorporate physical symmetries as inductive biases, naturally handling rotational, translational, or permutation symmetries common in physics applications.
+
+    Particle Flow Networks with equivariance properties have shown promise for unfolding jet constituent distributions \kd{cite}, preserving Lorentz symmetry while capturing complex detector effects. 
+    %
+    These approaches leverage the rich structure of jets while respecting fundamental physical constraints.
+    %
+    The LHCb experiment has explored equivariant graph neural networks for unfolding decay topologies \kd{cite}, where the underlying physical process exhibits various symmetries that can be exploited to improve unfolding precision and physical consistency.
+
+    These physics--informed approaches highlight the broader trend toward integrating explicit physical knowledge into ML--based unfolding methods, combining the flexibility of neural networks with the strong constraints provided by fundamental physical principles.
+    %
+    Chapter~\ref{chap:symmetrygan} presents SymmetryGAN, a method that has been used to discover the symmetries which has subsequently been used to inform physics inspired networks.\kd{cite}\kd{cite}\kd{cite}
+\subsection{Machine Learning for Detector Response Modeling}
+    Several recent analyses have employed ML techniques not just for the unfolding procedure itself, but also for modeling the detector response.
+    %
+    The CMS collaboration has explored the use of Generative Adversarial Networks (GANs) to model detector effects in jet measurements \kd{cite}, providing a more flexible and potentially more accurate alternative to traditional Monte Carlo-based detector simulations.
+    %
+    These approaches integrate naturally with ML--based unfolding methods, forming end--to--end pipelines that can be jointly optimized.
+    %
+    Studies have shown that such integrated approaches can reduce systematic uncertainties related to detector modeling, particularly in complex final states with multiple jets or in regimes where traditional simulations are less reliable \kd{cite}.
+
+\subsection{Comparison with Traditional Methods}
+    An important aspect of ML for HEP research is the direct comparison of proposed ML--based methods with traditional unfolding techniques in controlled experimental settings.
+    %
+    The ALICE collaboration performed a systematic comparison of ML--based and traditional unfolding methods in charged particle multiplicity measurements \kd{cite}, finding that ML methods achieved comparable or better precision while handling higher--dimensional observables that would be challenging for traditional approaches.
+    %
+    Similarly, the STAR collaboration applied both OmniFold and traditional Singular Value Decomposition (SVD) methods to unfold jet measurements in heavy-ion collisions \kd{cite}.
+    %
+    Their results demonstrated that ML methods could achieve similar central values but with improved handling of boundary effects and systematic uncertainties.
+
+\subsection{ML Unfolding for Beyond Standard Model Searches}
+    Beyond measuring Standard Model processes, ML--based unfolding has found applications in searches for new physics.
+    %
+    Several analyses have employed these techniques to provide model--independent measurements that can subsequently be interpreted in various theoretical frameworks.
+    %
+    For instance, unbinned unfolding has been applied to searches for resonances in dijet mass distributions \kd{cite}, where traditional binned methods might obscure narrow features.
+
+    The flexibility of ML approaches is particularly valuable in these contexts, as they can accommodate a wide range of systematic variations without requiring extensive recalculation
+    %
+    This adaptability has made ML--based unfolding increasingly attractive for analyses where model independence and systematic robustness are paramount.
+    
+\subsection{Implementation Considerations from Real Experiments}
+    These case studies have revealed important practical considerations for implementing ML--based unfolding in experimental analyses.
+    %
+    One key lesson has been the importance of careful validation procedures.
+    %
+    Experiments typically employ closure tests, linearity tests, and stress tests with modified simulation samples to ensure the robustness of ML unfolding methods \kd{cite}.
+
+    Another practical consideration is computational efficiency.
+    %
+    While ML methods typically require significant resources for training, the optimized implementations that leverage high--performance computing resources make these methods practical for large--scale analyses \kd{cite}.
+
+    Systematic uncertainty evaluation remains a central challenge. Recent analyses have developed methods for efficiently propagating systematic uncertainties through ML unfolding pipelines, often employing ensemble techniques or incorporating uncertainty sources directly into the training procedure \kd{cite}.
+
+\subsection{Impact on Physics Results}
+    The application of ML--based unfolding has had measurable impacts on physics results across multiple experiments.
+    %
+    In jet substructure measurements, these methods have enabled more precise constraints on Monte Carlo tuning parameters \kd{cite}, improving our understanding of fundamental QCD processes.
+    %
+    In heavy--ion physics, they have contributed to more detailed characterizations of the quark--gluon plasma through multi--dimensional particle correlation measurements \kd{cite}.
+
+    Perhaps most significantly, ML--based unfolding has expanded the dimensionality and scope of experimental measurements, enabling analyses that would be impractical with traditional methods.
+    %
+    This has opened new avenues for physics exploration, particularly in areas where correlations between multiple observables carry important physical information making it essential to unfold their joint distributions.
+    %
+    As these methods continue to mature and gain wider acceptance within the experimental community, their impact on the precision and scope of physics measurements at current and future colliders is likely to grow substantially, potentially enabling new insights into fundamental physics processes.

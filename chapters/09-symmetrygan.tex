@@ -1,0 +1,668 @@
+\chapter{Symmetries in Data: Connections to Unfolding Challenges}
+\label{chap:symmetrygan}
+\begin{itemize}
+    \item The role of symmetries in physics and measurement processes
+    \item Statistical definition of dataset symmetries
+    \item SymmetryGAN: Discovering symmetries with adversarial learning
+    \item Application dijet events
+    \item Using symmetry knowledge to constrain unfolding problems
+    \item Symmetry-aware unfolding for improved measurement precision
+\end{itemize}
+\section{Symmetries and Unfolding}
+    \subsection{The Complementary Nature of Symmetry Discovery and Unfolding}
+        Unfolding, as discussed, refers to the inverse problem of inferring underlying truth--level distributions from observed detector--level data, accounting for distortions due to limited resolution and acceptance.
+        %
+        Symmetry discovery, aims to identify invariant transformations of the data, that is to say, operations under which the probability distribution of the dataset remains unchanged in a statistical sense\kd{cite}.
+        %
+        At first glance, these two tasks appear distinct;
+        %
+        one concerns recovering numerical distributions, while the other uncovers structural invariances.
+        %
+        However, symmetry discovery and unfolding are in fact complementary facets of data--driven inference, and integrating the two can yield deeper insights and improved measurements.
+    
+        From a conceptual standpoint, both tasks share the common goal of revealing hidden truth from observed data.
+        %
+        Unfolding endeavours to remove the ``detector mask" and expose the true differential cross section or underlying distribution that generated the measurements.
+        %
+        Symmetry discovery seeks to reveal underlying structures or invariances in the data-—patterns that persist under transformations, reflecting fundamental symmetries of the physical process or the measurement apparatus.
+    
+        In practice, these goals are intertwined.
+        %
+        If one discovers a symmetry in the dataset, that knowledge can constrain the unfolding procedure by reducing the effective degrees of freedom in the solution space.
+        %
+        Conversely, a properly unfolded distribution is expected to manifest latent symmetries that may have been obscured by detector effects in the raw data.
+        %
+        Thus, identifying a symmetry and unfolding a distribution reinforce one another.
+        %
+        The former provides a guiding principle or constraint for the latter, while the latter provides a cleaner canvas on which the former can be observed.
+    
+        Imposing a symmetry as a prior constraint in unfolding can be seen as a form of physically motivated regularization.
+        %
+        For example, architectures that conserve four--momentum or enforce Lorentz invariance by design, as discussed in \cref{chap:ml-for-unfolding}, effectively impose such constraints\kd{cite}, narrowing the set of viable solutions.
+        %
+        By restricting solutions to those that respect a discovered or expected invariance, one reduces the space of admissible unfolded distributions to those that are physically plausible, which leads to improved stability and fidelity of the results\kd{cite}.
+    
+        This principle has been implicitly utilized in classical unfolding and simulation--based calibration.
+        %
+        For example, one could assume certain symmetries such as isotropy or detector uniformity when designing the response matrix or when combining symmetric regions of phase space to reduce uncertainties.
+        %
+        With a data--driven symmetry discovery tool in hand, one need not rely solely on presumed symmetries.
+        %
+        Instead, one can verify them empirically or even discover unexpected invariances.
+        %
+        In turn, these empirically verified symmetries can be fed back into the inference pipeline to sharpen measurements, such that a discovered symmetry can inform the unfolding algorithm so that the final measured distribution upholds the invariance.
+    
+        It is instructive to compare symmetry discovery and unfolding side by side to appreciate their complementary roles.
+        %
+        \cref{tab:unfolding_vs_symmetry} summarizes the differences and points of contact between the two.
+    
+        While unfolding typically requires an explicit model of the measurement process\footnote{e.g. a response matrix or a parametrized detector simulation} and often relies on supervised learning or iterative inversion techniques, symmetry discovery can be pursued in an unsupervised manner, requiring only the dataset and a class of transformations to probe.
+        %
+        The outcome of unfolding is a corrected distribution intended for direct physical interpretation.
+        %
+        The outcome of symmetry discovery is a characterization of invariances, a set of transformations $T$ such that the dataset’s distribution is invariant under $T$ within statistical uncertainties.
+        %
+        These outcomes are different in nature, but they are mutually beneficial.
+    
+        Knowledge of invariant structure can guide numerical inference, and conversely, obtaining a more accurate numerical distribution makes it easier to discern subtle invariant patterns.
+        %
+        In essence, symmetry discovery and unfolding form a feedback loop in the broader endeavour of measurement and inference, where each can improve the other.
+        \begin{table}
+            \centering
+            \caption{Comparison of Unfolding and Symmetry Discovery}
+            \label{tab:unfolding_vs_symmetry}
+            \begin{tabular}{m{0.1\linewidth} | m{0.4\linewidth} m{0.4\linewidth} }
+                \toprule
+                 & \textbf{Unfolding} & \textbf{Symmetry Discovery} \\
+                \midrule
+                \textbf{Goal} & Reconstruct true distribution from observed data & Find transformation(s) which keep the distribution is invariant. \\
+                \midrule
+                \textbf{Input} & Measured data and detector response model & Measured data and a class of candidate transformations.\\
+                \midrule
+                \textbf{Output} & Unfolded differential cross section or probability density,  & Symmetry transformations or invariance properties. \\
+                \midrule
+                \textbf{Physics} & Incorporates known physics via priors or constraints (e.g. smoothness, conservation laws) to regularize solutions. & Incorporates generic transformation families (e.g. rotations, permutations) but does not assume a particular symmetry \textit{a priori}\\
+                \midrule
+                \textbf{Relation--ship} & Produces clearer distribution for true symmetries should manifest, enabling validation or discovery of invariances. & Provides constraints that can regularize unfolding by restricting solution space to symmetry-respecting distributions. \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+    \subsection{Symmetry--Aware Cross Sections}
+        Differential cross section measurements lie at the core of particle physics.
+        %
+        They quantify how often certain processes occur as a function of kinematic variables (such as angles, energies, or invariant masses), serving as detailed tests of theoretical models.
+        %
+        Achieving high precision in these measurements is essential, as even subtle deviations between the measured spectra and theory predictions can signal new physics or the need for refined models.
+        %
+        In this context, symmetries play a pivotal role in both the design and interpretation of cross section measurements.
+
+        Many physical processes come with known symmetry expectations.
+        %
+        For instance, in proton–-proton collisions producing particle jets, one expects azimuthal symmetry about the beam axis, i.e. the physics is invariant under rotations in the plane perpendicular to the beam.
+        %
+        Consequently, the differential cross section should, after correcting for detector non--uniformities, be independent of the absolute azimuthal angle $\phi$ of a jet or dijet system\kd{cite}.
+        %
+        Likewise, for processes initiated by identical colliding particles, one often anticipates a symmetry between forward and backward directions.
+        %
+        In a symmetric proton–-proton collider, this implies that the rapidity distribution of a centrally produced system \footnote{e.g. dijet pair} should be symmetric about zero rapidity\kd{cite}.
+        %
+        Such symmetry means that the cross section for producing a system at rapidity $+y$ is the same as at $-y$, all else being equal.
+        %
+        If a measured differential cross section exhibits a significant asymmetry in these variables after unfolding and acceptance corrections, it would either indicate a previously unaccounted detector bias or hint at a physical effect, both of which are of great interest to investigate.
+
+        Being symmetry--aware in a measurement can mean two things.
+        %
+        First, verifying that expected symmetries are indeed present, within uncertainties, in the data, and second, leveraging those symmetries to improve the measurement.
+        %
+        On the verification side, symmetry considerations provide valuable consistency checks.
+        %
+        Experiments can test whether their unfolded distributions respect fundamental symmetries, and a failure to observe an expected symmetry is a red flag, prompting scrutiny of systematic effects or potential new physics contributions\kd{cite}.
+
+        On the other hand, when a symmetry is confirmed, one can exploit it to gain statistical and systematic advantages.
+        %
+        For example, if a distribution is believed to be symmetric in a certain variable, one can ``augment" or combine data from symmetric regions, effectively doubling the effective statistics for that distribution.
+        %
+        A common practice is to report differential cross sections as a function of $|y|$ or other symmetry--reduced variables, which assumes $y \leftrightarrow -y$ symmetry and thereby reduces statistical fluctuations\kd{cite}.
+        %
+        By incorporating symmetry in this manner, uncertainties can be reduced and the measurement becomes more robust against localized fluctuations.
+
+        Symmetry--aware analysis also serves to impose physically motivated constraints that guard against overfitting noise in the unfolding process.
+        %
+        If one has discovered that a distribution must be invariant under a transformation,\footnote{e.g. rotating the entire event by some angle, or exchanging two identical particles in the final state,} imposing this invariance in the unfolding procedure will tie neural network parameters or bin values together that would otherwise float independently.
+        %
+        This effectively decreases the number of free parameters describing the unfolded result, acting as a regularizer that prefers solutions consistent with the symmetry.
+        %
+        The net effect is an improvement in the precision of the measured cross section and a reduction in spurious oscillatory features that might arise from statistical fluctuations.
+        %
+        Moreover, by reducing the dependence on bins with low occupancy (because they are combined with their symmetric counterparts), binned symmetry-aware unfolding can also mitigate the impact of detector acceptance edges or inefficiencies in specific regions of phase space.
+
+        It is important to note, however, that any symmetry--based constraint should be applied with careful consideration. One must ensure that the symmetry is either theoretically well-founded or empirically validated, lest one impose a false invariance and obscure a genuine asymmetry.
+        %
+        This caution further motivates the need for data--driven symmetry discovery and validation tools.
+        %
+        An experimenter can use methods like SymmetryGAN\kd{cite} to verify whether the data uphold the symmetry to a high degree of confidence.
+        %
+        Only then would one proceed to incorporate that symmetry into the unfolding process or in the presentation of results.
+        %
+        Thus symmetry-aware differential cross section measurements can harness known, or discovered invariances to enhance precision and reliability, while simultaneously providing a framework to detect symmetry violations that could point to new phenomena.
+    
+    The research presented in this chapter builds upon the foundations laid in earlier chapters of this thesis, extending the paradigm of symmetry utilization in the context of measurement and unfolding.
+    %
+    \cref{chap:theoretical-foundations}, in its survey of existing techniques, provides a statistical foundation for incorporating known symmetries into data analyses, for example, by augmenting jet images with rotations to enforce rotational invariance.
+    %
+    It also helps us note the challenges such approaches face, such as the need for smoothing and careful validation of assumptions.
+    %
+    \cref{chap:ml-for-unfolding} includes references to how \textit{a priori} known symmetries can be hard coded into machine learning models, introducing Lorentz group equivariant networks that guarantee Lorentz invariance in the unfolding of particle physics data\kd{cite}.
+    %
+    The inclusion of symmetry constraints in unfolding models described in \cref{chap:npu,chap:moment-unfolding,chap:ran} through preserving physical invariants like momentum or charge conservation in the generative model would reduce the solution space and lead to more physically plausible unfolded results\kd{cite}.
+    %
+    All of these strategies rely on prior knowledge of the symmetry.
+    %
+    This chapter shifts to an inference driven approach that provides a novel, flexible, and fully differentiable deep learning based method to discover symmetries directly from data using adversarial learning, which then might allow one to leverage those discovered symmetries to inform the unfolding process.
+    %
+    This perspective emphasizes the overarching theme of the thesis, the interplay of measurement and inference, by using data--driven insights in the form of symmetry discovery to enhance the core measurement task of differential cross section unfolding.
+
+    The remainder of this chapter is organized as follows.
+    %
+    \cref{sec:formalism-and-role} introduces the formal statistical definition of a dataset symmetry, addressing subtleties like Jacobian volume effects via the concept of an inertial reference density.
+    %
+    It also provides a brief overview of the symmetries most relevant to HEP.
+    %
+    \cref{1} presents the SymmetryGAN framework, which employs a generative adversarial network to automatically learn symmetry transformations from data.
+    %
+    \cref{1} validates this approach on illustrative examples and then applies SymmetryGAN to simulated dijet events, demonstrating how it can uncover physically meaningful symmetries in collider data.
+    %
+    \cref{1} discusses how the discovered symmetry information can be used to constrain unfolding problems: we outline methods to incorporate symmetry constraints into the unfolding procedure to reduce uncertainties and bias.
+    %
+    In \cref{1}, the chapter introduces a symmetry aware unfolding methodology and discusses how enforcing the symmetries identified by SymmetryGAN can improve the precision of differential cross section measurements.
+    %
+    Finally, the chapter concludes by highlighting how the insights gained here connect back to the broader narrative of the thesis, reinforcing the benefits of combining machine learning driven discovery with principled measurement techniques.
+\section{Formalism and Importance}
+\label{sec:formalism-and-role}
+    In physics and statistics, a symmetry refers to an invariance of a system or dataset under a well-defined transformation.
+    %
+    Formally, let $G$ be a group of transformations (continuous or discrete) acting on a space of states or observations $X$.
+    %
+    A physical system or probability distribution is symmetric under $G$ if applying any transformation $g \in G$ leaves the relevant observables unchanged.
+    %
+    In group--theoretic terms, there exists an action $g: x \mapsto g(x)$ such that for all $x \in X$ and $g \in G$, the value of an function $O(x)$ remains equal to $O(g(x))$.
+    %
+    However, if $p(x)$ denotes a probability density on $X$, a group $G$ is a symmetry of \(p\) if
+    \[
+        \forall g \in G \; p(x) \; \dd x = p(g(x)) \; \dd(g(x)).\kd{PhysRevD.111.072002}
+    \]
+    In measure--theoretic language, a symmetry corresponds to an invariant measure.
+    %
+    For any measurable subset $A \subseteq X$ and any transformation $g$, \(g\) is a symmetry of \(A\) if $\mu(A) = \mu(g\cdot A)$, meaning the measure assigned to outcomes in $A$ is the same as that for the transformed set $g\cdot A$.
+    %
+    This definition encompasses both continuous symmetries\footnote{Lie groups, such as rotations depending on a continuous angle parameter} and discrete symmetries \footnote{groups constructed as Jordan--H\"older extension\kd{Michael Aschbacher (2004)} e.g. a mirror reflection or a permutation of identical objects}.
+    %
+    Symmetry principles lie at the heart of modern particle physics and also strongly influence experimental measurements.
+    %
+    At the theoretical level, fundamental symmetries constrain the form of physical laws and often correspond to conserved quantities or selection rules.
+    %
+    At the data level, symmetries, and their breaking, shape the distributions of observed events and can be leveraged for more efficient data analysis.
+    %
+    In the context of colliders, many observables are governed by symmetries of the underlying theory as well as symmetries introduced by the detector and measurement process.
+    %
+    It is therefore crucial to articulate how these symmetries operate both in ideal physics scenarios and in real observations.
+    %
+    This section provides a rigorous overview of symmetries relevant to collider physics and measurements.
+    %
+    It begins with the fundamental symmetries in particle physics that underlie observable phenomena in \cref{subsec:hep-symmetries}.
+    %
+    \cref{subsec:detector-symmetries} discusses symmetries in detector response functions and how the measurement apparatus can preserve or violate underlying invariances.
+    %
+    Next, \cref{subsec:cross-section-symmetries} examines how symmetries manifest in measured cross sections and data distributions, clarifying the translation from physical symmetry to statistical patterns in experimental histograms.
+    %
+    Finally, \cref{subsec:noisy-symmetries} highlights the challenges in identifying symmetries from noisy data, setting the stage for data--driven symmetry discovery techniques.
+    %
+    This foundation will be essential for later sections that introduce methods like SymmetryGAN for learning symmetries from data.
+
+    \subsection{Fundamental Symmetries in HEP}
+    \label{subsec:hep-symmetries}
+        Particle physics is built upon a framework of symmetries that determine the allowed forms of interactions and the conservation laws observed in experiments.
+        %
+        Spacetime symmetries, in particular subgroups of the Poincaré group, are foundational.
+        %
+        The Poincaré group includes continuous Lorentz invariance (rotations and boosts) and translations (in space and time).
+        %
+        Lorentz invariance implies that the laws of physics take the same form in any inertial reference frame.
+        %
+        Equivalently, physical observables can be expressed in terms of Lorentz-‐invariant quantities\footnote{e.g. invariant masses, angles, and dimensionless ratios} that remain unchanged under boosts or rotations.
+        %
+        For example, the Mandelstam variables $s$, $t$, $u$ in a scattering process or the decay angle distribution in a particle’s rest frame are formulated to respect Lorentz symmetry.
+        %
+        In practice, exact Lorentz invariance means there is no preferred direction or absolute velocity in the underlying theory.
+        %
+        A given collision process should yield identical outcomes whether the laboratory frame is, say, Earth--bound or boosted to a constant velocity.
+        %
+        As a consequence of Lorentz symmetry and spatial isotropy, angular momentum and linear momentum are conserved in isolated systems\footnote{Noether’s theorem associates these conservations with rotational and translational symmetry, respectively \kd{cite}}.
+        %
+        Additionally, time translation symmetry leads to energy conservation, ensuring that system's total energy and the collision centre--of--mass energy are fixed constants of motion.
+        %
+        These spacetime symmetries are exact symmetries of all known fundamental interactions and provide the basis for defining covariant formalisms in quantum field theory.
+
+        Beyond spacetime, the internal symmetries of the Standard Model dictate the spectrum of particles and their interactions.
+        %
+        Chief among these is the gauge symmetry group $SU(3)_C \times SU(2)_L \times U(1)_Y$, which defines quantum chromodynamics and electroweak theory.
+        %
+        Gauge symmetries are local symmetries that require the introduction of gauge bosons;
+        %
+        although these are internal symmetries rather than symmetries of observable spacetime, they have observable consequences such as charge conservation, associated with $U(1)_Y$ hypercharge symmetry and electric charge, and the existence of multiple particle generations.
+        %
+        The gauge symmetries of the Standard Model are spontaneously broken in certain cases.\footnote{One of the most notable examples is the electroweak $SU(2)_L \times U(1)Y$ breaking to $U(1)_{\text{EM}}$ via the Higgs mechanism, which introduces masses for the $W^\pm$ and $Z$ bosons and differentiates the electromagnetic and weak interactions.}
+        %
+        However, even broken symmetries leave remnant effects, such as the custodial symmetry in the Higgs sector or approximate conservation of isospin in QCD.
+        %
+        These internal symmetries set selection rules.
+        %
+        Processes that violate gauge charge conservation are forbidden and decays proceed only via symmetric channels.
+
+        Alongside continuous symmetries, several discrete symmetries play a crucial role in particle physics.
+        %
+        The most prominent are C (charge conjugation, exchanging particles with their antiparticles), P (parity, spatial inversion or mirror reflection), and T (time reversal).
+        %
+        Each of these can be considered a transformation that might leave the fundamental laws invariant.
+        %
+        In the Standard Model, CP symmetry is approximately a symmetry of electromagnetic and strong interactions, but notably broken in weak interactions.
+        %
+        This manifests as differences in the behaviour of matter and antimatter.
+        %
+        Like most notable instance of this is the well known CP violation in neutral kaon and $B$-meson decays means those processes occur at different rates or with different phase relationships than their CP-mirrored counterparts.\kd{}
+        %
+        If CP were an exact symmetry of the dynamics, one would expect, for example, the angular distribution of decay products in a mirror--reflected process, swapping particles for antiparticles, to be identical to the original.
+        %
+        The observed deviations are vital clues to physics beyond simple symmetries.
+        %
+        Parity by itself is also violated maximally in the weak interaction.\footnote{ classic examples are the left handed nature of neutrinos and the parity asymmetric angular distribution of electrons in polarized $^{60}$Co beta decay \kd{cite}.}
+        %
+        On the other hand, the strong and electromagnetic interactions conserve parity, so for many processes, especially at high energies where electroweak effects are subdominant, it is a good symmetry.
+        %
+        A collider process governed by QCD, like multijet production, should occur equally in a configuration and its mirror reflected image, unless the experimental setup selects a handedness.
+        %
+        Charge conjugation is likewise not a symmetry of the full Standard Model, since, for example, there are no right--handed neutrinos to pair with left--handed ones under C, but for purely electromagnetic processes C--symmetry implies, that producing a negatively charged particle is as likely as producing the corresponding positively charged antiparticle under equivalent conditions.
+        %
+        Importantly, the combination CPT is believed to be an exact symmetry of local quantum field theory.
+        %
+        CPT symmetry implies, for instance, that particle and antiparticle masses and lifetimes are exactly equal \kd{cite}.
+        %
+        While CPT is not directly tested by single distribution symmetries in colliders, it provides a fundamental consistency check on any observed CP or T violation. \cref{tab:fundSymSummary} summarizes these fundamental symmetries, their group-theoretic character, and their status in the Standard Model.
+        \begin{table}
+            \centering
+            \caption{Summary of key fundamental symmetries relevant to collider observables.
+            %
+            ``Charge'' refers broadly to conserved / constrained quantities via Noether's theorem or selection rules.
+            %
+            “Status in the SM” indicates whether the symmetry is exact, approximate, or broken at tree level.
+            }
+            \label{tab:fundSymSummary}
+            \begin{tabular}{m{0.12\linewidth} M M m{3cm}m{2cm}}
+                \toprule
+                \textbf{Symmetry} &
+                \textbf{Group} &
+                \textbf{Charge} &
+                \textbf{Observables} &
+                \textbf{Status in SM} \\
+                \midrule
+                \textbf{Lorentz} &
+                    SO(3,1) &
+                     x^\mu p^\nu - x^\nu p^\mu &
+                    Invariant masses, angular distributions &
+                    Exact \kd{cite} \\
+                \textbf{Trans\-lation} &
+                    \mathbb{R}^{1,3}&
+                    p^\mu &
+                    Missing–$p_T$&
+                    Exact \kd{cite} \\
+                \textbf{Gauge} &
+                    \text{\footnotesize{$SU(3) \times SU(2) \times U(1)$}}&
+                    \text{hypercharges} &
+                    Color flow in jets; $W$ charge asymmetry; lepton universality &
+                    Exact locally \kd{cite} \\
+                \textbf{Electro\-weak breaking} &
+                    \langle H\rangle \neq 0&
+                    M_W, M_Z    &
+                    \(M_W, M_Z, \frac{M_W}{M_Z}\) &
+                    Broken\kd{cite} \\
+                \textbf{C} &
+                    q^\pm \leftrightarrow \bar{q}^\mp&
+                    \alpha_{q^\pm} \;\text{vs.} \;\alpha_{\bar{q}^\mp}&
+                    $\frac{e^+}{e^-}; \frac{\mu^+}{\!\mu^-}$ &
+                    Conserved in EM/QCD; violated in weak \kd{cite} \\
+                \textbf{P} &
+                    \vec{x} \to -\vec{x} &
+                    \text{handedness} &
+                    lepton asymmetry in $\beta$-decay &
+                    Conserved in EM/QCD; maximally violated in weak \kd{cite} \\
+                \textbf{CP} & C+P&
+                    \text{CKM matrix} &
+                    $B$-meson asymmetry; electric dipole moments &
+                    Approx. broken \kd{cite} \\
+                \textbf{T} &
+                    t \to -t &
+                    \text{QFT amplitudes} &
+                    EDM searches; K meson $T$-violation &
+                    Broken if CP broken \kd{cite} \\
+                    \textbf{CPT} &
+                        C + P + T &
+                        m, \tau_{q^\pm} \;\text{vs.} \;\tau_{\bar{q}^\mp}&
+                        $m_{p}\!=\!m_{\bar p}$, $\tau_\mu\!=\!\tau_{\bar\mu}$ &
+                        Exact \kd{cite} \\
+                \textbf{Permutation} &
+                    S_n/A_n &
+                    \text{Bose/Fermi stats.} &
+                    Jet ordering; boson correlation &
+                    Exact \kd{cite} \\
+                \bottomrule
+                \end{tabular}
+            \end{table}
+            
+            Beyond the Standard Model’s built in symmetries, there are approximate global symmetries that often prove useful in collider physics.
+            %
+            Examples include isospin symmetry, an $SU(2)$ symmetry treating up and down quarks as identical in the limit of equal masses, and flavour symmetries, like the $SU(3)$ of the light $uds$ quarks, which are not exact, but underlie patterns in hadron production and decay.
+            %
+            For instance, isospin symmetry implies that processes differing only by swapping an up quark with a down quark, such as producing a proton versus a neutron, have nearly equal cross sections, up to corrections from the up--down mass difference or electromagnetic effects.
+            %
+            Similarly, the universality of physical laws under interchange of identical particles leads to permutation symmetry.
+            %
+            If two particles of the same type appear in a final state, the probability distribution is invariant under exchanging them.
+            %
+            In quantum terms this is enforced by (anti)symmetrization of identical particle states.
+            %
+            In collider observables, permutation symmetry means that one cannot physically distinguish, say, which of two identical jets in an event is “jet 1” or “jet 2”---any labelling is arbitrary and the underlying physics treats the two jets on equal footing.
+            %
+            When calculating cross sections, this symmetry is accounted for by dividing by the a symmetry factor to avoid over counting identical configurations.
+            %
+            We will see that in data analysis one often has to impose an ordering, such as “leading” and “subleading” jet by momentum, for convenience, but the fundamental permutation invariance implies that any physical conclusion should not depend on this arbitrary ordering.
+
+            In summary, fundamental symmetries, Poincaré (Lorentz and translations), gauge invariances, and discrete symmetries like C, P, CP, as well as permutation invariance for identical particles, provide a set of invariance principles for particle interactions.
+            %
+            These symmetries constrain the form of theoretical cross sections and transition rates.
+            %
+            Many measurable quantities in colliders such as cross sections, angular distributions, etc., either reflect these symmetries, when they hold, or provide avenues to detect symmetry breaking when deviations from the expected invariant patterns are observed.
+            %
+            However, the symmetries of nature at the fundamental level are not always manifest in what detectors actually record.
+            %
+            We next turn to how the detector response and measurement process can modify or obscure these symmetries.
+
+    \subsection{Symmetries in Detector Response Functions}
+    \label{subsec:detector-symmetries}
+        A detector response function $r(x|z)$ describes the probability of observing a measurement outcome $x$ given a true particle-level state $z$.
+        %
+        This encapsulates effects of limited efficiency, acceptance, and resolution of a detector.
+        %
+        An ideal detector with perfect coverage and resolution would preserve all physical symmetries present at the particle level.
+        %
+        In reality, detectors often break or reduce symmetries that the underlying physics possesses.
+        %
+        Understanding which symmetries are preserved, approximated, or lost in $r(x|z)$ is crucial for interpreting measured data.
+        %
+        Here we discuss several common invariances and how they are affected by realistic collider detectors in their response.
+
+        \subsubsection{Spatial Uniformity and Rotational Symmetry}
+            Most collider detectors are designed with a roughly cylindrical geometry around the beam axis, aiming for azimuthal symmetry.
+            %
+            Hence they provide close to uniform coverage in the plane around the beam.
+            %
+            In an ideal scenario, if the physical process yields a uniform distribution in the azimuthal angle $\phi$ (i.e. no preferred direction around the beam line), a perfectly symmetric detector would register an equal number of events in each azimuthal segment.
+            %
+            In practice, small asymmetries creep in.
+            %
+            For example, the detector may have support structures or cabling at certain angles, or irregular segmentation, leading to variation in efficiency with $\phi$.
+            %
+            The electromagnetic calorimeter (ECAL), as an illustration, might be segmented into modules that cover specific $\phi$ slices.
+            %
+            Given this, events falling into the gap between modules could be recorded with lower efficiency or energy resolution, creating a slight $\phi-$dependence in the observed data even if the true distribution was uniform.
+            %
+            Detectors often have periodic segmentation, meaning continuous rotational invariance is broken down to a discrete rotation symmetry, invariant only under rotations corresponding to full module spacings.
+            %
+            As a concrete example, imagine a detector with 360 identical modules each covering $\Delta\phi = 1^\circ$.
+            %
+            This detector is invariant under rotation by 1--degree increments, but a rotation by an arbitrary angle (say $0.5^\circ$) would lead to a different alignment of a particle’s trajectory with respect to module boundaries, yielding a measurably different response.\kd{PhysRevD.111.072002}
+            %
+            Thus, the continuous symmetry is lost to a discrete one, and even that discrete symmetry may be imperfect if modules are not exactly identical or have time varying efficiency.
+            %
+            Thus azimuthal symmetry at the physics level is usually preserved approximately by detector design, but slight non-uniformities in $\phi$ response are common and must be accounted for either via calibration or acceptance corrections.
+
+        \subsubsection{Polar Coverage and Boost Invariance}
+            Collider detectors also have limited coverage in the polar direction, along the beam axis.
+            %
+            No real detector covers the full $4\pi$ solid angle;
+            %
+            there is always a cut--off at some polar angle (or pseudorange $\eta$) beyond which particles escape detection.
+            %
+            In particular, the forward regions close to the beam are notoriously difficult to instrument.
+            %
+            This breaks the full spherical symmetry of space.
+            %
+            A process that is symmetric under arbitrary rotations, such as a perfectly isotropic decay in its rest frame, will not appear isotropic in the laboratory measurement if a significant portion of the solid angle is unobserved.
+            %
+            Detectors are typically symmetric under rotations about the beam axis but not under arbitrary rotations that tilt the beam axis, because the beam direction is a fixed axis of symmetry.
+            %
+            In effect, the presence of incoming beams singles out a preferred direction, the beam axis $\hat{z}$, and detectors are built around this axis. Consequently, the data may reflect cylindrical symmetry, invariant under \(SO(2)\) rotations around $\hat{z}$, but not full $SO(3)$ rotational symmetry.
+            %
+            This also connects to Lorentz boost invariance.
+            %
+            While the underlying physics is Lorentz invariant, the detector is a fixed apparatus in one frame.
+            %
+            A boost along the beam direction i.e. a change of reference frame moving with respect to the collision will generally change how events are distributed relative to the detector acceptance.
+            %
+            For instance, consider a boost that causes particles to have higher longitudinal momentum;
+            %
+            in the lab frame, more particles will end up at small polar angles, closer to the beam line, where detection efficiency is lower, thus the observed distribution of, say, pseudorapidity $\eta$ will shift.
+            %
+            The detector has a finite acceptance in $\eta$, so a Lorentz boost that moves events into the far forward region will result in a fraction of events being lost.
+            %
+            Therefore, the measured distributions are not invariant under Lorentz boosts, even though the underlying parton--level kinematics can be expressed in Lorentz--invariant terms.
+            %
+            Thus the physical construction of detectors break global translational and boost symmetry by virtue of being static and having edges.
+            %
+            the data in the lab frame privileges the specific frame in which the detector is at rest.
+            %
+            A high energy collision viewed in a different inertial frame is physically identical, but the detector at rest will record it differently unless one corrects for acceptance and inefficiencies.
+
+        \subsubsection{Resolution Effects and Approximate Invariance}
+            Even if a symmetry could hold in principle, the resolution and threshold effects of detectors often spoil exact invariance.
+            %
+            A salient example arises with Lorentz invariance and invariant mass reconstruction.
+            %
+            As a thought experiment, imagine a two--body decay producing a pair of muons, such as $Z^0 \to \mu^+\mu^-$.
+            %
+            The true invariant mass of the muon pair is fixed, irrespective of the $Z$ boson’s momentum, because this is simply a Lorentz scalar.
+            %
+            However, a detector measures muon momenta with finite precision, and that precision typically degrades at high momentum\footnote{tracking detectors determine momentum from curvature in a magnetic field, which becomes very small for high momentum muons, leading to larger relative uncertainty in the measurement.}.
+            %
+            If a $Z$ boson is produced nearly at rest in the lab, its decay muons have moderate momenta and the detector might reconstruct the invariant mass with a narrow resolution.
+            %
+            If instead a $Z$ is produced with a large boost, the muons each have higher lab--frame momenta, and the detector’s momentum resolution broadens the reconstructed mass distribution.
+            %
+            The result is that the distribution of reconstructed $m_{\mu\mu}$ for boosted $Z$ events is broader (and potentially biased) compared to that for non--boosted events.
+            %
+            Thus, a Lorentz boost, which should not matter to an ideal measurement, actually changes the statistical distribution of an observable due to detector response.
+            %
+            This is an example of an approximately respected symmetry.
+            %
+            At low boost the symmetry holds well, but at high boost the symmetry is effectively broken by detector effects.
+            %
+            Similarly, thresholds in detector sensitivity (e.g. a calorimeter that only records energy above some minimum) can break symmetry under transformations that redistribute energy.
+            %
+            A detector that is be equally efficient for electrons and positrons, suggesting C-symmetry in detection.
+            %
+            However, if a process produces a wide spectrum of energies, a cut on low--energy particles could cause a difference.
+            %
+            More low-energy $e^+$ are likely to be lost than $e^-$ due to different interaction rates with material.
+            %
+            In such cases, even a symmetry of the physics might not result in equal measured counts.
+
+        \subsubsection{Detector Mirror and Charge Symmetry}
+            Detectors are not usually built to be fully symmetric under parity inversion or charge conjugation, even though we often assume these symmetries for the relevant physics should reflect in data.
+            %
+            A parity inversion would swap what we call “forward” and “backward” directions in the detector.
+            %
+            If the detector has identical coverage in the forward ($+z$) and backward ($-z$) hemispheres, one could say it is parity--symmetric with respect to the interaction point.
+            %
+            Many detectors strive for this by having symmetric endcaps on both sides of the interaction region.
+            %
+            However, even then, subtle asymmetries can exist because it is not feasible to prevent one side from having a slightly different material distribution or a different calibration from the other.
+            %
+            As a result, a process that is forward-backward symmetric in physics\footnote{In $pp$ collisions at the LHC, the two beam directions are equivalent so the distribution of particles as a function of rapidity $y$ should be symmetric about $y=0$} might show a small forward-backward asymmetry in the raw data if.
+            %
+            Experiments typically correct for such differences by equalizing calibrations, but the intrinsic detector response can break the symmetry.
+            %
+            Likewise, charge conjugation symmetry in detection would mean the detector is equally sensitive to positive and negative charges.
+            %
+            While the detector electronics and geometry generally don’t prefer one charge sign, magnetic fields introduce a notable asymmetry, because charged particles bend in opposite directions, and this can lead to charge--dependent acceptance.
+            %
+            In a magnetic spectrometer, positive particles bend outward in one direction and negatives in the opposite.
+            %
+            If the acceptance boundaries, like the edge of the detector volume, cut off tracks in one curvature direction more than the other, one will observe a difference in detection rates for $+$ vs $-$ even if production is symmetric. %
+            Another example is that the different interaction of $e^+$ and $e^-$ with matter could lead to slightly different detection efficiencies.
+            %
+            These are second-order effects, but they illustrate that a detector is a physical object that need not respect the abstract symmetries of the theory.
+            %
+            Careful simulations and calibrations are performed to quantify and mitigate these asymmetries in collider experiments.
+
+        \subsubsection{Permutation Symmetry and Identical Particles}
+            A subtle aspect of detector response is its effect on permutation symmetry between identical particles in an event.
+            %
+            Physically, as noted, swapping two identical particles should change nothing in an ideal measurement.
+            %
+            Detectors, however, could introduce differences.
+            %
+            Two identical particles (say two photons) that go into different regions of the detector can have their energies might be measured with different resolutions or one might pass quality cuts and the other fail due to region--specific noise. 
+            %
+            s a result, the joint distribution of the two--particle system in the measured data might not be symmetric under exchange, even though it was at truth level.
+            %
+            As a simple example, consider two jets in an event where, at the particle level, the probability $P(E_1, \eta_1; E_2, \eta_2)$ is symmetric under $(1\leftrightarrow 2)$.
+            %
+            After detection, suppose jet 1 falls in the central barrel, with excellent energy resolution and jet 2 falls in the forward region, with poorer resolution and lower efficiency.
+            %
+            The measured energies $E_1^\text{(meas)}$ and $E_2^\text{(meas)}$ will have different response smearing.
+            %
+            If one then orders jets by measured energy and calls the highest $E$ jet the “leading” jet, the distribution of leading and subleading jet energy will not mirror one another exactly.
+            %
+            Effectively, the detector--induced asymmetry has assigned labels to the jets where none existed.
+            %
+            Analysts must be wary of these effects;
+            %
+            one option used is to ``symmetrize'' the analysis if possible to recover the permutation symmetry that the physics assures.
+
+        \cref{tab:detectorSym} summarizes a few key examples of how an ideal symmetry at the particle--level can be broken or reduced by detector effects.
+        %
+        These examples illustrate why fully accounting for detector response is essential when testing physical symmetry hypotheses with data.
+        
+        \begin{table}
+            \centering
+            \caption{Ideal symmetry expectations versus typical detector-induced symmetry-breaking effects in collider experiments.}
+            \label{tab:detectorSym}
+            \small
+            \setlength\tabcolsep{4pt}
+            \renewcommand{\arraystretch}{1.15}
+            \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.25\linewidth} X X}
+                \toprule
+                \textbf{Transformation} &
+                \textbf{Ideal Outcome} &
+                \textbf{Detector Effect} \\
+                \midrule
+                Azimuthal Rotation &
+                    Uniform event distribution in azimuthal angle $\phi$;
+                    %
+                    no preferred direction around the ring. &
+                    Slight $\phi$ non--uniformity in measured data due to detector segmentation and gaps.
+                    %
+                    Only invariant under discrete rotations matching module periodicity.\\[2pt]
+                Boost&
+                    Physics unchanged under change of inertial frame;
+                    %
+                    kinematic distributions described in Lorentz-invariant terms. &
+                    Detector at fixed orientation not boost-invariant.
+                    %
+                    Boost pushes more particles into forward regions, worsens some resolutions.
+                    %
+                    Observed distributions depend on the detector rest frame.\\[2pt]
+                Parity&
+                    If interaction is P--symmetric, processes occur equally in mirrored coordinates. &
+                    Detector not mirror--symmetric.
+                    %
+                    Differences between $+z$ and $-z$ hemispheres introduce forward–-backward asymmetries in measured yields;
+                    %
+                    calibrations are required.\\[2pt]
+                Charge Conjugation &
+                    If physics is C--symmetric, particles and antiparticles produced at equal rates with identical kinematics. &
+                    Charge asymmetric response is common.
+                    %
+                    Magnetic bending plus finite acceptance can cause differential detection.
+                    %
+                    Likewise $e^{+}/e^{-}$ or $\mu^{+}/\mu^{-}$ efficiencies can differ, biasing measured particle/antiparticle counts.\\[2pt]
+                Permutation/Re-labelling&
+                    Complete symmetry under exchange;
+                    %
+                    the joint distribution $P(z_1,z_2)$ is invariant if two identical particles' momenta or labels are swapped. &
+                    Measured joint distributions can change upon swapping when the two objects land in detector regions with different responses.
+                    %
+                    A jet in the central region and one forward suffer different energy smearing than the opposite arrangement.
+                    %
+                    Imposing an arbitrary ordering (leading/sub=-leading) can hide the underlying symmetry.\\
+                \bottomrule
+            \end{tabularx}
+        \end{table}
+        Despite these challenges, experimentalists strive to design detectors with as much symmetry as feasible and to correct for known asymmetries.
+        %
+        For instance, collider detectors often have nearly full $2\pi$ azimuthal coverage and layered symmetries, segmenting in $\phi$ and $\eta$ uniformly, specifically to preserve rotational invariance and facilitate combining data over symmetric regions.
+        %
+        Detector simulation and calibration are used to quantify symmetry breaking.
+        %
+        If a $\phi-$dependence is observed in calibration data, it can be corrected so that the final analysis treats those variations as a systematic uncertainty or removes them.
+        %
+        Nonetheless, the reality remains that physical symmetries can fail to translate into measured symmetries.
+        %
+        In the language of probability distributions, if $p(z)$ is invariant under transformation $T$, but the response $r(x|z)$ is not invariant in the corresponding way, then the folded distribution $p(x) = \int r(x|z)\,p(z),\dd z$ will not be invariant under $T$ applied to $x$.
+        %
+        Only if both $p_{\text{truth}}$ and $r$ share the symmetry $T$ will $p_{\text{data}}$ exhibit it.
+        %
+        This conceptual understanding is vital when one interprets measured cross sections and tries to infer or discover symmetries from data.
+        %
+        One must always ask: is an observed symmetry or asymmetry coming from the physics, or from the detector?
+
+    \subsection{How Symmetries Manifest in Measured Cross Sections}
+    \label{subsec:cross-section-symmetries}
+        Given the above considerations, one can now examine how symmetries and symmetry violations are reflected in the measured cross sections and distributions that experimentalists actually record and report.
+        %
+        A measured cross section differential in some observable is effectively a statistical aggregate of many collision events, after selection cuts and corrections.
+        %
+        If the underlying physics possesses a symmetry, one might expect the differential cross section to reflect that, provided the measurement process does not hide or distort it.
+        %
+        In reality, what one observes in histograms is often a mixture of genuine physical symmetry patterns and effects of detector acceptance or sample selection.
+        %
+        Understanding this mixture allows one to correctly interpret distributions and, when possible, to unfold the data to reveal the true symmetry.
+
+        Exact Symmetries and Flat Distributions: A classic hallmark of a symmetry in a distribution is a flat or repeated pattern indicating invariance. For example, consider azimuthal invariance in a proton–proton collision: since the colliding protons provide a cylindrically symmetric initial state (two identical beams head-on), no physics process at the parton level prefers a particular $\phi$ direction. Consequently, the true differential cross section $\frac{d\sigma}{d\phi}$ for an inclusive process is constant in $\phi$ (aside from tiny QED effects or residual detector magnetization influences, which are negligible for most processes). If the detector has uniform $\phi$ coverage and the analysis has no $\phi$-dependent cuts, the measured distribution of events vs. $\phi$ should be approximately flat. Experimental papers often show, as a validation, that the event rate as a function of $\phi$ is uniform, confirming both the expected symmetry and a well-behaved detector. Any significant deviation from flatness might indicate an instrumental problem or a selection bias. In practice, one might combine data from all $\phi$ slices (since they are equivalent) to improve statistical precision – effectively using the symmetry to gather more data. However, as noted, small modulations can appear if, say, certain detector modules were temporarily inefficient; these are corrected or quoted as systematic uncertainties. Another example is rapidities in symmetric collisions: in a $pp$ collider at equal beam energies, the center-of-mass frame coincides with the lab frame, and the process is symmetric under exchanging the two beam directions. This implies that the distribution of particles in rapidity $y$ is symmetric about $y=0$ for processes that do not involve a bias (for instance, pure QCD dijet production should yield a symmetric $d\sigma/dy$ for jets, with equal activity in the forward ($+y$) and backward ($-y$) hemispheres). Indeed, measurements of inclusive jet or hadron yields often present results as a function of $|y|$ or $|\eta|$ (absolute rapidity or pseudorapidity), effectively invoking the symmetry $y \leftrightarrow -y$ to double the statistics and simplify presentation. The physical symmetry (identical proton beams) justifies this, and one checks that within uncertainties the $+y$ and $-y$ distributions are consistent before merging. Thus, a symmetry in initial conditions and dynamics (here, invariance under $y\to -y$) leads to a clear symmetry in the measured cross section (equal yields for $\pm y$). If an unexpected asymmetry were observed (more jets forward than backward), it would either signal new physics (e.g. a CP-violating effect or a bias in parton distribution functions) or, more likely, an issue like a mismodeled detector efficiency gradient.
+
+Symmetries in Kinematic Shapes: Symmetric laws often impose recognizable shapes or constraints in distributions. For example, energy and momentum conservation (stemming from translation symmetry) means that in each event the vector sum of momenta of final-state particles equals that of initial state (in a collider, initial momentum is along the beam, so transverse momentum is conserved to zero). As a result, distributions of total transverse momentum in events tend to peak at zero, and any significant imbalance indicates e.g. undetected particles (which could be neutrinos or detector holes). This is not a symmetry in the sense of a group acting on one event’s space, but rather a deterministic constraint on the ensemble: the distribution of missing momentum should be centered at zero and (for symmetric processes) isotropic in azimuth. Experiments indeed check that the missing transverse momentum vector has no preferred direction – a validation of rotational symmetry and momentum conservation in aggregate. Another case: identical particle symmetry implies that distributions of identical objects are the same. If one measures the transverse momentum spectrum of the first jet vs the second jet in dijet events (with jets ordered by $p_T$), there is no fundamental reason for these spectra to differ except for the ordering bias. The leading jet $p_T$ distribution will be harder (by construction it’s the max), and the subleading softer, but if you look at the two-jet system as an unordered set, any jet is equally likely to be at a given $p_T$ as its partner, aside from that ordering. We can verify manifestation of this symmetry by checking, for instance, that the distribution of subleading jet $p_T$ is similar to the leading jet $p_T$ distribution of a lower-energy subset, etc., or by symmetrizing the dataset (swap jets event-by-event) and seeing no change in overall two-jet correlation distributions. In summary, wherever a symmetry exists, one finds redundancies or equalities in the measured spectra: sections of phase space that should mirror other sections. Experimental analyses often exploit this: e.g. to measure detector backgrounds, one might use symmetry (like $\phi$-symmetry) to assume that an uninstrumented region should have similar counts as a well-instrumented region after normalization.
+
+Interplay of Physical and Detector Symmetries: It is important to disentangle which symmetries in a measured cross section come from physics and which from the way we measure. For instance, an analysis might impose a cut that itself introduces a symmetry or asymmetry. Suppose we require an event to have at least one jet in the central region ($|y|<2$) for better resolution. This selection is not symmetric under $y\to -y$ if applied unilaterally; it artificially creates an asymmetry (prefer events on one side if not applied carefully). Analysts would then apply the same cut on both hemispheres or otherwise ensure the selection doesn’t bias a symmetric distribution. In contrast, some detector-imposed cuts actually restore symmetry: for example, if one half of the detector had an issue, data from that half might be excluded, resulting in a symmetric acceptance in what remains (albeit with lower overall acceptance). When presenting a measured cross section, experimenters typically correct (unfold) for detector effects back to the particle level to the extent possible. The goal of unfolding is to report a cross section as it would appear with an ideal detector – in other words, to restore the symmetries that belong to the physics by removing the distortions of measurement ￼ ￼. For example, if the raw data show a $\phi$-dependence due to detector inefficiency, the unfolded cross section vs $\phi$ should be flat (with larger uncertainties reflecting the correction). In this sense, symmetries provide a consistency check: if after unfolding one still sees a symmetry violation in a quantity that should be symmetric by physics, it calls into question the unfolding procedure or hints at new physics. Conversely, if a symmetry is expected to be broken by physics (e.g. CP violation causing an asymmetry in some angular distribution), one must be careful to ensure the detector is not faking or hiding that asymmetry. For instance, measuring a forward-backward asymmetry in top quark production (a sign of potential new physics or weak-interaction interference) requires excellent control of any detector differences between the forward and backward directions so that the observed asymmetry can be trusted as physical.
+
+Statistical Symmetry vs Physical Symmetry: We clarify the notion of statistical symmetry in a dataset versus fundamental symmetry. A physical symmetry is a property of the underlying probability law – e.g. truly equal probabilities for events and their transformed versions. A statistical (dataset) symmetry means that the finite sample of observed data appears invariant under some transformation, within the limits of noise. Due to randomness, even if a symmetry holds exactly in the underlying distribution, the binned counts in an experiment will show fluctuations. One might perform a statistical test (such as a chi-square test for uniformity or a Kolmogorov–Smirnov test comparing two mirrored distributions) to assess whether the observed data are consistent with the symmetry. Typically, with large data, one expects the symmetry to become apparent as the fluctuations average out. For example, if $\phi$ invariance holds, any residual deviations of counts vs $\phi$ should diminish as more events are collected (following $\sim 1/\sqrt{N}$ statistical uncertainty scaling). If deviations persist significantly beyond expected fluctuations, that flags either a real symmetry violation or unaccounted systematics. On the other hand, a dataset might exhibit an accidental symmetry within statistical error – for instance, two bins might by chance have equal counts, but that doesn’t imply a true invariance. Thus, one must be cautious: not every symmetry-looking pattern in data is physically meaningful. We often require a theoretical rationale (or an experimental control sample) to assert a symmetry, rather than declaring it from data alone. This distinction becomes very important when we attempt to discover symmetries from data using algorithms: we need to ensure that what is found is a true invariance of the underlying distribution, not a random coincidence or artifact of finite sampling.
+
+In measured cross sections, genuine physical symmetries typically manifest as robust, reproducible patterns – e.g. symmetry under interchange of identical particles yields consistent cross section relations in different channels, or Lorentz symmetry implies that distributions expressed in invariant variables collapse onto a single curve irrespective of kinematic boosts. When these patterns are obscured, sophisticated analysis is required to reveal them. In some cases, one intentionally searches for hidden symmetries by examining combinations of observables that cancel out asymmetries. For example, one might sum distributions from two complementary datasets (like a detector in two opposite orientations) to cancel a detector asymmetry, hoping to unveil the underlying symmetry. These methods again rely on understanding how symmetries and detector effects superpose.
+
+To summarize this subsection: the measured differential cross sections will reflect physical symmetries if (a) the symmetry is true for the process in question, and (b) the measurement procedure preserves or is corrected for that symmetry. When those conditions are met, we observe equalities or uniformities in distributions corresponding to the invariances. When symmetries are broken – either by nature or by measurement – we observe asymmetries, which can be rich with information but require careful interpretation. The next subsection deals with the difficulties of detecting and confirming such symmetry (or asymmetry) signals in the presence of statistical noise and other uncertainties.
+
+\subsection{Challenges in Identifying Symmetries from Noisy Data}
+\label{subsec:noisy-symmetries}
+
+Identifying symmetries in experimental data is not always straightforward. Noisy data, stemming from finite statistics, background processes, and detector imperfections, can obscure or mimic symmetry signals. Here we outline the main challenges one faces in discerning true invariances (or symmetry violations) within collider datasets, and motivate the need for advanced methods (like the SymmetryGAN approach developed later in this work) to address these challenges.
+
+Statistical Fluctuations and False Symmetry/Asymmetry Signals: A fundamental challenge is that any empirical distribution has random fluctuations. If an underlying distribution is perfectly symmetric (say truly uniform in $\phi$), a finite sample will still exhibit some variation across $\phi$ bins. Distinguishing a real asymmetry from a mere fluctuation requires statistical hypothesis testing and usually large event counts. Conversely, an underlying asymmetry can be washed out by limited statistics: e.g. if a subtle CP-violating effect causes a 1% difference in two angular distributions, an experiment with only a few hundred events may not see it above the random noise. This is especially pertinent in searches for new symmetries or violations – the signals are often at the level of small deviations. Moreover, multiple comparisons (examining many possible symmetries) increase the chance that one finds an apparent “symmetric pattern” in some projection of the data purely by chance. For instance, if one looks at dozens of histograms for different variables or slices of data, some might look unexpectedly uniform or equal just due to fluctuations. Thus, the look-elsewhere effect can lead one to wrongly infer a symmetry. Researchers must apply corrections for such effects or verify symmetry findings on independent datasets.
+
+Detector and Background Uncertainties: As discussed, detector effects can induce or conceal asymmetries. Often the largest uncertainties in measuring symmetry come from how well we understand the detector. For example, in measuring a forward-backward asymmetry, uncertainties in the relative efficiency of the forward vs backward region directly translate to uncertainty in the asymmetry observable. If those efficiencies are poorly known, one might attribute a symmetry violation to physics when it is actually due to a detector bias (or vice versa). Similarly, backgrounds – other processes that mimic the signal – might not share the symmetry of the signal. Suppose we are looking for a symmetry in a certain particle decay distribution; if there is a significant background from a different process that does not respect that symmetry, the combined data will appear to break the symmetry even if the signal alone is symmetric. Careful background subtraction or isolation is required. In practice, identifying a symmetry often involves comparing two distributions (e.g. $P(x)$ vs $P(Tx)$ for some transformation $T$) and seeing if they differ. If they do, one must estimate if the difference is due to known systematic effects. This typically demands high-precision calibration. For instance, to confirm CP symmetry in production of particle vs antiparticle to the $10^{-3}$ level, one needs detector efficiencies known to better than 0.1% between positively and negatively charged particle detection – a very challenging precision.
+
+Complex High-Dimensional Data: Collider events are high-dimensional, consisting of many particles with various kinematic attributes. A symmetry might not be evident in any single one-dimensional projection, but rather in a complicated combination of variables. For example, Lorentz invariance is best seen when considering all four-momenta together or invariants like masses; a naive look at just one momentum component might not show it. Permutation symmetry in a multijet event is a property of the joint distribution of all jets’ momenta, not necessarily obvious if one only looks at single-jet spectra. Human observers and simple binning methods can miss such high-dimensional symmetries. This is where machine learning methods become attractive – they can, in principle, detect subtle patterns in many dimensions. However, even ML models need guidance: a generic algorithm might not automatically focus on symmetry, and could be distracted by noise or irrelevant correlations. Ensuring that a learned pattern truly corresponds to an invariance (i.e. the data distribution is unchanged when some transformation is applied) is non-trivial. One challenge is that the space of possible transformations is huge – searching it naively for invariances is intractable. We often restrict attention to physically motivated symmetry transformations (rotations, reflections, boosts, particle exchanges, etc.), but if we did not, an algorithm might “find” bizarre transformations that approximately map the dataset onto itself (especially in presence of noise, where almost any dataset can be mapped to itself with some complicated permutation of events).
+
+Approximate Symmetries and Symmetry Breaking Patterns: Most symmetries in real data are not all-or-nothing; they are approximate. Identifying an approximate symmetry requires quantifying how far the data deviates from perfect invariance. For instance, one might report that a distribution is symmetric to within 5% (meaning the maximal relative difference between $P(x)$ and $P(Tx)$ is 0.05). But that number can depend on how you bin or smooth the data. Noise can fake a small symmetry breaking, but also certain detector effects can cancel out making symmetry appear better than it is. A concrete challenge arises in the context of using symmetry as an analysis constraint: if we assume a symmetry that is only approximate, using it as an exact constraint (for example, forcing a neural network to be invariant) can lead to bias ￼. This has been observed in practice: enforcing exact symmetry in a model when the data actually has a slight asymmetry will cause systematic mismatches ￼. Therefore, identifying symmetries is also about recognizing broken symmetries and quantifying the breaking. In collider physics, we often parameterize symmetry breaking with specific variables (like an asymmetry parameter $A_{\text{FB}}$ for forward-backward asymmetry). The challenge is to estimate such parameters accurately in the presence of noise and nuisance parameters. Multivariate ML approaches can be employed to enhance sensitivity – for example, using a classifier to distinguish data from a symmetry-reflected version of itself. If the classifier cannot tell the difference, the data is likely symmetric; if it can, it exploits some asymmetry. This idea directly connects to adversarial learning for symmetry discovery.
+
+Computational and Methodological Challenges: Scanning for symmetries by comparing all possible pairs of transformed distributions is computationally prohibitive. Traditional methods rely on physically motivated guesses (e.g. “we expect $\phi$ symmetry, so we check $\phi$ distribution”). However, as data volumes grow and analysis spaces become more complex (like particle flow in calorimeter cells represented as images, etc.), we need more automated symmetry-finding. The SymmetryGAN approach alluded to in this thesis is one attempt to automate the discovery of symmetries by leveraging generative adversarial networks. Conceptually, SymmetryGAN will pit a generator (applying candidate transformations) against a discriminator to test if the transformed data looks statistically identical to the original data. If the generator can find a transformation under which the discriminator sees no difference, that transformation corresponds to a symmetry of the data distribution. Implementing this is challenging: the model must search a continuous space of transformations (e.g. rotation by any angle), handle approximate symmetries (maybe the optimal transformation almost, but not exactly, makes data invariant), and avoid trivial solutions (like the identity transformation, which always leaves data invariant but is uninformative). The training process itself must combat noise – the discriminator could key off noise fluctuations, erroneously thinking the data changed under $T$ when it was just randomness. Techniques like regularization, data augmentation, and careful choice of network architecture (e.g. using known equivariances) are needed to make such learning robust ￼ ￼.
+
+In summary, identifying symmetries from noisy collider data requires: (1) sufficient statistics and rigorous statistical tests to differentiate real invariances from fluctuations, (2) precise control of detector systematics to avoid mistaking detector effects for or against symmetry, (3) methods to probe high-dimensional and subtle symmetry patterns that might elude simple binned analyses, and (4) strategies to handle approximate (nearly broken) symmetries in a principled way. These challenges motivate the development of advanced tools like SymmetryGAN, which we will introduce in the next sections. Such tools aim to combine physical insight (what transformations are meaningful) with machine learning’s ability to detect patterns, thereby providing a statistical discovery framework for symmetries. By confronting the issues outlined above – e.g. adversarial training naturally incorporates a high-dimensional comparison between original and transformed data, and can in principle learn to ignore pure noise – SymmetryGAN and similar approaches offer a promising path to unveil symmetries that are latent in complex data. The rigorous understanding of symmetry and symmetry-breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered “symmetry” is physically interpretable and relevant to the challenges of unfolding and analyzing collider data.
