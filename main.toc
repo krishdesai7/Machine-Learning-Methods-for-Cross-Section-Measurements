@@ -1,0 +1,5 @@
+\changetocdepth {4}
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Contents}{ii}{section*.1}%
+\contentsline {chapter}{List of Figures}{iii}{section*.2}%
+\contentsline {chapter}{List of Tables}{iv}{section*.3}%
