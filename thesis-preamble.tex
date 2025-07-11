@@ -1,0 +1,195 @@
+% thesis-preamble.tex
+
+% ============================================================================
+% ENCODING AND FONTS
+% ============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{CrimsonPro}
+\let\oldnormalfont\normalfont
+\def\normalfont{\oldnormalfont\mdseries}
+\renewcommand{\fmfont}{\fontsize{12}{14.5}\selectfont\rmfamily}
+\renewcommand{\fmsmallfont}{\fontsize{12}{14}\selectfont\rmfamily}
+% ============================================================================
+% DOCUMENT LAYOUT AND TYPOGRAPHY
+% ============================================================================
+\usepackage{geometry}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+
+% Microtype for better typography
+\usepackage[protrusion=false, expansion=true, factor=1100, final, 
+            tracking=true, kerning=true, spacing=true, 
+            stretch=40, shrink=10, babel=true]{microtype}
+\microtypecontext{spacing=nonfrench}
+% \SetExtraKerning[unit=space]
+%     {encoding={*}, family={bch}, series={*}, size={footnotesize,small,normalsize}}
+%     {\textendash={800,800},
+%      "28={ ,150},
+%      "29={150, },
+%      \textquotedblleft={ ,150},
+%      \textquotedblright={150, }}
+\SetTracking{encoding={*}, shape=sc}{40}
+\microtypesetup{protrusion=false}
+
+% ============================================================================
+% MATHEMATICS PACKAGES
+% ============================================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{physics}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+
+% ============================================================================
+% GRAPHICS AND VISUAL ELEMENTS
+% ============================================================================
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{xcolor}
+
+\graphicspath{{figures/}{figures/chapter-02/}}
+
+% ============================================================================
+% ALGORITHMS AND CODE
+% ============================================================================
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{listings} % For code listings if needed
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+\usepackage[
+    backend=biber,
+    style=numeric-comp,
+    sorting=none,
+    maxbibnames=99,
+    giveninits=true
+]{biblatex}
+\addbibresource{references.bib}
+
+% ============================================================================
+% HYPERLINKS AND CROSS-REFERENCES
+% ============================================================================
+\usepackage[
+    hidelinks,
+    pdfusetitle,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=1,
+    breaklinks=true,
+    pdfborder={0 0 0},
+    colorlinks=false
+]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\crefname{equation}{Eq.}{Eqs.}
+\crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Table}{Tables}
+\crefname{section}{Section}{Sections}
+\crefname{chapter}{Chapter}{Chapters}
+
+% ============================================================================
+% UTILITIES
+% ============================================================================
+\usepackage{pgffor}
+\usepackage{appendix}
+\usepackage{enumitem} % Better list environments
+\usepackage{siunitx} % SI units
+\usepackage{comment} % Block comments
+
+% ============================================================================
+% CUSTOM COLORS
+% ============================================================================
+\definecolor{darkred}{rgb}{1.0,0.1,0.1}
+\definecolor{darkgreen}{rgb}{0.1,0.7,0.1}
+\definecolor{darkblue}{rgb}{0.1,0.1,0.7}
+\definecolor{commentcolor}{rgb}{0.5,0.5,0.5}
+
+% ============================================================================
+% EDITORIAL COMMANDS
+% ============================================================================
+% For draft versions - remove or comment out for final version
+\newcommand{\kd}[1]{\textbf{\color{darkred}[#1 --KD]}}
+\newcommand{\bn}[1]{\textbf{\color{darkgreen}[#1 --BN]}}
+\newcommand{\todo}[1]{\textbf{\color{darkblue}[TODO: #1]}}
+\newcommand{\note}[1]{\textbf{\color{commentcolor}[Note: #1]}}
+
+% For final version, uncomment these to remove all editorial marks:
+% \renewcommand{\kd}[1]{}
+% \renewcommand{\bn}[1]{}
+% \renewcommand{\todo}[1]{}
+% \renewcommand{\note}[1]{}
+
+% ============================================================================
+% MATHEMATICAL NOTATION
+% ============================================================================
+% Common operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+% Shortcuts
+\newcommand{\inv}{^{-1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\qt}{\widetilde{q}}
+
+% Vectors and matrices
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\boldsymbol{#1}}
+
+% Probability
+\newcommand{\prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
+
+% ============================================================================
+% THEOREM ENVIRONMENTS
+% ============================================================================
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% ============================================================================
+% CUSTOM ENVIRONMENTS
+% ============================================================================
+% Shorthand for equations (use with caution)
+\renewcommand{\[}{\begin{equation}}
+\renewcommand{\]}{\end{equation}}
+
+% Column type for math mode in tables
+\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
+
+% ============================================================================
+% DOCUMENT SETTINGS
+% ============================================================================
+% Paragraph indentation
+\usepackage{indentfirst}
+
+% Caption formatting
+\addtolength{\abovecaptionskip}{\baselineskip}
+
+% Prevent widows and orphans
+\widowpenalty=10000
+\clubpenalty=10000
+
+% Float placement
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.85}

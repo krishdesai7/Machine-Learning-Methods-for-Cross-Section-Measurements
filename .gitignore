@@ -1,1 +1,117 @@
 build
+# LaTeX auxiliary files
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+# Bibliography auxiliary files
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+# Build tool auxiliary files
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# Beamer auxiliary files (if you have presentations)
+*.nav
+*.pre
+*.snm
+*.vrb
+
+# Hyperref
+*.brf
+
+# Listings
+*.lol
+
+# Makeidx
+*.idx
+*.ilg
+*.ind
+
+# Minitoc
+*.maf
+*.mlf
+*.mlt
+*.mtc[0-9]*
+*.slf[0-9]*
+*.slt[0-9]*
+*.stc[0-9]*
+
+# Glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lzo
+*.lzs
+
+# Editor backup files
+*~
+*.backup
+*.bak
+.#*
+\#*\#
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# PDF output - comment out if you want to track PDFs
+*.pdf
+
+# Exclude specific PDFs you might want to keep
+!figures/**/*.pdf
+!references/*.pdf
+
+# Python (if you have any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.ipynb_checkpoints/
+
+# R (if you have any R scripts)
+.Rhistory
+.RData
+.Rproj.user/
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Temporary files
+tmp/
+temp/
+
+# Personal notes (customize as needed)
+notes/
+personal/
+drafts/

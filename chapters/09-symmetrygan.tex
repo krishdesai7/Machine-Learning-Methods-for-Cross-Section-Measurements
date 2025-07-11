@@ -799,3 +799,324 @@
             SymmetryGAN and similar approaches offer a promising path to unveil symmetries that are latent in complex data.
             %
             The rigorous understanding of symmetry and symmetry--breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered ``symmetry" is physically meaningful and relevant to the challenges of unfolding and analyzing collider data.
+
+\section{Statistical Definition of Dataset Symmetries}
+    \label{sec:statistical-symmetries}
+    The concept of symmetry in physics typically evokes images of rotational invariance in crystals, parity conservation in weak interactions, or gauge transformations in field theory.
+    %
+    Yet when we turn our attention to experimental data, especially the high dimensional datasets emerging from modern collider experiments, the notion of symmetry becomes surprisingly subtle.
+    %
+    What does it mean for a collection of measured events to possess a symmetry?
+    %
+    This question, deceptively simple in appearance, reveals profound connections between statistical inference, group theory, and the fundamental challenge of unfolding detector effects from observed data.
+    \subsection{Distinction between point and dataset symmetries}
+        Statistical symmetries in datasets represent a fundamental departure from traditional geometric symmetries, requiring careful consideration of probability measures, transformation Jacobians, and reference densities.
+        %
+        This section explores the mathematical foundations, practical applications, and machine learning approaches to understanding and leveraging dataset symmetries.
+        %
+        The distinction between symmetries of individual data elements and entire datasets lies at the heart of statistical theory of symmetries.
+        %
+        For individual data points, symmetry is characterized by simple invariance: a transformation \(g\) preserves element \(x\) if \(g(x) = x\). This represents a straightforward geometric notion where specific points remain fixed under transformation.
+        %
+        Distribution level symmetries, however, operate on probability measures rather than individual points.
+        %
+        A measure space \(X\) with probability measure \(\mu\) exhibits symmetry under group \(G\) when the measure remains invariant.\kd{}
+        \[
+            \forall A\subseteq X \, \forall g\in G\, \mu(A) = \mu(g(A))
+        \]
+        This measure theoretic definition captures the statistical properties of entire distributions rather than individual elements.
+        
+        The critical insight, as formalized in the SymmetryGAN framework, is that dataset symmetries are ambiguous due to Jacobian factors introduced during coordinate transformations.\kd{}
+        %
+        Unlike point symmetries, where transformations either preserve or don't preserve specific locations, dataset symmetries must account for how probability densities transform under coordinate changes.
+        %
+        This fundamental difference necessitates the introduction of inertial reference densities to properly define statistical symmetries.
+    \subsection{Inertial reference densities and their theoretical role}
+        The concept of inertial reference densities emerges as a necessary theoretical construct, analogous to inertial frames in classical mechanics.\kd{}
+        %
+        These reference densities provide a baseline against which statistical symmetries can be meaningfully defined, resolving the ambiguity inherent in coordinate transformations of probability measures.
+
+        In the formal framework, a reference density \(\rho(x)\) establishes a canonical measure for comparing probability distributions, enabling the definition of relative entropy
+        \[
+            H_\rho[X] = -\mathbb{E}_\mu[\log\frac{\dd\mu}{\dd\rho}].
+        \]
+        Additionally, it provides a coordinate--independent way to specify symmetry transformations, ensuring that symmetry definitions remain consistent across different parameterizations of the same statistical manifold.
+            %
+        This can be analogized to phase space shifting operations that leave the Gibbs integration measure invariant can be understood as gauge transformations, with the reference density playing the role of a gauge fixing condition.\kd{Phys. Rev. Lett. 133, 217101 (2024)}
+        
+        The mathematical machinery for statistical symmetries centers on how probability densities transform under coordinate changes.
+        %
+        Under a transformation \(X = g(Y)\), probability densities transform as
+            \[
+                p_y(y) = p_x(g(y)) |\det(g'(y))|
+            \]
+        This transformation law, involving the Jacobian determinant \(|\det(g'(y))|,\) ensures probability conservation.
+        %
+        The Jacobian factor measures how volumes scale under transformation.
+        %
+        \(|\det(J)| = 1\) characterises volume preserving transformations like rotations and reflections.
+
+        For a probability distribution to exhibit symmetry under group action \(G\), it must satisfy the condition
+        \[
+            \forall g\in G\,\forall x\in X\,p(x) = p(g(x))\,|\det g'(x)|
+        \]
+        This condition is far more restrictive than point symmetry, as it demands global consistency across the entire probability measure.
+
+        The group-theoretic formulation provides additional structure.
+        %
+        A group \(G\) acts on a probability space \((\Omega, F, \mu)\) through measurable maps that preserve the \(\sigma-\)algebra structure.\kd{doi.org/10.1016/S1874-575X(06)80028-7}
+        %
+        Such a group can be decomposed using the orbit--stabilizer theorem, decomposing the action into orbits and stabilizers, and representation theory enables systematic construction of invariant functions and decomposition of function spaces into irreducible components.
+        
+    \subsection{Applications to particle physics}
+        Particle physics provides a rich domain for applying statistical symmetries, particularly in detector calibration, data unfolding, and inference tasks at collider experiments.\kd{arXiv:2009.14613}
+        %
+        In detector response modeling, statistical symmetries constrain how identical particles must be treated. \kd{doi.org/10.17226/6045}
+        %
+        Permutation symmetry requires that detector analysis respect the indistinguishability of identical particles, affecting event reconstruction algorithms, particle identification methods, and background estimation techniques. \kd{doi.org/10.1073/pnas.93.25.1425}
+        %
+        Response matrices used in unfolding procedures must respect particle exchange symmetries, with regularization procedures preserving these symmetry properties.
+
+        Unfolding represents an interesting application where statistical symmetries could guide the correction of detector effects.
+        %
+        The process must preserve the statistical symmetries of the underlying physics, maintaining correlations between identical particles and ensuring conservation laws implied by symmetries remain valid.
+        %
+        Full phase space unfolding could be facilitated by statistical symmetries that constrain unfolding procedures in high-dimensional phase spaces.
+        %
+        Background estimation methods also exploit symmetry properties through carefully designed control regions, while systematic uncertainties account for potential symmetry violations.
+
+        In this way statistical symmetries fundamentally shape measurement and inference tasks through multiple pathways.
+        %
+        Phase space shifting operations that preserve physically meaningful quantities have even been used outside of HEP to develop new computational approaches for molecular simulations.\kd{doi.org/10.1038/s42005-021-00669-2}
+        %
+        These symmetries lead to exact correlation relations between forces and observable properties, offering systematic ways to derive new statistical relationships.
+        %
+        In machine learning too, encoding known symmetries dramatically improves performance.
+        %
+        Symmetry encoding reduces sample complexity exponentially, with multidimensional symmetries providing disproportionately large returns.\kd{2303.14269}
+        %
+        Equivariant neural networks, designed to respect known symmetries through architectural constraints, achieve superior data efficiency and generalization.\kd{2409.07327}
+
+        The theoretical framework connects reference measures, symmetry principles, and statistical inference in profound ways.
+        %
+        Reference measure selection can be guided by symmetry considerations, leading to principled approaches for prior selection in Bayesian inference. \kd{DOI:10.2307/1968511}
+        %
+        Symmetry principles suggest natural classes of invariant estimators, while statistical analogs of physical conservation laws emerge from symmetry considerations, constraining the behavior of statistical systems.\kd{10.1073/pnas.93.25.14256}
+        %
+        This unified framework offers concrete advantages for computational statistics and machine learning while opening new directions for both theoretical development and practical applications.
+
+\section{SymmetryGAN: Discovering Symmetries with Adversarial Learning}
+\label{sec:symmetry-gan-main}
+The challenge of automatically discovering symmetries in high dimensional data represents a fundamental problem at the intersection of physics and machine learning.
+%
+While physicists have long relied on theoretical insight to identify symmetries, the explosion of complex data from modern experiments demands automated approaches.
+%
+SymmetryGAN emerges as an elegant solution, leveraging the power of adversarial learning to discover hidden invariances without prior knowledge of their existence.
+
+The core insight driving SymmetryGAN is deceptively simple.
+%
+If a transformation truly represents a symmetry of a dataset, then a well trained discriminator should not be able to distinguish between the original data and its transformed counterpart.
+%
+This principle, when combined with the rigorous framework of inertial reference densities developed in the previous section, yields a powerful methodology for symmetry discovery that is both theoretically grounded and practically effective.
+    \subsection{The SymmetryGAN Architecture}
+    The SymmetryGAN framework modifies the traditional generative adversarial network architecture in a fundamental way.
+    %
+    Rather than mapping from random noise to structured data, SymmetryGAN maps from data to data, learning transformations that preserve the underlying probability distribution.
+    %
+    Like a traditional GAN, however, SymmetryGAN consists of two neural networks engaged in adversarial training.
+    \begin{enumerate}
+        \item A generator \(g: \R^n to \R^n\) that learns symmetry tranformations, and
+        \item A discriminator \(d: \R^n to [0, 1]\) that attempts to distinguish original from transformed data.
+    \end{enumerate}
+    The generator network \(g\) parametrizes potential symmetry transformations of the input space.
+    %
+    Unlike traditional GANs where the generator creates new samples, here it transforms existing data points.
+    %
+    The discriminator \(d\) plays its familiar adversarial role, attempting to classify whether a given sample comes from the original dataset or has been transformed by \(g\).
+
+    The training objective is related but different from standard GANs.
+    %
+    The loss function is
+    \[
+        L[g,d] = -\frac{1}{N}\sum_{i=1}^{N}\left[\log(d(x_i)) + \log(1-d(g(x_i)))\right]
+    \]
+    This formulation differs from the usual binary cross entropy in that the same data samples appear in both terms, creating a self--adversarial structure.
+    %
+    The generator seeks transformations that maximally confuse the discriminator, while the discriminator learns to detect deviations from the true data distribution.
+
+    By varying the loss with respect to the neural networks, one can show that at the theoretical optimum, the optimal discriminator is
+    \[
+        d_*(x) = \frac{p(x)}{p(x) + p(g_*(x))|g_*'(x)|} = \frac{1}{2}
+    \]
+    and the optimal generator obeys
+    \[
+        p(x) = p(g_*(x))|g_*'(x)|.
+    \]
+    i.e.the discriminator is maximally confused with equal probability of classifying any sample as original or transformed, and the generator obeys precisely the definition of a statistical symmetry.
+
+    The architecture naturally handles both discrete and continuous symmetries.
+    %
+    For discrete symmetries like reflections or cyclic groups, the generator learns specific transformation matrices.
+    %
+    For continuous symmetries like rotations, it parametrizes the corresponding Lie group elements.
+    %
+    This flexibility makes SymmetryGAN applicable across diverse physical systems.
+
+    \kd{fig:symmetrygan_architecture} shows the modified GAN architecture of SymmetryGAN.
+    
+    \subsection{Machine Learning with Inertial Restrictions}
+    The incorporation of inertial reference densities, as established in \cref{sec:statistical-symmetries}, presents both theoretical necessity and practical challenges.
+    %
+    These restrictions can be implemented through three distinct approaches.
+    \begin{enumerate}
+        \item Simultaneous Discrimination:
+            %
+            In this approach, discriminators evaluate transformations on both the target dataset and samples from the inertial density.
+            %
+            The loss function is extended to include terms from the inertial distribution \(p_I\)
+            \[
+                L_{\text{sim}}[g,d,d_I] = L[g,d] + \lambda L_I[g,d_I]
+            \]
+            where \(d_I\) is a separate discriminator network specialized for the inertial distribution.
+            %
+            This method offers maximal flexibility, allowing discovery of symmetries even when the inertial distribution's symmetries aren't known analytically.
+            %
+            However, it requires the ability to sample from \(p_I\) which becomes problematic for improper priors like uniform distributions on \(\mathbb{R}^n\).
+        \item Two--Stage Selection:
+            %
+            This approach involves first identifying all PDF--preserving maps, then filtering for those preserving the inertial density.
+            %
+            The two--stage approach decouples the symmetry discovery problem into training multiple generators to find PDF--preserving transformations of the target data and \textit{post hoc} verifying which transformations also preserve \(p_I\)
+            %
+            While conceptually clean, this method proves computationally wasteful, as the space of PDF--preserving maps vastly exceeds the space of true symmetries.
+        \item Upfront Restriction:
+            %
+            Here one constrains the generator architecture to only produce transformations that preserve the inertial density by construction in the first place, using prior knowledge about \(p_I\).
+    \end{enumerate}
+    It is this third approach that is adopted in the SymmetryGAN implementation.
+    %
+    When the inertial distribution is uniform on \(\mathbb{R}^n\) the generator is restricted to equiareal maps---transformations with unit Jacobian determinant.
+    %
+    For linear transformations, this corresponds to the special linear group \(SL_n(\mathbb{R})\) and its extensions.
+
+    The upfront restriction method offers computational efficiency gains by searching only among valid symmetrie in addition to theoretical guarantees that discovered transformations are true symmetries.
+    %
+    It also simplifies training without multiple discriminators or \textit{post hoc} verification.
+
+    The restriction to linear equiareal maps, while limiting, captures a rich class of symmetries including rotations, reflections, shears, and all their compositions.
+    %
+    The Iwasawa decomposition\kd{} provides a systematic parametrization of \(g\in GL_n(\R)\).
+    \[
+        g = \sqrt{|d|} \cdot R(\theta) \cdot D(r) \cdot S(u) + v
+    \]
+    where \(d\) is the determinant, \(R(\theta)\in SO_n(\R)\) is a rotation, \(D(r)\) is a dialatation, \(S(u)\) is a sheer, and \(v\in\R^n\) is a translation.
+    %
+    As an illustration, in two dimensions,
+    \[
+        R(\theta) = \mqty[\cos\theta&\sin\theta\\-\sin\theta&\cos\theta] \quad D(r) = \mqty[r&0\\0&\frac1r] \quad S(u) = \mqty[1 & u\\0&1]\quad v = \mqty[v_1\\v_2]
+    \]
+    This decomposition enables efficient exploration of the symmetry space through gradient descent.
+
+    \subsection{Deep Learning Implementation Details}
+    The practical implementation of SymmetryGAN requires careful attention to architectural choices, training dynamics, and numerical stability.
+    %
+    The framework's success depends on balancing the adversarial training process while maintaining the theoretical properties that enable symmetry discovery.
+    
+    For linear symmetries, the generator directly parametrizes transformation matrices.
+    %
+    Rather than using fully connected layers, the generator outputs parameters of the Iwasawa decomposition, ensuring all generated transformations lie within the constrained search space.
+    %
+    This architectural choice provides interpretability, where each parameter has clear geometric meaning, stability, by avoiding ill-conditioned matrices through structured parametrization, and efficiency, by reducing the parameter count compared to unconstrained matrices
+
+    For discovering specific symmetry subgroups, the loss function can further incorporate additional constraints.
+    %
+    For example, to find cyclic symmetries \(\mathbb{Z}_q\) the loss can be augmented to encourages \(g^q = \text{id}\).
+    \[
+        L_{\text{cyclic}}[g,d] = L_{\text{BCE}}[g,d] + \alpha \sum_{i} ||g^q(x_i) - x_i||^2.
+    \]
+
+    The discriminator architecture follows standard practices for the data domain.
+    %
+    For low--dimensional examples, simple feedforward networks with \(2-3\) hidden layers suffice.
+    %
+    †he discriminator need not be overly complex.
+    %
+    Its role is to provide gradient signal for the generator's symmetry search, not to achieve perfect classification.
+
+    The optimization landscape analysis reveals its topological structure.
+    %
+    For simple distributions like Gaussians, the loss landscape contains distinct maxima corresponding to each symmetry, separated by deep valleys.
+    %
+    This topology explains why random initialization reliably discovers different symmetries.
+    %
+    The generator converges to the nearest local maximum, which corresponds to a true symmetry.
+
+    The framework demonstrates remarkable robustness to hyperparameter choices.
+    %
+    Across experiments with Gaussian mixtures and particle physics data, a range of hyperparameter settings achieve consistent symmetry discovery.
+
+    \subsection{Verification Protocols}
+    A few different checks can be applied to verify that the discovered transformation represents a true symmetry.
+    \begin{itemize}
+        \item Visual inspection: Visually inspecting low dimensional slices of the original and transformed data serves as a simple sniff test.
+        \item Loss value: True symmetries always achieve a loss of \(2\log2\) at convergence.
+        \item Distribution matching: Statistical divergences between \(X\) and \(g(X)\) such as the KL divergence measure whether the two datasets have the same probability density or not.
+        \item Invarian verification: known invariants, such as moments, should be identical between the distributions.
+    \end{itemize}
+    
+    \subsection{Other Symmetry Discovery Methods}
+        The landscape of symmetry discovery in machine learning has evolved considerably, with approaches ranging from classical statistical methods to modern deep learning architectures.
+        %
+        Understanding SymmetryGAN's position within this ecosystem illuminates both its unique contributions and its connections to broader methodological trends.
+
+        Classical statistical approaches traditionally relied on hypothesis testing and moment matching.
+        %
+        These methods typically test specific, pre--defined symmetry hypotheses by relying on low-dimensional projections or summary statistics.
+        %
+        They struggle with high-dimensional data or complex symmetry groups and require extensive domain knowledge to formulate appropriate tests.
+
+        The Cramer-von Mises and Anderson-Darling tests\kd{cite} exemplify this approach, checking whether transformed data follows the same distribution as the original.
+        %
+        While rigorous, these methods scale poorly and cannot discover unexpected symmetries.
+
+        Early machine learning methods introduced automation to the symmetry discovery process.
+        %
+        Methods like Group-Invariant Autoencoders\kd{cite} learn representations invariant to known symmetry groups but cannot discover unknown symmetries
+        %
+        Spatial Transformer Networks\kd{cite} learn task-specific transformations but don't explicitly identify symmetries \textit{per se}.
+        %
+        Maximum Mean Discrepancy approaches\kd{cite} and other kernel methods can test symmetry but struggle with continuous groups.
+
+        Contemporary deep learning methods have introduced a range of innovations to the field.
+        %
+        Lie Group Learning Networks directly parametrize Lie algebra generators\kd{cite}.
+        %
+        Such methods have excellent theoretical grounding, and physically interpretable parameters.
+        %
+        They are, however, restricted to continuous symmetries, and require complex optimization for convergence.
+        %
+        Latent LieGAN (LaLiGAN) pioneered the discovery nonlinear symmetries via latent space linearization\kd{cite}.
+        %
+        It enabled the field to make strides in handling nonlinear group actions, but the additional complexity leads to potential latent space artifacts
+        %
+        Reinforcement Learning enables automatic augmentation discovery through policy learning\kd{cite}.
+        %
+        The method is flexible in being task--performance driven, and it handles discrete symmetries well.
+
+        SymmetryGAN exemplifies several important trends in modern machine learning for HEP.
+        %
+        Methods have broadly benefited from incorporating domain knowledge through architectural constraints and loss terms.
+        %
+        In general the rise of equivariant eearning has driven the move beyond invariance to discover the underlying symmetry structure.
+        %
+        SymmetryGAN also exemplies the trend towards interpretability by producing human-understandable symmetry parameters rather than opaque features.
+        %
+        The method is however limited in its restriction to parametrizable symmetry classes.
+        %
+        It also exclusively enables symmetry discovery, the task of identifying elements of the symmetry group of a dataset.
+        %
+        Although the paper does provide some steps towards symmetry inference, the task of identifying and classifying the symmetry group as a whole, it remains challenging to infer complete symmetry group structure from discovered elements.
+        %
+        The field continues to evolve rapidly, with SymmetryGAN representing a significant step toward automated, theoretically grounded symmetry discovery.
+        %
+        Its success in particle physics applications, detailed in the following section, demonstrates the practical value of this principled approach to uncovering hidden invariances in complex data.

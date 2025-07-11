@@ -1,1 +1,27 @@
 \babel@toc {english}{}\relax 
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {2.1}{\ignorespaces Traditional unfolding method capabilities. Dimensionality refers to practical limits.}}{19}{table.caption.31}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Comparative performance of unfolding methods in high-dimensional regimes}}{26}{table.caption.53}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Distributional distance metrics for unfolding evaluation}}{28}{table.caption.57}%
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {5.1}{\ignorespaces Summary of training hyperparameters used in the model. These values control the architecture, optimization behaviour, and regularization of the training process.}}{104}{table.caption.184}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Moments of jet observables at particle level. First and second moments of \(m, q, w\) and \(z_g\) are shown for truth (\textsc {Herwig}), generation (\textsc {Pythia}) and Moment Unfolding. Uncertainties in the truth and generation columns are estimated via bootstrap resampling; uncertainties in the unfolding column combine in quadrature the generation bootstrap uncertainty with the empirical \(1\sigma \) spread from repeated unfolding on the same dataset. }}{109}{table.caption.196}%
+\addvspace {10pt}
+\contentsline {table}{\numberline {6.1}{\ignorespaces Comparison of measurement approaches. Reporting only low--order moments loses most distribution information. Binned differential cross sections retain shape information but suffer from discretization and limited dimensionality. Full spectral measurements preserve the complete distribution, enabling maximal reusability and detailed theory comparisons, but require regularizing a much more ill--posed training. }}{116}{table.caption.202}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Comparison of unfolding methods. “Unbinned” indicates the method can use continuous data without fixed histograms. “Iterative” indicates whether multiple training iterations are required (not counting training epochs, which all neural methods require internally). “Perturbative” indicates that the method reweights a MC sample (as opposed to generating events from scratch). RAN (this work) occupies a middle ground, using a prior simulation like OmniFold but aiming to avoid costly iterations by employing a stable adversarial training objective.}}{123}{table.caption.206}%
+\addvspace {10pt}
+\contentsline {table}{\numberline {7.1}{\ignorespaces Sources of correlated uncertainties in $pp$ cross section measurements}}{174}{table.caption.241}%
+\contentsline {table}{\numberline {7.2}{\ignorespaces Gaussian model parameters for multidimensional studies}}{198}{table.caption.269}%
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {9.1}{\ignorespaces Comparison of Unfolding and Symmetry Discovery}}{208}{table.caption.274}%
+\contentsline {table}{\numberline {9.2}{\ignorespaces Summary of key fundamental symmetries relevant to collider observables. ``Charge'' refers broadly to conserved / constrained quantities via Noether's theorem or selection rules. “Status in the SM” indicates whether the symmetry is exact, approximate, or broken at tree level. }}{214}{table.caption.277}%
+\contentsline {table}{\numberline {9.3}{\ignorespaces Ideal symmetry expectations versus typical detector-induced symmetry-breaking effects in collider experiments.}}{220}{table.caption.284}%
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
