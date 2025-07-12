@@ -1366,3 +1366,390 @@ This principle, when combined with the rigorous framework of inertial reference 
                 %
                 Despite these challenges, successful learning of even approximate symmetry discovery maps would provide us with a powerful tool to characterize symmetry groups.
             \end{enumerate}
+
+\section{Symmetry Informed Unfolding}
+\label{sec:symmetry-informed-unfolding}
+    The fundamental challenge of unfolding, recovering truth--level distributions from detector--smeared observations, stems from its ill--posed nature.
+    %
+    Multiple truth distributions can yield identical observations after detector effects, creating an underdetermined system crying out for additional constraints.
+    %
+    Symmetry provide a natural regularization scheme for unfolding problems.
+    %
+    When a physical process respects a symmetry, that invariance constrains the space of valid solutions, effectively regularizing the inverse problem without introducing artificial biases.
+    %
+    Consider the standard unfolding problem formulated as an optimization,
+    \[
+        \min_{p_\text{truth}} \left[ \chi^2(p_\text{obs}, R \cdot p_\text{truth}) + \lambda \cdot \text{Reg}(p_\text{truth}) \right]
+    \]
+    where \(R\) represents the response matrix and \(\text{Reg}\) is a regularization term.
+    %
+    Traditional approaches use generic smoothness penalties, but symmetries provide physically motivated constraints.
+    %
+    For a symmetry group \(G\) discovered through SymmetryGAN, one could construct the symmetry--preserving regularization,
+    \[
+        \text{Reg}_\text{sym}(p) = \sum_{g \in G} \left\| p - g \cdot p \right\|^2
+    \]
+    %
+    This penalty vanishes for distributions respecting the symmetry while penalizing asymmetric solutions.
+    %   
+    Such a regularization term would enforce invariances that the underlying physics demands\kd{cite} rather than imposing arbitrary smoothness constraints.
+    
+    However such an implementation would have to address subtle challenges.
+    %
+    For continuous symmetries like \(SO(2)\), the sum over group elements becomes an integral requiring careful handling.
+    %
+    A possible solution is to select group elements that uniformly cover the symmetry manifold.
+    %
+    For \(SO(2)\), for instance, one could sample angles \(\theta_i = 2\pi i/N\) for \(i = 0, ..., N-1\).
+    %
+    However, any such choice would be \textit{ad hoc} and woudl introduce artifacts into the unfolding process.
+
+    For non-compact groups, the challege is further compounded by the fact that there no longer exists a equivariant sampling strategy in the first place.
+    %
+    Methods such as importance sampling based on data distribution have been proposed\kd{cite}, but they remain to be tested in the physics context.
+    
+    The theoretical foundation of this approach connects to information theory.
+    %
+    Each symmetry represents a constraint reducing the effective dimensionality of the solution space.
+    %
+    For a distribution over \(N\) bins with a \(\mathbb{Z}_k\) cyclic symmetry, the degrees of freedom reduce from \(N\) to \(N/k\), improving the effective statistics by a factor of \(k\).
+    %
+    This dimensionality reduction should translate directly to improved unfolding stability\kd{cite}.
+
+    \subsection{Symmetry Preserving Neural Network Architectures}
+        The architectural encoding of symmetries represents a paradigm shift from \textit{post hoc} constraints to intrinsic guarantees.
+        %
+        A neural network \(f_\theta\) is said to be equivariant to group \(G\) if for all \(g \in G\) and inputs \(x\)
+        \[
+            f_\theta(g \cdot x) = g \cdot f_\theta(x)
+        \]
+        For unfolding applications, we could seek architectures where the mapping from observed to truth--level distributions preserves known symmetries.
+        %
+        The Group Convolutional Neural Network (G-CNN) framework provides one example of such an approach\kd{cite}.
+        %
+        For a symmetry group \(G\) acting on the input space, G-CNN layers take the form
+        \[
+            f * \psi = \int_H f(h)\psi(g^{-1}h) dh
+        \]
+        where \(*\) denotes group convolution and \(H\) is the stabilizer subgroup.
+        %
+        This formulation guarantees equivariance by construction, not training.
+
+        The LGN (Lorentz Group Network) architecture\kd{cite} constructs features from Lorentz scalars and 4-vectors in order to preserve Lorentz invariance.
+        %
+        For identical particle handling, Deep Sets\kd{cite} and Set2Graph\kd{cite} provide principled approaches in which
+        \[
+            f(\{x_1, ..., x_n\}) = \rho\left(\sum_i \phi(x_i)\right)
+        \]
+        where \(\phi\) and \(\rho\) are learned functions, guaranteeing invariance to particle ordering.
+        %
+        For processes involving gauge bosons, architectures must respect gauge transformations.
+        %
+        The Gauge Equivariant Mesh CNN\kd{cite} provides a framework for \(SU(3) \times SU(2) \times U(1)\) invariance.
+
+        A hybrid architecture for symmetry-aware unfolding could combine these elements.
+        %
+        The architecture would necessarily ensure that symmetries present in the observed data propagate to the unfolded distribution.
+        %
+        However, the practical implementation of such an architecture remains an open question.
+    \subsection{Reducing Dimensionality Through Symmetry Identification}
+        The curse of dimensionality poses a significant challenge to unfolding problems.
+        %
+        Each additional degree of freedom exponentially increases the solution space, degrading statistical power and amplifying instabilities.
+        %
+        Symmetry identification offers a principled method for revealing redundancies that can be eliminated without information loss.
+        
+        For a distribution with symmetry group \(G\), the effective dimensionality reduces from the ambient space dimension to the dimension of the quotient space \(X/G\).
+        %
+        A function \(f: X \rightarrow \mathbb{R}\) is \(G\)-invariant if and only if there exists a function \(\tilde{f}: X/G \rightarrow \mathbb{R}\) with \(f = \tilde{f} \circ \pi\) where \(\pi: X \rightarrow X/G\) is the canonical projection.
+        %
+        This factorization is the key to dimensionality reduction.
+        %
+        One needs only unfold \(\tilde{f}\) on the lower--dimensional quotient space.
+
+        Any such process of symmetry-based projection, however, requires careful treatment of statistical uncertainties.
+        %
+        The optimal projection minimizes information loss while maximizing dimensionality reduction.
+        %
+        The statistical gain from this procedure scales dramatically with dimensionality.
+        %
+        For a \(d\)-dimensional space with a \(k\)-parameter continuous symmetry group, the effective dimensionality reduces to \(d-k\), yielding an effective statistics increase of
+        \[
+            N_\text{eff} = N \times \left(\frac{V_\text{full}}{V_\text{reduced}}\right)^{1/d}
+        \]
+        where \(V\) denotes phase space volumes\kd{cite}.
+        
+        \subsection{Hidden Symmetries and Emergent Simplicity}
+            Often, the most powerful dimensionality reductions come from unexpected symmetries.
+            %
+            The discovery of approximate custodial symmetry in electroweak physics simplified phenomenology dramatically.
+            %
+            Similarly, emergent symmetries in complex final states can enable radical dimensionality reduction\kd{cite}.
+            %
+            The quantitative impact of symmetry on unfolding precision admits rigorous mathematical treatment.
+            %
+            By connecting group theory, information theory, and statistical estimation, we can derive fundamental bounds on the achievable precision gains from symmetry constraints.
+
+            For an unbiased estimator \(\hat{\theta}\) of parameters \(\theta\) with symmetry group \(G\), the covariance satisfies
+            \[
+                \text{Cov}(\hat{\theta}) \geq \frac{1}{N} \mathcal{I}^{-1}_G(\theta)
+            \]
+            where \(\mathcal{I}_G\) is the \(G-\)equivariant Fisher information matrix.\kd{cite}
+
+            The symmetry constraints modify the Fisher information by projecting onto the \(G-\)invariant subspace.
+            %
+            For a likelihood \(L(\theta|x)\) with symmetry group \(G\), the equivariant Fisher information takes the form
+            \[
+                [\mathcal{I}_G]_{ij} = \mathbb{E}\left[\frac{\partial \log L}{\partial \theta_i} \frac{\partial \log L}{\partial \theta_j}\right] - \sum_{g \in G} w_g \mathbb{E}\left[\frac{\partial \log L}{\partial \theta_i} \frac{\partial \log L(g \cdot \theta)}{\partial \theta_j}\right]
+            \]
+            where \(w_g\) are group averaging weights\kd{cite}.
+            
+            This modified Fisher information leads to a tighter Cram\'er-Rao Bound on parameter estimation.\kd{cite}
+            %
+            For the specific case of unfolding with a discrete symmetry group \(G\) of order \(|G|\), the variance reduction factor would be
+            \[
+                \frac{\text{Var}(\hat{\theta}_\text{sym})}{\text{Var}(\hat{\theta}_\text{unconstrained})} = \frac{1}{|G|} + \frac{|G|-1}{|G|}\rho
+            \]
+            where \(\rho\) is the average correlation between symmetric images of the parameter\kd{cite}.
+
+    \subsection{Application to Jet Substructure Unfolding}
+        Consider unfolding jet substructure observables like N-subjettiness ratios \(\tau_{21}\).
+        %
+        The IRC (infrared-collinear) safety of these observables implies approximate scale invariance.
+        %
+        For a scaling symmetry with parameter \(\lambda\):
+        \[
+            \tau_{21}(\lambda p_T, \lambda m_\text{jet}) = \tau_{21}(p_T, m_\text{jet})
+        \]
+        This symmetry reduces the 2D unfolding problem in \((p_T, m_\text{jet})\) to a 1D problem in the ratio \(m_\text{jet}/p_T\).
+        %
+        The maximal possible theoretical precision gain is
+        \[
+            \sigma_{\tau_{21}}^\text{sym} = \frac{\sigma_{\tau_{21}}^\text{2D}}{\sqrt{\log(p_T^\text{max}/p_T^\text{min})}}.
+        \]
+        For typical jet \(p_T\) ranges spanning two orders of magnitude, this yields a \(4.6 \approx 2.1\times\) improvement in precision\kd{cite}.
+
+        Such an information--theoretic analysis also provides additional insights.
+        %
+        Each symmetry can theoretically reduce the Kullback-Leibler divergence between truth and reconstructed distributions by as much as
+        \[
+            \Delta D_{KL} = \frac{1}{2} \log |G| - \frac{1}{2N} \text{Tr}(\mathcal{I}_G^{-1} \mathcal{I}_\text{unconstrained})
+        \]
+        This reduction could directly translate to improved unfolding fidelity, with larger symmetry groups yielding greater gains\kd{cite}.
+
+    \subsection{Case Study: Improving NPU with Symmetry Constraints}
+        The Neural Posterior Unfolding (NPU) framework\kd{cite}, discussed in Chapter 7, provides an interesting potential testbed for symmetry integration.
+        %
+        By incorporating discovered symmetries into NPU's generative model, it might be possible to achieve substantial improvements in both computational efficiency and physical fidelity.
+        %
+        One could modify the NPU generative model \(g_\phi(z, x_\text{obs})\) to respect discovered symmetries through architectural constraints and augmented training.
+        %
+        The standard NPU loss function,
+        \[
+            \mathcal{L}_\text{NPU} = \mathbb{E}_{p(x_\text{obs}, x_\text{truth})} \left[ \log q_\phi(x_\text{truth} | x_\text{obs}) \right],
+        \]
+        would become, with symmetry constraints,
+        \[
+            \mathcal{L}_\text{Sym-NPU} = \mathcal{L}_\text{NPU} + \lambda \sum_{g \in G} \left\| g_\phi(z, x_\text{obs}) - g \cdot g_\phi(g^{-1} \cdot z, g^{-1} \cdot x_\text{obs}) \right\|^2.
+        \]
+        %
+        Such an augmented loss would drive the generative model to learn \(G-\)equivariant structures.
+        
+        In effect the combination of NPU with SymmetryGAN has the potential to create a virtuous cycle, where better symmetry identification improves unfolding, and better unfolding reveals clearer symmetry patterns in the truth--level distributions.
+
+        Such a thought experiment points toward a broader principle.
+        %
+        The most powerful machine learning approaches for physics don't just learn from data but incorporate fundamental physical principles into their architecture.
+        %
+        By discovering and enforcing symmetries, we transform unfolding from a purely statistical exercise into a physics-informed inference problem, achieving results that respect both the data and the underlying theoretical framework.
+
+\section{Symmetry Aware Unfolding for Improved Measurement Precision}
+    The transformation of symmetry from abstract mathematical concept to concrete measurement tool represents one of the most profound opportunities in modern particle physics analysis.
+    %
+    This section ventures into the frontier of how the marriage of symmetry awareness and unfolding might revolutionize our ability to extract truth from data.
+    %
+    These ideas, while not yet implemented, chart a course toward a future where every discovered invariance translates directly into measurement precision.
+    \subsection{Data Augmentation Using Discovered Symmetries}
+        The concept of data augmentation through symmetry sits at a fascinating intersection of theoretical physics and practical statistics.
+        %
+        The flip side of the dimensioanlity reduction discussed in \cref{sec:symmetry-informed-unfolding} is that when we discover that a dataset respects certain transformations, we gain the ability to multiply our effective statistics without collecting a single additional event.
+        %
+        This isn't merely a computational trick,it reflects a deep truth about the redundancy inherent in symmetric systems.
+
+        Symmetry based data augmentation is the process of generating statistically equivalent synthetic data by applying discovered symmetry transformations to existing events, effectively increasing sample size while preserving all physical properties.
+        %
+        Traditional data augmentation in machine learning often relies on heuristic transformations.
+        %
+        These modifications hope to capture invariances without formal guarantees.
+        %
+        By contrast, symmetry based augmentation leverages proven invariances discovered through methods like SymmetryGAN.
+        %
+        Every augmented event is, by construction, as physically valid as the original.
+
+        As with the dimension reduction discussed in \cref{sec:symmetry-informed-unfolding}, the subtlety lies in the sampling strategy.
+        %
+        For finite groups, we might include all group elements, and for compact continous groups so long as we sample carefully to avoid bias from the uniform measure on the group manifold, the artifacts introducted will, in the very least, be unbiased.
+        %
+        For non-compact groups, the uniform measure is not well defined, and there is no way to guarantee that the artifacts introduced are unbiased.
+
+        For a concrete example, consider unfolding the \(Z\) boson \(p_T\) spectrum with discovered azimuthal symmetry.
+        %
+        Each measured event \((p_T, \phi, \eta)\) can generate a family of equivalent events \((p_T, \phi + \Delta\phi, \eta)\) for any \(\Delta\phi\).
+
+        The power of symmetry based augmentation extends beyond simple counting statistics.
+        %
+        Symmetry augmentation can heal detector defects.
+        %
+        Imagine a calorimeter module at \(\phi = \pi/2\) suffering from reduced efficiency.
+        %
+        With symmetry augmentation, we can rotate events from healthy detector regions to fill the gap:
+
+        The corrected distribution is given by
+        \[
+            n_{\text{corrected}}(\phi = \pi/2) = \frac{1}{|G|} \sum_{g \in G} \epsilon(g^{-1} \cdot \phi) \cdot n_{\text{observed}}(g^{-1} \cdot \phi)
+        \]
+        where \(\epsilon(\phi)\) represents the \(\phi-\)dependent efficiency.
+        %
+        This is not merely interpolation, it's using physical symmetry to transport information across phase space.
+
+        The interplay with machine learning architectures reveals another dimension.
+        %
+        Neural networks trained on symmetry--augmented data should exhibit
+        \begin{itemize}
+            \item Faster convergence: The effective sample size increase should translate directly to reduced training epochs.
+            \item Better generalization: The network sees the full symmetry orbit during training, preventing overfitting to specific configurations.
+            \item Automatic equivariance: Even non-equivariant architectures should learn approximate equivariance from augmented data.
+        \end{itemize}
+        For all the benefits that symmetry aware augmentation might provide, not all symmetries admit straightforward augmentation.
+        %
+        Even with discrete symmetries like parity while we can flip event coordinates, care is needed with derived quantities.
+        %
+        Or for instance, the jet clustering algorithm might produce different multiplicities when applied to parity-flipped events, breaking the supposed equivalence.
+        %
+        In this sense the augmentation must respect the full analysis chain, not just the raw kinematics, and symmetries that admit all the steps of the analysis chain are, naturally, more difficult to find.
+
+    \subsection{Symmetry Constrained Unfolding}
+        A variant of moment unfolding where the functional basis is restricted to symmetry respecting functions could guide choices of basis functions grounded in physical principles.
+        %
+        In \cref{chap:moment-unfolding}, we discussed the \(p_T\) dependent Boltzmann--like basis functions, \(\vb*{\beta}_a(p_T)\), which were approximated as linear functions of jet \(p_T\),
+        \[
+            \vb*{\beta}_a(p_T) = {\beta}_a^{(0)} + {\beta}_a^{(1)}\,p_T,
+        \]
+        to constrain the flexibility of the generator network.
+        %
+        A symmetry aware parametrization of the \(\vb*{\beta}_a(p_T)\) could provide a more principled way to constrain the generator network, while still achieving the necessary dimensionality reduction.
+        
+        Implementing a similar approach in RAN architectures would requires careful attention to the increased complexity of the architecture, but a symmetry aware regularization scheme would provide improved conditioning, as the response matrix becomes block-diagonal in symmetry sectors, and physical consistency where unfolded distributions automatically respect, for example, IRC safety, providing smoothness within symmetry sectors without violating invariance.
+
+        The quantitative impact of symmetry awareness on measurement precision admits rigorous analysis through the lens of information theory and statistical estimation.
+        %
+        Moving beyond hand-waving arguments about "effective statistics," we can derive precise bounds on the achievable improvements.
+        %
+        The information content of data about parameters \(\theta\) under symmetry group \(G\) is captured by the equivariant Fisher information matrix \(\mathcal{I}_G(\theta)\), which bounds the achievable precision of any unbiased estimator.
+        %
+        The fundamental result stems from the Equivariant Cramér-Rao Bound discussed in \cref{sec:symmetry-informed-unfolding}.
+        
+        In addition, symmetry awareness provides more than variance reduction.
+        %
+        It fundamentally alters the bias-variance tradeoff.
+        %
+        Traditional unfolding must balance bias from regularization (smoothing, early stopping) and variance from statistical fluctuations.
+        %
+        Symmetry constraints modify the bias-variance tradeoff,
+        \[
+            \text{Bias}_{\text{sym}} = \frac{\text{Var}_0}{n \cdot S(\mathcal{G})}
+        \]
+        where \(S(\mathcal{G})\) is the "symmetry factor" quantifying variance reduction, so that the total error becomes
+        \[
+            \text{MSE}_{\text{total}} = \text{Bias}_{\text{sym}}^2 + \frac{\text{Var}_0}{n \cdot S(\mathcal{G})}.
+        \]
+        In this sense, symmetry aware unfolding isn't just about improved statistics---it's about extracting the maximum physical information from finite data.
+
+\section{Conclusion}
+\label{sec:symmetrygan-conclusion}
+    We began this chapter with the seemingly simple question of what it means for a dataset to possess symmetry, only to discover layers of mathematical subtlety involving Jacobian factors, inertial reference densities, and the delicate interplay between statistical and physical invariances.
+    %
+    This final section looks beyond what has been achieved to chart the territories yet to be explored, where the fusion of symmetry discovery and unfolding might lead us next.
+
+    \subsection{Beyond Linear Symmetries}
+        The restriction to linear equiareal maps, while yielding impressive results, also represents a glaring blind spot in our analyses.
+        %
+        Nature's symmetries extend far beyond the affine group, encompassing transformations that twist, fold, and reshape phase space in ways that linear maps cannot capture.
+        %
+        Consider the Hénon map, a deceptively simple area-preserving transformation,
+        \[
+            g(x,y) = (x, y - x^2)
+        \]
+        It is but one of a vast and relatively uncharted space of the full (nonlinear) \emph{equiareal group}.
+        %
+        The structure of the equiareal group is rich enough to allow for a rich theory of symmetries and their associated invariances with the right computational tools.
+        %
+        In particle physics, such transformations emerge naturally, and are ubiquitous, from the rapidity transformation in relativistic kinematics, to the symplectic structure imposed by Poisson brackets on classical phase space and the correponsing commutation relations of quantum mechanics.
+        %
+        Normalizing flows, on account of their bijective nature, could be a natural fit for exploring symplectic geometries and their associated symmetries.
+        %
+        That said, the greater challenge lies not in the architecture but in the search space.
+        %
+        Linear transformations form a finite dimensional Lie group, amenable to systematic exploration.
+        %
+        Nonlinear symplectic maps form an infinite dimensional space, requiring clever parametrizations and constraints.
+        %
+        Recent work on Hamiltonian neural networks\kd{cite} suggests one possible path to parametrize transformations through generating functions that automatically preserve symplectic structure.
+        
+        A few examples of particle physics applications of nonlinear symmetries are
+        \begin{itemize}
+            \item Jet substructure: The Lund plane reveals approximate scale invariant symmetries best expressed through logarithmic transformations\kd{cite}
+            \item Heavy flavor physics: Dalitz plot analyses exhibit nonlinear symmetries from resonance dynamics\kd{cite}
+            \item Multiparticle correlations: Collective flow in heavy ion collisions follows nonlinear hydrodynamic symmetries\kd{cite}
+        \end{itemize}
+        The path forward requires synergy between differential geometry, machine learning, and physics intuition, a synthesis that will push the boundaries of all three fields.
+    
+    \subsection{Approximate Symmetries and Symmetry Breaking}
+        Perfect symmetries, while mathematically elegant, rarely survive contact with experimental reality.
+        %
+        The universe abounds in approximate symmetries---patterns that almost hold, invariances with small violations, conservation laws with miniscule deviations.
+        %
+        Understanding and exploiting these near--symmetries represents perhaps the most important frontier for practical applications.
+        
+        An approximate symmetry is a transformation under which probability distributions remain invariant up to small, controlled deviations, often characterized by a symmetry--breaking parameter \(\epsilon \ll 1\).
+        
+        The mathematical framework for approximate symmetries builds on perturbation theory.
+        %
+        For a transformation \(g_\epsilon\) depending on breaking parameter \(\epsilon\),
+        \[
+            p(g_\epsilon(x)) |g'_\epsilon(x)| = p(x) + \epsilon \Delta p(x) + O(\epsilon^2)
+        \]
+        The first--order breaking term \(\Delta p(x)\) encodes how symmetry violation depends on phase space location, crucial information for precision measurements.\kd{cite}
+    
+        Consider isospin symmetry in nuclear physics---beautiful at low energies, progressively violated as electroweak effects become important.
+        %
+        A symmetry--aware unfolding framework must gracefully handle this energy--dependent breaking:
+        \[
+            \mathcal{L}_{\text{approx}} = \mathcal{L}_{\text{data}} + \lambda(E) \mathcal{R}_{\text{isospin}}
+        \]
+        where \(\lambda(E) \propto \exp(-E/\Lambda_{\text{QCD}})\) weakens the constraint at high energies.\kd{cite}
+    
+        The soft symmetry breaking framework offers particular promise.
+        %
+        Instead of binary classification (symmetric or not), one could attempt to quantify the degree of symmetry through continuous measures,
+        \[
+            S(p, g) = 1 - \frac{D_{KL}(p || g \cdot p)}{\log 2}
+        \]
+        This symmetry score \(S \in [0,1]\) would enable gradient--based optimization while naturally handling approximate invariances.\kd{cite}.
+    
+    \subsection{A unified framework}
+        As we stand at the confluence of symmetry discovery and unfolding, we glimpse the outlines of something larger—a unified framework where measurement, inference, and physical understanding merge into a coherent self-consistent cycle of inference.
+        %
+        Symmetries discovered from data improve unfolding precision, and better unfolding reveals cleaner symmetry patterns.
+        %
+        Additionally, every symmetry provides a consistency check.
+        %
+        Violations of expected symmetries signal systematic uncertainties.
+        %
+        Finally, the discovered symmetries themselves are physics outputs.
+        %
+        The questions of which symmetries hold and where they break are not only of applied interest, but also of fundamental theoretical interest to our of the laws of physics.
+    
+        Looking ahead, several concrete developments seem within reach including automated analysis pipelines that start with raw detector data, automatically discover relevant symmetries, perform symmetry-aware unfolding, quantify uncertainties, all in a self-consistent unbinned chain of inference.
+        %
+        The marriage of machine learning's pattern discovery with physics' principled reasoning promises a new era of precision measurement, where every symmetry discovered is both a practical tool and a theoretical insight.
