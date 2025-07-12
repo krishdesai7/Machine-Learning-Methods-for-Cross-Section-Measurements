@@ -1,8 +1,262 @@
-\chapter{Conclusions and Future Directions}
-\begin{itemize}
-    \item Summary of key contributions
-    \item Impact on cross section measurements
-    \item Open challenges in unfolding methodology
-    \item Potential extensions
-    \item Future research directions
-\end{itemize}
+\chapter{Conclusion}
+\label{chap:conclusion}
+\section{Synthesis of Unfolding Methods}
+    The measurement of differential cross sections lies at the heart of experimental particle physics, providing our most direct window into the fundamental interactions governing nature.
+    %
+    Yet between the elegant simplicity of theoretical predictions and the messy reality of experimental observation stands the formidable challenge of \emph{unfolding}, the process of extracting particle--level truth from detector--level measurements.
+    %
+    This dissertation has explored a progressive sequence of machine learning approaches to this inverse problem, each method expanding our capacity to extract physical insight from increasingly complex experimental data.
+    %
+    Every measurement in particle physics is filtered through imperfect detectors that smear, misdirect, and incompletely capture the particles we seek to study.
+    %
+    Fundamentally, unfolding seeks to invert this detector response function: given observed data \(p(x)\), recover the true distribution \(p(z)\) that nature produced.
+
+    Traditional approaches to unfolding have relied on \emph{discretization} i.e. dividing continuous distributions into bins and solving a finite dimensional linear inverse problem.
+    %
+    While mathematically tractable, this strategy imposes severe limitations.
+    %
+    Information is lost through binning, correlations between observables become difficult to preserve, and the curse of dimensionality restricts most analyses to one or two variables.
+    %
+    As we push toward precision measurements of increasingly subtle phenomena, such as jet substructure, effective field theory parameters, or signatures of new physics, these limitations become untenable.
+    %
+    This work presents a {progressive evolution} of unfolding methodologies, each building upon the insights of its predecessors while addressing specific limitations.
+    
+    \textbf{Neural Posterior Unfolding (NPU)} enhanced traditional binned approaches by replacing point estimates with full posterior distributions, leveraging normalizing flows to capture complex uncertainty structures while maintaining the computational advantages of amortized inference.
+    %
+    NPU as a method embodies the recognition that unfolding is fundamentally about \emph{uncertainty quantification}, not just central value estimation, and highlights the necessity of machine learning based approaches as the future of unfolding.
+    
+    \textbf{Moment Unfolding} took a different path, abandoning bins entirely in favor of directly deconvolving distribution moments.
+    %
+    By reformulating unfolding as a moment--matching problem solved through adversarial training, this approach demonstrated that meaningful physical quantities could be extracted without discretization, through a menthod that was simultaneously light, fast, and precise, opening the door to truly multidimensional analyses.
+    %
+    \textbf{Reweighting Adversarial Networks (RAN)} completed the transition to fully unbinned methods, learning to reweight simulated events to match observed data distributions.
+    %
+    This approach preserves the complete information content of individual events, enabling extraction of arbitrary observables post--unfolding—a capability impossible with any binned method.
+    %
+    The investigation of \textbf{unbinned correlations} revealed both the promise and peril of these advanced methods.
+    %
+    While unbinned techniques maximize information extraction, they introduce subtle statistical correlations between events that invalidate standard uncertainty estimation procedures.
+    %
+    Understanding and addressing these correlations proves essential for rigorous statistical inference.
+    
+    Each methodological advance expands what we can meaningfully extract from experimental data.
+    %
+    Where binned methods see discrete histograms, unbinned approaches reveal continuous probability densities.
+    %
+    Where traditional techniques handle single observables, modern methods unfold entire phase spaces.
+
+    This progression is not merely technical innovation.
+    %
+    It represents a fundamental shift in how we conceptualize measurement in particle physics.
+    %
+    Rather than forcing nature's continuous phenomena into predetermined bins, we can now let the data speak in its native language of probability densities and event--level information.
+    %
+    The implications extend beyond improved precision; entirely new classes of measurements become possible when we're no longer constrained by binning limitations.
+
+    The methods developed here address the twin challenges facing modern collider physics, \emph{higher precision} for constraining fundamental parameters and \emph{dimensional scalability} for analyzing complex final states.
+    %
+    As the era of high luminosity collider physics dawns, with its unprecedented data volumes and discovery potential, these capabilities transform from useful tools to essential infrastructure for the field's continued progress.
+
+\section{A Unified Framework for Modern Unfolding}
+    Despite their diversity, the machine learning approaches developed in this dissertation emerge from a common theoretical foundation that reconceptualizes unfolding not simply as the inversion of point bin count estimates, but as a problem of learning probability distributions under constraints.
+    %
+    This unified perspective illuminates both the connections between methods and the fundamental principles governing successful unfolding strategies.
+    
+    All unfolding methods can be understood as solving the same optimization problem of finding the particle-level distribution \(p(z)\) that, when forward--folded through the detector response, best matches the observed data while respecting prior knowledge and maintaining statistical regularity.
+    %
+    What distinguishes each approach is not the problem they solve, but rather how they parameterize the solution space and what constraints they impose.
+    %
+    NPU parameterizes the posterior distribution directly using normalizing flows.
+    %
+    Moment Unfolding constrains only integral properties while leaving the detailed shape free.
+    %
+    RAN learns a reweighting function that transforms simulation to match data.
+    %
+    Each choice reflects a different balance between flexibility and regularization, between data-driven discovery and physics-informed constraints.
+
+    The methods detailed in \cref{chap:unbinned_correlations} detail the challenges of the downstream analysis of unbinned unfolded data, and propose methods to address them.
+    %
+    If we are to use unbinned methods, as seems inevitable, we must also have a statistically rigorous framework for downstream inference and uncertainty estimation on such data.
+
+    \subsection{The Interplay of Physics and Learning}
+        Traditional unfolding methods embed physics knowledge explicitly through response matrices computed from detailed simulation, regularization terms encoding smoothness assumptions, or iterative procedures with early stopping before convergence.
+        %
+        Machine learning approaches have sometimes been criticized for abandoning field specific insights in favor of pure data--driven optimization.
+        %
+        The methods presented in this thesis seek to engage in a more nuanced balance between domain knowledge and statistical learning.
+        % 
+        Consider how physics enters each method. In NPU, the structure of the normalizing flow itself encodes invariances. The transformation must be bijective, preserving the total probability. The choice of base distribution and flow architecture implicitly constrains which solutions are easily reachable, embedding a form of physics--motivated regularization.
+        %
+        The method learns from data, but within a framework shaped by physical considerations.
+        %
+        Moment Unfolding's design is even more explicitly motivated by physics.
+        %
+        The decision to unfold moments itself is physics--motivated, in that the ability of lattice QCD calculations to predict the scaling law behavior of various jet observables only at the level of moments sets the quantities of interest.
+        %
+        The architecture too, structured like the Boltzmann distribution, is manifestly physics inspired.
+        %
+        The solution to a statistical mechanics problem in the 19th century was able to inspire a solution to a problem in cross section measurements in the 21st century.
+        %
+        RAN too exemplifies this synthesis in its network architecture.
+        %
+        Further, both Moment Unfolding and RAN learn to reweight events from physics simulation, encoding our best understanding of the underlying processes.
+        %
+        Physics provides the scaffolding for the machine learning approach.
+        %
+        Several fundamental themes emerge across all approaches, revealing the essential challenges any unfolding method must address.
+    
+    \subsection{Common Themes Across Methods}
+        First, \emph{regularization strategies} prove crucial, though they manifest differently in each method.
+        %
+        Where traditional methods add explicit regularization terms as smoothness penalties, ML approaches tend to encode regularization through architectural choices such as network depth, activation functions, training procedures.
+        %
+        This form of regularization is implicit but no less real.
+        %
+        That said, machine learning approaches can also be regularized more explicitly, through the use of regularization terms in the loss function.
+        %
+        NPU regularizes through the limited capacity of normalizing flows and early stopping.
+        %
+        Moment Unfolding has a highly constrained generator that is only able to generate distributions that match the moments of the data, with a small fraction of the capacity of a fully flexible generator.
+        %
+        RAN uses the Wasserstein distance and gradient penalties to ensure stable training.
+        %
+        In addition to this, the unconstrained generator in RAN in comparison to the contstrained generator in Moment Unfolding requires further regularization through methods such as spectral normalization and entropy regularization in order to prevent training instability.
+        %
+        Despite their diversity, all of these methodsserve the same purpose---preventing the ill--posed inverse problem from amplifying statistical fluctuations into unphysical features.
+
+        Second, \emph{uncertainty quantification} is a central and essential component of any unfolding method for cross section measurements.
+        %
+        Where traditional methods often provide only point estimates with approximate error bars, modern approaches like NPU naturally and directly model the posterior distribution as an intrinsic feature of the method.
+        %
+        Moment Unfolding and RAN preserve event-level information, enabling nuanced uncertainty propagation.
+        %
+        This shift from binned to unbinned unfolded cross section results poses a fundamental challenge to uncertainty quantification for parameter estimation, and demands a new statistical framework that can appropriately account for the correlations introduced by the unfolding process.
+
+        This leads to the third theme of \emph{computational trade-offs} as an unavoidable reality of any unfolding method.
+        %
+        Every method navigates the tension between expressiveness and tractability.
+        %
+        More flexible models can capture complex distributions but require more data and computation, as well are more complex regularization schemes.
+        %
+        Constrained models train efficiently but are limit in the information they can capture.
+        %
+        Traditional unfolding methods are orders of magnitude faster than their unbinned counterparts and have well known asymptotics for parameter estimation and uncertainty quantification, but they only provide point estimates of bin counts, introduce artifacts into the unfolded data results and are limited to low dimensional analysis.
+        %
+        Modern ML based approaches are significantly more computatinally expensive, and pose challenges for downstream inference, but are able to jointly unfold multiple observables, thereby capturing inter-observables correlations, and do not introduce binning artifacts into the unfolded data results.
+
+    These common themes express a few important lessons for the development and evaluation of any unfolding method.
+    %
+    In both the development and evaluation of any unfolding method \emph{prior dependence} remains important in some form.
+    %
+    Even methods that make theoretical guaratees of converging to unbiased estimators, make those guaratees based on assumptions such as infinite, independent, and identically distributed data, training until theoretical convergence, etc.
+    %
+    In practice, the output of every method depends on the initial simulation or assumption in some way.
+    %
+    The key, therefore, is to make this dependence explicit and testable rather than hidden in algorithmic choices. Stress tests with deliberately misspecified priors help quantify robustness.
+    
+    The architecture of the method matters as much as the algorithm.
+    %
+    The choice of neural network structure, loss functions, and training procedures embeds implicit assumptions about the problem.
+    %
+    Successful methods align these architectural properties with known physics constraints.
+        
+    Finally, the testing of modern unfolding methods requires the development of suitable validation procedures that go beyond traditional closure tests.
+    %
+    Our methods demand validation approaches that test robustness to misspecification, stability under resampling, and consistency across observables.
+    %
+    The unbinned nature particularly requires careful treatment of statistical dependencies during parameter inference to avoid misestimation of coverage.
+    %
+    Successful unfolding requires carefully balancing flexibility with constraint, expressiveness with regularization, and physics insight with data-driven discovery.
+    %
+    The methods in this dissertation explore different points in this space, but all navigate the same fundamental tensions inherent in extracting truth from imperfect measurement.
+\section{Advances in Cross Section Measurement}
+    This thesis presents major methodological advances that collectively advance our ability to extract precise physical information from collider data.
+    %
+    Each contribution addresses specific limitations of existing approaches while opening new avenues for physics analysis.
+    \subsection{Summary of Contributions}
+        The novel contributions developed in this work span the full spectrum of unfolding challenges, from enhancing traditional binned approaches to enabling entirely new measurement paradigms.
+        \begin{enumerate}
+            \item \emph{Neural Posterior Unfolding (NPU):} This method revolutionizes binned unfolding by replacing traditional matrix inversion with conditional normalizing flows that directly model the posterior distribution \(p(t|m)\).
+            %
+            The key innovation lies in using amortized inference.
+            %
+            Once trained, NPU processes new datasets in seconds rather than minutes, achieving a \(\13\times\) speedup over Fully Bayesian Unfolding while maintaining identical statistical coverage.
+            %
+            NPU's normalizing flow architecture naturally handles degenerate response matrices where traditional methods fail catastrophically, providing proper uncertainty quantification in unconstrained regions of phase space.
+            %
+            \item \emph{Moment Unfolding:} Rather than reconstructing entire distributions, this approach directly unfolds the first \(n\) statistical moments using a Boltzmann distribution inspired reweighting function.
+            %
+            The generator architecture \[g(z,\vb*{\beta}) = \frac{\exp(\sum_{a=1}^n \beta_a T_a(z))}{Z(\vb*{\beta})}\] embeds the maximum entropy principle, ensuring that the unfolded distribution is the most conservative distribution consistent with measured moments.
+            %
+            This targeted approach achieves comparable or better precision than OmniFold for moment extraction while requiring only 1\(\%\) of the computational resources.
+            %
+            \item \emph{Reweighting Adversarial Networks (RAN):} Extending Moment Unfolding to the continuum limit, RAN learns a flexible reweighting function that morphs simulation to match data across the entire phase space.
+            %
+            The critical innovation is performing reweighting at particle--level while using gradients from the Wasserstein distance between measured data and simulation at detector--level, enabling robust unfolding even when detector--level distributions have minimal overlap.
+            %
+            In jet substructure measurements, RAN achieves comparable or better accuracy than OmniFold for challenging observables with a variety of different features and scaling behaviors, which being an order of magnitude more computationally efficient.
+            %
+            \item \emph{Unbinned Correlation Analysis:} This work provides the first comprehensive framework for understanding how unfolding induced correlations between events fundamentally challenges the independence assumption underlying standard likelihood construction for unbinned data.
+            %
+            The analysis reveals that naive unbinned inference can significantly misestimate uncertainties with the misestimation magnified at lower detector resolutions.
+            %
+            The proposed correlation-aware inference methods restore proper statistical coverage while preserving the precision advantages of unbinned approaches.
+            %
+            \item \emph{SymmetryGAN:} While not implemented for unfolding in this thesis, SymmetryGAN introduces a differentiable framework for discovering continuous symmetries directly from data.
+            %
+            The method employs adversarial training to learn transformations that leave the data distribution invariant, providing a novel, flexible and fully differentiable framework for discovering symmetries directly from data.
+            %
+            This opens the door to physics--informed unfolding that automatically incorporates discovered invariances.
+        \end{enumerate}
+    \subsection{Impact and Advances}
+        These advances collectively enhance our ability to measure differential cross sections across multiple dimensions.
+        
+        NPU solves the catastrophic failure of traditional unfolding methods to provide proper uncertainty quantification in unconstrained regions of phase space by enabling the extraction of the full posterior distribution of the unfolded data.
+        %
+        While methods such as Fully Bayesian Unfolded are also able to provide proper uncertainty quantification in unconstrained regions of phase space, they are significantly more computationally expensive.
+        %
+        By using ammortized inference, NPU is able to process new datasets in seconds rather than minutes, achieving a \(\13\times\) speedup over Fully Bayesian Unfolding while maintaining identical statistical coverage.
+        %
+        The amortized inference capability transforms how experimentalists can handle systematic uncertainties.
+        %
+        Where traditional methods require complete re-unfolding for each systematic variation, NPU processes hundreds of variations in the time previously needed for one.
+        %
+        This is crucial for precision measurements where systematic uncertainties dominate and require extensive variation studies.
+
+        Moment Unfolding targets the statistical moments of cross section measurements, which are the quantities that are most often used in physics analyses, enabling direct comparison between collider data and first--principles calculations.
+        %
+        By unfolding the moments, Moment Unfolding is able to provide a prediction that is significantly more precise than IBU, while requiring only 1\(\%\) of the computational resources OmniFold requires to achieve the same precision.
+        %
+        It also abandons the arbitrary iteration cut-offs of iterative unfolding methods, and instead uses an adversarial training procedure to unfold the data by training a single pair of networks to convergence.
+        %
+        As a fast, light, and precise unbinned unfolding method, it is a natural candidate for unfolding substructure observables.
+        
+        RAN extends Moment Unfolding to the continuum limit, enabling the unfolding of the full distribution of multidimensional, multi--observable distributions.
+        %
+        By opening up the multidimensional phase space, eliminating the curse of dimensionality inherent ot binned methods, RAN allows us to study the correlations in the joint density that are lost in projection during binned unfolding.
+        %
+        RAN is particularly useful for observables where the full distribution of the cross section is necessary to extract the physics of the jet.
+        %
+        RAN, like Moment Unfolding, is non--iterative, and learns perturbations to the MCMC, effectively initiating the networks with a huge swathe of physics knowledge ratheer than having them learn to generate the entire distribution from scratch.
+        %
+        RAN offers a fundamental improvement over existing methods by being able to unfold distributions with poor detector--level overlap as long as they have good particle--level overlap, enabling the exploration of previously inaccessible regions of phase space.
+        
+        The theoretical understanding of event correlations developed in Chapter \ref{chap:unbinned_correlations} is essential for extracting reliable physics parameters from unbinned data and ensuring valid inference.
+        %
+        Without this framework, precision improvements from unbinned methods would be negated by incorrect uncertainty estimates.
+        %
+        SymmetryGAN points us toward physics--informed ML.
+        %
+        The ability to discover symmetries from data suggests a future where machine learning methods automatically incorporate physical constraints.
+        %
+        For cross section measurements, this could reduce effective dimensionality and improve precision.
+    
+        These methods together create a comprehensive toolkit that addresses major challenges in modern cross section measurements: precision, dimensionality, efficiency, and theoretical interpretability.
+        %
+        The methods are not merely incremental improvements but represent fundamental advances in how we extract physics from collider data.
+        %
+        Looking forward, these contributions establish the foundation for the next generation of collider physics measurements.
+        %
+        As colliders generate data at unprecedented rates and the need for ever--more--differential measurements, the ability to efficiently unfold high--dimensional distributions while maintaining rigorous uncertainty quantification will transition from advantageous to essential.
+        %
+        The methods developed here are a step towards ensuring that data analysis capabilities keep pace with both experimental advances and the expanding scope of theoretical questions they seek to answer.
