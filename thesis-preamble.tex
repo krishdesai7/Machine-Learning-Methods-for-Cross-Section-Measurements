@@ -18,9 +18,11 @@
 \usepackage{csquotes}
 
 % Microtype for better typography
-\usepackage[protrusion=false, expansion=true, factor=1100, final, 
-            tracking=true, kerning=true, spacing=true, 
-            stretch=40, shrink=10, babel=true]{microtype}
+\usepackage
+% [protrusion=false, expansion=true, factor=1100, final, 
+%             tracking=true, kerning=true, spacing=true, 
+%             babel=true]
+            {microtype}
 \microtypecontext{spacing=nonfrench}
 \SetExtraKerning[unit=space]
     {encoding={*}, family={bch}, series={*}, size={footnotesize,small,normalsize}}
@@ -53,8 +55,6 @@
 \usepackage{array}
 \usepackage{xcolor}
 
-\graphicspath{{figures/}{figures/chapter-02/}}
-
 % ============================================================================
 % ALGORITHMS AND CODE
 % ============================================================================
@@ -76,6 +76,7 @@
 % ============================================================================
 % HYPERLINKS AND CROSS-REFERENCES
 % ============================================================================
+
 \usepackage[
     hidelinks,
     pdfusetitle,
@@ -87,8 +88,8 @@
     pdfborder={0 0 0},
     colorlinks=false
 ]{hyperref}
+\usepackage{url}
 \usepackage[capitalise,noabbrev]{cleveref}
-
 \crefname{equation}{Eq.}{Eqs.}
 \crefname{figure}{Fig.}{Figs.}
 \crefname{table}{Table}{Tables}
@@ -163,7 +164,6 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-\newtheorem{remark}[theorem]{Remark}
 
 % ============================================================================
 % CUSTOM ENVIRONMENTS
@@ -196,3 +196,19 @@
 \renewcommand{\bottomfraction}{0.85}
 \renewcommand{\textfraction}{0.1}
 \renewcommand{\floatpagefraction}{0.85}
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\thechapter.\Alph{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
+
+\usepackage{tocbasic}
+\RedeclareSectionCommand[
+  tocnumwidth=2cm
+]{chapter}
+
+% \usepackage{titlesec}
+% \titleformat{\paragraph}[block]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}

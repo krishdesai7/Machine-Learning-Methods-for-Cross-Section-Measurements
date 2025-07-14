@@ -756,4 +756,10 @@ by\par
 %    \edef\@halignto{to\the\dimen@}\@tabular}
 % \expandafter \let \csname endscriptsizetabular*\endcsname = \endtabular
 
+\setlength{\cftchapternumwidth}{2em}
+\setlength{\cftsectionnumwidth}{3em}
+\setlength{\cftsubsectionnumwidth}{4em}
+\setlength{\cftsubsubsectionnumwidth}{5em}
+\setlength{\cftparagraphnumwidth}{5em}
+
 \endinput
