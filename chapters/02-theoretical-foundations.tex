@@ -138,7 +138,7 @@ Regularization techniques are therefore essential to stabilize the solution.
         %
         Instead of discretizing phase space into predetermined categories, unbinned techniques allow the data itself to determine the relevant resolution scales and correlation structures.
         
-        Rather than explicitly modelling the response function r(x|z), modern techniques like OmniFold~\cite{andreassen_omnifold_2020} employ iterative reweighting strategies that learn implicit mappings between truth and detector-level distributions.
+        Rather than explicitly modelling the response function r(x|z), modern techniques like \textsc{OmniFold}~\cite{andreassen_omnifold_2020} employ iterative reweighting strategies that learn implicit mappings between truth and detector-level distributions.
         %
         These methods sidestep the curse of dimensionality by avoiding explicit probability density estimation, instead focusing on weight optimization that preserves marginal distributions while respecting the detector response.
 
@@ -450,11 +450,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
         %
         These approaches fall into two main categories: reweighting methods and direct generative modelling.
         \subsubsection{Reweighting Methods}
-            The most established approach in this category is OmniFold, which employs an iterative procedure inspired by the Iterative Bayesian Unfolding (IBU) algorithm.
+            The most established approach in this category is \textsc{OmniFold}, which employs an iterative procedure inspired by the Iterative Bayesian Unfolding (IBU) algorithm.
             %
-            OmniFold alternates between two steps that estimate likelihood ratios using binary classifiers.
+            \textsc{OmniFold} alternates between two steps that estimate likelihood ratios using binary classifiers.
             
-            In each iteration \(k\), OmniFold first trains a classifier to distinguish between data and simulated detector--level events, referred to as \emph{simulation} (Sim.), yielding the ratio
+            In each iteration \(k\), \textsc{OmniFold} first trains a classifier to distinguish between data and simulated detector--level events, referred to as \emph{simulation} (Sim.), yielding the ratio
             \begin{equation}
                 \nu^{(k)}(x) = \frac{p(x)}{q^{(k)}(x)},
             \end{equation}
@@ -747,13 +747,13 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/chapter-02/weight-correlation-vs-distance-1d-set1.pdf}
-                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using OmniFold~\cite{Desai:2025mpy}.\footnote{Figure created by Owen Long.}
+                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using \textsc{OmniFold}~\cite{Desai:2025mpy}.\footnote{Figure created by Owen Long.}
                 }
                 \label{fig:corr-decay}
             \end{figure}
     \subsection{Method specific evaluation metrics}
         \subsubsection{Iterative methods}
-            For iterative methods like Iterative Bayesian Unfolding (IBU) or OmniFold, convergence behaviour provides important diagnostic information.
+            For iterative methods like Iterative Bayesian Unfolding (IBU) or \textsc{OmniFold}, convergence behaviour provides important diagnostic information.
         %
         To study the convergence behaviour, we plot metric values (e.g., \(\chi^2\) or NLL) as a function of iteration number.
         %

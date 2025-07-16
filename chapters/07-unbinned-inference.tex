@@ -1201,7 +1201,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
             \begin{itemize}
             \item \emph{Perfect detector ($\sigma_{\det}=0$):}
                 %
-                One should expect the average pair-–wise correlation to be $\rho(|\Delta x|)\!\simeq\!0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, OmniFold reproduces the {factorised likelihood} limit in which event weights are statistically independent\kd{cite:Andreassen:2019cjw}.
+                One should expect the average pair-–wise correlation to be $\rho(|\Delta x|)\!\simeq\!0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, \textsc{OmniFold} reproduces the {factorised likelihood} limit in which event weights are statistically independent\kd{cite:Andreassen:2019cjw}.
                 %
                 At $\Delta x = 0$ we trivially should expect $\rho(0)=1$ because every event is, of course, perfectly correlated with itself, and this is indeed what \cref{fig:weight-corr} demonstrates too.
                 %
@@ -1218,7 +1218,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
                 I propose two potential explanations.
                 \begin{enumerate}
                     \item \emph{Network smoothness:} the shared weights in the neural network classifier impose a finite ``receptive field, \kd{cite:Minderer2021SmoothNN,WeightConditioning2024} causing nearby events to receive similar gradient updates and hence correlated weights; and
-                    \item \emph{Global normalisation:} OmniFold enforces $\sum_i w_i = N_{\text{MC}}$ at every iteration.
+                    \item \emph{Global normalisation:} \textsc{OmniFold} enforces $\sum_i w_i = N_{\text{MC}}$ at every iteration.
                     %
                     This normalization might be introducing a weak positive correlation of size $1/N$ even in the absence of detector effects\kd{cite:Cowan2011Stats}. 
                 \end{enumerate}
@@ -1264,7 +1264,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
             %
             The matrices, shown in Fig.~\kd{fig:hist-cov}, reinforce the observations from the correlation curves.
             %
-            Even at zero smearing, while KDE produces a nearly diagonal $C_{ab},$ OmniFold's weights exhibit small but noticable off diagonal elements.
+            Even at zero smearing, while KDE produces a nearly diagonal $C_{ab},$ \textsc{OmniFold}'s weights exhibit small but noticable off diagonal elements.
             %
             Growing the smearing leads to pronounced \emph{anti-‐correlations} along the first off–-diagonal and coherent positive correlations far from the diagonal.
             %
@@ -1272,7 +1272,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
 
             Such strong off–-diagonal structure rigorously explains why a $\chi^2$ fit that {ignores} covariances by using only the diagonal of $C$ leads to miscoverage.
         \subsubsection{Implications}
-            The correlation diagnostics presented here {empirically validate} the theoretical expectation that OmniFold weights are correlated.
+            The correlation diagnostics presented here {empirically validate} the theoretical expectation that \textsc{OmniFold} weights are correlated.
             %
             Quantifying the strength and range of those correlations enables an \emph{a priori} estimate of how badly an independence‐-based error formula will fail\kd{cite}.
             %
@@ -1319,7 +1319,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
     
         Both of the above approaches are applied to the same Gaussian datasets described earlier in \cref{subsec:setup}.
         %
-        Unfolding is performed with the OmniFold algorithm\kd{cite:Andreassen:2019cjw,Andreassen:2021zzk}.
+        Unfolding is performed with the \textsc{OmniFold} algorithm\kd{cite:Andreassen:2019cjw,Andreassen:2021zzk}.
         %
         In the one dimensional setting we also test a KDE based implementation.
         %
@@ -1341,7 +1341,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
             %
             if the model is correctly specified, the MLEs should coincide.
             %
-            Thus, unbinned unfolding does not itself induce a bias in the extracted physics parameters verifying the claim that the OmniFold procedure (with sufficient iterations and regularization) correctly reproduces the shape of the true distribution on average.\kd{cite:Andreassen:2019cjw}
+            Thus, unbinned unfolding does not itself induce a bias in the extracted physics parameters verifying the claim that the \textsc{OmniFold} procedure (with sufficient iterations and regularization) correctly reproduces the shape of the true distribution on average.\kd{cite:Andreassen:2019cjw}
             %
             This is demonstrated by the agreement of fitted values with the true parameter shown by the horizontal lines in Fig.\cref{fig:uncertainty-and-bias-vs-resolution} and the baseline results in \cref{fig:mu_mean_values_with_errorbars}. 
         \paragraph{Uncertainty estimation and coverage}
@@ -1584,7 +1584,7 @@ Ignoring those correlations can bias parameter estimates and/or lead to misestim
 
     A central observation is that the output of an unfolding procedure violates the usual assumption of statistical independence among events.
     %
-    In our studies, the iterative OmniFold procedure produces a weighted set of “unfolded” events that are correlated with one another.
+    In our studies, the iterative \textsc{OmniFold} procedure produces a weighted set of “unfolded” events that are correlated with one another.
     %
     We showed that a naïve unbinned likelihood--based inference, which treats the unfolded events as if they were independent observations, fails to yield reliable uncertainty estimates.
     %

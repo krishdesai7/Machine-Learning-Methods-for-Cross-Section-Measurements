@@ -197,18 +197,12 @@
 \renewcommand{\textfraction}{0.1}
 \renewcommand{\floatpagefraction}{0.85}
 
-\setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{6}
 \renewcommand{\thechapter}{\Roman{chapter}}
 \renewcommand{\thesection}{\thechapter.\Alph{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
 \renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
+\renewcommand{\thesubparagraph}{\theparagraph.\oldstylenums{\arabic{subparagraph}}}
 
-\usepackage{tocbasic}
-\RedeclareSectionCommand[
-  tocnumwidth=2cm
-]{chapter}
-
-% \usepackage{titlesec}
-% \titleformat{\paragraph}[block]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}

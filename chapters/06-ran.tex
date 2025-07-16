@@ -225,7 +225,7 @@
         %
         When unfolding a full spectrum, prior dependence can be even trickier: with many bins or continuous degrees of freedom, there are more opportunities for the prior assumptions to creep in unless the method explicitly works to mitigate this.
         %
-        Modern ML based unbinned unfolding techniques like iterative reweighting (used by OmniFold) attempt to reduce prior bias by gradually adjusting the prior to fit the data\kd{cite}, but they still require that the initial simulation populate all regions of phase space that data might cover.\kd{cite}
+        Modern ML based unbinned unfolding techniques like iterative reweighting (used by \textsc{\textsc{OmniFold}}) attempt to reduce prior bias by gradually adjusting the prior to fit the data\kd{cite}, but they still require that the initial simulation populate all regions of phase space that data might cover.\kd{cite}
         %
         In other words, if the true distribution has support outside the domain of the starting simulation, no unfolding can recover that---a condition that applies to all known methods.
         %
@@ -278,9 +278,9 @@
         %
         Both categories strive to avoid fixed histogram binning and instead work with unbinned data, using the power of ML to handle high--dimensional inputs and complex detector responses.
 
-        One of the pioneering ML-based methods is \textbf{OmniFold}\kd{cite}, which introduced an unbinned, multivariate unfolding technique using iterative reweighting.
+        One of the pioneering ML-based methods is \textbf{\textsc{\textsc{OmniFold}}}\kd{cite}, which introduced an unbinned, multivariate unfolding technique using iterative reweighting.
         %
-        OmniFold uses classifier neural networks to reweight a Monte Carlo sample.
+        \textsc{\textsc{OmniFold}} uses classifier neural networks to reweight a Monte Carlo sample.
         %
         Essentially, it trains a classifier to distinguish between data and simulation, and then uses the classifier output to assign weights to simulation events such that the weighted simulation better matches the data.
         %
@@ -288,17 +288,17 @@
         %
         After several iterations, the method produces a set of weights for generation events that yield an unfolded distribution.
         %
-        OmniFold demonstrated, for the first time, that one can simultaneously unfold many observables (even the entire event record) without binning, given a sufficiently flexible classifier and a robust iterative scheme.\kd{}
+        \textsc{\textsc{OmniFold}} demonstrated, for the first time, that one can simultaneously unfold many observables (even the entire event record) without binning, given a sufficiently flexible classifier and a robust iterative scheme.\kd{}
         %
         It has been successfully applied in multiple experimental analyses,\kd{}.
         %
-        The key advantages of OmniFold are that it naturally accounts for high--dimensional correlations (since the classifier can use any or all features) and it actively mitigates prior dependence by iterative refinement, effectively performing a form of expectation--maximization to find a self consistent unfolded result that does not overly rely on the initial generation distribution.
+        The key advantages of \textsc{\textsc{OmniFold}} are that it naturally accounts for high--dimensional correlations (since the classifier can use any or all features) and it actively mitigates prior dependence by iterative refinement, effectively performing a form of expectation--maximization to find a self consistent unfolded result that does not overly rely on the initial generation distribution.
         %
         However, a noted downside is its computational cost: each iteration requires training two classifiers to convergence, and in realistic cases one might need $5 - 10$ iterations, amounting to training a large number of networks.
         %
         This iterative nature can also complicate uncertainty evaluation and hyperparameter tuning (e.g. one must subjectively choose when to stop iterating to avoid instability).
         %
-        Still, OmniFold set the stage for practical unbinned unfolding and proved the feasibility of full spectral measurements on real collider data.
+        Still, \textsc{\textsc{OmniFold}} set the stage for practical unbinned unfolding and proved the feasibility of full spectral measurements on real collider data.
 
         In parallel, other methods have explored using explicit generative models to unfold distributions.
         %
@@ -336,7 +336,7 @@
         %
         This two-level problem is naturally addressed with adversarial setups (a simulator or reweight function competing against a discriminator) or with optimal transport objectives that connect particle and detector level distributions.
 
-        In summary, the landscape of modern unfolding methods includes iterative classifiers (OmniFold) \kd{cite}, single--shot adversarial reweighting (e.g. RAN), and generative approaches (cINNs, VAEs)\kd{cite}, each with their own strengths.
+        In summary, the landscape of modern unfolding methods includes iterative classifiers (\textsc{\textsc{OmniFold}}) \kd{cite}, single--shot adversarial reweighting (e.g. RAN), and generative approaches (cINNs, VAEs)\kd{cite}, each with their own strengths.
         %
         Table~\ref{tab:unfold_methods} provides a high-level comparison.
         %
@@ -344,7 +344,7 @@
         %
         Notably, most current ML--based methods (except full generative ones) still require that the starting simulation has support in the regions of interest (the issue of support overlap).
         %
-        They also share common challenges of training stability and overfitting prevention, which are addressed through techniques like regularization or specific loss functions (for instance, OmniFold uses early stopping of iterations, while adversarial methods use regularized discriminators).
+        They also share common challenges of training stability and overfitting prevention, which are addressed through techniques like regularization or specific loss functions (for instance, \textsc{OmniFold} uses early stopping of iterations, while adversarial methods use regularized discriminators).
 
         \begin{table}
             \centering
@@ -356,14 +356,14 @@
             %
             “Perturbative” indicates that the method reweights a MC sample (as opposed to generating events from scratch).
             %
-            RAN (this work) occupies a middle ground, using a prior simulation like OmniFold but aiming to avoid costly iterations by employing a stable adversarial training objective.}
+            RAN (this work) occupies a middle ground, using a prior simulation like \textsc{OmniFold} but aiming to avoid costly iterations by employing a stable adversarial training objective.}
             \label{tab:unfold_methods}
             \begin{tabular}{lccc}
                 \toprule
                 \textbf{Method} & \textbf{Unbinned} & \textbf{Iterative} & \textbf{Uses sim.} \\
                 \midrule
                 Traditional (IBU, TUnfold) & No & Sometimes & Yes\\
-                Discriminative (OmniFold)      & Yes & Yes & Yes \\
+                Discriminative (\textsc{OmniFold})      & Yes & Yes & Yes \\
                 Generative (cINNs/VAEs)             & Yes & No  & No (from noise)\\
                 Adversarial reweight (RAN)        & Yes & No  & Yes \\
                 \bottomrule
@@ -407,7 +407,7 @@
         %
         This flexibility maximizes the utility of the measurement.
 
-        One of the core design goals of RAN is to eliminate the need for multiple iterative reweighting cycles (as in OmniFold).
+        One of the core design goals of RAN is to eliminate the need for multiple iterative reweighting cycles (as in \textsc{OmniFold}).
         %
         Instead of training sequential classifiers for each iteration, RAN uses a single coupled training procedure where the particle--level reweighting function and the detector--level discriminator are learned together (analogous to a generator and critic in a Wasserstein GAN).
         %
@@ -628,13 +628,13 @@ Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
             %
             These methods often use machine learning to compare distributions without bins.
             %
-            One prominent example is OmniFold,\kd{} an unbinned iterative unfolding approach based on modern machine learning classifiers.
+            One prominent example is \textsc{OmniFold},\kd{} an unbinned iterative unfolding approach based on modern machine learning classifiers.
             %
-            OmniFold uses a classifier (often a neural network) to distinguish weighted simulation from data; the classifier’s output is used to reweight simulation events such that, after reweighting, the simulation is more similar to the data.
+            \textsc{OmniFold} uses a classifier (often a neural network) to distinguish weighted simulation from data; the classifier’s output is used to reweight simulation events such that, after reweighting, the simulation is more similar to the data.
             %
             This is done in an iterative fashion (multiple rounds, including both detector--level and particle--level weights) to converge to a set of per--event weights that yield an unfolded distribution matching the observed data.\kd{}
             %
-            While OmniFold does not explicitly constrain low--order moments or use an analytic parametrization, it implicitly matches all features of the distribution that the classifier can discern---effectively attempting to equate the full set of moments by the end of the procedure.
+            While \textsc{OmniFold} does not explicitly constrain low--order moments or use an analytic parametrization, it implicitly matches all features of the distribution that the classifier can discern---effectively attempting to equate the full set of moments by the end of the procedure.
             %
             In each iteration, the classifier focuses on the current differences between data and weighted simulation, which are often in some “mode” of the distribution; iterating allows successively finer differences (higher--order moments or localized shape features) to be corrected.
             %
@@ -716,7 +716,7 @@ Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
         %
         One would need to generate new events (a different approach entirely) or rely on extrapolation.
         %
-        Thus, moment unfolding, like other reweighting methods (OmniFold, RAN, etc.), assumes that the generation's phase space is broad enough to contain the truth (or that any deficiencies are corrected by separate means).
+        Thus, moment unfolding, like other reweighting methods (\textsc{OmniFold}, RAN, etc.), assumes that the generation's phase space is broad enough to contain the truth (or that any deficiencies are corrected by separate means).
         %
         This is usually ensured by using a sufficiently generic simulation or augmenting it with additional samples if needed.
         %
@@ -820,7 +820,7 @@ Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
 
         By allowing a more expressive reweighting function, RAN is able to unfold the entire distribution in an unbinned, non--iterative manner.
         %
-        This stands in contrast to OmniFold, which, while also ultimately recovering the full distribution, does so via multiple iterative reweighting steps.
+        This stands in contrast to \textsc{OmniFold}, which, while also ultimately recovering the full distribution, does so via multiple iterative reweighting steps.
         %
         RAN achieves a similar end point in one training loop by leveraging the powerful GAN paradigm.
         %
@@ -908,9 +908,9 @@ This framework not only bridges classical and modern techniques but also provide
 
         In adaptive or iterative ML unfolding algorithms, an explicit analogue of early stopping is used.
         %
-        The OmniFold method, for instance, performs successive reweighting iterations with neural classifiers.\kd{}  By limiting the number of iterations (often on the order of \(4-6\)) and monitoring when the updates become consistent with statistical uncertainty, OmniFold effectively regularizes the solution.\kd{}
+        The \textsc{OmniFold} method, for instance, performs successive reweighting iterations with neural classifiers.\kd{}  By limiting the number of iterations (often on the order of \(4-6\)) and monitoring when the updates become consistent with statistical uncertainty, \textsc{OmniFold} effectively regularizes the solution.\kd{}
         %
-        If iterated to completion, an algorithm like OmniFold would overfit the data (analogous to iterative Bayesian unfolding); halting earlier mitigates this risk.\kd{}
+        If iterated to completion, an algorithm like \textsc{OmniFold} would overfit the data (analogous to iterative Bayesian unfolding); halting earlier mitigates this risk.\kd{}
         %
         Neural network--based unfolding methods also permit incorporation of physics--informed constraints as a form of regularization.
         %
@@ -930,7 +930,7 @@ This framework not only bridges classical and modern techniques but also provide
         %
         In practice, the success of ML generative unfolding has been limited by the need for large training samples and the difficulty of covering the full phase space without introducing spurious modes\kd{cite}.
         %
-        Indeed, most existing ML unfolding methods (OmniFold and variants\kd{cite}, flow-based methods\kd{cite}, etc.) still assume that the simulated data sample has sufficient overlap with the true distribution in all regions of interest.\kd{}
+        Indeed, most existing ML unfolding methods (\textsc{OmniFold} and variants\kd{cite}, flow-based methods\kd{cite}, etc.) still assume that the simulated data sample has sufficient overlap with the true distribution in all regions of interest.\kd{}
         %
         If the simulation has zero or very little support in some region that the real data populate, no amount of reweighting or network fitting can compensate; this is the well-known curse of extrapolation in unfolding.
 
@@ -941,7 +941,7 @@ This framework not only bridges classical and modern techniques but also provide
         %
         RAN lifts that restriction by attempting to unfold the entire distribution (the “infinite--moment” limit), requiring new regularization techniques to keep the problem well--defined.\kd{}
         %
-        Unlike OmniFold, which iteratively trains many separate classifiers, RAN solves for all weights in a single training round by jointly optimizing $g$ and $d$.
+        Unlike \textsc{OmniFold}, which iteratively trains many separate classifiers, RAN solves for all weights in a single training round by jointly optimizing $g$ and $d$.
         %
         This provides a significant computational advantage, but it demands a very stable training procedure because the full flexibility of $g(z)$ is unleashed at once.
 
@@ -1138,7 +1138,7 @@ This framework not only bridges classical and modern techniques but also provide
     %
     In effect, RAN attains a balance: it is flexible enough to accurately fit complex, high--dimensional data, yet sufficiently regularized to suppress unphysical oscillations and variance.
     %
-    The result is an unfolding method that achieves competitive or superior performance to iterative methods like OmniFold, while operating in a single training pass and maintaining controlled behaviour even in challenging regimes (such as limited detector overlap or low--statistics bins)\kd{cite}.
+    The result is an unfolding method that achieves competitive or superior performance to iterative methods like \textsc{OmniFold}, while operating in a single training pass and maintaining controlled behaviour even in challenging regimes (such as limited detector overlap or low--statistics bins)\kd{cite}.
     %
     The following sections will demonstrate these points quantitatively with examples, but the methodological foundation laid out here is key to understanding why RAN performs as well as it does.
     %
@@ -1353,7 +1353,7 @@ This framework not only bridges classical and modern techniques but also provide
         \subsubsection{Jet Substructure Dataset}
             The second dataset studied is a realistic example taken from high--energy particle physics, involving the unfolding of jet substructure observables.
             %
-            We follow the setup of the OmniFold study \kd{cite Andreassen:2019cjw} to enable direct comparisons.
+            We follow the setup of the \textsc{OmniFold} study \kd{cite Andreassen:2019cjw} to enable direct comparisons.
             %
             Proton-proton collision events at $\sqrt{s}=14$~TeV were generated using two different Monte Carlo simulators, \textsc{Pythia}8.243 \kd{cite Sjostrand:2014zea,Sjostrand:2007gs} (with CMS Tune26 \kd{cite ATL-PHYS-PUB-2014-021}) provided the initial \emph{generation} sample, and \textsc{Herwig}~7.1.5 \kd{cite Bahr:2008pv,Bellm:2017bvx} was used to generate an independent sample treated as the \emph{truth} target distribution.
             %
@@ -1487,7 +1487,7 @@ This framework not only bridges classical and modern techniques but also provide
     \label{sec:results}
     We evaluate the Reweighting Adversarial Network (RAN) on two case studies: a targetting one--dimensional Gaussian unfolding task and a realistic jet substructure unfolding problem.
     %
-    In each case, RAN’s performance is compared to two baseline methods, the OmniFold algorithm~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and Iterative Bayesian Unfolding (IBU)~\kd{DAgostini:1994fjx}.
+    In each case, RAN’s performance is compared to two baseline methods, the \textsc{OmniFold} algorithm~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and Iterative Bayesian Unfolding (IBU)~\kd{DAgostini:1994fjx}.
     %
     We report quantitative divergence metrics for each method and analyse their ability to reproduce the true (particle--level) distributions (closure tests), as well as the methods’ stability under statistical fluctuations.
 
@@ -1504,7 +1504,7 @@ This framework not only bridges classical and modern techniques but also provide
         %
         This controlled setup allows us to examine how each unfolding method copes with a progressively worsening mismatch between the observed (detector--level) data and the simulation.
         %
-        Notably, methods like OmniFold rely reweighting at the detector level, which can fail if the detector--level supports do not overlap well.
+        Notably, methods like \textsc{OmniFold} rely reweighting at the detector level, which can fail if the detector--level supports do not overlap well.
         %
         In contrast, RAN performs reweighting before the detector simulation (at particle level) and uses an optimal transport--based loss to compare detector--level outputs.
         %
@@ -1512,25 +1512,25 @@ This framework not only bridges classical and modern techniques but also provide
 
         To quantify performance, we use the Wasserstein\(-1\) distance ($W_1$) and the Vincze–-Le Cam (VLC) divergence $\Delta_{VLC}$ between the unfolded outcome and the true distribution as metrics of accuracy.
         %
-        Figure~\kd{fig:omnifold-comp} summarizes the unfolding accuracy as a function of the smearing factor, with $\Delta_{VLC}$ plotted for RAN and OmniFold.
+        Figure~\kd{fig:omnifold-comp} summarizes the unfolding accuracy as a function of the smearing factor, with $\Delta_{VLC}$ plotted for RAN and \textsc{OmniFold}.
         %
-        At minimal smearing (factor $1.0$, essentially an identity detector response), both methods perform excellently, and OmniFold achieves a slightly smaller divergence to truth than RAN (for example, at smearing $1$, $\Delta_{VLC}$ for OmniFold is $0.057\times10^{-3}$, compared to RAN’s $0.122\times10^{-3}$).
+        At minimal smearing (factor $1.0$, essentially an identity detector response), both methods perform excellently, and \textsc{OmniFold} achieves a slightly smaller divergence to truth than RAN (for example, at smearing $1$, $\Delta_{VLC}$ for \textsc{OmniFold} is $0.057\times10^{-3}$, compared to RAN’s $0.122\times10^{-3}$).
         %
-        This confirms that when the detector effects are negligible and the problem reduces to a straightforward reweighting, OmniFold’s direct classifier--based approach is very effective---indeed, it finds a nearly perfect weighting in this easy regime.
+        This confirms that when the detector effects are negligible and the problem reduces to a straightforward reweighting, \textsc{OmniFold}’s direct classifier--based approach is very effective---indeed, it finds a nearly perfect weighting in this easy regime.
 
-        However, as the smearing increases and detector--level overlap deteriorates, OmniFold’s performance degrades sharply.
+        However, as the smearing increases and detector--level overlap deteriorates, \textsc{OmniFold}’s performance degrades sharply.
         %
-        Beyond a smearing factor of about $1.5$, the OmniFold solution’s divergence from truth grows rapidly.
+        Beyond a smearing factor of about $1.5$, the \textsc{OmniFold} solution’s divergence from truth grows rapidly.
         %
-        By the highest smearing values tested (where the detector--level simulation and data distributions are almost disjoint), OmniFold’s unfolded result significantly deviates from the true distribution (nearly an order of magnitude worse $\Delta_{VLC}$ compared to the no--smear case).
+        By the highest smearing values tested (where the detector--level simulation and data distributions are almost disjoint), \textsc{OmniFold}’s unfolded result significantly deviates from the true distribution (nearly an order of magnitude worse $\Delta_{VLC}$ compared to the no--smear case).
         %
         This is consistent with expectations.
         %
-        Omnifold tried to reweight at detector level, and when it cannot find common phase space between data and simulation, it struggles to assign meaningful weights.
+        \textsc{OmniFold} tried to reweight at detector level, and when it cannot find common phase space between data and simulation, it struggles to assign meaningful weights.
         %
         In stark contrast, RAN maintains a stable performance across the entire range of smearings.
         %
-        As shown in Figure~\kd{fig:omnifold-comp}, RAN’s $\Delta_{VLC}$ remains approximately constant (with only slight variation within statistical error) as smearing increases.
+        As shown in Figure~\kd{fig:omnifold}-comp}, RAN’s $\Delta_{VLC}$ remains approximately constant (with only slight variation within statistical error) as smearing increases.
         %
         Even at the largest smearing factors, RAN’s divergence to truth is essentially the same as it was at zero smearing, indicating that RAN successfully unfolds the distribution despite scalar multiplication.
         %
@@ -1538,9 +1538,9 @@ This framework not only bridges classical and modern techniques but also provide
         %
         The error bars in Figure~\kd{fig:omnifold-comp} (representing 1$\sigma$ uncertainties from bootstrapping the experiment) confirm the statistical stability of each method.
         %
-        RAN’s results are consistent across bootstrap resamples, and while OmniFold’s uncertainty also grows with smearing, the trend of degradation is clear beyond the error bars.
+        RAN’s results are consistent across bootstrap resamples, and while \textsc{OmniFold}’s uncertainty also grows with smearing, the trend of degradation is clear beyond the error bars.
         %
-        In summary, this Gaussian study demonstrates that RAN is robust to limited detector--level support, recovering the true distribution reliably in a single pass, whereas OmniFold requires sufficient detector--level overlap to perform optimally. This advantage of RAN becomes critical in more complex, realistic scenarios where detector effects can be large.
+        In summary, this Gaussian study demonstrates that RAN is robust to limited detector--level support, recovering the true distribution reliably in a single pass, whereas \textsc{OmniFold} requires sufficient detector--level overlap to perform optimally. This advantage of RAN becomes critical in more complex, realistic scenarios where detector effects can be large.
     \subsection{Jet Substructure Unfolding Results}
         We next assess RAN on a realistic high-energy physics unfolding task: correcting jet substructure observables from detector--level “measured” data to particle--level truth.
         %
@@ -1552,30 +1552,30 @@ This framework not only bridges classical and modern techniques but also provide
         %
         RAN is applied to learn a single weighting function $g(z)$ that assigns a weight to each \textsc{Pythia} event (based on its features) to achieve this alignment, as described in Secs.\ref{subsec:arch}–\ref{subsec:mlimplement}.
         %
-        For comparison, we also apply OmniFold~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and the classical IBU~\kd{DAgostini:1994fjx} to the same task.
+        For comparison, we also apply \textsc{OmniFold}~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and the classical IBU~\kd{DAgostini:1994fjx} to the same task.
         %
         Since IBU is a binned algorithm, we perform separate one--dimensional IBU unfolds for each observable using a fine histogram binning, to benchmark its performance on each projection of the data.
 
         \subsubsection{Overall performance}
-            Figure~\kd{fig:particle-level-distribution} presents the unfolded particle--level distributions for each of the six jet observables, for RAN, IBU, and OmniFold, compared to the truth distributions.
+            Figure~\kd{fig:particle-level-distribution} presents the unfolded particle--level distributions for each of the six jet observables, for RAN, IBU, and \textsc{OmniFold}, compared to the truth distributions.
             %
-            Each panel shows the truth spectrum (\textsc{Herwig}, treated as “true” data) in solid blue, the generation in orange, the unfolded result from RAN as a black dashed line, and the unfolded result from OmniFold as a red dashed line, and the result from IBU as a green dashed line.
+            Each panel shows the truth spectrum (\textsc{Herwig}, treated as “true” data) in solid blue, the generation in orange, the unfolded result from RAN as a black dashed line, and the unfolded result from \textsc{OmniFold} as a red dashed line, and the result from IBU as a green dashed line.
             %
             The lower ratio sub--panels display the unfolded/Truth ratio for each method, indicating how well each method closes the gap to truth across the range of each observable.
             %
-            We observe that both RAN and OmniFold achieve good agreement with truth across all observables, a non--trivial accomplishment given the complexity of the distributions, but RAN consistently provides a closer match, particularly in regions that are challenging to unfold.
+            We observe that both RAN and \textsc{OmniFold} achieve good agreement with truth across all observables, a non--trivial accomplishment given the complexity of the distributions, but RAN consistently provides a closer match, particularly in regions that are challenging to unfold.
             %
             For example, in the jet mass distribution (Fig.\kd{fig:particle-level-distribution}, top-left panel), the \textsc{Pythia} simulation initially undershoots the probability in the high-mass tail and misplaces the peak.
             %
-            After unfolding, RAN’s distribution closely follows the truth curve: it accurately reproduces the peak around $m\approx 20$ GeV and the long tail up to high masses. OmniFold also significantly improves the agreement, but its ratio plot reveals a slight residual bias in the tail (deviations of order 5–10\% from unity in the highest mass bins), whereas RAN’s ratio is within a few percent of unity throughout.
+            After unfolding, RAN’s distribution closely follows the truth curve: it accurately reproduces the peak around $m\approx 20$ GeV and the long tail up to high masses. \textsc{OmniFold} also significantly improves the agreement, but its ratio plot reveals a slight residual bias in the tail (deviations of order 5–10\% from unity in the highest mass bins), whereas RAN’s ratio is within a few percent of unity throughout.
             %
             A similar pattern is seen for the $N$-subjettiness ratio $\tau_{21}$.
             %
             The generator (\textsc{Pythia}) initially produces a broader $\tau_{21}$ distribution than truth (\textsc{Herwig}), indicating an overestimation of two--prong substructure.
             %
-            RAN’s unfolding narrows this distribution to align almost exactly with the truth shape, correcting both the peak and the tail of the $\tau_{21}$ spectrum; OmniFold moves in the right direction but leaves a noticeable difference (the OmniFold unfolded $\tau_{21}$ distribution remains slightly too broad, with the ratio to truth dipping below 1.0 in the peak region and rising above 1.0 at higher $\tau_{21}$).
+            RAN’s unfolding narrows this distribution to align almost exactly with the truth shape, correcting both the peak and the tail of the $\tau_{21}$ spectrum; \textsc{OmniFold} moves in the right direction but leaves a noticeable difference (the \textsc{OmniFold} unfolded $\tau_{21}$ distribution remains slightly too broad, with the ratio to truth dipping below 1.0 in the peak region and rising above 1.0 at higher $\tau_{21}$).
             %
-            For observables like the jet width $w$ and logarithmic groomed mass $\ln\rho$, which have sharply peaked distributions near zero and long tails, RAN again excels: it captures the steep drop-off and the tail behavior with high fidelity, whereas OmniFold shows small mismodeling in the intermediate region (for $w$) or tail (for $\ln\rho$).
+            For observables like the jet width $w$ and logarithmic groomed mass $\ln\rho$, which have sharply peaked distributions near zero and long tails, RAN again excels: it captures the steep drop-off and the tail behavior with high fidelity, whereas \textsc{OmniFold} shows small mismodeling in the intermediate region (for $w$) or tail (for $\ln\rho$).
             %
             The groomed momentum fraction $z_g$ is a particularly challenging variable because of its hard cutoff at $z_g=0.5$.
             %
@@ -1585,7 +1585,7 @@ This framework not only bridges classical and modern techniques but also provide
             %
             The unfolded $z_g$ distribution from RAN matches the truth both in the low--$z_g$ region and near the cutoff, correctly recovering the falling slope as $z_g \to 0.5^-$.
             %
-            OmniFold’s result for $z_g$ is also reasonable but tends to slightly undercorrect near the cutoff (its ratio is a bit below 1.0 approaching 0.5, indicating a remaining deficit in events just below the cutoff).
+            \textsc{OmniFold}’s result for $z_g$ is also reasonable but tends to slightly undercorrect near the cutoff (its ratio is a bit below 1.0 approaching 0.5, indicating a remaining deficit in events just below the cutoff).
             %
             Finally, the constituent multiplicity $M$ (number of particles in the jet) is an interesting case.
             %
@@ -1593,41 +1593,41 @@ This framework not only bridges classical and modern techniques but also provide
             %
             RAN succeeds in reducing the discrepancy at both the low-$M$ and high-$M$ extremes, yielding an unfolded distribution that tracks the truth across the full range.
             %
-            OmniFold improves the multiplicity distribution in the bulk region but exhibits larger fluctuations in the very high-multiplicity tail (partly due to limited statistics there and the difficulty for the classifier to learn in sparse regions).
+            \textsc{OmniFold} improves the multiplicity distribution in the bulk region but exhibits larger fluctuations in the very high-multiplicity tail (partly due to limited statistics there and the difficulty for the classifier to learn in sparse regions).
             %
-            In summary, qualitatively, RAN’s unfolded spectra are virtually indistinguishable from the truth for all six observables, within statistical uncertainties, whereas OmniFold shows minor but noticeable deviations in certain challenging regions.
+            In summary, qualitatively, RAN’s unfolded spectra are virtually indistinguishable from the truth for all six observables, within statistical uncertainties, whereas \textsc{OmniFold} shows minor but noticeable deviations in certain challenging regions.
             %
-            The ratio (closure) plots in Fig.\kd{fig:particle-level-distribution} highlight RAN’s better closure: the RAN/Truth ratio is closer to 1.0 (often within a few percent) across the phase space, while the OmniFold/Truth ratio deviates by up to 5–15\% in some bins (especially in the tails of $m$, $M$, $\tau_{21}$, and $\ln\rho$).
+            The ratio (closure) plots in Fig.\kd{fig:particle-level-distribution} highlight RAN’s better closure: the RAN/Truth ratio is closer to 1.0 (often within a few percent) across the phase space, while the \textsc{OmniFold}/Truth ratio deviates by up to 5–15\% in some bins (especially in the tails of $m$, $M$, $\tau_{21}$, and $\ln\rho$).
 
             To make these comparisons quantitative, we compute the Wasserstein\(-1\) distances ($W_1$) and VLC divergences between each unfolded distribution and the truth distribution for all methods.
             %
-            Table~\kd{tab:comp-w} and Table~\kd{tab:comp-vlc} summarize these metrics for RAN, OmniFold, and IBU on each jet observable (lower values indicate better agreement with truth; the tables also include, for reference, the baseline distances for the Generation vs. truth and Data vs. truth distributions with no unfolding).
+            Table~\kd{tab:comp-w} and Table~\kd{tab:comp-vlc} summarize these metrics for RAN, \textsc{OmniFold}, and IBU on each jet observable (lower values indicate better agreement with truth; the tables also include, for reference, the baseline distances for the Generation vs. truth and Data vs. truth distributions with no unfolding).
             %
             RAN achieves the smallest divergence from truth in every one of the six observables under both metrics.
             %
-            In particular, RAN outperforms OmniFold by a substantial margin in those observables identified as challenging: for the jet mass $m$, $W_1$(RAN) is $3.35\times10^{-2}$ (in units of the table’s scale) compared to OmniFold’s $8.02\times10^{-2}$, a roughly factor--of--2 improvement.
+            In particular, RAN outperforms \textsc{OmniFold} by a substantial margin in those observables identified as challenging: for the jet mass $m$, $W_1$(RAN) is $3.35\times10^{-2}$ (in units of the table’s scale) compared to \textsc{OmniFold}’s $8.02\times10^{-2}$, a roughly factor--of--2 improvement.
             %
-            For the logarithmic groomed mass $\ln\rho$, RAN’s $W_1$ distance is $0.20\times10^{-3}$, dramatically smaller than OmniFold’s $4.15\times10^{-3}$ – an order-of-magnitude reduction, indicating RAN has far better accuracy in the extreme tail of this distribution.
+            For the logarithmic groomed mass $\ln\rho$, RAN’s $W_1$ distance is $0.20\times10^{-3}$, dramatically smaller than \textsc{OmniFold}’s $4.15\times10^{-3}$ – an order-of-magnitude reduction, indicating RAN has far better accuracy in the extreme tail of this distribution.
             %
-            Similarly, for $z_g$, RAN’s $W_1$ is about $0.80\times10^{-3}$ vs. OmniFold’s $6.32\times10^{-3}$, reflecting how well RAN handled the cutoff region.
+            Similarly, for $z_g$, RAN’s $W_1$ is about $0.80\times10^{-3}$ vs. \textsc{OmniFold}’s $6.32\times10^{-3}$, reflecting how well RAN handled the cutoff region.
             %
-            Even in observables where OmniFold performed strongly, such as jet width $w$, RAN still edges out a win ($0.59\times10^{-3}$ vs. $0.81\times10^{-3}$).
+            Even in observables where \textsc{OmniFold} performed strongly, such as jet width $w$, RAN still edges out a win ($0.59\times10^{-3}$ vs. $0.81\times10^{-3}$).
             %
-            The VLC divergence results (Table~\kd{tab:comp-vlc}) tell a consistent story: RAN yields the lowest $\Delta_{VLC}$ for all observables, with OmniFold typically second--best.
+            The VLC divergence results (Table~\kd{tab:comp-vlc}) tell a consistent story: RAN yields the lowest $\Delta_{VLC}$ for all observables, with \textsc{OmniFold} typically second--best.
             %
-            For example, $\Delta_{VLC}(m)$ is 2.31 (in the table’s scaled units) for RAN, versus 5.06 for OmniFold and 5.11 for IBU.
+            For example, $\Delta_{VLC}(m)$ is 2.31 (in the table’s scaled units) for RAN, versus 5.06 for \textsc{OmniFold} and 5.11 for IBU.
             %
-            In some cases the gap between RAN and OmniFold is negligible (jet width $w$: 1.29 vs 1.33), while in others it is significant (multiplicity $M$: 5.83 vs 6.32 for OmniFold and a much larger 16.07 for IBU, indicating IBU struggled with $M$; or $\tau_{21}$: 0.92 vs 7.91 for OmniFold, an order of magnitude difference).
+            In some cases the gap between RAN and \textsc{OmniFold} is negligible (jet width $w$: 1.29 vs 1.33), while in others it is significant (multiplicity $M$: 5.83 vs 6.32 for \textsc{OmniFold} and a much larger 16.07 for IBU, indicating IBU struggled with $M$; or $\tau_{21}$: 0.92 vs 7.91 for \textsc{OmniFold}, an order of magnitude difference).
             %
             We emphasize that IBU, being a binned, per--observable method, generally underperforms the unbinned methods here.
             %
             This is likely due to binning and statistical issues: the need to choose finite bin widths leads to information loss and large uncertainties in sparse regions (for $M$, the tail probabilities in high bins were not well--estimated, leading to an inflated divergence).
             %
-            In contrast, RAN and OmniFold operate on unbinned data and can leverage the full event information, yielding superior precision.
+            In contrast, RAN and \textsc{OmniFold} operate on unbinned data and can leverage the full event information, yielding superior precision.
             %
             It is noteworthy that RAN’s advantage is achieved while producing a single set of event--level weights that simultaneously correct all six distributions.
             %
-            In other words, RAN (like OmniFold) inherently unfolds the joint multi--dimensional distribution of these observables without splitting the problem into one dimension at a time.
+            In other words, RAN (like \textsc{OmniFold}) inherently unfolds the joint multi--dimensional distribution of these observables without splitting the problem into one dimension at a time.
             %
             The fact that a single model can balance all observables and still attain better per-observable accuracy is a strong testament to the effectiveness of the adversarial reweighting approach.
 
@@ -1637,27 +1637,27 @@ This framework not only bridges classical and modern techniques but also provide
             %
             The variations in the resulting unfolded distributions (and in the $W_1$/VLC metrics) were found to be small, on the order of a few percent, indicating that the RAN solution is robust to statistical fluctuations and the stochastic nature of training.
             %
-            Likewise, OmniFold’s iterative procedure, when run on the same data with different initializations, converged to comparable results (though minor differences in the weights per iteration can occur, the final distributions were consistent within uncertainties).
+            Likewise, \textsc{OmniFold}’s iterative procedure, when run on the same data with different initializations, converged to comparable results (though minor differences in the weights per iteration can occur, the final distributions were consistent within uncertainties).
             %
             IBU, being an analytic iterative method, showed negligible run-to-run variation for fixed binning.
             %
             However, all iterative methods raise the question of convergence and tuning.
             %
-            OmniFold requires choosing a stopping criterion or number of iterations (too few iterations can under--correct, too many can overfit the statistical noise), and IBU similarly depends on the number of iterations (or an implicit regularization).
+            \textsc{OmniFold} requires choosing a stopping criterion or number of iterations (too few iterations can under--correct, too many can overfit the statistical noise), and IBU similarly depends on the number of iterations (or an implicit regularization).
             %
-            In our OmniFold implementation we used five iterations (the standard approach advocated in ~\kd{Andreassen:2019cjw}) which was sufficient for good performance; using more iterations does not notably improve the agreement and can introduce instability.
+            In our \textsc{OmniFold} implementation we used five iterations (the standard approach advocated in ~\kd{Andreassen:2019cjw}) which was sufficient for good performance; using more iterations does not notably improve the agreement and can introduce instability.
             %
             RAN avoids this ambiguity entirely, since it is a one--shot training.
             %
             In practice, we found RAN’s training to converge steadily without signs of overtraining (monitored via validation loss) and to reach a stable solution within a few dozen epochs.
             %
-            In terms of computational cost, RAN’s single--pass adversarial training (using a Wasserstein GAN-like setup) was comparable to the cost of a single OmniFold iteration.
+            In terms of computational cost, RAN’s single--pass adversarial training (using a Wasserstein GAN-like setup) was comparable to the cost of a single \textsc{OmniFold} iteration.
             %
-            But since OmniFold required two classifier trainings per iteration (one at detector level, one at particle level) and we performed two iterations (four trainings total), the overall runtime for RAN was roughly a fifth of that for OmniFold on this problem.
+            But since \textsc{OmniFold} required two classifier trainings per iteration (one at detector level, one at particle level) and we performed two iterations (four trainings total), the overall runtime for RAN was roughly a fifth of that for \textsc{OmniFold} on this problem.
             %
-            IBU is extremely fast for one--dimensional histograms, but extending IBU to many dimensions would be combinatorially expensive (and practically impossible for high-dimensional continuous observables), whereas RAN and OmniFold scale gracefully to high--dimensional data.
+            IBU is extremely fast for one--dimensional histograms, but extending IBU to many dimensions would be combinatorially expensive (and practically impossible for high-dimensional continuous observables), whereas RAN and \textsc{OmniFold} scale gracefully to high--dimensional data.
             %
-            Thus, RAN offers an attractive trade--off: it achieves equal or better accuracy than OmniFold on these benchmark tasks, while being simpler to use (no iterative loop to manage) and potentially more efficient.
+            Thus, RAN offers an attractive trade--off: it achieves equal or better accuracy than \textsc{OmniFold} on these benchmark tasks, while being simpler to use (no iterative loop to manage) and potentially more efficient.
 
     \subsubsection{Generality of results}
     Combined with the findings from the Gaussian experiments, these jet experiments suggest that RAN’s advantages are not specific to a particular distribution but rather reflect general features of the algorithm.
@@ -1680,6 +1680,6 @@ This framework not only bridges classical and modern techniques but also provide
     %
     In summary, the results presented in this section demonstrate that RAN achieves state--of--the--art unfolding performance on both simple and complex tasks.
     %
-    It matches or exceeds the accuracy of established methods like OmniFold and IBU, while offering improved stability in difficult scenarios and simplifying the unfolding workflow.
+    It matches or exceeds the accuracy of established methods like \textsc{OmniFold} and IBU, while offering improved stability in difficult scenarios and simplifying the unfolding workflow.
     %
     These characteristics make RAN a promising tool for future precision measurements and exploratory studies in which unfolding high--dimensional data without bias is critical.

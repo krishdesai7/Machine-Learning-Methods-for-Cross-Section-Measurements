@@ -702,7 +702,7 @@ These values control the architecture, optimization behaviour, and regularizatio
 \section{Comparison with Alternative Methods}
     To assess the performance of Moment Unfolding relative to existing approaches, we compare our results with those obtained from two alternative methods,
     \begin{enumerate}
-        \item \textbf{OmniFold}: A state--of--the--art unbinned unfolding method that reconstructs the full distribution \kd{cite}, and 
+        \item \textbf{\textsc{OmniFold}}: A state--of--the--art unbinned unfolding method that reconstructs the full distribution \kd{cite}, and 
         \item \textbf{Iterative Bayesian Unfolding (IBU)}: A traditional binned unfolding method followed by moment calculation \kd{cite}.
     \end{enumerate}
     For a comprehensive comparison, we also include a variation on IBU that applies bin--by--bin corrections to account for binning effects in the moment calculation.
@@ -713,17 +713,17 @@ These values control the architecture, optimization behaviour, and regularizatio
 
     This comparison highlights some of Moment Unfolding's most important properties.
     %
-    The Moment Unfolding algorithm achieves comparable or better precision than OmniFold for most observables, despite, or perhaps due to, its more targeted approach.
+    The Moment Unfolding algorithm achieves comparable or better precision than \textsc{\textsc{OmniFold}} for most observables, despite, or perhaps due to, its more targeted approach.
     %
     This demonstrates the advantage of directly targeting the moments without having to unfold the entire distribution.
     %
-    Both unbinned methods (Moment Unfolding and OmniFold) significantly outperform the binned approaches (IBU and IBU+Correction) in precision, highlighting the benefits of avoiding binning artifacts.
+    Both unbinned methods (Moment Unfolding and \textsc{\textsc{OmniFold}}) significantly outperform the binned approaches (IBU and IBU+Correction) in precision, highlighting the benefits of avoiding binning artifacts.
     %
     The bin--by--bin correction improves the performance of IBU but still does not match the precision of the unbinned methods, indicating that the fundamental limitations of binning cannot be fully mitigated by post--hoc corrections.
     
-    However, Moment Unfolding requires significantly less computational resources than OmniFold due to its non--iterative nature.
+    However, Moment Unfolding requires significantly less computational resources than \textsc{\textsc{OmniFold}} due to its non--iterative nature.
     %
-    On average, Moment Unfolding can be run in about 1\% of the time required for OmniFold, while achieving comparable or better precision.
+    On average, Moment Unfolding can be run in about 1\% of the time required for \textsc{\textsc{OmniFold}}, while achieving comparable or better precision.
     %
     IBU is about \(10^4\) times faster than Moment Unfolding.
     %

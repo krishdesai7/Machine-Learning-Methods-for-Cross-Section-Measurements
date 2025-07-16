@@ -188,13 +188,13 @@
             %
             The generator architecture \[g(z,\vb*{\beta}) = \frac{\exp(\sum_{a=1}^n \beta_a T_a(z))}{Z(\vb*{\beta})}\] embeds the maximum entropy principle, ensuring that the unfolded distribution is the most conservative distribution consistent with measured moments.
             %
-            This targeted approach achieves comparable or better precision than OmniFold for moment extraction while requiring only 1\(\%\) of the computational resources.
+            This targeted approach achieves comparable or better precision than \textsc{OmniFold} for moment extraction while requiring only 1\(\%\) of the computational resources.
             %
             \item \emph{Reweighting Adversarial Networks (RAN):} Extending Moment Unfolding to the continuum limit, RAN learns a flexible reweighting function that morphs simulation to match data across the entire phase space.
             %
             The critical innovation is performing reweighting at particle--level while using gradients from the Wasserstein distance between measured data and simulation at detector--level, enabling robust unfolding even when detector--level distributions have minimal overlap.
             %
-            In jet substructure measurements, RAN achieves comparable or better accuracy than OmniFold for challenging observables with a variety of different features and scaling behaviors, which being an order of magnitude more computationally efficient.
+            In jet substructure measurements, RAN achieves comparable or better accuracy than \textsc{OmniFold} for challenging observables with a variety of different features and scaling behaviors, which being an order of magnitude more computationally efficient.
             %
             \item \emph{Unbinned Correlation Analysis:} This work provides the first comprehensive framework for understanding how unfolding induced correlations between events fundamentally challenges the independence assumption underlying standard likelihood construction for unbinned data.
             %
@@ -202,7 +202,7 @@
             %
             The proposed correlation-aware inference methods restore proper statistical coverage while preserving the precision advantages of unbinned approaches.
             %
-            \item \emph{SymmetryGAN:} While not implemented for unfolding in this thesis, SymmetryGAN introduces a differentiable framework for discovering continuous symmetries directly from data.
+            \item \emph{\textsc{SymmetryGAN}:} While not implemented for unfolding in this thesis, \textsc{SymmetryGAN} introduces a differentiable framework for discovering continuous symmetries directly from data.
             %
             The method employs adversarial training to learn transformations that leave the data distribution invariant, providing a novel, flexible and fully differentiable framework for discovering symmetries directly from data.
             %
@@ -225,7 +225,7 @@
 
         Moment Unfolding targets the statistical moments of cross section measurements, which are the quantities that are most often used in physics analyses, enabling direct comparison between collider data and first--principles calculations.
         %
-        By unfolding the moments, Moment Unfolding is able to provide a prediction that is significantly more precise than IBU, while requiring only 1\(\%\) of the computational resources OmniFold requires to achieve the same precision.
+        By unfolding the moments, Moment Unfolding is able to provide a prediction that is significantly more precise than IBU, while requiring only 1\(\%\) of the computational resources \textsc{OmniFold} requires to achieve the same precision.
         %
         It also abandons the arbitrary iteration cut-offs of iterative unfolding methods, and instead uses an adversarial training procedure to unfold the data by training a single pair of networks to convergence.
         %
@@ -245,7 +245,7 @@
         %
         Without this framework, precision improvements from unbinned methods would be negated by incorrect uncertainty estimates.
         %
-        SymmetryGAN points us toward physics--informed ML.
+        \textsc{SymmetryGAN} points us toward physics--informed ML.
         %
         The ability to discover symmetries from data suggests a future where machine learning methods automatically incorporate physical constraints.
         %
@@ -291,12 +291,12 @@
                 \textbf{Unbinned Correlation Analysis}
                 & All unbinned parameter estimation tasks (fits to unfolded distributions, differential cross section measurements, etc.)
                 & Provides a framework for understanding and quantifying the correlations introduced by the unfolding process, and for developing methods to account for them. \\
-                \textbf{SymmetryGAN}
+                \textbf{\textsc{SymmetryGAN}}
                 & Data--driven symmetry discovery in collider data
                 & Identifies hidden invariances directly from data; can inform and constrain unfolding or other analyses by incorporating newly found symmetries\\
             \end{tabular}
             \caption[Applications of methods to experimental scenarios]{
-                Potential applications of the methods developed in this thesis to current and future experimental analyses. Each approach addresses specific challenges: NPU for rapid, rigorous uncertainty quantification; Moment Unfolding for fast comparison to theory moments; RAN for full-spectrum unfolding in high dimensions; and SymmetryGAN for uncovering and leveraging symmetries in data.
+                Potential applications of the methods developed in this thesis to current and future experimental analyses. Each approach addresses specific challenges: NPU for rapid, rigorous uncertainty quantification; Moment Unfolding for fast comparison to theory moments; RAN for full-spectrum unfolding in high dimensions; and \textsc{SymmetryGAN} for uncovering and leveraging symmetries in data.
             }
             \label{tab:method_applications}
         \end{table}
@@ -370,9 +370,9 @@
 
         Finally, the incorporation of machine learning into experimental workflows opens the door to qualitatively new ways of doing physics.
         %
-        The SymmetryGAN concept discussed in this thesis exemplifies how ML can go beyond numerical inversion tasks and actually contribute to {knowledge discovery}.
+        The \textsc{SymmetryGAN} concept discussed in this thesis exemplifies how ML can go beyond numerical inversion tasks and actually contribute to {knowledge discovery}.
         %
-        In an experimental setting, one could imagine using SymmetryGAN (or future variants of it) on collected data to unearth symmetries or invariants that were not put into the simulation \textit{a priori}.
+        In an experimental setting, one could imagine using \textsc{SymmetryGAN} (or future variants of it) on collected data to unearth symmetries or invariants that were not put into the simulation \textit{a priori}.
     
         In summary, grounding these unfolding methods in experimental reality shows their potential to revolutionize how measurements are done at colliders.
         %
@@ -390,7 +390,7 @@
         %
         By doing so, we can transform the wall of experimental challenges---high dimensionality, huge data volume, complex detector effects---into a new vista of opportunities for discovery.
         %
-        The next generation of experiments will not only collect more data, but, if armed with methods like NPU, Moment Unfolding, RAN, and SymmetryGAN, will \emph{learn more} from the data they collect.
+        The next generation of experiments will not only collect more data, but, if armed with methods like NPU, Moment Unfolding, RAN, and \textsc{SymmetryGAN}, will \emph{learn more} from the data they collect.
         %
         The exploration of fundamental physics requires not only cutting edge instruments, but also cutting edge algorithms.
 

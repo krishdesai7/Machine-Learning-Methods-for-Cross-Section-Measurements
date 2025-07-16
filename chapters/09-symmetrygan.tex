@@ -3,7 +3,7 @@
 \begin{itemize}
     \item The role of symmetries in physics and measurement processes
     \item Statistical definition of dataset symmetries
-    \item SymmetryGAN: Discovering symmetries with adversarial learning
+    \item \textsc{SymmetryGAN}: Discovering symmetries with adversarial learning
     \item Application dijet events
     \item Using symmetry knowledge to constrain unfolding problems
     \item Symmetry-aware unfolding for improved measurement precision
@@ -141,7 +141,7 @@
         %
         This caution further motivates the need for data--driven symmetry discovery and validation tools.
         %
-        An experimenter can use methods like SymmetryGAN\kd{cite} to verify whether the data uphold the symmetry to a high degree of confidence.
+        An experimenter can use methods like \textsc{SymmetryGAN}\kd{cite} to verify whether the data uphold the symmetry to a high degree of confidence.
         %
         Only then would one proceed to incorporate that symmetry into the unfolding process or in the presentation of results.
         %
@@ -169,13 +169,13 @@
     %
     It also provides a brief overview of the symmetries most relevant to HEP.
     %
-    \cref{1} presents the SymmetryGAN framework, which employs a generative adversarial network to automatically learn symmetry transformations from data.
+    \cref{1} presents the \textsc{SymmetryGAN} framework, which employs a generative adversarial network to automatically learn symmetry transformations from data.
     %
-    \cref{1} validates this approach on illustrative examples and then applies SymmetryGAN to simulated dijet events, demonstrating how it can uncover physically meaningful symmetries in collider data.
+    \cref{1} validates this approach on illustrative examples and then applies \textsc{SymmetryGAN} to simulated dijet events, demonstrating how it can uncover physically meaningful symmetries in collider data.
     %
     \cref{1} discusses how the discovered symmetry information can be used to constrain unfolding problems: we outline methods to incorporate symmetry constraints into the unfolding procedure to reduce uncertainties and bias.
     %
-    In \cref{1}, the chapter introduces a symmetry aware unfolding methodology and discusses how enforcing the symmetries identified by SymmetryGAN can improve the precision of differential cross section measurements.
+    In \cref{1}, the chapter introduces a symmetry aware unfolding methodology and discusses how enforcing the symmetries identified by \textsc{SymmetryGAN} can improve the precision of differential cross section measurements.
     %
     Finally, the chapter concludes by highlighting how the insights gained here connect back to the broader narrative of the thesis, reinforcing the benefits of combining machine learning driven discovery with principled measurement techniques.
 \section{Formalism and Importance}
@@ -218,7 +218,7 @@
     %
     Finally, \cref{subsec:noisy-symmetries} highlights the challenges in identifying symmetries from noisy data, setting the stage for data--driven symmetry discovery techniques.
     %
-    This foundation will be essential for later sections that introduce methods like SymmetryGAN for learning symmetries from data.
+    This foundation will be essential for later sections that introduce methods like \textsc{SymmetryGAN} for learning symmetries from data.
 
     \subsection{Fundamental Symmetries in HEP}
     \label{subsec:hep-symmetries}
@@ -720,7 +720,7 @@
         %
         Noisy data, stemming from finite statistics, background processes, and detector imperfections, can obscure or mimic symmetry signals.
         %
-        This section outlines the main challenges one faces in discerning true invariances or symmetry violations within collider datasets, and the need for methods like the SymmetryGAN approach developed later in this work to address these challenges.
+        This section outlines the main challenges one faces in discerning true invariances or symmetry violations within collider datasets, and the need for methods like the \textsc{SymmetryGAN} approach developed later in this work to address these challenges.
 
         A fundamental challenge is that any empirical distribution has random fluctuations.
         %
@@ -775,9 +775,9 @@
 
             Since scanning for symmetries by comparing all possible pairs of transformed distributions is computationally prohibitive, as data volumes grow and analysis spaces become more complex, we need more automated symmetry discovery mechanisms.
             %
-            The SymmetryGAN approach discussed in this thesis is one attempt to automate the discovery of symmetries by leveraging generative adversarial networks.
+            The \textsc{SymmetryGAN} approach discussed in this thesis is one attempt to automate the discovery of symmetries by leveraging generative adversarial networks.
             %
-            Conceptually, SymmetryGAN will trains a generator (applying candidate transformations) against a discriminator to test if the transformed data looks statistically identical to the original data.
+            Conceptually, \textsc{SymmetryGAN} will trains a generator (applying candidate transformations) against a discriminator to test if the transformed data looks statistically identical to the original data.
             %
             If the generator generates a transformation under which the discriminator is maximally confounded, that transformation corresponds to a symmetry of the data distribution.
             %
@@ -792,11 +792,11 @@
                 \item Methods to probe high-dimensional and subtle symmetry patterns that might elude simple binned analyses, and
                 \item Methodological consideration to handling approximate symmetries in a principled way.
             \end{enumerate}
-            These challenges motivate the development of tools like SymmetryGAN, which I will introduce in the next sections.
+            These challenges motivate the development of tools like \textsc{SymmetryGAN}, which I will introduce in the next sections.
             %
             Such tools aim to combine physical insight with machine learning's ability to detect patterns, thereby providing a statistical discovery framework for symmetries.
             %
-            SymmetryGAN and similar approaches offer a promising path to unveil symmetries that are latent in complex data.
+            \textsc{SymmetryGAN} and similar approaches offer a promising path to unveil symmetries that are latent in complex data.
             %
             The rigorous understanding of symmetry and symmetry--breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered ``symmetry" is physically meaningful and relevant to the challenges of unfolding and analyzing collider data.
 
@@ -826,7 +826,7 @@
         \]
         This measure theoretic definition captures the statistical properties of entire distributions rather than individual elements.
         
-        The critical insight, as formalized in the SymmetryGAN framework, is that dataset symmetries are ambiguous due to Jacobian factors introduced during coordinate transformations.\kd{}
+        The critical insight, as formalized in the \textsc{SymmetryGAN} framework, is that dataset symmetries are ambiguous due to Jacobian factors introduced during coordinate transformations.\kd{}
         %
         Unlike point symmetries, where transformations either preserve or don't preserve specific locations, dataset symmetries must account for how probability densities transform under coordinate changes.
         %
@@ -905,25 +905,25 @@
         %
         This unified framework offers concrete advantages for computational statistics and machine learning while opening new directions for both theoretical development and practical applications.
 
-\section{SymmetryGAN: Discovering Symmetries with Adversarial Learning}
+\section{\textsc{SymmetryGAN}: Discovering Symmetries with Adversarial Learning}
 \label{sec:symmetry-gan-main}
 The challenge of automatically discovering symmetries in high dimensional data represents a fundamental problem at the intersection of physics and machine learning.
 %
 While physicists have long relied on theoretical insight to identify symmetries, the explosion of complex data from modern experiments demands automated approaches.
 %
-SymmetryGAN emerges as an elegant solution, leveraging the power of adversarial learning to discover hidden invariances without prior knowledge of their existence.
+\textsc{SymmetryGAN} emerges as an elegant solution, leveraging the power of adversarial learning to discover hidden invariances without prior knowledge of their existence.
 
-The core insight driving SymmetryGAN is deceptively simple.
+The core insight driving \textsc{SymmetryGAN} is deceptively simple.
 %
 If a transformation truly represents a symmetry of a dataset, then a well trained discriminator should not be able to distinguish between the original data and its transformed counterpart.
 %
 This principle, when combined with the rigorous framework of inertial reference densities developed in the previous section, yields a powerful methodology for symmetry discovery that is both theoretically grounded and practically effective.
-    \subsection{The SymmetryGAN Architecture}
-    The SymmetryGAN framework modifies the traditional generative adversarial network architecture in a fundamental way.
+    \subsection{The \textsc{SymmetryGAN} Architecture}
+    The \textsc{SymmetryGAN} framework modifies the traditional generative adversarial network architecture in a fundamental way.
     %
-    Rather than mapping from random noise to structured data, SymmetryGAN maps from data to data, learning transformations that preserve the underlying probability distribution.
+    Rather than mapping from random noise to structured data, \textsc{SymmetryGAN} maps from data to data, learning transformations that preserve the underlying probability distribution.
     %
-    Like a traditional GAN, however, SymmetryGAN consists of two neural networks engaged in adversarial training.
+    Like a traditional GAN, however, \textsc{SymmetryGAN} consists of two neural networks engaged in adversarial training.
     \begin{enumerate}
         \item A generator \(g: \R^n to \R^n\) that learns symmetry tranformations, and
         \item A discriminator \(d: \R^n to [0, 1]\) that attempts to distinguish original from transformed data.
@@ -960,9 +960,9 @@ This principle, when combined with the rigorous framework of inertial reference 
     %
     For continuous symmetries like rotations, it parametrizes the corresponding Lie group elements.
     %
-    This flexibility makes SymmetryGAN applicable across diverse physical systems.
+    This flexibility makes \textsc{SymmetryGAN} applicable across diverse physical systems.
 
-    \kd{fig:symmetrygan-architecture} shows the modified GAN architecture of SymmetryGAN.
+    \kd{fig:symmetrygan-architecture} shows the modified GAN architecture of \textsc{SymmetryGAN}.
     
     \subsection{Machine Learning with Inertial Restrictions}
     The incorporation of inertial reference densities, as established in \cref{sec:statistical-symmetries}, presents both theoretical necessity and practical challenges.
@@ -993,7 +993,7 @@ This principle, when combined with the rigorous framework of inertial reference 
             %
             Here one constrains the generator architecture to only produce transformations that preserve the inertial density by construction in the first place, using prior knowledge about \(p_I\).
     \end{enumerate}
-    It is this third approach that is adopted in the SymmetryGAN implementation.
+    It is this third approach that is adopted in the \textsc{SymmetryGAN} implementation.
     %
     When the inertial distribution is uniform on \(\mathbb{R}^n\) the generator is restricted to equiareal maps---transformations with unit Jacobian determinant.
     %
@@ -1018,7 +1018,7 @@ This principle, when combined with the rigorous framework of inertial reference 
     This decomposition enables efficient exploration of the symmetry space through gradient descent.
 
     \subsection{Deep Learning Implementation Details}
-    The practical implementation of SymmetryGAN requires careful attention to architectural choices, training dynamics, and numerical stability.
+    The practical implementation of \textsc{SymmetryGAN} requires careful attention to architectural choices, training dynamics, and numerical stability.
     %
     The framework's success depends on balancing the adversarial training process while maintaining the theoretical properties that enable symmetry discovery.
     
@@ -1068,7 +1068,7 @@ This principle, when combined with the rigorous framework of inertial reference 
     \subsection{Other Symmetry Discovery Methods}
         The landscape of symmetry discovery in machine learning has evolved considerably, with approaches ranging from classical statistical methods to modern deep learning architectures.
         %
-        Understanding SymmetryGAN's position within this ecosystem illuminates both its unique contributions and its connections to broader methodological trends.
+        Understanding \textsc{SymmetryGAN}'s position within this ecosystem illuminates both its unique contributions and its connections to broader methodological trends.
 
         Classical statistical approaches traditionally relied on hypothesis testing and moment matching.
         %
@@ -1104,13 +1104,13 @@ This principle, when combined with the rigorous framework of inertial reference 
         %
         The method is flexible in being task--performance driven, and it handles discrete symmetries well.
 
-        SymmetryGAN exemplifies several important trends in modern machine learning for HEP.
+        \textsc{SymmetryGAN} exemplifies several important trends in modern machine learning for HEP.
         %
         Methods have broadly benefited from incorporating domain knowledge through architectural constraints and loss terms.
         %
         In general the rise of equivariant eearning has driven the move beyond invariance to discover the underlying symmetry structure.
         %
-        SymmetryGAN also exemplies the trend towards interpretability by producing human-understandable symmetry parameters rather than opaque features.
+        \textsc{SymmetryGAN} also exemplies the trend towards interpretability by producing human-understandable symmetry parameters rather than opaque features.
         %
         The method is however limited in its restriction to parametrizable symmetry classes.
         %
@@ -1118,16 +1118,16 @@ This principle, when combined with the rigorous framework of inertial reference 
         %
         Although the paper does provide some steps towards symmetry inference, the task of identifying and classifying the symmetry group as a whole, it remains challenging to infer complete symmetry group structure from discovered elements.
         %
-        The field continues to evolve rapidly, with SymmetryGAN representing a significant step toward automated, theoretically grounded symmetry discovery.
+        The field continues to evolve rapidly, with \textsc{SymmetryGAN} representing a significant step toward automated, theoretically grounded symmetry discovery.
         %
         Its success in particle physics applications, detailed in the following section, demonstrates the practical value of this principled approach to uncovering hidden invariances in complex data.
 
 \section{Empirical Experiments}
-        The theoretical machinery of SymmetryGAN, with its rigorous statistical framework and inertial reference densities, proves its worth through empirical validation.
+        The theoretical machinery of \textsc{SymmetryGAN}, with its rigorous statistical framework and inertial reference densities, proves its worth through empirical validation.
         %
         Moving from abstract formulations to concrete applications reveals both the method's surprising effectiveness and the subtle challenges that emerge with real data.
         %
-        This section details the application of this method on carefully controlled Gaussian experiments to complex collider data, demonstrating how SymmetryGAN bridges the gap between mathematical elegance and practical discovery.
+        This section details the application of this method on carefully controlled Gaussian experiments to complex collider data, demonstrating how \textsc{SymmetryGAN} bridges the gap between mathematical elegance and practical discovery.
 
         \subsection{Gaussian Experiments}
             The choice to begin with Gaussian distributions reflects more than mere mathematical convenience; it represents a strategic approach to validating a novel methodology.
@@ -1166,11 +1166,11 @@ This principle, when combined with the rigorous framework of inertial reference 
                     \label{eq:SO2_generator}
                     g(x) = \begin{bmatrix} c & s \\ -s & c \end{bmatrix} x
                 \]
-                SymmetryGAN must discover that only transformations satisfying \(c^2 + s^2 = 1\) represent true symmetries as can be seen in \kd{fig:SO2-i}.
+                \textsc{SymmetryGAN} must discover that only transformations satisfying \(c^2 + s^2 = 1\) represent true symmetries as can be seen in \kd{fig:SO2-i}.
                 %
                 The empirical results demonstrate the method's ability to learn this constraint without explicit enforcement.
                 %
-                Starting from random initializations within \([-1, 1]^2\), the learned parameters consistently converge to the unit circle, validating that SymmetryGAN can discover not just discrete symmetries but continuous symmetry manifolds\kd{cite}.
+                Starting from random initializations within \([-1, 1]^2\), the learned parameters consistently converge to the unit circle, validating that \textsc{SymmetryGAN} can discover not just discrete symmetries but continuous symmetry manifolds\kd{cite}.
                 %
                 This represents a significant achievement: the neural network learns the algebraic constraint defining \(SO(2)\) purely from data.
 
@@ -1178,19 +1178,19 @@ This principle, when combined with the rigorous framework of inertial reference 
                 %
                 \kd{fig:cyclic-loss} shows the discovered symmetries for the \(N_{1, 1}\) distribution when the loss function is augmented with the constraint \cref{eq:cyclic-loss}, for \(q = 2, 3,\) and \(7\), with \(\alpha = 0.1\).
                 %
-                Both the analystic loss landscape and SymmetryGAN's output confirm that the continuous \(SO(2)\) symmetry is split into discrete symmetries at the \(q^{th}\) roots of unity upon the inclusion of the mean squared error term.
+                Both the analystic loss landscape and \textsc{SymmetryGAN}'s output confirm that the continuous \(SO(2)\) symmetry is split into discrete symmetries at the \(q^{th}\) roots of unity upon the inclusion of the mean squared error term.
 
                 One could also consider a two dimensional Gaussian with a non--trivial covariance matrix, such as \(N_{1, 2} = \mathcal{N}(mathbf{0}, \mqty[1&0\\0&2])\).
                 %
                 The full symmetry group of this distribution is highly non--trivial and is described below, but among other features, it contains as a subgroup the Klein \(4-\)group \(V_4 = \qty{\mathbb{1}, -\mathbb{1}, \sigma_3, -\sigma_3}\) for the Pauli matrix \(\sigma_3\).
                 %
-                When SymmetryGAN is limited to transformations of the form \cref{eq:SO2-generator}, it discovers the Klein \(4-\)group \(V_4\) as demonstrated in \kd{fig:V4}.
+                When \textsc{SymmetryGAN} is limited to transformations of the form \cref{eq:SO2-generator}, it discovers the Klein \(4-\)group \(V_4\) as demonstrated in \kd{fig:V4}.
                 %
                 When the generator is allowed to search for general linear transformations inside \(GL_2(\mathbb{R})\), it discovers the full symmetry group that comprises the afforementioned Klein \(4-\)group as well as transformations involving dilatations.
 
                 \kd{fig:agl2} shows the discovered symmetries for the \(N_{1, 1}\) distribution and \kd{fig:agl2-2} shows the discovered symmetries for \(N_{1, 2}\) when the generator is able to discover general linear transformations inside \(\mathbb{A}GL_2(\mathbb{R})\).
             \subsubsection{Gaussian Mixture Models}
-                The power of SymmetryGAN becomes more apparent when applied to Gaussian mixture models with complex symmetry groups.
+                The power of \textsc{SymmetryGAN} becomes more apparent when applied to Gaussian mixture models with complex symmetry groups.
                 %
                 Three such examples are considered, inspired by the the examples in kd{cite}.
                 %
@@ -1216,7 +1216,7 @@ This principle, when combined with the rigorous framework of inertial reference 
                 %
                 The left column of \kd{fig:otherdistributions-2D} shows data from each of these distributions, the middle column shows the discovered rotations, and the right column shows the discovered reflections.
                 %
-                In each case SymmetryGAN is able to correctly discover the symmetries of the distribution.
+                In each case \textsc{SymmetryGAN} is able to correctly discover the symmetries of the distribution.
 
         \subsection{LHC Dijet Experiments}
             The transition from Gaussian toy models to LHC data represents a quantum leap in complexity.
@@ -1314,7 +1314,7 @@ This principle, when combined with the rigorous framework of inertial reference 
             %
             The relationship between discovered symmetries and known physics provides crucial validation.
             %
-            Each symmetry found by SymmetryGAN corresponds to either:
+            Each symmetry found by \textsc{SymmetryGAN} corresponds to either:
             \begin{itemize}
                 \item A fundamental symmetry of physics (Lorentz invariance, gauge symmetry)
                 \item A symmetry of the experimental setup (cylindrical detector geometry)
@@ -1326,7 +1326,7 @@ This principle, when combined with the rigorous framework of inertial reference 
             However, the challenge remains: how do we move from discovering individual symmetry transformations to understanding the complete symmetry group structure?
 
         \subsection{Towards Symmetry Inference}
-            The distinction between symmetry discovery and symmetry inference represents a fundamental challenge in the SymmetryGAN framework.
+            The distinction between symmetry discovery and symmetry inference represents a fundamental challenge in the \textsc{SymmetryGAN} framework.
             %
             While the method excels at finding individual elements of a symmetry group, reconstructing the complete group structure requires additional theoretical machinery\kd{cite}.
             
@@ -1334,7 +1334,7 @@ This principle, when combined with the rigorous framework of inertial reference 
             %
             Three complementary approaches emerge for tackling this challenge.
             \begin{enumerate}
-                \item Discrete Subgroup Analysis: By modifying the loss function to enforce specific algebraic relations, SymmetryGAN can systematically probe for discrete subgroups.
+                \item Discrete Subgroup Analysis: By modifying the loss function to enforce specific algebraic relations, \textsc{SymmetryGAN} can systematically probe for discrete subgroups.
                 %
                 The cyclic group constraint:
                 \[
@@ -1385,7 +1385,7 @@ This principle, when combined with the rigorous framework of inertial reference 
     %
     Traditional approaches use generic smoothness penalties, but symmetries provide physically motivated constraints.
     %
-    For a symmetry group \(G\) discovered through SymmetryGAN, one could construct the symmetry--preserving regularization,
+    For a symmetry group \(G\) discovered through \textsc{SymmetryGAN}, one could construct the symmetry--preserving regularization,
     \[
         \text{Reg}_\text{sym}(p) = \sum_{g \in G} \left\| p - g \cdot p \right\|^2
     \]
@@ -1555,7 +1555,7 @@ This principle, when combined with the rigorous framework of inertial reference 
         %
         Such an augmented loss would drive the generative model to learn \(G-\)equivariant structures.
         
-        In effect the combination of NPU with SymmetryGAN has the potential to create a virtuous cycle, where better symmetry identification improves unfolding, and better unfolding reveals clearer symmetry patterns in the truth--level distributions.
+        In effect the combination of NPU with \textsc{SymmetryGAN} has the potential to create a virtuous cycle, where better symmetry identification improves unfolding, and better unfolding reveals clearer symmetry patterns in the truth--level distributions.
 
         Such a thought experiment points toward a broader principle.
         %
@@ -1582,7 +1582,7 @@ This principle, when combined with the rigorous framework of inertial reference 
         %
         These modifications hope to capture invariances without formal guarantees.
         %
-        By contrast, symmetry based augmentation leverages proven invariances discovered through methods like SymmetryGAN.
+        By contrast, symmetry based augmentation leverages proven invariances discovered through methods like \textsc{SymmetryGAN}.
         %
         Every augmented event is, by construction, as physically valid as the original.
 
