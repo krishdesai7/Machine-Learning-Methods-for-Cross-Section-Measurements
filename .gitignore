@@ -82,7 +82,7 @@ ehthumbs.db
 Thumbs.db
 
 # PDF output - comment out if you want to track PDFs
-*.pdf
+# *.pdf
 
 # Exclude specific PDFs you might want to keep
 !figures/**/*.pdf
