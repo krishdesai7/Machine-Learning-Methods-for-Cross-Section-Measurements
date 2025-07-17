@@ -761,5 +761,22 @@ by\par
 \setlength{\cftsubsectionnumwidth}{4em}
 \setlength{\cftsubsubsectionnumwidth}{5em}
 \setlength{\cftparagraphnumwidth}{5em}
+\makeatletter
+\renewcommand\paragraph{%
+  \@startsection{paragraph}{4}{\z@}%
+    {-3.25ex \@plus -1ex \@minus -.2ex}% before skip
+    {0.0001pt \@plus .2ex}%             after skip
+    {\normalfont\normalsize\bfseries\@afterheading}%
+}
+\renewcommand\subparagraph{%
+  \@startsection{subparagraph}{5}{\z@}%
+    {-3.25ex \@plus -1ex \@minus -.2ex}%
+    {0.0001pt \@plus .2ex}%
+    {\normalfont\normalsize\bfseries\@afterheading}%
+}
+\makeatother
+\usepackage{etoolbox}
+\pretocmd{\section}{\clearpage}{}{}
+\pretocmd{\chapter}{\cleardoublepage}{}{}
 
 \endinput
