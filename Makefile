@@ -30,7 +30,7 @@ VIEWER = open  # macOS
 TEX_FILES = $(MAIN).tex thesis-preamble.tex abstract.tex acknowledgements.tex
 CHAPTER_FILES = $(wildcard chapters/*.tex)
 APPENDIX_FILES = $(wildcard appendices/*.tex)
-BIB_FILES = references.bib zotero.bib My\ Library.bib
+BIB_FILES = references.bib
 
 # All source files
 ALL_FILES = $(TEX_FILES) $(CHAPTER_FILES) $(APPENDIX_FILES) $(BIB_FILES)
