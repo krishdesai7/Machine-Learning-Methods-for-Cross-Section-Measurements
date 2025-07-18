@@ -1,23 +1,23 @@
-\chapter{Moment Unfolding: Direct Deconvolution of Distribution Moments}
+\chapter{Moment Unfolding: direct deconvolution of distribution moments}
 \label{chap:moment-unfolding}
-\section{Why Moments: Physics Context and QCD Calculations}
+\section{Why moments: physics context and QCD calculations}
     Statistical moments of probability distributions serve as powerful tools in physics, providing a concise and theoretically meaningful way to characterise complex phenomena.
     %
     In the context of particle physics, and particularly in quantum chromodynamics (QCD), working at the level of moments rather than distributions offers significant advantages for both theoretical calculations and experimental measurements.
     %
     This section explores the fundamental importance of moments in physics, their theoretical foundations, and their specific applications in QCD.
     \subsection{The Theoretical Significance of Moments in Physics}
-        Statistical moments represent a systematic way to characterize probability distributions, with each successive moment providing additional information about the shape and properties of the distribution.
+        Statistical moments represent a systematic way to characterise probability distributions, with each successive moment providing additional information about the shape and properties of the distribution.
         %
-        The $k$-th moment of a probability density $p(z)$ is defined as
+        The $k^{\text{th}}$ moment of a probability density $p(z)$ is defined as
         \[
-            \langle Z^k \rangle = \int_{-\infty}^{\infty} z^k p(z) dz
+            \langle Z^k \rangle = \int_{-\infty}^{\infty} z^k\, p(z)\, \dd z
         \]
-        While the complete probability distribution contains all available information, working with moment is often much more tractable.
+        While the complete probability distribution contains all available information, working with moments is often much more tractable.
         %
         In many physical theories, moments can be calculated analytically even when full distributions cannot.
         %
-        Each moment has a direct physical interpretation--the first moment corresponds to the mean, the second moment to the variance, and higher moments characterize asymmetry (skewness) and peakedness (kurtosis).
+        Each moment has a direct physical interpretation---the first moment corresponds to the mean, the second moment to the variance, and higher moments characterize asymmetry (skewness) and peakedness (kurtosis) and so on.
         %
         Moments therefore provide much more concrete insight into the properties of an observable than distributions.
         
@@ -31,9 +31,9 @@
         %
         The DGLAP equations form the theoretical framework for parton distribution function evolution. 
         \subsubsection{DGLAP Evolution Equations}
-            The Dokshitzer--Gribov--Lipatov--Altarelli--Parisi (DGLAP) evolution equations\kd{cite} govern how parton distribution functions evolve with energy scale.
+            The Dokshitzer--Gribov--Lipatov--Altarelli--Parisi (DGLAP) evolution equations~\cite{thomson_modern_2013, Altarelli:1977zs, dokshitzerCalculationStructureFunctions1977, gribovDeepInelasticEp1972} govern how parton distribution functions evolve with energy scale.
             %
-            While these equations are integro--differential equations in their most general form, they transform into ordinary differential equations when expressed in terms of moments, significantly simplifying their solution \kd{cite}.
+            While these equations are integro--differential equations in their most general form, they transform into ordinary differential equations when expressed in terms of moments, significantly simplifying their solution~\cite{Kotlorz:2014fia, Kotlorz:2006dj, Skands:2012ts, dissertori_quantum_2003, Altarelli:1981ax, alma9914845810606531, Gross:1973id, Gross:1973ju, Politzer:1973fx, Moch:2004pa, Vogt:2018ytw}.
 
             For a parton distribution function $f(x,Q^2)$, where $x$ is the momentum fraction and $Q^2$ is the energy scale, the $n-$th moment is defined as
             \[
@@ -43,12 +43,12 @@
             \[
             \frac{\dd M_n(Q^2)}{\dd \ln Q^2} = \frac{\alpha_s(Q^2)}{2\pi}\; P_n\;M_n(Q^2).
             \]
-            where $P_n$ are the moments of the splitting functions.
+            where $P_n$ are the moments of the splitting functions~\cite{Ellis:1996mzs, salam_elements_2011, Schoeffel:1998tz, Strozik-Kotlorz:2014xga, Simonelli:2024vyh}.
             %
             This formulation converts the complex integro--differential evolution equations into a set of simple ordinary differential equations, one for each moment independently.
 
         \subsubsection{Operator Product Expansion}
-            The Operator Product Expansion (OPE) in QCD naturally expresses deep inelastic scattering structure functions in terms of moments \kd{cite}.
+            The Operator Product Expansion (OPE) in QCD naturally expresses deep inelastic scattering structure functions in terms of moments~\cite{Gockeler:2006nq}.
             %
             In this formalism, the moments of structure functions are related to matrix elements of local operators, which have clear physical interpretations and scaling properties.
             %
@@ -56,11 +56,11 @@
             \[
                 M_n(Q^2) = \int_0^1 x^{n-2}\;F_2(x,Q^2)\;\dd x = \sum_i C_n^i(Q^2) \;\langle O_n^i \rangle.
             \]
-            where $C_n^i$ are Wilson coefficients calculable in perturbation theory, and $\langle O_n^i \rangle$ are matrix elements of local operators.
+            where $C_n^i$ are Wilson coefficients calculable in perturbation theory, and $\langle O_n^i \rangle$ are matrix elements of local operators~\cite{Bardeen:1978yd}.
         \subsubsection{Event Shape Moments}
-            Event shape observables, which characterize the geometrical properties of energy flow in collisions, are often studied through their moments.
+            Event shape observables, which characterise the geometrical properties of energy flow in collisions, are often studied through their moments.
             %
-            Moments of event shapes like thrust, broadening, and jet mass distributions provide sensitive tests of perturbative QCD and allow precise extractions of the strong coupling constant $\alpha_s$ \kd{cite}.
+            Moments of event shapes like thrust, broadening, and jet mass distributions provide sensitive tests of perturbative QCD and allow precise extractions of the strong coupling constant $\alpha_s$~\cite{gehrmann_resummation_2017, Catani:1992ua}.
             %
             The moments of these event shapes can be calculated as
             \[
@@ -72,7 +72,7 @@
             \[
                 \langle e^n \rangle = A_n \left(\frac{\alpha_s}{2\pi}\right) + B_n \left(\frac{\alpha_s}{2\pi}\right)^2 + \mathcal{O}(\alpha_s^3),
             \]
-            plus non--perturbative corrections that scale as inverse powers of the centre--of--mass energy.
+            plus non perturbative corrections that scale as inverse powers of the centre of mass energy.
     \subsection{Experimental Significance of Moments in QCD}
         From an experimental perspective, moments offer several advantages that make them particularly valuable for QCD studies.
 

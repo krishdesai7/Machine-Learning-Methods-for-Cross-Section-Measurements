@@ -34,8 +34,15 @@
 \SetTracking{encoding={*}, shape=sc}{40}
 \microtypesetup{protrusion=false}
 
-
+%============================================================================
+% MATHEMATICS PACKAGES
 % ============================================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+%============================================================================
 % GRAPHICS AND VISUAL ELEMENTS
 % ============================================================================
 \usepackage{graphicx}
@@ -102,16 +109,10 @@
 \usepackage{xparse}
 \NewCommandCopy\siqty\qty
 \usepackage{comment} % Block comments
+\usepackage{physics} % MUST BE LOADED AFTER SIUNITX
 
-% ============================================================================
-% MATHEMATICS PACKAGES
-% ============================================================================
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{physics}
-\usepackage{nicefrac}
-\usepackage{mathtools}
+
+% 
 %============================================================================
 % CUSTOM COLORS
 % ============================================================================
