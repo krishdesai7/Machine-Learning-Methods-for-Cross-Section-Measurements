@@ -296,7 +296,7 @@ Bayesian methods regularize through prior distributions \(p(z)\), yielding poste
 Common priors include uniform priors, entropy maximization \(p(z) \propto \exp(-\sum z_j \log z_j)\)~\cite{maeda_new_2013} and Gaussian processes enforcing smoothness~\cite{bozson_unfolding_2018}.
 %
 These provide natural uncertainty quantification but suffer from high computational cost, scaling poorly with dimensionality~\cite{cowan_bayesian_2007},sensitivity to prior misspecification, especially in low-statistics regions~\cite{cowan_bayesian_2006}, and difficulty interpreting credible intervals as frequentist coverage~\cite{james_statistics_2004}.
-\kd{Re. ``why?" this is the fundamental difference between a Bayesian and frequentist analysis right? A credible interval treats the parameter as uncertain and the data as fixed, whereas a confidence interval treats the data as uncertain and the parameter as fixed. So depending on the suitablility of the prior chosen, and 95\% credible interval could only have 80\% frequentist coverage unless you have infinite data to wash out the prior.\)}
+\kd{Re. ``why?" this is the fundamental difference between a Bayesian and frequentist analysis right? A credible interval treats the parameter as uncertain and the data as fixed, whereas a confidence interval treats the data as uncertain and the parameter as fixed. So depending on the suitablility of the prior chosen, and 95\% credible interval could only have 80\% frequentist coverage unless you have infinite data to wash out the prior.}
 IBU, also known as Lucy Richardson deconvolution or D'Agostini iterative unfolding~\cite{dagostini_improved_2010} is an expectation maximization (EM) algorithm iteratively updates truth estimates
 \begin{equation}
     \nu_j^{(k+1)} = \nu_j^{(k)} \sum_{i=1}^{N_{\text{Data}}} \frac{R_{ij}\; \mu_i}{\sum_{l=1}^{N_{\text{Truth}}} R_{il} \;\nu_l^{(k)}}
@@ -351,9 +351,9 @@ Template fitting requires dense detector-level binning, which inflates statistic
 \subsection{Regularized Poisson Likelihood}  
 For low-statistics regions, \cite{gaponenko_practical_2020} advocates minimizing
 \begin{equation}
-     -\log \mathcal{L}({x}|z) + \lambda S({z})
+     -\log \mathcal{L}(x\,|\,z) + \lambda S(z)
 \end{equation}  
-\(S(z)\) penalizes non-monotonicity in sharply falling spectra.
+\(S(z)\) penalizes non monotonicity in sharply falling spectra.
 %
 Using cubic B--splines with entropy regularization, this method avoids binning artifacts through continuous representations~\cite{gaponenko_practical_2020}.
 %
@@ -749,7 +749,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/chapter-02/weight-correlation-vs-distance-1d-set1.pdf}
-                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using \textsc{OmniFold}~\cite{Desai:2025mpy}.\protect\footnotemark}
+                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using \textsc{OmniFold}~\cite{Desai:2025mpy}.\protect\footnotemark
                 }
                 \label{fig:corr-decay}
             \end{figure}

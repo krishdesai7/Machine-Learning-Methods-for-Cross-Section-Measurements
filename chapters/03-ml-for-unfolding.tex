@@ -466,7 +466,8 @@ This section provides a rigorous mathematical framework for understanding neural
     
         Supervised learning searches over a space of functions \(f_\theta\)parameterized by \(\theta\) that minimizes the expected risk,
         %
-        \begin{equation}{R}(f_\theta) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\operatorname{Div}(y, f_\theta(x))]
+        \begin{equation}
+            {R}(f_\theta) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\operatorname{Div}(y, f_\theta(x))]
         \end{equation}
         %
         where \(\operatorname{Div}\) is the divergence between the predicted output \(f_\theta(x)\) and the true output \(y\) y, and \(P(X,Y)\) is the joint probability distribution of inputs and outputs.

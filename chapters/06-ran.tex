@@ -1530,11 +1530,11 @@ This framework not only bridges classical and modern techniques but also provide
         %
         In stark contrast, RAN maintains a stable performance across the entire range of smearings.
         %
-        As shown in Figure~\kd{fig:omnifold}-comp}, RAN’s $\Delta_{VLC}$ remains approximately constant (with only slight variation within statistical error) as smearing increases.
+        As shown in Figure~\kd{fig:omnifold-comp}, RAN's $\Delta_{VLC}$ remains approximately constant (with only slight variation within statistical error) as smearing increases.
         %
-        Even at the largest smearing factors, RAN’s divergence to truth is essentially the same as it was at zero smearing, indicating that RAN successfully unfolds the distribution despite scalar multiplication.
+        Even at the largest smearing factors, RAN's divergence to truth is essentially the same as it was at zero smearing, indicating that RAN successfully unfolds the distribution despite scalar multiplication.
         %
-        This behaviour can be attributed to RAN’s methodological property of only reweighting at particle level, combined with its use of an optimal transport loss at detector level, which, unlike a classifier, does not require overlapping support to provide a meaningful gradient---the adversarial training can adjust weights to minimize the Wasserstein distance between the smeared simulation and data, even if those distributions are partially disjoint.
+        This behaviour can be attributed to RAN's methodological property of only reweighting at particle level, combined with its use of an optimal transport loss at detector level, which, unlike a classifier, does not require overlapping support to provide a meaningful gradient---the adversarial training can adjust weights to minimize the Wasserstein distance between the smeared simulation and data, even if those distributions are partially disjoint.
         %
         The error bars in Figure~\kd{fig:omnifold-comp} (representing 1$\sigma$ uncertainties from bootstrapping the experiment) confirm the statistical stability of each method.
         %

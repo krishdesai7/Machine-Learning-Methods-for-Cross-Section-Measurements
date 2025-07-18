@@ -801,7 +801,7 @@
             The rigorous understanding of symmetry and symmetry--breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered ``symmetry" is physically meaningful and relevant to the challenges of unfolding and analyzing collider data.
 
 \section{Statistical Definition of Dataset Symmetries}
-    \label{sec:statistical-symmetries}
+    \label{sec:statistical-def-of-symmetries}
     The concept of symmetry in physics typically evokes images of rotational invariance in crystals, parity conservation in weak interactions, or gauge transformations in field theory.
     %
     Yet when we turn our attention to experimental data, especially the high dimensional datasets emerging from modern collider experiments, the notion of symmetry becomes surprisingly subtle.
@@ -965,7 +965,7 @@ This principle, when combined with the rigorous framework of inertial reference 
     \kd{fig:symmetrygan-architecture} shows the modified GAN architecture of \textsc{SymmetryGAN}.
     
     \subsection{Machine Learning with Inertial Restrictions}
-    The incorporation of inertial reference densities, as established in \cref{sec:statistical-symmetries}, presents both theoretical necessity and practical challenges.
+    The incorporation of inertial reference densities, as established in \cref{sec:statistical-def-of-symmetries}, presents both theoretical necessity and practical challenges.
     %
     These restrictions can be implemented through three distinct approaches.
     \begin{enumerate}
@@ -1017,7 +1017,8 @@ This principle, when combined with the rigorous framework of inertial reference 
     \]
     This decomposition enables efficient exploration of the symmetry space through gradient descent.
 
-    \subsection{Deep Learning Implementation Details}
+    \subsection{Deep learning implementation details.}
+
     The practical implementation of \textsc{SymmetryGAN} requires careful attention to architectural choices, training dynamics, and numerical stability.
     %
     The framework's success depends on balancing the adversarial training process while maintaining the theoretical properties that enable symmetry discovery.

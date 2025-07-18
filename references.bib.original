@@ -1,23 +1,23 @@
 @article{2005InverseMeasurements,
-  title         = {Inverse Problems and Interpretation of Measurements},
+  title         = {{Inverse Problems and Interpretation of Measurements}},
   year          = 2005,
   journal       = {Applied Mathematical Sciences (Switzerland)},
   publisher     = {Springer},
   volume        = 160,
   pages         = {1--5},
   doi           = {10.1007/0-387-27132-5{\_}1},
-  issn          = {2196968x},
+  issn          = {2196968X},
   keywords      = {Forward Problem, Initial Temperature Distribution, Inverse Problem, Inverse Scattering Problem, Sommerfeld Radiation Condition}
 }
 @article{2005StatisticalTheory,
-  title         = {Statistical Inversion Theory},
+  title         = {{Statistical Inversion Theory}},
   year          = 2005,
   journal       = {Applied Mathematical Sciences (Switzerland)},
   publisher     = {Springer},
   volume        = 160,
   pages         = {49--114},
   doi           = {10.1007/0-387-27132-5{\_}3},
-  issn          = {2196968x},
+  issn          = {2196968X},
   keywords      = {Gaussian Density, Impulse Noise, Inverse Problem, Markov Chain Monte Carlo Method, Posterior Distribution}
 }
 @article{2023TransformerATLAS,
@@ -25,7 +25,7 @@
   year          = 2023,
   month         = 8,
   url           = {https://cds.cern.ch/record/2866601},
-  keywords      = {Btagging}
+  keywords      = {BTAGGING}
 }
 @article{aad_measurement_2011,
   title         = {Measurement of inclusive jet and dijet cross sections in~proton-proton collisions at 7~{TeV} centre-of-mass energy with~the~{ATLAS} detector},
@@ -48,12 +48,12 @@
   title         = {Multidimensional Deconvolution with Profiling},
   author        = {Acosta, Fernando Torales and Desai, Krish and Mikuni, Vinicius and Nachman, Benjamin and Pan, Jingjing},
   year          = 2024,
-  booktitle     = {Ml4ps},
+  booktitle     = {ML4PS},
   number        = 177,
   maintitle     = {NeurIPS}
 }
 @article{Adam-Bourdarios2015TheChallenge,
-  title         = {The Higgs Machine Learning Challenge},
+  title         = {{The Higgs Machine Learning Challenge}},
   author        = {Adam-Bourdarios, C. and Cowan, G. and Germain-Renaud, C. and Guyon, I. and K{\'{e}}gl, B. and Rousseau, D.},
   year          = 2015,
   month         = 12,
@@ -70,17 +70,17 @@
   title         = {Unfolding algorithms and tests using {RooUnfold}},
   author        = {Adye, Tim},
   year          = 2011,
-  booktitle     = {{Phystat} 2011},
-  publisher     = {Cern},
+  booktitle     = {{PHYSTAT} 2011},
+  publisher     = {CERN},
   address       = {Geneva},
   pages         = {313--318},
-  doi           = {10.5170/cern-2011-006.313},
+  doi           = {10.5170/CERN-2011-006.313},
   note          = {\_eprint: 1105.1160},
   keywords      = {BETA, statistical analysis}
 }
 @book{agostini_bayesian_2003,
-  title         = {{Bayesian} {Reasoning} {In} {Data} {Analysis}: {A} {Critical} {Introduction}},
-  shorttitle    = {{Bayesian} {Reasoning} {In} {Data} {Analysis}},
+  title         = {{BAYESIAN} {REASONING} {IN} {DATA} {ANALYSIS}: {A} {CRITICAL} {INTRODUCTION}},
+  shorttitle    = {{BAYESIAN} {REASONING} {IN} {DATA} {ANALYSIS}},
   author        = {Agostini, Giulio D.},
   year          = 2003,
   publisher     = {World Scientific Publishing Company},
@@ -90,7 +90,7 @@
   language      = {English}
 }
 @article{Albergo2019Flow-basedSHANAHAN,
-  title         = {Flow-based generative models for Markov chain Monte Carlo in lattice field theory FLOW-BASED GENERATIVE MODELS for MARKOV CHAIN ... M. S. ALBERGO, G. KANWAR, and P. E. SHANAHAN},
+  title         = {{Flow-based generative models for Markov chain Monte Carlo in lattice field theory FLOW-BASED GENERATIVE MODELS for MARKOV CHAIN ... M. S. ALBERGO, G. KANWAR, and P. E. SHANAHAN}},
   author        = {Albergo, M. S. and Kanwar, G. and Shanahan, P. E.},
   year          = 2019,
   month         = 8,
@@ -98,7 +98,7 @@
   publisher     = {American Physical Society},
   volume        = 100,
   number        = 3,
-  doi           = {10.1103/physrevd.100.034515},
+  doi           = {10.1103/PHYSREVD.100.034515},
   issn          = 24700029
 }
 @article{albert_antares_2025,
@@ -118,7 +118,7 @@
   keywords      = {Multimessenger astrophysics, Neutrino astrophysics, Neutrino detectors, Neutrino physics}
 }
 @article{Algren2023FlowReweighting,
-  title         = {Flow Away your Differences: Conditional Normalizing Flows as an Improvement to Reweighting},
+  title         = {{Flow Away your Differences: Conditional Normalizing Flows as an Improvement to Reweighting}},
   author        = {Algren, Malte and Golling, Tobias and Guth, Manuel and Pollard, Chris and Raine, John Andrew},
   year          = 2023,
   month         = 4,
@@ -168,7 +168,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/GSVAUH5C/Altarelli - 1982 - Partons in quantum chromodynamics.pdf}
 }
 @article{Altheimer2012JetBenchmarks,
-  title         = {Jet substructure at the Tevatron and LHC: New results, new tools, new benchmarks},
+  title         = {{Jet substructure at the Tevatron and LHC: New results, new tools, new benchmarks}},
   author        = {Altheimer, A. and Arora, S. and Asquith, L. and Brooijmans, G. and Butterworth, J. and Campanelli, M. and Chapleau, B. and Cholakian, A. E. and Chou, J. P. and Dasgupta, M. and Davison, A. and Dolen, J. and Ellis, S. D. and Essig, R. and Fan, J. J. and Field, R. and Fregoso, A. and Gallicchio, J. and Gershtein, Y. and Gomes, A. and Haas, A. and Halkiadakis, E. and Halyo, V. and Hoeche, S. and Hook, A. and Hornig, A. and Huang, P. and Izaguirre, E. and Jankowiak, M. and Kribs, G. and Krohn, D. and Larkoski, A. J. and Lath, A. and Lee, C. and Lee, S. J. and Loch, P. and Maksimovic, P. and Martinez, M. and Miller, D. W. and Plehn, T. and Prokofiev, K. and Rahmat, R. and Rappoccio, S. and Safonov, A. and Salam, G. P. and Schumann, S. and Schwartz, M. D. and Schwartzman, A. and Seymour, M. and Shao, J. and Sinervo, P. and Son, M. and Soper, D. E. and Spannowsky, M. and Stewart, I. W. and Strassler, M. and Strauss, E. and Takeuchi, M. and Thaler, J. and Thomas, S. and Tweedie, B. and Sierra, R. Vasquez and Vermilion, C. K. and Villaplana, M. and Vos, M. and Wacker, J. and Walker, D. and Walsh, J. R. and Wang, L. T. and Wilbur, S. and Zhu, W.},
   year          = 2012,
   month         = 6,
@@ -180,7 +180,7 @@
   arxivid       = {1201.0008}
 }
 @article{Amsler2008MonteTechniques,
-  title         = {Monte Carlo techniques},
+  title         = {{Monte Carlo techniques}},
   author        = {Amsler, C. and Doser, M. and Antonelli, M. and Asner, D. M. and Babu, K. S. and Baer, H. and Band, H. R. and Barnett, R. M. and Bergren, E. and Beringer, J. and Bernardi, G. and Bertl, W. and Bichsel, H. and Biebel, O. and Bloch, P. and Blucher, E. and Blusk, S. and Cahn, R. N. and Carena, M. and Caso, C. and Ceccucci, A. and Chakraborty, D. and Chen, M. C. and Chivukula, R. S. and Cowan, G. and Dahl, O. and D'Ambrosio, G. and Damour, T. and de Gouv{\^{e}}a, A. and DeGrand, T. and Dobrescu, B. and Drees, M. and Edwards, D. A. and Eidelman, S. and Elvira, V. D. and Erler, J. and Ezhela, V. V. and Feng, J. L. and Fetscher, W. and Fields, B. D. and Foster, B. and Gaisser, T. K. and Garren, L. and Gerber, H. J. and Gerbier, G. and Gherghetta, T. and Giudice, G. F. and Goodman, M. and Grab, C. and Gritsan, A. V. and Grivaz, J. F. and Groom, D. E. and Gr{\"{u}}newald, M. and Gurtu, A. and Gutsche, T. and Haber, H. E. and Hagiwara, K. and Hagmann, C. and Hayes, K. G. and Hern{\'{a}}ndez-Rey, J. J. and Hikasa, K. and Hinchliffe, I. and H{\"{o}}cker, A. and Huston, J. and Igo-Kemenes, P. and Jackson, J. D. and Johnson, K. F. and Junk, T. and Karlen, D. and Kayser, B. and Kirkby, D. and Klein, S. R. and Knowles, I. G. and Kolda, C. and Kowalewski, R. V. and Kreitz, P. and Krusche, B. and Kuyanov, Yu V. and Kwon, Y. and Lahav, O. and Langacker, P. and Liddle, A. and Ligeti, Z. and Lin, C. J. and Liss, T. M. and Littenberg, L. and Liu, J. C. and Lugovsky, K. S. and Lugovsky, S. B. and Mahlke, H. and Mangano, M. L. and Mannel, T. and Manohar, A. V. and Marciano, W. J. and Martin, A. D. and Masoni, A. and Milstead, D. and Miquel, R. and M{\"{o}}nig, K. and Murayama, H. and Nakamura, K. and Narain, M. and Nason, P. and Navas, S. and Nevski, P. and Nir, Y. and Olive, K. A. and Pape, L. and Patrignani, C. and Peacock, J. A. and Piepke, A. and Punzi, G. and Quadt, A. and Raby, S. and Raffelt, G. and Ratcliff, B. N. and Renk, B. and Richardson, P. and Roesler, S. and Rolli, S. and Romaniouk, A. and Rosenberg, L. J. and Rosner, J. L. and Sachrajda, C. T. and Sakai, Y. and Sarkar, S. and Sauli, F. and Schneider, O. and Scott, D. and Seligman, W. G. and Shaevitz, M. H. and Sj{\"{o}}strand, T. and Smith, J. G. and Smoot, G. F. and Spanier, S. and Spieler, H. and Stahl, A. and Stanev, T. and Stone, S. L. and Sumiyoshi, T. and Tanabashi, M. and Terning, J. and Titov, M. and Tkachenko, N. P. and T{\"{o}}rnqvist, N. A. and Tovey, D. and Trilling, G. H. and Trippe, T. G. and Valencia, G. and van Bibber, K. and Vincter, M. G. and Vogel, P. and Ward, D. R. and Watari, T. and Webber, B. R. and Weiglein, G. and Wells, J. D. and Whalley, M. and Wheeler, A. and Wohl, C. G. and Wolfenstein, L. and Womersley, J. and Woody, C. L. and Workman, R. L. and Yamamoto, A. and Yao, W. M. and Zenin, O. V. and Zhang, J. and Zhu, R. Y. and Zyla, P. A. and Harper, G. and Lugovsky, V. S. and Schaffner, P.},
   year          = 2008,
   month         = 9,
@@ -188,11 +188,11 @@
   volume        = 667,
   number        = {1-5},
   pages         = {1--6},
-  doi           = {10.1016/j.physletb.2008.07.018},
+  doi           = {10.1016/J.PHYSLETB.2008.07.018},
   issn          = {03702693}
 }
 @article{AnanthaPadmanabha2021SolvingNetworks,
-  title         = {Solving inverse problems using conditional invertible neural networks},
+  title         = {{Solving inverse problems using conditional invertible neural networks}},
   author        = {Anantha Padmanabha, Govinda and Zabaras, Nicholas},
   year          = 2021,
   month         = 5,
@@ -200,14 +200,14 @@
   publisher     = {Academic Press},
   volume        = 433,
   pages         = 110194,
-  doi           = {10.1016/j.jcp.2021.110194},
+  doi           = {10.1016/J.JCP.2021.110194},
   issn          = {0021-9991},
   arxivid       = {2007.15849},
   keywords      = {Conditional invertible neural network, Flow-based generative model, High-dimensional, Inverse surrogate modeling, Multiphase flow}
 }
 @article{andreassen_omnifold_2020,
   title         = {{OmniFold}: {A} {Method} to {Simultaneously} {Unfold} {All} {Observables}},
-  shorttitle    = {OmniFold},
+  shorttitle    = {{OmniFold}},
   author        = {Andreassen, Anders and Komiske, Patrick T. and Metodiev, Eric M. and Nachman, Benjamin and Thaler, Jesse},
   year          = 2020,
   month         = may,
@@ -222,19 +222,19 @@
   abstract      = {Collider data must be corrected for detector effects (``unfolded'') to be compared with many theoretical calculations and measurements from other experiments. Unfolding is traditionally done for individual, binned observables without including all information relevant for characterizing the detector response. We introduce OmniFold, an unfolding method that iteratively reweights a simulated dataset, using machine learning to capitalize on all available information. Our approach is unbinned, works for arbitrarily high-dimensional data, and naturally incorporates information from the full phase space. We illustrate this technique on a realistic jet substructure example from the Large Hadron Collider and compare it to standard binned unfolding methods. This new paradigm enables the simultaneous measurement of all observables, including those not yet invented at the time of the analysis.}
 }
 @article{Anguita2004ModelClassifier,
-  title         = {Model selection in top quark tagging with a support vector classifier},
+  title         = {{Model selection in top quark tagging with a support vector classifier}},
   author        = {Anguita, Davide and Ridella, Sandro and Rivieccio, Fabio and Zunino, Rodolfo and Amerio, Silvia and Lazzizzera, Ignazio},
   year          = 2004,
   journal       = {IEEE Conf.Proc.},
   volume        = 3,
   number        = 3,
   pages         = {2059--2064},
-  doi           = {10.1109/ijcnn.2004.1380934},
+  doi           = {10.1109/IJCNN.2004.1380934},
   isbn          = {0780383591},
   issn          = 10987576
 }
 @article{Araz2025GraphLHC,
-  title         = {Graph theory inspired anomaly detection at the LHC},
+  title         = {{Graph theory inspired anomaly detection at the LHC}},
   author        = {Araz, Jack Y. and Athanasakos, Dimitrios and Ploskon, Mateusz and Ringer, Felix},
   year          = 2025,
   month         = 6,
@@ -292,7 +292,7 @@
   volume        = 17,
   number        = {07},
   pages         = {P07009},
-  doi           = {10.1088/1748-0221/17/07/p07009},
+  doi           = {10.1088/1748-0221/17/07/P07009},
   issn          = {1748-0221},
   url           = {https://dx.doi.org/10.1088/1748-0221/17/07/P07009},
   urldate       = {2025-07-13},
@@ -301,7 +301,7 @@
   language      = {en}
 }
 @article{Arratia2025TowardsEvents,
-  title         = {Towards Unfolding All Particles in High Q2 DIS Events},
+  title         = {{Towards Unfolding All Particles in High Q2 DIS Events}},
   author        = {Arratia, M. and Milton, R. and Mikuni, V. and Nachman, B. and Pan, J. and Torales Acosta, F. and Wamorkar, T},
   year          = 2025,
   month         = 3,
@@ -327,18 +327,18 @@
   file          = {Full Text PDF:/Users/t-krishdesai/Zotero/storage/U57JJXCD/ATLAS Collaboration et al. - 2024 - Measurement of jet substructure in boosted \$toverline t \$ events with the ATLAS detector using \$140.pdf:application/pdf}
 }
 @article{ATLAS:2012yve,
-  title         = {Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC},
+  title         = {{Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC}},
   author        = {Aad, Georges and others},
   year          = 2012,
   journal       = {Phys. Lett. B},
   volume        = 716,
   pages         = {1--29},
   doi           = {10.1016/j.physletb.2012.08.020},
-  collaboration = {Atlas},
+  collaboration = {ATLAS},
   eprint        = {1207.7214},
   archiveprefix = {arXiv},
   primaryclass  = {hep-ex},
-  reportnumber  = {Cern-ph-ep-2012-218}
+  reportnumber  = {CERN-PH-EP-2012-218}
 }
 @misc{augustine_survey_2024,
   title         = {A {Survey} on {Universal} {Approximation} {Theorems}},
@@ -354,7 +354,7 @@
   keywords      = {Computer Science - Machine Learning, Computer Science - Systems and Control, Electrical Engineering and Systems Science - Systems and Control}
 }
 @article{AveryCrossRates,
-  title         = {Cross section, Flux, Luminosity, Scattering Rates},
+  title         = {{Cross section, Flux, Luminosity, Scattering Rates}},
   author        = {Avery, Paul and Korytov, Andrey}
 }
 @article{baak_interpolation_2015,
@@ -373,7 +373,7 @@
   keywords      = {Analysis, Distribution, Histogram, Interpolation, Simulation}
 }
 @article{Baldi2014SearchingLearning,
-  title         = {Searching for exotic particles in high-energy physics with deep learning},
+  title         = {{Searching for exotic particles in high-energy physics with deep learning}},
   author        = {Baldi, P. and Sadowski, P. and Whiteson, D.},
   year          = 2014,
   month         = 7,
@@ -382,7 +382,7 @@
   volume        = 5,
   number        = 1,
   pages         = {1--9},
-  doi           = {10.1038/ncomms5308;techmeta=129,141;subjmeta=25,419,483,639,640,766;kwrd=applied+physics,particle+physics,theoretical+physics},
+  doi           = {10.1038/NCOMMS5308;TECHMETA=129,141;SUBJMETA=25,419,483,639,640,766;KWRD=APPLIED+PHYSICS,PARTICLE+PHYSICS,THEORETICAL+PHYSICS},
   issn          = 20411723,
   url           = {https://www.nature.com/articles/ncomms5308},
   arxivid       = {1402.4735},
@@ -398,12 +398,12 @@
   volume        = 114,
   number        = 11,
   pages         = 111801,
-  doi           = {10.1103/physrevlett.114.111801/figures/3/thumbnail},
+  doi           = {10.1103/PHYSREVLETT.114.111801/FIGURES/3/THUMBNAIL},
   issn          = 10797114,
   url           = {https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.114.111801}
 }
 @article{Baldi2021DeepScience,
-  title         = {Deep Learning in Science},
+  title         = {{Deep Learning in Science}},
   author        = {Baldi, Pierre},
   year          = 2021,
   month         = 4,
@@ -415,14 +415,14 @@
 }
 @misc{bandieramonte_fastcalogan_2023,
   title         = {{FastCaloGAN}: {A} {FAST} {SIMULATION} {OF} {THE} {ATLAS} {CALORIMETER} {WITH} {GANs}},
-  shorttitle    = {FastCaloGAN},
+  shorttitle    = {{FastCaloGAN}},
   author        = {Bandieramonte, Marilena and Faucci Giannelli, Michele and Corchia, Federico Andrea and Zhang, Rui and Beirer, Joshua Falco and Duehrssen-Debling, Michael and Young, Christopher and Day-Hall, Henry and Salamani, Dalila and Sorenson, Josef Daniel and Lari, Tommaso},
   year          = 2023,
   url           = {https://cds.cern.ch/record/2857787},
   urldate       = {2025-07-17}
 }
 @article{Bank2023Autoencoders,
-  title         = {Autoencoders},
+  title         = {{Autoencoders}},
   author        = {Bank, Dor and Koenigstein, Noam and Giryes, Raja},
   year          = 2023,
   month         = 1,
@@ -450,7 +450,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/DJTL538R/Bardeen et al. - 1978 - Deep-inelastic scattering beyond the leading order in asymptotically free gauge theories.pdf}
 }
 @article{Baron2020ExtendingMethod,
-  title         = {Extending the Fully Bayesian Unfolding with Regularization Using a Combined Sampling Method},
+  title         = {{Extending the Fully Bayesian Unfolding with Regularization Using a Combined Sampling Method}},
   author        = {Baro\v{n}, Petr and Kvita, Ji\v{r}\'{\i}},
   year          = 2020,
   month         = 12,
@@ -459,13 +459,13 @@
   volume        = 12,
   number        = 12,
   pages         = 2100,
-  doi           = {10.3390/sym12122100},
+  doi           = {10.3390/SYM12122100},
   issn          = {2073-8994},
   url           = {https://www.mdpi.com/2073-8994/12/12/2100/htm https://www.mdpi.com/2073-8994/12/12/2100},
   keywords      = {Bayes theorem, MCMC, regularization, unfolding}
 }
 @article{Belis2024MachinePhysics,
-  title         = {Machine learning for anomaly detection in particle physics},
+  title         = {{Machine learning for anomaly detection in particle physics}},
   author        = {Belis, Vasilis and Odagiu, Patrick and Aarrestad, Thea Klaeboe},
   year          = 2024,
   month         = 12,
@@ -473,7 +473,7 @@
   publisher     = {Elsevier},
   volume        = 12,
   pages         = 100091,
-  doi           = {10.1016/j.revip.2024.100091},
+  doi           = {10.1016/J.REVIP.2024.100091},
   issn          = {2405-4283},
   url           = {https://www.sciencedirect.com/science/article/pii/S2405428324000017},
   arxivid       = {2312.14190},
@@ -484,7 +484,7 @@
   shorttitle    = {Go with the {Flow}},
   author        = {Bellagente, Marco},
   year          = 2022,
-  doi           = {10.11588/heidok.00031386},
+  doi           = {10.11588/HEIDOK.00031386},
   url           = {https://archiv.ub.uni-heidelberg.de/volltextserver/id/eprint/31386},
   urldate       = {2025-07-15},
   note          = {Publisher: Heidelberg University Library},
@@ -507,7 +507,7 @@
   language      = {en}
 }
 @article{Bellagente2020InvertibleAgain,
-  title         = {Invertible Networks or Partons to Detector and Back Again},
+  title         = {{Invertible Networks or Partons to Detector and Back Again}},
   author        = {Bellagente, Marco and Butter, Anja and Kasieczka, Gregor and Plehn, Tilman and Rousselot, Armand and Winterhalder, Ramon and Ardizzone, Lynton and K{\"{o}}the, Ullrich},
   year          = 2020,
   month         = 11,
@@ -516,7 +516,7 @@
   volume        = 9,
   number        = 5,
   pages         = {074},
-  doi           = {10.21468/scipostphys.9.5.074},
+  doi           = {10.21468/SCIPOSTPHYS.9.5.074},
   issn          = 25424653,
   arxivid       = {2006.06685}
 }
@@ -536,7 +536,7 @@
   abstract      = {Measurements of inclusive differential cross sections for charged pion and kaon production in annihilation have been carried out at a center-of-mass energy of . The measurements were performed with the Belle detector at the KEKB collider using a data sample containing events, where . We present charge-integrated differential cross sections for as a function of the relative hadron energy from 0.2 to 0.98. The combined statistical and systematic uncertainties for () are 4\% (4\%) at and 15\% (24\%) at . The cross sections are the first measurements of the dependence of pion and kaon production for as well as the first precision cross section measurements at a center-of-mass energy far below the resonance used by the experiments at LEP and SLC.}
 }
 @article{Bellm2017HerwigNote,
-  title         = {Herwig 7.1 Release Note},
+  title         = {{Herwig 7.1 Release Note}},
   author        = {Bellm, Johannes and Gieseke, Stefan and Grellscheid, David and Kirchgae{\ss}er, Patrick and Loshaj, Frash\"{e}r and Nail, Graeme and Papaefstathiou, Andreas and Pl{\"{a}}tzer, Simon and Podskubka, Radek and Rauch, Michael and Reuschle, Christian and Richardson, Peter and Schichtel, Peter and Seymour, Michael H. and Si{\'{o}}dmok, Andrzej and Webster, Stephen},
   year          = 2017,
   month         = 5,
@@ -565,7 +565,7 @@
   volume        = 2023,
   number        = 4,
   pages         = 84,
-  doi           = {10.1007/jhep04(2023)084},
+  doi           = {10.1007/JHEP04(2023)084},
   issn          = {1029-8479},
   url           = {https://doi.org/10.1007/JHEP04(2023)084},
   urldate       = {2025-07-14},
@@ -574,14 +574,14 @@
   keywords      = {Applied Probability, Bayesian Inference, Beyond Standard Model, Hadron-Hadron Scattering, Higgs Physics, Parametric Inference, Statistical Theory and Methods, Stochastic Modelling, Stochastic Modelling in Statistics, Supersymmetry}
 }
 @misc{Berger2017LectureATLAS,
-  title         = {Lecture on Statistical analysis methods by ATLAS},
+  title         = {{Lecture on Statistical analysis methods by ATLAS}},
   author        = {Berger, Nicolas},
   year          = 2017,
   month         = 9,
   pages         = {17--29},
   url           = {https://cds.cern.ch/record/2285058},
   arxivid       = {1701.07240},
-  keywords      = {Bphys, Eweak, Exotics, Higgs, Qcd, Susy, Top}
+  keywords      = {BPHYS, EWEAK, EXOTICS, HIGGS, QCD, SUSY, TOP}
 }
 @article{bevan_support_2017,
   title         = {Support vector machines and generalisation in {HEP}},
@@ -605,7 +605,7 @@
   volume        = 2019,
   number        = 11,
   pages         = 156,
-  doi           = {10.1007/jhep11(2019)156},
+  doi           = {10.1007/JHEP11(2019)156},
   issn          = {1029-8479},
   url           = {https://doi.org/10.1007/JHEP11(2019)156},
   urldate       = {2025-07-15},
@@ -666,15 +666,15 @@
   title         = {Unfolding {Methods} in {Particle} {Physics}},
   author        = {Blobel, Volker},
   year          = 2011,
-  booktitle     = {{Phystat} 2011},
-  publisher     = {Cern},
+  booktitle     = {{PHYSTAT} 2011},
+  publisher     = {CERN},
   address       = {Geneva},
   pages         = {240--251},
-  doi           = {10.5170/cern-2011-006.240},
+  doi           = {10.5170/CERN-2011-006.240},
   keywords      = {BETA, acceptance, data analysis method, detector: resolution, statistical analysis, talk: Geneva 2011/01/17}
 }
 @article{Bogatskiy2020LorentzPhysics,
-  title         = {Lorentz Group Equivariant Neural Network for Particle Physics},
+  title         = {{Lorentz Group Equivariant Neural Network for Particle Physics}},
   author        = {Bogatskiy, Alexander and Anderson, Brandon and Offermann, Jan T. and Roussi, Marwah and Miller, David W. and Kondor, Risi},
   year          = 2020,
   month         = 6,
@@ -687,12 +687,12 @@
   arxivid       = {2006.04780}
 }
 @article{Bohm2025IntroductionPhysicists,
-  title         = {Introduction to Statistics and Data Analysis for Physicists},
+  title         = {{Introduction to Statistics and Data Analysis for Physicists}},
   author        = {Bohm, Gerhard and Zech, G\"{u}nter},
   year          = 2025,
   month         = 8,
   journal       = {Introduction to Statistics and Data Analysis for Physicists},
-  publisher     = {World Scientific},
+  publisher     = {WORLD SCIENTIFIC},
   doi           = {10.1142/14343}
 }
 @article{bozson_unfolding_2018,
@@ -701,7 +701,7 @@
   year          = 2018,
   month         = nov,
   note          = {\_eprint: 1811.01242},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @article{brehmer_guide_2018,
   title         = {A guide to constraining effective field theories with machine learning},
@@ -719,7 +719,7 @@
   abstract      = {We develop, discuss, and compare several inference techniques to constrain theory parameters in collider experiments. By harnessing the latent-space structure of particle physics processes, we extract extra information from the simulator. This augmented data can be used to train neural networks that precisely estimate the likelihood ratio. The new methods scale well to many observables and high-dimensional parameter spaces, do not require any approximations of the parton shower and detector response, and can be evaluated in microseconds. Using weak-boson-fusion Higgs production as an example process, we compare the performance of several techniques. The best results are found for likelihood ratio estimators trained with extra information about the score, the gradient of the log likelihood function with respect to the theory parameters. The score also provides sufficient statistics that contain all the information needed for inference in the neighborhood of the Standard Model. These methods enable us to put significantly stronger bounds on effective dimension-six operators than the traditional approach based on histograms. They also outperform generic machine learning methods that do not make use of the particle physics structure, demonstrating their potential to substantially improve the new physics reach of the Large Hadron Collider legacy results.}
 }
 @article{Brehmer2020EffectiveLearning,
-  title         = {Effective LHC measurements with matrix elements and machine learning},
+  title         = {{Effective LHC measurements with matrix elements and machine learning}},
   author        = {Brehmer, J and Cranmer, K and Espejo, I and Kling, F and Louppe, G and Pavez, J},
   year          = 2020,
   journal       = {Journal of Physics: Conference Series},
@@ -738,7 +738,7 @@
   number        = 1,
   pages         = {179--186},
   doi           = {10.1063/1.3275612},
-  issn          = {0094-243x},
+  issn          = {0094-243X},
   url           = {https://doi.org/10.1063/1.3275612},
   urldate       = {2025-07-14},
   abstract      = {We demonstrate that the principle of maximum relative entropy (ME), used judiciously, can ease the specification of priors in model selection problems. The resulting effect is that models that make sharp predictions are disfavoured, weakening the usual Bayesian ``Occam's Razor.'' This is illustrated with a simple example involving what Jaynes called a ``sure thing'' hypothesis. Jaynes' resolution of the situation involved introducing a large number of alternative ``sure thing'' hypotheses that were possible before we observed the data. However, in more complex situations, it may not be possible to explicitly enumerate large numbers of alternatives. The entropic priors formalism produces the desired result without modifying the hypothesis space or requiring explicit enumeration of alternatives; all that is required is a good model for the prior predictive distribution for the data. This idea is illustrated with a simple rigged-lottery example, and we outline how this idea may help to resolve a recent debate amongst cosmologists: is dark energy a cosmological constant, or has it evolved with time in some way? And how shall we decide, when the data are in?}
@@ -774,7 +774,7 @@
   keywords      = {Computer Science - Machine Learning, Statistics - Machine Learning}
 }
 @article{Brodsky2013PhysicsBeams,
-  title         = {Physics opportunities of a fixed-target experiment using LHC beams},
+  title         = {{Physics opportunities of a fixed-target experiment using LHC beams}},
   author        = {Brodsky, S. J. and Fleuret, F. and Hadjidakis, C. and Lansberg, J. P.},
   year          = 2013,
   month         = 1,
@@ -783,7 +783,7 @@
   volume        = 522,
   number        = 4,
   pages         = {239--255},
-  doi           = {10.1016/j.physrep.2012.10.001},
+  doi           = {10.1016/J.PHYSREP.2012.10.001},
   issn          = {0370-1573},
   keywords      = {Fixed-target experiment, LHC beam}
 }
@@ -862,7 +862,7 @@
   language      = {en}
 }
 @article{Butter2025GenerativeMapping,
-  title         = {Generative unfolding with distribution mapping},
+  title         = {{Generative unfolding with distribution mapping}},
   author        = {Butter, Anja and Diefenbacher, Sascha and Huetsch, Nathan and Mikuni, Vinicius and Nachman, Benjamin and Schweitzer, Sofia Palacios and Plehn, Tilman},
   year          = 2025,
   month         = 6,
@@ -871,15 +871,15 @@
   volume        = 18,
   number        = 6,
   pages         = 200,
-  doi           = {10.21468/scipostphys.18.6.200},
+  doi           = {10.21468/SCIPOSTPHYS.18.6.200},
   issn          = 25424653
 }
 @article{Cacciari2008TheAlgorithm,
-  title         = {The Anti-k(t) jet clustering algorithm},
+  title         = {{The Anti-k(t) jet clustering algorithm}},
   author        = {Cacciari, Matteo and Salam, Gavin P. and Soyez, Gregory},
   year          = 2008,
   month         = 4,
-  journal       = {Jhep},
+  journal       = {JHEP},
   volume        = {04},
   number        = 4,
   pages         = {063},
@@ -889,7 +889,7 @@
   keywords      = {Hadronic colliders, Jets, QCD}
 }
 @article{Cacciari2012FastJetManual,
-  title         = {FastJet User Manual},
+  title         = {{FastJet User Manual}},
   author        = {Cacciari, Matteo and Salam, Gavin P. and Soyez, Gregory},
   year          = 2012,
   month         = 3,
@@ -902,7 +902,7 @@
   issn          = 14346052
 }
 @article{Cam1986AsymptoticTheory,
-  title         = {Asymptotic Methods in Statistical Decision Theory},
+  title         = {{Asymptotic Methods in Statistical Decision Theory}},
   author        = {Cam, Lucien Le},
   year          = 1986,
   publisher     = {Springer New York},
@@ -913,7 +913,7 @@
   url           = {http://link.springer.com/10.1007/978-1-4612-4946-7}
 }
 @article{Carleo2019MachineSciences,
-  title         = {Machine learning and the physical sciences},
+  title         = {{Machine learning and the physical sciences}},
   author        = {Carleo, Giuseppe and Cirac, Ignacio and Cranmer, Kyle and Daudet, Laurent and Schuld, Maria and Tishby, Naftali and Vogt-Maranto, Leslie and Zdeborov{\'{a}}, Lenka},
   year          = 2019,
   month         = 12,
@@ -921,13 +921,13 @@
   publisher     = {American Physical Society},
   volume        = 91,
   number        = 4,
-  doi           = {10.1103/revmodphys.91.045002},
+  doi           = {10.1103/REVMODPHYS.91.045002},
   issn          = 15390756,
   arxivid       = {1903.10563}
 }
 @article{caron_trackformers_2025,
   title         = {{TrackFormers}: {In} {Search} of {Transformer}-{Based} {Particle} {Tracking} for the {High}-{Luminosity} {LHC} {Era}},
-  shorttitle    = {TrackFormers},
+  shorttitle    = {{TrackFormers}},
   author        = {Caron, Sascha and Dobreva, Nadezhda and S\'{a}nchez, Antonio Ferrer and Mart\'{\i}n-Guerrero, Jos\'{e} D. and Odyurt, Uraz and Bazan, Roberto Ruiz de Austri and Wolffs, Zef and Zhao, Yue},
   year          = 2025,
   month         = apr,
@@ -982,7 +982,7 @@
   journal       = {Nucl. Phys. B},
   volume        = 407,
   pages         = {3--42},
-  doi           = {10.1016/0550-3213(93)90271-p},
+  doi           = {10.1016/0550-3213(93)90271-P},
   abstract      = {We describe a method for the resummation of leading and next-to-leading large logarithms to all orders in QCD perturbation theory, applicable to e + e - event shape distributions that have the property of exponentiation near the two-jet region. After a general discussion of the conditions for exponentiation and the evaluation of matrix elements and phase space to next-to-leading logarithmic accuracy, we give details of the application of the method to the thrust and heavy jet mass distributions. We show how the resummed expressions can be matched with known second-order results to obtain improved predictions throughout the whole of phase space, and how to suppress spurious higher-order terms generated by resummation outside the physical region. We also give the necessary ingredients for the improvement of third-order predictions by resummation when they become available.},
   keywords      = {(2jet): final state,annihilation: electron positron,BETA,electron positron: annihilation,electroproduction: jet,event shape analysis,final state: (2jet),jet: electroproduction,jet: thrust,leading logarithm approximation,quantum chromodynamics: perturbation theory},
   annotation    = {608 citations (INSPIRE 2025/7/18)\\ 569 citations w/o self (INSPIRE 2025/7/18)\\ Citations: 363 (Crossref) [2025-07-18]\\ Citations: 363 (SemanticScholar) [2025-07-18]}
@@ -997,7 +997,7 @@
   number        = 1,
   pages         = {371--380},
   doi           = {10.1063/1.1751380},
-  issn          = {0094-243x},
+  issn          = {0094-243X},
   url           = {https://doi.org/10.1063/1.1751380},
   urldate       = {2025-07-14},
   abstract      = {The method of Maximum (relative) Entropy (ME) is used to translate the information contained in the known form of the likelihood into a prior distribution for Bayesian inference. The argument is guided by intuition gained from the successful use of ME methods in statistical mechanics. For experiments that cannot be repeated the resulting ``entropic prior'' is formally identical with the Einstein fluctuation formula. For repeatable experiments, however, the expected value of the entropy of the likelihood turns out to be relevant information that must be included in the analysis. As an example the entropic prior for a Gaussian likelihood is calculated.}
@@ -1033,13 +1033,13 @@
   keywords      = {Constrained optimization, Neural network, Physics-guided machine learning, Probabilistic, Uncertainty quantification}
 }
 @article{Chen2014HiggsTrees,
-  title         = {Higgs Boson Discovery with Boosted Trees},
+  title         = {{Higgs Boson Discovery with Boosted Trees}},
   author        = {Chen, Tianqi and He, Tong},
   year          = 2014,
-  journal       = {Hepml\@nips}
+  journal       = {HEPML\@NIPS}
 }
 @article{Chen2020BoostedLearning,
-  title         = {Boosted W and Z tagging with jet charge and deep learning},
+  title         = {{Boosted W and Z tagging with jet charge and deep learning}},
   author        = {Chen, Yu Chen Janice and Chiang, Cheng Wei and Cottin, Giovanna and Shih, David},
   year          = 2020,
   month         = 3,
@@ -1048,7 +1048,7 @@
   volume        = 101,
   number        = 5,
   pages         = {053001},
-  doi           = {10.1103/physrevd.101.053001/figures/20/medium},
+  doi           = {10.1103/PHYSREVD.101.053001/FIGURES/20/MEDIUM},
   issn          = 24700029,
   url           = {https://journals.aps.org/prd/abstract/10.1103/PhysRevD.101.053001},
   arxivid       = {1908.08256},
@@ -1064,7 +1064,7 @@
   volume        = 2025,
   number        = 7,
   pages         = 67,
-  doi           = {10.1007/jhep07(2025)067},
+  doi           = {10.1007/JHEP07(2025)067},
   issn          = {1029-8479},
   url           = {https://doi.org/10.1007/JHEP07(2025)067},
   urldate       = {2025-07-13},
@@ -1086,14 +1086,14 @@
   keywords      = {Physics - Data Analysis, Statistics and Probability}
 }
 @article{ChungA,
-  title         = {A HYBRID LSMR ALGORITHM FOR LARGE-SCALE TIKHONOV REGULARIZATION \textasteriskcentered},
+  title         = {{A HYBRID LSMR ALGORITHM FOR LARGE-SCALE TIKHONOV REGULARIZATION \textasteriskcentered}},
   author        = {Chung, Julianne and Palmer, Katrina},
   doi           = {10.1137/140975024},
   url           = {http://www.siam.org/journals/sisc/37-5/97502.html},
   keywords      = {65F22, 65F30, Tikhonov regularization, hybrid regularization, ill-posed inverse problems AMS subject classifications 65F20, iterative methods}
 }
 @article{Clason2021RegularizationProblems,
-  title         = {Regularization of Inverse Problems},
+  title         = {{Regularization of Inverse Problems}},
   author        = {Clason, Christian},
   year          = 2021,
   month         = 2,
@@ -1134,11 +1134,11 @@
   author        = {Chekhovsky, Vladimir and others},
   year          = 2025,
   month         = 5,
-  collaboration = {Cms},
+  collaboration = {CMS},
   eprint        = {2505.17850},
   archiveprefix = {arXiv},
   primaryclass  = {hep-ex},
-  reportnumber  = {Cms-smp-23-008, Cern-ep-2025-041}
+  reportnumber  = {CMS-SMP-23-008, CERN-EP-2025-041}
 }
 @incollection{cmusic,
   title         = {The Hoofmark Hermetic Synthesis Program},
@@ -1279,7 +1279,7 @@
   volume        = 2016,
   number        = 7,
   pages         = 144,
-  doi           = {10.1007/jhep07(2016)144},
+  doi           = {10.1007/JHEP07(2016)144},
   issn          = {1029-8479},
   url           = {https://doi.org/10.1007/JHEP07(2016)144},
   urldate       = {2025-07-13},
@@ -1294,7 +1294,7 @@
   month         = apr,
   booktitle     = {14th {International} {Workshop} on {Deep} {Inelastic} {Scattering}},
   pages         = {157--160},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @inproceedings{cowan_bayesian_2007,
   title         = {Bayesian {Statistical} {Methods} {In} {Particle} {Physics}},
@@ -1304,17 +1304,17 @@
   publisher     = {Gioi Publ.},
   address       = {Hanoi, Vietnam},
   pages         = {7--10},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @inproceedings{cowan_highlights_2011,
   title         = {Highlights from {PHYSTAT} 2011},
   author        = {Cowan, Glen},
   year          = 2011,
-  booktitle     = {{Phystat} 2011},
-  publisher     = {Cern},
+  booktitle     = {{PHYSTAT} 2011},
+  publisher     = {CERN},
   address       = {Geneva},
   pages         = {215--224},
-  doi           = {10.5170/cern-2011-006.215},
+  doi           = {10.5170/CERN-2011-006.215},
   keywords      = {BETA, CERN Lab, statistical analysis, talk: Geneva 2011/01/17}
 }
 @book{cowan_statistical_1998,
@@ -1358,15 +1358,15 @@
   title         = {Topics in statistical data analysis for high-energy physics},
   author        = {Cowan, G},
   year          = 2010,
-  publisher     = {Cern},
-  doi           = {10.5170/cern-2010-002.197},
+  publisher     = {CERN},
+  doi           = {10.5170/CERN-2010-002.197},
   url           = {http://cds.cern.ch/record/1281954},
   urldate       = {2025-07-13},
   language      = {en},
   keywords      = {Other Fields of Physics, Particle Physics - Phenomenology}
 }
 @article{Cowan2011AsymptoticPhysics,
-  title         = {Asymptotic formulae for likelihood-based tests of new physics},
+  title         = {{Asymptotic formulae for likelihood-based tests of new physics}},
   author        = {Cowan, Glen and Cranmer, Kyle and Gross, Eilam and Vitells, Ofer},
   year          = 2011,
   month         = 2,
@@ -1375,29 +1375,29 @@
   volume        = 71,
   number        = 2,
   pages         = 1554,
-  doi           = {10.1140/epjc/s10052-011-1554-0},
+  doi           = {10.1140/EPJC/S10052-011-1554-0},
   issn          = 14346052,
   arxivid       = {1007.1727}
 }
 @article{CowanStatisticalRehovot,
-  title         = {Statistical Methods for Particle Physics Lecture 4: unfolding Statistical Inference for Astro and Particle Physics Workshop Weizmann Institute, Rehovot},
+  title         = {{Statistical Methods for Particle Physics Lecture 4: unfolding Statistical Inference for Astro and Particle Physics Workshop Weizmann Institute, Rehovot}},
   author        = {Cowan, Glen},
   url           = {https://indico.weizmann.ac.il//conferenceDisplay.py?confId=52}
 }
 @misc{cranmer_histfactory_2012,
   title         = {{HistFactory}: {A} tool for creating statistical models for use with {RooFit} and {RooStats}},
-  shorttitle    = {HistFactory},
+  shorttitle    = {{HistFactory}},
   author        = {Cranmer, Kyle and Lewis, George and Moneta, Lorenzo and Shibata, Akira and Verkerke, Wouter},
   year          = 2012,
   publisher     = {New York U.},
   address       = {New York},
-  doi           = {10.17181/cern-open-2012-016},
+  doi           = {10.17181/CERN-OPEN-2012-016},
   url           = {https://cds.cern.ch/record/1456844},
   urldate       = {2025-07-13},
   abstract      = {The HistFactory is a tool to build parametrized probability density functions (pdfs) in the RooFit/RooStats framework based based on simple ROOT histograms organized in an XML file. The pdf has a restricted form, but it is sufficiently flexible to describe many analyses based on template histograms. The tool takes a modular approach to build complex pdfs from more primative conceptual building blocks. The resulting PDF is stored in a RooWorkspace which can be saved to and read from a ROOT file. This document describes the defaults and interface in HistFactory 5.32.}
 }
 @article{CranmerPracticalLHC,
-  title         = {Practical Statistics for the LHC},
+  title         = {{Practical Statistics for the LHC}},
   author        = {Cranmer, Kyle}
 }
 @article{cybenko_approximation_1989,
@@ -1409,8 +1409,8 @@
   volume        = 2,
   number        = 4,
   pages         = {303--314},
-  doi           = {10.1007/bf02551274},
-  issn          = {1435-568x},
+  doi           = {10.1007/BF02551274},
+  issn          = {1435-568X},
   url           = {https://doi.org/10.1007/BF02551274},
   urldate       = {2025-07-15},
   abstract      = {In this paper we demonstrate that finite linear combinations of compositions of a fixed, univariate function and a set of affine functionals can uniformly approximate any continuous function ofn real variables with support in the unit hypercube; only mild conditions are imposed on the univariate function. Our results settle an open question about representability in the class of single hidden layer neural networks. In particular, we show that arbitrary decision regions can be arbitrarily well approximated by continuous feedforward neural networks with only a single internal, hidden layer and any continuous sigmoidal nonlinearity. The paper discusses approximation properties of other possible types of nonlinearities that might be implemented by artificial neural networks.},
@@ -1431,7 +1431,7 @@
   keywords      = {Physics - Data Analysis, Statistics and Probability}
 }
 @article{Darulis2022MachineSimulations,
-  title         = {Machine Learned Particle Detector Simulations},
+  title         = {{Machine Learned Particle Detector Simulations}},
   author        = {Darulis, D. and Tyson, R. and Ireland, D. G. and Glazier, D. I. and McKinnon, B. and Pauli, P.},
   year          = 2022,
   month         = 7,
@@ -1440,7 +1440,7 @@
   keywords      = {Boosted, Decision, Detector, Learning {\textperiodcentered}, Machine, Network {\textperiodcentered}, Neural, Particle, Simulations {\textperiodcentered}, Tree}
 }
 @article{Dasgupta2013TowardsSubstructure,
-  title         = {Towards an understanding of jet substructure},
+  title         = {{Towards an understanding of jet substructure}},
   author        = {Dasgupta, Mrinal and Fregoso, Alessandro and Marzani, Simone and Salam, Gavin P.},
   year          = 2013,
   month         = 9,
@@ -1449,14 +1449,14 @@
   volume        = 2013,
   number        = 9,
   pages         = {1--57},
-  doi           = {10.1007/jhep09(2013)029},
+  doi           = {10.1007/JHEP09(2013)029},
   issn          = {1029-8479},
   url           = {https://link.springer.com/article/10.1007/JHEP09(2013)029},
   arxivid       = {1307.0007},
   keywords      = {Classical and Quantum Gravitation, Elementary Particles, Quantum Field Theories, Quantum Field Theory, Quantum Physics, Relativity Theory, String Theory}
 }
 @article{Dashti2017TheProblems,
-  title         = {The bayesian approach to inverse problems},
+  title         = {{The bayesian approach to inverse problems}},
   author        = {Dashti, Masoumeh and Stuart, Andrew M.},
   year          = 2017,
   month         = 6,
@@ -1482,7 +1482,7 @@
   keywords      = {High Energy Physics - Experiment, High Energy Physics - Phenomenology, Physics - Data Analysis, Statistics and Probability}
 }
 @article{DeFavereau2014DELPHESExperiment,
-  title         = {DELPHES 3: A modular framework for fast simulation of a generic collider experiment},
+  title         = {{DELPHES 3: A modular framework for fast simulation of a generic collider experiment}},
   author        = {De Favereau, J. and Delaere, C. and Demin, P. and Giammanco, A. and Lema{\^{i}}tre, V. and Mertens, A. and Selvaggi, M.},
   year          = 2014,
   month         = 2,
@@ -1491,21 +1491,21 @@
   volume        = 2014,
   number        = 2,
   pages         = {1--26},
-  doi           = {10.1007/jhep02(2014)057/metrics},
+  doi           = {10.1007/JHEP02(2014)057/METRICS},
   issn          = 10298479,
   url           = {https://link.springer.com/article/10.1007/JHEP02(2014)057},
   arxivid       = {1307.6346},
   keywords      = {Hadron-Hadron Scattering}
 }
 @article{delaRosa2020DifferentiableAnalysis,
-  title         = {Differentiable Deconvolution for Improved Stroke Perfusion Analysis},
+  title         = {{Differentiable Deconvolution for Improved Stroke Perfusion Analysis}},
   author        = {de la Rosa, Ezequiel and Robben, David and Sima, Diana M. and Kirschke, Jan S. and Menze, Bjoern},
   year          = 2020,
   journal       = {Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)},
   publisher     = {Springer Science and Business Media Deutschland GmbH},
-  volume        = {12267 Lncs},
+  volume        = {12267 LNCS},
   pages         = {593--602},
-  doi           = {10.1007/978-3-030-59728-3{\_}58/figures/3},
+  doi           = {10.1007/978-3-030-59728-3{\_}58/FIGURES/3},
   isbn          = 9783030597276,
   issn          = 16113349,
   url           = {https://link.springer.com/chapter/10.1007/978-3-030-59728-3_58},
@@ -1539,7 +1539,7 @@
   keywords      = {Computer Science - Computer Vision and Pattern Recognition}
 }
 @article{deOliveira2016Jet-imagesEdition,
-  title         = {Jet-images -- deep learning edition},
+  title         = {{Jet-images -- deep learning edition}},
   author        = {de Oliveira, Luke and Kagan, Michael and Mackey, Lester and Nachman, Benjamin and Schwartzman, Ariel},
   year          = 2016,
   month         = 7,
@@ -1548,14 +1548,14 @@
   volume        = 2016,
   number        = 7,
   pages         = {1--32},
-  doi           = {10.1007/jhep07(2016)069/metrics},
+  doi           = {10.1007/JHEP07(2016)069/METRICS},
   issn          = 10298479,
   url           = {https://link.springer.com/article/10.1007/JHEP07(2016)069},
   arxivid       = {1511.05190},
   keywords      = {Hadron-Hadron scattering (experiments), Jet substructure}
 }
 @article{Desai:2025mpy,
-  title         = {Unbinned Inference with Correlated Events},
+  title         = {{Unbinned Inference with Correlated Events}},
   author        = {Desai, Krish and Long, Owen and Nachman, Benjamin},
   year          = 2025,
   month         = 4,
@@ -1568,7 +1568,7 @@
   title         = {Deconvolving Detector Effects for Distribution Moments},
   author        = {Desai, Krish and Nachman, Benjamin and Thaler, Jesse},
   year          = 2022,
-  booktitle     = {Ml4ps},
+  booktitle     = {ML4PS},
   number        = 43,
   maintitle     = {NeurIPS}
 }
@@ -1577,28 +1577,28 @@
   author        = {Desai, Krish and Nachman, Benjamin and Thaler, Jesse},
   year          = 2024,
   journal       = {Physical Review D},
-  publisher     = {Aps},
+  publisher     = {APS},
   volume        = 110,
   number        = 11,
   pages         = 116013
 }
 @article{DevNairDevelopmentData,
-  title         = {Development of a Deep Neural Network Double b-tagger for Boosted Topologies using CMS Open Data},
+  title         = {{Development of a Deep Neural Network Double b-tagger for Boosted Topologies using CMS Open Data}},
   author        = {Dev Nair, by and Rani Komaragiri IISc Bangalore Abhishek Majhi, Jyothsna}
 }
 @article{DHoker1984DecouplingTheory,
-  title         = {Decoupling a fermion in the standard electro-weak theory},
+  title         = {{Decoupling a fermion in the standard electro-weak theory}},
   author        = {D'Hoker, Eric and Farhi, Edward},
   year          = 1984,
   journal       = {Nuclear Physics, Section B},
   volume        = 248,
   number        = 1,
-  doi           = {10.1016/0550-3213(84)90587-x},
+  doi           = {10.1016/0550-3213(84)90587-X},
   issn          = {05503213}
 }
 @article{di_sipio_dijetgan_2019,
   title         = {{DijetGAN}: a {Generative}-{Adversarial} {Network} approach for the simulation of {QCD} dijet events at the {LHC}},
-  shorttitle    = {DijetGAN},
+  shorttitle    = {{DijetGAN}},
   author        = {Di Sipio, Riccardo and Giannelli, Michele Faucci and Haghighat, Sana Ketabchi and Palazzo, Serena},
   year          = 2019,
   month         = aug,
@@ -1606,7 +1606,7 @@
   volume        = 2019,
   number        = 8,
   pages         = 110,
-  doi           = {10.1007/jhep08(2019)110},
+  doi           = {10.1007/JHEP08(2019)110},
   issn          = {1029-8479},
   url           = {https://doi.org/10.1007/JHEP08(2019)110},
   urldate       = {2025-07-17},
@@ -1615,7 +1615,7 @@
   keywords      = {Artificial Intelligence, Bayesian Network, Hadron-Hadron scattering (experiments), Jets, Machine Learning, Particle Physics, Particle and resonance production, Probabilistic data networks, QCD, Theoretical Particle Physics}
 }
 @article{DiMattia2019ADetection,
-  title         = {A Survey on GANs for Anomaly Detection},
+  title         = {{A Survey on GANs for Anomaly Detection}},
   author        = {Di Mattia, Federico and Galeone, Paolo and De Simoni, Michele and Ghelfi, Emanuele},
   year          = 2019,
   month         = 6,
@@ -1623,10 +1623,10 @@
   arxivid       = {1906.11632}
 }
 @article{DiMeglio2017SubmitterResearch,
-  title         = {submitter : CERN openlab white paper on future ICT challenges in scientific research},
+  title         = {{submitter : CERN openlab white paper on future ICT challenges in scientific research}},
   author        = {Di Meglio, Alberto and Girone, Maria and Rademakers, Fons and Purcell, Andrew},
   year          = 2017,
-  doi           = {10.5281/zenodo.998694},
+  doi           = {10.5281/ZENODO.998694},
   url           = {https://cds.cern.ch/record/2301895},
   keywords      = {CERN Document Server, WebSearch}
 }
@@ -1645,7 +1645,7 @@
 }
 @misc{dinh_nice_2015,
   title         = {{NICE}: {Non}-linear {Independent} {Components} {Estimation}},
-  shorttitle    = {Nice},
+  shorttitle    = {{NICE}},
   author        = {Dinh, Laurent and Krueger, David and Bengio, Yoshua},
   year          = 2015,
   month         = apr,
@@ -1683,7 +1683,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/T67DSM9G/quantum-chromodynamics-9780198505723.html}
 }
 @article{Dorigo2020DealingReview,
-  title         = {Dealing with Nuisance Parameters using Machine Learning in High Energy Physics: a Review},
+  title         = {{Dealing with Nuisance Parameters using Machine Learning in High Energy Physics: a Review}},
   author        = {Dorigo, Tommaso and de Castro, Pablo},
   year          = 2020,
   month         = 7,
@@ -1719,7 +1719,7 @@
   volume        = 112,
   number        = 1,
   pages         = {115--132},
-  doi           = {10.1016/s0378-3758(02)00327-0},
+  doi           = {10.1016/S0378-3758(02)00327-0},
   issn          = {0378-3758},
   url           = {https://www.sciencedirect.com/science/article/pii/S0378375802003270},
   urldate       = {2025-07-14},
@@ -1735,7 +1735,7 @@
   address       = {Cambridge},
   series        = {Camb. {{Monogr}}. {{Part}}. {{Phys}}. {{Nucl}}. {{Phys}}. {{Cosmol}}.},
   number        = 8,
-  doi           = {10.1017/cbo9780511628788},
+  doi           = {10.1017/CBO9780511628788},
   isbn          = {978-0-521-54589-1},
   urldate       = {2025-07-18},
   abstract      = {One of the triumphs of modern particle physics has been the extent to which Quantum Chromodynamics (QCD) has successfully accounted for the strong interaction processes observed at high-energy particle colliders, for example the production of heavy quarks and jets of particles, and the short-distance parton structure of the proton. This book gives a detailed overview of collider physics with special emphasis on the study of QCD. After a general description of the QCD Lagrangian, and the properties of asymptotic freedom and colour confinement which derive from it, the most important applications at high-energy colliders are described in detail. These include the production of jets, heavy quarks, electroweak gauge bosons and Higgs bosons. The various methods of measuring the strong coupling constant are summarised. Many of the theoretical results are calculated from first principles, and the book will be both a textbook and a valuable source of reference material for all particle physicists.},
@@ -1751,7 +1751,7 @@
   volume        = 49,
   number        = 7,
   pages         = {1858--1860},
-  doi           = {10.1109/tit.2003.813506},
+  doi           = {10.1109/TIT.2003.813506},
   issn          = {1557-9654},
   url           = {https://ieeexplore.ieee.org/document/1207388},
   urldate       = {2025-07-17},
@@ -1759,7 +1759,7 @@
   keywords      = {Adaptive estimation, Algorithm design and analysis, Bayesian methods, Convergence, Gaussian noise, Iterative algorithms, Probability distribution, Wavelet analysis, White noise, Writing}
 }
 @article{Engl2020RegularizationProblems,
-  title         = {Regularization of Inverse Problems},
+  title         = {{Regularization of Inverse Problems}},
   author        = {Engl, Heinz W. and Ramlau, Ronny},
   year          = 2020,
   month         = 1,
@@ -1819,7 +1819,7 @@
   url           = {https://www.tandfonline.com/doi/abs/10.1080/14786440508637080}
 }
 @article{Fajtl2020LatentAutoencoder,
-  title         = {Latent Bernoulli Autoencoder},
+  title         = {{Latent Bernoulli Autoencoder}},
   author        = {Fajtl, Jiri and Argyriou, Vasileios and Monekosso, Dorothy and Remagnino, Paolo},
   year          = 2020,
   url           = {https://github.com/ok1zjf/lbae}
@@ -1891,18 +1891,18 @@
   author        = {Fish, D. A. and Brinicombe, A. M. and Pike, E. R. and Walker, J. G.},
   year          = 1995,
   month         = jan,
-  journal       = {Josa A},
+  journal       = {JOSA A},
   volume        = 12,
   number        = 1,
   pages         = {58--65},
-  doi           = {10.1364/josaa.12.000058},
+  doi           = {10.1364/JOSAA.12.000058},
   issn          = {1520-8532},
   url           = {https://opg.optica.org/josaa/abstract.cfm?uri=josaa-12-1-58},
   urldate       = {2025-07-13},
   copyright     = {\textcopyright{} 1995 Optical Society of America},
   note          = {Publisher: Optica Publishing Group},
   abstract      = {A blind deconvolution algorithm based on the Richardson–Lucy deconvolution algorithm is presented. Its performance in the presence of noise is found to be superior to that of other blind deconvolution algorithms. Results are presented and compared with results obtained from implementation of a Weiner filter blind deconvolution algorithm. The algorithm is developed further to incorporate functional forms of the point-spread function with unknown parameters. In the presence of noise the point-spread function can be evaluated with 1.0\% error, and the object can be reconstructed with a quality near that of the deconvolution process with a known point-spread function.},
-  language      = {En},
+  language      = {EN},
   keywords      = {Deconvolution, Optical systems, Phase retrieval, Random number generation, Space telescopes, Spherical aberration}
 }
 @article{fm,
@@ -1923,7 +1923,7 @@
   volume        = 27,
   number        = {none},
   pages         = {365--390},
-  doi           = {10.1007/bf02421317},
+  doi           = {10.1007/BF02421317},
   issn          = {0001-5962, 1871-2509},
   url           = {https://projecteuclid.org/journals/acta-mathematica/volume-27/issue-none/Sur-une-classe-d%c3%a9quations-fonctionnelles/10.1007/BF02421317.full},
   urldate       = {2025-07-13},
@@ -1931,11 +1931,11 @@
   abstract      = {Acta Mathematica}
 }
 @misc{FreiburgHEP,
-  title         = {Freiburg 2011 Statistics for HEP},
+  title         = {{Freiburg 2011 Statistics for HEP}},
   url           = {https://www.pp.rhul.ac.uk/~cowan/stat_freiburg.html}
 }
 @article{from_new_2020,
-  title         = {{Some} {New} {Bounds} {And} {Approximations} {On} {Tail} {Probabilities} {Of} {The} {Poisson} {And} {Other} {Discrete} {Distributions}},
+  title         = {{SOME} {NEW} {BOUNDS} {AND} {APPROXIMATIONS} {ON} {TAIL} {PROBABILITIES} {OF} {THE} {POISSON} {AND} {OTHER} {DISCRETE} {DISTRIBUTIONS}},
   author        = {From, Steven G. and Swift, Andrew W.},
   year          = 2020,
   month         = jan,
@@ -1943,7 +1943,7 @@
   volume        = 34,
   number        = 1,
   pages         = {53--71},
-  doi           = {10.1017/s0269964818000347},
+  doi           = {10.1017/S0269964818000347},
   issn          = {0269-9648, 1469-8951},
   url           = {https://www.cambridge.org/core/journals/probability-in-the-engineering-and-informational-sciences/article/abs/some-new-bounds-and-approximations-on-tail-probabilities-of-the-poisson-and-other-discrete-distributions/5D150AD3C15A0F8219340C7437513C3D?utm_source=chatgpt.com},
   urldate       = {2025-07-13},
@@ -1958,14 +1958,14 @@
   month         = jun,
   booktitle     = {International {Symposium} {onInformation} {Theory}, 2004. {ISIT} 2004. {Proceedings}.},
   pages         = {31--},
-  doi           = {10.1109/isit.2004.1365067},
+  doi           = {10.1109/ISIT.2004.1365067},
   url           = {https://ieeexplore.ieee.org/document/1365067},
   urldate       = {2025-07-17},
   abstract      = {This paper describes the Jensen-Shannon divergence (JSD) and Hilbert space embedding. With natural definitions making these considerations precise, one finds that the general Jensen-Shannon divergence related to the mixture is the minimum redundancy, which can be achieved by the observer. The set of distributions with the metric /spl radic/JSD can even be embedded isometrically into Hilbert space and the embedding can be identified.},
   keywords      = {Concrete, Convergence, Councils, Entropy, Hilbert space, Kernel, Mathematics, Probability distribution, Spirals}
 }
 @article{Gagunashvili2024DataOptimization,
-  title         = {Data Unfolding with Mean Integrated Square Error Optimization},
+  title         = {{Data Unfolding with Mean Integrated Square Error Optimization}},
   author        = {Gagunashvili, Nikolay D},
   year          = 2024,
   arxivid       = {2402.12990v3},
@@ -2052,7 +2052,7 @@
   keywords      = {60F05, 60G51, 60G57, 60H05, 60H07, Malliavin calculus, Multi-dimensional normal approximations, Ornstein-Uhlenbeck processes, Poisson measures, Probabilistic Interpolations, Stein's method, central limit theorems}
 }
 @article{Girosi1995RegularizationArchitectures,
-  title         = {Regularization Theory and Neural Networks Architectures},
+  title         = {{Regularization Theory and Neural Networks Architectures}},
   author        = {Girosi, Federico and Jones, Michael and Poggio, Tomaso},
   year          = 1995,
   month         = 3,
@@ -2061,12 +2061,12 @@
   volume        = 7,
   number        = 2,
   pages         = {219--269},
-  doi           = {10.1162/neco.1995.7.2.219},
+  doi           = {10.1162/NECO.1995.7.2.219},
   issn          = {0899-7667},
   url           = {https://dx.doi.org/10.1162/neco.1995.7.2.219}
 }
 @article{Glashow:1961tr,
-  title         = {Partial Symmetries of Weak Interactions},
+  title         = {{Partial Symmetries of Weak Interactions}},
   author        = {Glashow, S. L.},
   year          = 1961,
   journal       = {Nucl. Phys.},
@@ -2079,22 +2079,22 @@
   shorttitle    = {Operator Product Expansion on the Lattice},
   author        = {G{\"o}ckeler, M. and Horsley, R. and Perlt, H. and Rakow, P. E. L. and Schierholz, G. and Schiller, A.},
   year          = 2006,
-  volume        = {Lat2006},
+  volume        = {LAT2006},
   pages         = 119,
   doi           = {10.22323/1.032.0119},
   urldate       = {2025-07-18},
   eprint        = {hep-lat/0610064},
   abstract      = {We present first results for Wilson coefficients of operators up to first order in the covariant derivatives for the case of Wilson fermions. They are derived from the off-shell Compton scattering amplitude \${\textbackslash}mathcal\{W\}\_\{{\textbackslash}mu{\textbackslash}nu\}(a,p,q)\$ of massless quarks with momentum \$p\$. The Wilson coefficients are classified according to the transformation of the corresponding operators under the hypercubic group H(4). We give selected examples for a special choice of the momentum transfer \$q\$. All Wilson coefficients are given in closed analytic form and in an expansion in powers of \$a\$ up to first corrections.},
   archiveprefix = {arXiv},
-  collaboration = {Qcdsf},
+  collaboration = {QCDSF},
   keywords      = {High Energy Physics - Lattice},
   annotation    = {5 citations (INSPIRE 2025/7/18)\\ 0 citations w/o self (INSPIRE 2025/7/18)\\ Citations: 4 (SemanticScholar) [2025-07-18]},
   file          = {/Users/t-krishdesai/Zotero/storage/X8Y6G685/Göckeler et al. - 2006 - Operator product expansion on the lattice analytic Wilson coefficients.pdf;/Users/t-krishdesai/Zotero/storage/L5GUJ9Q9/0610064.html}
 }
 @article{GongAnTagging,
-  title         = {An Efficient Lorentz Equivariant Graph Neural Network for Jet Tagging},
+  title         = {{An Efficient Lorentz Equivariant Graph Neural Network for Jet Tagging}},
   author        = {Gong, Shiqi and Meng, Qi and Zhang, Jue and Qu, Huilin and Li, Congqiao and Qian, Sitian and Du, Weitao and Ma, Zhi-Ming and Liu, Yan},
-  doi           = {10.1007/jhep07(2022)030},
+  doi           = {10.1007/JHEP07(2022)030},
   url           = {https://github.com/sdogsq/LorentzNet-release.},
   arxivid       = {2201.08187v6}
 }
@@ -2113,7 +2113,7 @@
   keywords      = {Computer Science - Machine Learning}
 }
 @article{Goodfellow2014GenerativeNetworks,
-  title         = {Generative Adversarial Networks},
+  title         = {{Generative Adversarial Networks}},
   author        = {Goodfellow, Ian J. and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
   year          = 2014,
   month         = 6,
@@ -2140,7 +2140,7 @@
   keywords      = {Computer Science - Machine Learning, Mathematics - Combinatorics, Mathematics - Statistics Theory, Statistics - Machine Learning, Statistics - Statistics Theory}
 }
 @article{Green2020Gravitational-waveFlows,
-  title         = {Gravitational-wave parameter estimation with autoregressive neural network flows},
+  title         = {{Gravitational-wave parameter estimation with autoregressive neural network flows}},
   author        = {Green, Stephen R. and Simpson, Christine and Gair, Jonathan},
   year          = 2020,
   month         = 11,
@@ -2148,7 +2148,7 @@
   publisher     = {American Physical Society},
   volume        = 102,
   number        = 10,
-  doi           = {10.1103/physrevd.102.104057},
+  doi           = {10.1103/PHYSREVD.102.104057},
   issn          = 24700029,
   arxivid       = {2002.07656},
   keywords      = {doi:10.1103/PhysRevD.102.104057 url:https://doi.org/10.1103/PhysRevD.102.104057}
@@ -2199,7 +2199,7 @@
   keywords      = {Computer Science - Machine Learning, Statistics - Machine Learning}
 }
 @article{Haake2019Machine-learning-basedCollisions,
-  title         = {Machine-learning-based jet momentum reconstruction in heavy-ion collisions},
+  title         = {{Machine-learning-based jet momentum reconstruction in heavy-ion collisions}},
   author        = {Haake, R\"{u}diger and Loizides, Constantin},
   year          = 2019,
   month         = 6,
@@ -2208,13 +2208,13 @@
   volume        = 99,
   number        = 6,
   pages         = {064904},
-  doi           = {10.1103/physrevc.99.064904/figures/10/thumbnail},
+  doi           = {10.1103/PHYSREVC.99.064904/FIGURES/10/THUMBNAIL},
   issn          = 24699993,
   url           = {https://journals.aps.org/prc/abstract/10.1103/PhysRevC.99.064904},
   arxivid       = {1810.06324}
 }
 @article{Handley2019Maximum-EntropyDistribution,
-  title         = {Maximum-Entropy Priors with Derived Parameters in a Specified Distribution},
+  title         = {{Maximum-Entropy Priors with Derived Parameters in a Specified Distribution}},
   author        = {Handley, Will and Millea, Marius},
   year          = 2019,
   month         = 3,
@@ -2223,7 +2223,7 @@
   volume        = 21,
   number        = 3,
   pages         = 272,
-  doi           = {10.3390/e21030272},
+  doi           = {10.3390/E21030272},
   issn          = {1099-4300},
   url           = {https://www.mdpi.com/1099-4300/21/3/272/htm https://www.mdpi.com/1099-4300/21/3/272},
   arxivid       = {1804.08143},
@@ -2320,7 +2320,7 @@
   issn          = {0031-9228}
 }
 @article{Holmberg2023JetPipeline,
-  title         = {Jet energy calibration with deep learning as a Kubeflow pipeline},
+  title         = {{Jet energy calibration with deep learning as a Kubeflow pipeline}},
   author        = {Holmberg, Daniel and Golubovic, Dejan and Kirschenmann, Henning},
   year          = 2023,
   month         = 9,
@@ -2350,7 +2350,7 @@
   keywords      = {Back-propagation networks, Feedforward networks, Mapping networks, Network representation capability, Sigma-Pi networks, Squashing functions, Stone-Weierstrass Theorem, Universal approximation}
 }
 @article{Huang2025MachineTechnique,
-  title         = {Machine Learning-Assisted Unfolding for Neutrino Cross-section Measurements with the OmniFold Technique},
+  title         = {{Machine Learning-Assisted Unfolding for Neutrino Cross-section Measurements with the OmniFold Technique}},
   author        = {Huang, Roger G. and Cudd, Andrew and Kawaue, Masaki and Kikawa, Tatsuya and Nachman, Benjamin and Mikuni, Vinicius and Wilkinson, Callum},
   year          = 2025,
   month         = 6,
@@ -2379,7 +2379,7 @@
   journal       = {Phys. Lett. B},
   volume        = 592,
   pages         = {279--288},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @article{jia_sparse_2019,
   title         = {Sparse {Poisson} regression with penalized weighted score function},
@@ -2390,7 +2390,7 @@
   volume        = 13,
   number        = 2,
   pages         = {2898--2920},
-  doi           = {10.1214/19-ejs1580},
+  doi           = {10.1214/19-EJS1580},
   issn          = {1935-7524, 1935-7524},
   url           = {https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-13/issue-2/Sparse-Poisson-regression-with-penalized-weighted-score-function/10.1214/19-EJS1580.full},
   urldate       = {2025-07-14},
@@ -2399,18 +2399,18 @@
   keywords      = {\${\textbackslash}ell \_\{1\}\$ consistency, \${\textbackslash}ell \_\{1\}\$ penalization, Image reconstruction, Moderate deviation, Poisson regression, tuning-free}
 }
 @article{Kaipio2005StatisticalProblems,
-  title         = {Statistical and computational inverse problems},
+  title         = {{Statistical and computational inverse problems}},
   author        = {Kaipio, Jari P. and Somersalo, Erkki},
   year          = 2005,
   journal       = {Applied Mathematical Sciences (Switzerland)},
   publisher     = {Springer},
   volume        = 160,
   pages         = {i-339},
-  doi           = {10.1007/b138659/cover},
-  issn          = {2196968x}
+  doi           = {10.1007/B138659/COVER},
+  issn          = {2196968X}
 }
 @article{Kansal2023EvaluatingPhysics,
-  title         = {Evaluating generative models in high energy physics},
+  title         = {{Evaluating generative models in high energy physics}},
   author        = {Kansal, Raghav and Li, Anni and Duarte, Javier and Chernyavskaya, Nadezda and Pierini, Maurizio and Orzari, Breno and Tomei, Thiago},
   year          = 2023,
   month         = 4,
@@ -2419,20 +2419,20 @@
   volume        = 107,
   number        = 7,
   pages         = {076017},
-  doi           = {10.1103/physrevd.107.076017/figures/10/medium},
+  doi           = {10.1103/PHYSREVD.107.076017/FIGURES/10/MEDIUM},
   issn          = 24700029,
   url           = {https://journals.aps.org/prd/abstract/10.1103/PhysRevD.107.076017},
   keywords      = {doi:10.1103/PhysRevD.107.076017 url:https://doi.org/10.1103/PhysRevD.107.076017}
 }
 @article{Karl2005RegularizationReconstruction,
-  title         = {Regularization in Image Restoration and Reconstruction},
+  title         = {{Regularization in Image Restoration and Reconstruction}},
   author        = {Karl, W. Clem},
   year          = 2005,
   month         = 1,
   journal       = {Handbook of Image and Video Processing, Second Edition},
   publisher     = {Elsevier},
   pages         = {183--202},
-  doi           = {10.1016/b978-012119792-6/50075-9},
+  doi           = {10.1016/B978-012119792-6/50075-9},
   isbn          = 9780121197926
 }
 @misc{karras_analyzing_2020,
@@ -2479,7 +2479,7 @@
   author        = {Ke, Yan and Luise, Ilaria and Buat, Quentin and Piacquadio, Giacinto},
   year          = 2023,
   journal       = {PoS},
-  volume        = {Lhcp2022},
+  volume        = {LHCP2022},
   pages         = 322,
   doi           = {10.22323/1.422.0322},
   keywords      = {ATLAS, BETA, bottom: particle identification, flavor, jet: bottom, jet: transverse momentum, p p: colliding beams, p p: scattering, particle identification: performance, solids, statistical analysis}
@@ -2502,7 +2502,7 @@
   keywords      = {Accelerator Physics, Artificial Intelligence, Experimental Particle Physics, High-Energy Astrophysics, Machine Learning, Particle Physics}
 }
 @article{Kheddar2025ImageSurvey,
-  title         = {Image and Point-cloud Classification for Jet Analysis in High-Energy Physics: A survey},
+  title         = {{Image and Point-cloud Classification for Jet Analysis in High-Energy Physics: A survey}},
   author        = {Kheddar, Hamza and Himeur, Yassine and Amira, Abbes and Soualah, Rachik},
   year          = 2025,
   month         = 2,
@@ -2543,7 +2543,7 @@
   keywords      = {Computer Science - Machine Learning, Statistics - Machine Learning}
 }
 @article{Kingma2013Auto-EncodingBayes,
-  title         = {Auto-Encoding Variational Bayes},
+  title         = {{Auto-Encoding Variational Bayes}},
   author        = {Kingma, Diederik P. and Welling, Max},
   year          = 2013,
   month         = 12,
@@ -2554,7 +2554,7 @@
   arxivid       = {1312.6114}
 }
 @article{Kingma2019AnAutoencoders,
-  title         = {An Introduction to Variational Autoencoders},
+  title         = {{An Introduction to Variational Autoencoders}},
   author        = {Kingma, Diederik P. and Welling, Max},
   year          = 2019,
   month         = 6,
@@ -2569,7 +2569,7 @@
   arxivid       = {1906.02691}
 }
 @article{Knapik2012BayesianPriors,
-  title         = {Bayesian inverse problems with Gaussian priors},
+  title         = {{Bayesian inverse problems with Gaussian priors}},
   author        = {Knapik, B. T. and van der Vaart, A. W. and van Zanten, J. H.},
   year          = 2012,
   month         = 2,
@@ -2577,13 +2577,13 @@
   volume        = 39,
   number        = 5,
   pages         = {2626--2657},
-  doi           = {10.1214/11-aos920},
+  doi           = {10.1214/11-AOS920},
   url           = {http://arxiv.org/abs/1103.2692 http://dx.doi.org/10.1214/11-AOS920},
   arxivid       = {1103.2692v2},
   keywords      = {Credible set, Gaussian prior, Posterior distribution, Rate of contraction, posterior distribution, rate of contraction}
 }
 @article{Knapp2021AdversariallyQuark,
-  title         = {Adversarially Learned Anomaly Detection on CMS Open Data: re-discovering the top quark},
+  title         = {{Adversarially Learned Anomaly Detection on CMS Open Data: re-discovering the top quark}},
   author        = {Knapp, O. and Cerri, O. and Dissertori, G. and Nguyen, T. Q. and Pierini, M. and Vlimant, J. R.},
   year          = 2021,
   month         = 2,
@@ -2592,12 +2592,12 @@
   volume        = 136,
   number        = 2,
   pages         = 236,
-  doi           = {10.1140/epjp/s13360-021-01109-4},
+  doi           = {10.1140/EPJP/S13360-021-01109-4},
   issn          = 21905444,
   arxivid       = {2005.01598}
 }
 @article{Kobyzev2019NormalizingMethods,
-  title         = {Normalizing Flows: An Introduction and Review of Current Methods},
+  title         = {{Normalizing Flows: An Introduction and Review of Current Methods}},
   author        = {Kobyzev, Ivan and Prince, Simon J.D. and Brubaker, Marcus A.},
   year          = 2019,
   month         = 8,
@@ -2641,7 +2641,7 @@
   keywords      = {BETA, CERN LHC Coll, Higgs particle: decay, benchmark, data analysis method, exotic, final state: hadronic, new particle, new physics, phase space}
 }
 @article{Komiske2018DeepDiscrimination,
-  title         = {Deep learning in color: towards automated quark/gluon jet discrimination},
+  title         = {{Deep learning in color: towards automated quark/gluon jet discrimination}},
   author        = {Komiske, Patrick T. and Metodiev, Eric M. and Schwartz, Matthew D.},
   year          = 2018,
   month         = 9,
@@ -2649,13 +2649,13 @@
   publisher     = {Springer Verlag},
   volume        = 2017,
   number        = 1,
-  doi           = {10.1007/jhep01(2017)110},
+  doi           = {10.1007/JHEP01(2017)110},
   url           = {http://arxiv.org/abs/1612.01551 http://dx.doi.org/10.1007/JHEP01(2017)110},
   arxivid       = {1612.01551v3},
   keywords      = {Jets}
 }
 @article{Komiske2018EnergySubstructure,
-  title         = {Energy flow polynomials: A complete linear basis for jet substructure},
+  title         = {{Energy flow polynomials: A complete linear basis for jet substructure}},
   author        = {Komiske, Patrick T. and Metodiev, Eric M. and Thaler, Jesse},
   year          = 2018,
   month         = 4,
@@ -2663,13 +2663,13 @@
   publisher     = {Springer Verlag},
   volume        = 2018,
   number        = 4,
-  doi           = {10.1007/jhep04(2018)013},
+  doi           = {10.1007/JHEP04(2018)013},
   url           = {http://arxiv.org/abs/1712.07124 http://dx.doi.org/10.1007/JHEP04(2018)013},
   arxivid       = {1712.07124v2},
   keywords      = {Jets, QCD Phenomenology}
 }
 @article{Komiske2018PileupPUMML,
-  title         = {Pileup Mitigation with Machine Learning (PUMML)},
+  title         = {{Pileup Mitigation with Machine Learning (PUMML)}},
   author        = {Komiske, Patrick T. and Metodiev, Eric M. and Nachman, Benjamin and Schwartz, Matthew D.},
   year          = 2018,
   month         = 1,
@@ -2677,13 +2677,13 @@
   publisher     = {Springer Verlag},
   volume        = 2017,
   number        = 12,
-  doi           = {10.1007/jhep12(2017)051},
+  doi           = {10.1007/JHEP12(2017)051},
   url           = {http://arxiv.org/abs/1707.08600 http://dx.doi.org/10.1007/JHEP12(2017)051},
   arxivid       = {1707.08600v3},
   keywords      = {Jets}
 }
 @article{Komiske2019EnergyJets,
-  title         = {Energy Flow Networks: Deep Sets for Particle Jets},
+  title         = {{Energy Flow Networks: Deep Sets for Particle Jets}},
   author        = {Komiske, Patrick T. and Metodiev, Eric M. and Thaler, Jesse},
   year          = 2019,
   month         = 1,
@@ -2691,7 +2691,7 @@
   publisher     = {Springer Verlag},
   volume        = 2019,
   number        = 1,
-  doi           = {10.1007/jhep01(2019)121},
+  doi           = {10.1007/JHEP01(2019)121},
   url           = {http://arxiv.org/abs/1810.05165 http://dx.doi.org/10.1007/JHEP01(2019)121},
   arxivid       = {1810.05165v2},
   keywords      = {Jets, QCD Phenomenology}
@@ -2722,7 +2722,7 @@
   volume        = {06},
   number        = 6,
   pages         = {065},
-  doi           = {10.1007/jhep06(2014)065},
+  doi           = {10.1007/JHEP06(2014)065},
   issn          = {1029-8479},
   urldate       = {2025-07-18},
   eprint        = {1404.5172},
@@ -2783,7 +2783,7 @@
   volume        = 11,
   number        = 3,
   pages         = {1671--1710},
-  doi           = {10.1214/17-aoas1053},
+  doi           = {10.1214/17-AOAS1053},
   issn          = {1932-6157, 1941-7330},
   url           = {https://projecteuclid.org/journals/annals-of-applied-statistics/volume-11/issue-3/Shape-constrained-uncertainty-quantification-in-unfolding-steeply-falling-elementary-particle/10.1214/17-AOAS1053.full},
   urldate       = {2025-07-13},
@@ -2801,11 +2801,11 @@
   keywords      = {BETA, Poisson inverse problem, bias-variance trade-off, deconvolution, empirical Bayes, finite-sample coverage, high energy physics, iterative bias-correction, shape-constrained inference, strict bounds confidence intervals, undersmoothing}
 }
 @misc{L.N.VasersteinIssue3Pagesnobr6472/nobr,
-  title         = {L.~N.~Vaserstein, ``Markov Processes over Denumerable Products of Spaces, Describing Large Systems of Automata'', Probl. Peredachi Inf., 1969, Volume~5, Issue~3,Pages~<nobr>64–72</nobr>},
+  title         = {{L.~N.~Vaserstein, ``Markov Processes over Denumerable Products of Spaces, Describing Large Systems of Automata'', Probl. Peredachi Inf., 1969, Volume~5, Issue~3,Pages~<nobr>64–72</nobr>}},
   url           = {https://m.mathnet.ru/php/archive.phtml?wshow=paper&jrnid=ppi&paperid=1811&option_lang=eng}
 }
 @article{Larkoski2014SoftDrop,
-  title         = {Soft drop},
+  title         = {{Soft drop}},
   author        = {Larkoski, Andrew J. and Marzani, Simone and Soyez, Gregory and Thaler, Jesse},
   year          = 2014,
   month         = 5,
@@ -2814,14 +2814,14 @@
   volume        = 2014,
   number        = 5,
   pages         = {1--46},
-  doi           = {10.1007/jhep05(2014)146},
+  doi           = {10.1007/JHEP05(2014)146},
   issn          = {1029-8479},
   url           = {https://link.springer.com/article/10.1007/JHEP05(2014)146},
   arxivid       = {1402.2657},
   keywords      = {Classical and Quantum Gravitation, Elementary Particles, Quantum Field Theories, Quantum Field Theory, Quantum Physics, Relativity Theory, String Theory}
 }
 @article{Larkoski2020JetLearning,
-  title         = {Jet substructure at the Large Hadron Collider: A review of recent advances in theory and machine learning},
+  title         = {{Jet substructure at the Large Hadron Collider: A review of recent advances in theory and machine learning}},
   author        = {Larkoski, Andrew J. and Moult, Ian and Nachman, Benjamin},
   year          = 2020,
   month         = 1,
@@ -2829,7 +2829,7 @@
   publisher     = {North-Holland},
   volume        = 841,
   pages         = {1--63},
-  doi           = {10.1016/j.physrep.2019.11.001},
+  doi           = {10.1016/J.PHYSREP.2019.11.001},
   issn          = {0370-1573},
   arxivid       = {1709.04464}
 }
@@ -2847,7 +2847,7 @@
   keywords      = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning}
 }
 @article{Lee2019Quark-GluonNetworks,
-  title         = {Quark-Gluon Jet Discrimination Using Convolutional Neural Networks},
+  title         = {{Quark-Gluon Jet Discrimination Using Convolutional Neural Networks}},
   author        = {Lee, Jason Sang Hun and Park, Inkyu and Watson, Ian James and Yang, Seungjin},
   year          = 2019,
   month         = 2,
@@ -2856,7 +2856,7 @@
   volume        = 74,
   number        = 3,
   pages         = {219--223},
-  doi           = {10.3938/jkps.74.219/metrics},
+  doi           = {10.3938/JKPS.74.219/METRICS},
   issn          = 19768524,
   url           = {https://link.springer.com/article/10.3938/jkps.74.219},
   arxivid       = {2012.02531},
@@ -2878,11 +2878,11 @@
   keywords      = {Alpha decay, Beta decay, Cherenkov radiation, Cross section, Diffusion, Equivalent dose, Gamma ray, Neutron, Particle Physics, distribution, electron capture, nuclear physics, physics, semiconductor, spectroscopy}
 }
 @article{LHCHiggsCrossSectionWorkingGroup2012HandbookDistributions,
-  title         = {Handbook of LHC Higgs Cross Sections: 2. Differential Distributions},
+  title         = {{Handbook of LHC Higgs Cross Sections: 2. Differential Distributions}},
   author        = {{LHC Higgs Cross Section Working Group} and Dittmaier, S. and Mariotti, C. and Passarino, G. and Tanaka, R. and Alekhin, S. and Alwall, J. and Bagnaschi, E. A. and Banfi, A. and Blumlein, J. and Bolognesi, S. and Chanon, N. and Cheng, T. and Cieri, L. and Cooper-Sarkar, A. M. and Cutajar, M. and Dawson, S. and Davies, G. and De Filippis, N. and Degrassi, G. and Denner, A. and D'Enterria, D. and Diglio, S. and Di Micco, B. and Di Nardo, R. and Ellis, R. K. and Farilla, A. and Farrington, S. and Felcini, M. and Ferrera, G. and Flechl, M. and de Florian, D. and Forte, S. and Ganjour, S. and Garzelli, M. V. and Gascon-Shotkin, S. and Glazov, S. and Goria, S. and Grazzini, M. and Guillet, J. -Ph. and Hackstein, C. and Hamilton, K. and Harlander, R. and Hauru, M. and Heinemeyer, S. and Hoche, S. and Huston, J. and Jackson, C. and Jimenez-Delgado, P. and Jorgensen, M. D. and Kado, M. and Kallweit, S. and Kardos, A. and Kauer, N. and Kim, H. and Kovac, M. and Kramer, M. and Krauss, F. and Kuo, C. -M. and Lehti, S. and Li, Q. and Lorenzo, N. and Maltoni, F. and Mellado, B. and Moch, S. O. and Muck, A. and Muhlleitner, M. and Nadolsky, P. and Nason, P. and Neu, C. and Nikitenko, A. and Oleari, C. and Olsen, J. and Palmer, S. and Paganis, S. and Papadopoulos, C. G. and Petersen, T . C. and Petriello, F. and Petrucci, F. and Piacquadio, G. and Pilon, E. and Potter, C. T. and Price, J. and Puljak, I. and Quayle, W. and Radescu, V. and Rebuzzi, D. and Reina, L. and Rojo, J. and Rosco, D. and Salam, G. P. and Sapronov, A. and Schaarschmidt, J. and Schonherr, M. and Schumacher, M. and Siegert, F. and Slavich, P. and Spira, M. and Stewart, I. W. and Stirling, W. J. and Stockli, F. and Sturm, C. and Tackmann, F. J. and Thorne, R. S. and Tommasini, D. and Torrielli, P. and Tramontano, F. and Trocsanyi, Z. and Ubiali, M. and Uccirati, S. and Acosta, M. Vazquez and Vickey, T. and Vicini, A. and Waalewijn, W. J. and Wackeroth, D. and Warsinsky, M. and Weber, M. and Wiesemann, M. and Weiglein, G. and Yu, J. and Zanderighi, G.},
   year          = 2012,
   month         = 1,
-  doi           = {10.5170/cern-2012-002},
+  doi           = {10.5170/CERN-2012-002},
   url           = {http://arxiv.org/abs/1201.3084 http://dx.doi.org/10.5170/CERN-2012-002},
   arxivid       = {1201.3084}
 }
@@ -2945,7 +2945,7 @@
   language      = {en}
 }
 @article{Maas2013RectifierModels,
-  title         = {Rectifier Nonlinearities Improve Neural Network Acoustic Models},
+  title         = {{Rectifier Nonlinearities Improve Neural Network Acoustic Models}},
   author        = {Maas, Andrew L and Hannun, Awni Y and Ng, Andrew Y},
   year          = 2013
 }
@@ -3067,7 +3067,7 @@
   keywords      = {Computer Science - Machine Learning, High Energy Physics - Experiment, Physics - Data Analysis, Statistics and Probability}
 }
 @article{Mikuni2025MethodTasks,
-  title         = {Method to simultaneously facilitate all jet physics tasks},
+  title         = {{Method to simultaneously facilitate all jet physics tasks}},
   author        = {Mikuni, Vinicius and Nachman, Benjamin},
   year          = 2025,
   month         = 3,
@@ -3075,11 +3075,11 @@
   publisher     = {American Physical Society},
   volume        = 111,
   number        = 5,
-  doi           = {10.1103/physrevd.111.054015},
+  doi           = {10.1103/PHYSREVD.111.054015},
   issn          = 24700029
 }
 @article{Mikuni2025SolvingModels,
-  title         = {Solving key challenges in collider physics with foundation models},
+  title         = {{Solving key challenges in collider physics with foundation models}},
   author        = {Mikuni, Vinicius and Nachman, Benjamin},
   year          = 2025,
   month         = 3,
@@ -3088,7 +3088,7 @@
   volume        = 111,
   number        = 5,
   pages         = {L051504},
-  doi           = {10.1103/physrevd.111.l051504/figures/2/medium},
+  doi           = {10.1103/PHYSREVD.111.L051504/FIGURES/2/MEDIUM},
   issn          = 24700029,
   url           = {https://journals.aps.org/prd/abstract/10.1103/PhysRevD.111.L051504},
   keywords      = {doi:10.1103/PhysRevD.111.L051504 url:https://doi.org/10.1103/PhysRevD.111.L051504}
@@ -3154,7 +3154,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/AQAM7X4V/Moch et al. - 2004 - The Three-Loop Splitting Functions in QCD The Non-Singlet Case.pdf;/Users/t-krishdesai/Zotero/storage/J94AP22H/0403192.html}
 }
 @article{Moodie2022OptimisingNetworks,
-  title         = {Optimising hadronic collider simulations using amplitude neural networks},
+  title         = {{Optimising hadronic collider simulations using amplitude neural networks}},
   author        = {Moodie, Ryan},
   year          = 2022,
   month         = 8,
@@ -3197,7 +3197,7 @@
 }
 @misc{mroueh_mcgan_2017,
   title         = {{McGan}: {Mean} and {Covariance} {Feature} {Matching} {GAN}},
-  shorttitle    = {McGan},
+  shorttitle    = {{McGan}},
   author        = {Mroueh, Youssef and Sercu, Tom and Goel, Vaibhava},
   year          = 2017,
   month         = jun,
@@ -3210,7 +3210,7 @@
   keywords      = {Computer Science - Machine Learning, Statistics - Machine Learning}
 }
 @article{MuheimNuclearLaws,
-  title         = {Nuclear and Particle Physics Particle Physics Particle Physics--Measurements and Theory Measurements and Theory Natural Units Relativistic Kinematics Particle Physics Measurements Lifetimes Resonances and Widths Scattering Cross section Collider and Fixed Target Experiments Conservation Laws},
+  title         = {{Nuclear and Particle Physics Particle Physics Particle Physics--Measurements and Theory Measurements and Theory Natural Units Relativistic Kinematics Particle Physics Measurements Lifetimes Resonances and Widths Scattering Cross section Collider and Fixed Target Experiments Conservation Laws}},
   author        = {Muheim, Franz}
 }
 @article{multhei_iterative_1987,
@@ -3221,10 +3221,10 @@
   volume        = 257,
   pages         = 371,
   doi           = {10.1016/0168-9002(87)90759-5},
-  keywords      = {Beta, Data Analysis Method, Mathematical Methods, Numerical Calculations}
+  keywords      = {BETA, DATA ANALYSIS METHOD, MATHEMATICAL METHODS, NUMERICAL CALCULATIONS}
 }
 @article{Navas2024ReviewPhysics,
-  title         = {Review of particle physics},
+  title         = {{Review of particle physics}},
   author        = {Navas, S. and Amsler, C. and Gutsche, T. and Vogelsang, W. and Hanhart, C. and Mei{\ss}ner, U. G. and Hern{\'{a}}ndez-Rey, J. J. and Pich, A. and Louren{\c{c}}o, C. and Ceccucci, A. and Doser, M. and Ellis, J. and Gurtu, A. and H{\"{o}}cker, A. and Moortgat, F. and Moskovic, M. and Pietropaolo, F. and Roesler, S. and Sauli, F. and Zimmermann, F. and Masoni, A. and Mikhasenko, M. and Mitchell, R. E. and Patrignani, C. and Schwanda, C. and Spanier, S. and Venanzoni, G. and D'Onofrio, M. and Casarosa, G. and Cerri, A. and Lusiani, A. and Signorelli, G. and Yuan, C. Z. and Cao, Z. and Zheng, W. and Agashe, K. and Eno, S. C. and Aielli, G. and Allanach, B. C. and Alvarez-Mu{\~{n}}iz, J. and Antonelli, M. and Aschenauer, E. C. and Asner, D. M. and Assamagan, K. and Littenberg, L. and Marciano, W. J. and Woody, C. L. and Baer, H. and Banerjee, Sw and Barnett, R. M. and Bauer, C. W. and Beringer, J. and Bonventre, R. and Cahn, R. N. and Groom, D. E. and Ligeti, Z. and Lin, C. J. and Lugovsky, K. S. and Pianori, E. and Robinson, D. J. and Seljak, U. and White, M. and Yao, W. M. and Zyla, P. A. and Anderson, J. and Kramer, M. and Schaffner, P. and Baudis, L. and Beatty, J. J. and Bettini, A. and Biebel, O. and Black, K. M. and Cranmer, K. and Blucher, E. and Carena, M. and Rosner, J. L. and Wakely, S. P. and Briere, R. A. and Buckley, A. and Miller, D. J. and Burkert, V. D. and Bychkov, M. A. and Dobrescu, B. A. and Fava, A. and Hsu, L. and O'Connell, H. B. and Pordes, S. and Shiltsev, V. and Van de Water, R. and Zeller, G. P. and Sozzi, M. S. and Chivukula, R. S. and Manohar, A. V. and Sharma, V. and Cowan, G. and Crede, V. and Cremonesi, O. and Nason, P. and D'Ambrosio, G. and Damour, T. and de Florian, D. and de Gouv{\^{e}}a, A. and DeGrand, T. and Demers, S. and Demiragli, Z. and Dreiner, H. K. and Wermes, N. and Eerola, P. and Egede, U. and Skands, P. and Valencia, G. and Eidelman, S. and Ezhela, V. V. and Lugovsky, S. B. and Romaniouk, A. and Ryskin, M. G. and Ryutin, R. A. and Vorobyev, V. and El-Khadra, A. X. and Fields, B. D. and Erler, J. and Tiator, L. and Fetscher, W. and Grab, C. and Freitas, A. and Gallagher, H. and Gershon, T. and Kreps, M. and Gershtein, Y. and Gherghetta, T. and Olive, K. A. and Gonzalez-Garcia, M. C. and Verde, L. and Goodman, M. and Yoshida, R. and Gritsan, A. V. and Grojean, C. and Melzer-Pellmann, I. A. and Ringwald, A. and Sefkow, F. and Gr{\"{u}}newald, M. and Haber, H. E. and Profumo, S. and Hamel, M. and Hashimoto, S. and Makida, Y. and Nakamura, K. and Sakai, Y. and Hayato, Y. and Yokoyama, M. and Hebecker, A. and Heinemeyer, S. and Hikasa, K. and Sumino, Y. and Takahashi, F. and Hisano, J. and Tanabashi, M. and Holder, J. and Huston, J. and Hyodo, T. and Ianni, Al and Kado, M. and Raffelt, G. and Zanderighi, G. and Karliner, M. and Soffer, A. and Katz, U. F. and Nelles, A. and Kenzie, M. and Khoze, V. A. and Krauss, F. and Richardson, P. and Klein, S. R. and Safdi, B. and Smoot, G. F. and Kri{\v{z}}an, P. and Krusche, B. and Kwon, Y. and Lahav, O. and Thorne, R. S. and Lellouch, L. P. and Lesgourgues, J. and Mertsch, P. and Liddle, A. R. and Lippmann, C. and Schwiening, J. and Liss, T. M. and Lister, A. and Scott, D. and Maltoni, F. and Vivarelli, I. and Matthews, J. and Thoma, U. and Milstead, D. and M{\"{o}}nig, K. and Spiering, C. and Molaro, P. and Nagata, N. and Narain, M. and Neubert, M. and Nir, Y. and O'Hare, C. A.J. and Peacock, J. A. and Piepke, A. and Pomarol, A. and Quadt, A. and Rabbertz, K. and Simon, F. and Rademacker, J. and Ramsey-Musolf, M. and Willocq, S. and Rolli, S. and Rosenberg, L. J. and Rybka, G. and Sharpe, S. R. and Sarkar, S. and Schneider, O. and Sch{\"{o}}nert, S. and Scholberg, K. and Walter, C. W. and Schwartz, A. J. and Sj{\"{o}}strand, T. and Skwarnicki, T. and Stahl, A. and Tanaka, J. and Terashi, K. and Ta{\v{s}}evsk{\'{y}}, M. and Terao, K. and Terning, J. and Titov, M. and Tovey, D. R. and Trabelsi, K. and Urquijo, P. and Varelas, N. and Vogel, P. and Walkowiak, W. and Wands, D. and Weinberg, D. H. and Weinberg, E. J. and Wiencke, L. R. and Workman, R. L. and Zhu, R. Y. and Zhu, S. L.},
   year          = 2024,
   month         = 8,
@@ -3233,7 +3233,7 @@
   volume        = 110,
   number        = 3,
   pages         = 51,
-  doi           = {10.1103/physrevd.110.030001},
+  doi           = {10.1103/PHYSREVD.110.030001},
   issn          = 24700029,
   url           = {https://pdg.lbl.gov/2025/reviews/kinematics_and_cross_sections.html}
 }
@@ -3247,7 +3247,7 @@
   volume        = 40,
   number        = 3,
   pages         = {636--666},
-  doi           = {10.1137/s0036144597321909},
+  doi           = {10.1137/S0036144597321909},
   issn          = {0036-1445},
   url           = {https://epubs.siam.org/doi/10.1137/S0036144597321909},
   urldate       = {2025-07-13},
@@ -3258,7 +3258,7 @@
   title         = {Symmetry Discovery with Deep Learning},
   author        = {Desai, Krish and Nachman, Benjamin and Thaler, Jesse},
   year          = 2021,
-  booktitle     = {Ml4ps},
+  booktitle     = {ML4PS},
   number        = 117,
   maintitle     = {NeurIPS}
 }
@@ -3299,7 +3299,7 @@
   language      = {en}
 }
 @misc{noauthor_idl_nodate,
-  title         = {{Idl} {S25} {Oh}},
+  title         = {{IDL} {S25} {OH}},
   url           = {https://calendar.google.com/calendar/embed?src=c_9298642174c7fb124292f17924ff3fafef3d426a12c96f4814fc112a706510c2%40group.calendar.google.com&ctz=America%2FNew_York},
   urldate       = {2025-07-15},
   language      = {en}
@@ -3338,7 +3338,7 @@
   language      = {en}
 }
 @article{Paganini2018CaloGANNetworks,
-  title         = {CaloGAN : Simulating 3D high energy particle showers in multilayer electromagnetic calorimeters with generative adversarial networks},
+  title         = {{CaloGAN : Simulating 3D high energy particle showers in multilayer electromagnetic calorimeters with generative adversarial networks}},
   author        = {Paganini, Michela and De Oliveira, Luke and Nachman, Benjamin},
   year          = 2018,
   month         = 1,
@@ -3346,7 +3346,7 @@
   publisher     = {American Physical Society},
   volume        = 97,
   number        = 1,
-  doi           = {10.1103/physrevd.97.014021},
+  doi           = {10.1103/PHYSREVD.97.014021},
   issn          = 24700029,
   arxivid       = {1712.10321},
   keywords      = {doi:10.1103/PhysRevD.97.014021 url:https://doi.org/10.1103/PhysRevD.97.014021}
@@ -3411,7 +3411,7 @@
   journal       = {Progress of Theoretical and Experimental Physics},
   volume        = 2022,
   number        = 8,
-  pages         = {083c01},
+  pages         = {083C01},
   doi           = {10.1093/ptep/ptac097},
   issn          = {2050-3911},
   url           = {https://doi.org/10.1093/ptep/ptac097},
@@ -3419,7 +3419,7 @@
   abstract      = {The Review summarizes much of particle physics and cosmology. Using data from previous editions, plus 2,143 new measurements from 709 papers, we list, evaluate, and average measured properties of gauge bosons and the recently discovered Higgs boson, leptons, quarks, mesons, and baryons. We summarize searches for hypothetical particles such as supersymmetric particles, heavy bosons, axions, dark photons, etc. Particle properties and search limits are listed in Summary Tables. We give numerous tables, figures, formulae, and reviews of topics such as Higgs Boson Physics, Supersymmetry, Grand Unified Theories, Neutrino Mixing, Dark Energy, Dark Matter, Cosmology, Particle Detectors, Colliders, Probability and Statistics. Among the 120 reviews are many that are new or heavily revised, including a new review on Machine Learning, and one on Spectroscopy of Light Meson Resonances.The Review is divided into two volumes. Volume 1 includes the Summary Tables and 97 review articles. Volume 2 consists of the Particle Listings and contains also 23 reviews that address specific aspects of the data presented in the Listings.The complete Review (both volumes) is published online on the website of the Particle Data Group (pdg.lbl.gov) and in a journal. Volume 1 is available in print as the PDG Book. A Particle Physics Booklet with the Summary Tables and essential tables, figures, and equations from selected review articles is available in print, as a web version optimized for use on phones, and as an Android app.}
 }
 @article{Pearkes2017JetTagging,
-  title         = {Jet Constituents for Deep Neural Network Based Top Quark Tagging},
+  title         = {{Jet Constituents for Deep Neural Network Based Top Quark Tagging}},
   author        = {Pearkes, Jannicke and Fedorko, Wojciech and Lister, Alison and Gay, Colin},
   year          = 2017,
   month         = 4,
@@ -3563,7 +3563,7 @@
   abstract      = {Background: Predicting neutron-induced fission charge yields poses substantial challenges due to the complex, nonequilibrium nature of the fission process and the limited availability of detailed experimental data over a broad range of energies. Reliable modeling is essential for applications in reactor engineering, isotope production, and fundamental nuclear physics.}
 }
 @article{Qu2020ParticleNet:Clouds,
-  title         = {ParticleNet: Jet Tagging via Particle Clouds},
+  title         = {{ParticleNet: Jet Tagging via Particle Clouds}},
   author        = {Qu, Huilin and Gouskos, Loukas},
   year          = 2020,
   month         = 3,
@@ -3576,7 +3576,7 @@
   arxivid       = {1902.08570v3}
 }
 @article{Qu2022ParticleTagging,
-  title         = {Particle Transformer for Jet Tagging},
+  title         = {{Particle Transformer for Jet Tagging}},
   author        = {Qu, Huilin and Li, Congqiao and Qian, Sitian},
   year          = 2022,
   month         = 2,
@@ -3609,7 +3609,7 @@
   keywords      = {Data-driven scientific computing, Machine learning, Nonlinear dynamics, Predictive modeling, Runge–Kutta methods}
 }
 @article{Ramachandran2017SearchingFunctions,
-  title         = {Searching for Activation Functions},
+  title         = {{Searching for Activation Functions}},
   author        = {Ramachandran, Prajit and Zoph, Barret and Le Google Brain, Quoc V},
   year          = 2017,
   month         = 10,
@@ -3619,7 +3619,7 @@
   arxivid       = {1710.05941}
 }
 @article{Rezende2015VariationalFlows,
-  title         = {Variational Inference with Normalizing Flows},
+  title         = {{Variational Inference with Normalizing Flows}},
   author        = {Rezende, Danilo Jimenez and Mohamed, Shakir},
   year          = 2015,
   month         = 5,
@@ -3636,17 +3636,17 @@
   author        = {Richardson, William Hadley},
   year          = 1972,
   month         = jan,
-  journal       = {Josa},
+  journal       = {JOSA},
   volume        = 62,
   number        = 1,
   pages         = {55--59},
-  doi           = {10.1364/josa.62.000055},
+  doi           = {10.1364/JOSA.62.000055},
   url           = {https://opg.optica.org/josa/abstract.cfm?uri=josa-62-1-55},
   urldate       = {2025-07-13},
   copyright     = {\textcopyright{} 1972 Optical Society of America},
   note          = {Publisher: Optica Publishing Group},
   abstract      = {An iterative method of restoring degraded images was developed by treating images, point spread functions, and degraded images as probability-frequency functions and by applying Bayes's theorem. The method functions effectively in the presence of noise and is adaptable to computer operation.},
-  language      = {En},
+  language      = {EN},
   keywords      = {Crosstalk, Deconvolution, Image processing, Image restoration, Imaging techniques, Point spread function}
 }
 @article{rodriguez_entropic_2002,
@@ -3659,7 +3659,7 @@
   number        = 1,
   pages         = {410--432},
   doi           = {10.1063/1.1477063},
-  issn          = {0094-243x},
+  issn          = {0094-243X},
   url           = {https://doi.org/10.1063/1.1477063},
   urldate       = {2025-07-14},
   abstract      = {The ongoing unprecedented exponential explosion of available computing power, has radically transformed the methods of statistical inference. What used to be a small minority of statisticians advocating for the use of priors and a strict adherence to bayes theorem, it is now becoming the norm across disciplines. The evolutionary direction is now clear. The trend is towards more realistic, flexible and complex likelihoods characterized by an ever increasing number of parameters. This makes the old question of: What should the prior be? to acquire a new central importance in the modern bayesian theory of inference. Entropic priors provide one answer to the problem of prior selection. The general definition of an entropic prior has existed since 1988 [1], but it was not until 1998 [2] that it was found that they provide a new notion of complete ignorance. This paper re-introduces the family of entropic priors as minimizers of mutual information between the data and the parameters, as in [2], but with a small change and a correction. The general formalism is then applied to two large classes of models: Discrete probabilistic networks and univariate finite mixtures of gaussians. It is also shown how to perform inference by efficiently sampling the corresponding posterior distributions.}
@@ -3688,7 +3688,7 @@
   month         = jan,
   booktitle     = {Sixth {International} {Conference} on {Computer} {Vision}},
   pages         = {59--66},
-  doi           = {10.1109/iccv.1998.710701},
+  doi           = {10.1109/ICCV.1998.710701},
   url           = {https://ieeexplore.ieee.org/document/710701},
   urldate       = {2025-07-14},
   abstract      = {We introduce a new distance between two distributions that we call the Earth Mover's Distance (EMD), which reflects the minimal amount of work that must be performed to transform one distribution into the other by moving "distribution mass" around. This is a special case of the transportation problem from linear optimization, for which efficient algorithms are available. The EMD also allows for partial matching. When used to compare distributions that have the same overall mass, the EMD is a true metric, and has easy-to-compute lower bounds. In this paper we focus on applications to image databases, especially color and texture. We use the EMD to exhibit the structure of color-distribution and texture spaces by means of Multi-Dimensional Scaling displays. We also propose a novel approach to the problem of navigating through a collection of color images, which leads to a new paradigm for image database search.},
@@ -3720,7 +3720,7 @@
   keywords      = {High Energy Physics - Experiment, High Energy Physics - Phenomenology}
 }
 @article{Salam:1980jd,
-  title         = {Gauge Unification of Fundamental Forces},
+  title         = {{Gauge Unification of Fundamental Forces}},
   author        = {Salam, Abdus},
   year          = 1980,
   journal       = {Rev. Mod. Phys.},
@@ -3728,7 +3728,7 @@
   pages         = {525--538},
   doi           = {10.1103/RevModPhys.52.525},
   editor        = {Ali, A. and Isham, C. and Kibble, T. and Riazuddin},
-  reportnumber  = {Ic-80-28}
+  reportnumber  = {IC-80-28}
 }
 @article{salamElementsQCDHadron2011,
   title         = {Elements of {{QCD}} for Hadron Colliders},
@@ -3757,7 +3757,7 @@
   keywords      = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Computer Science - Neural and Evolutionary Computing}
 }
 @article{Santos2022AvoidingNetworks,
-  title         = {Avoiding Overfitting: A Survey on Regularization Methods for Convolutional Neural Networks},
+  title         = {{Avoiding Overfitting: A Survey on Regularization Methods for Convolutional Neural Networks}},
   author        = {Santos, Claudio Filipi Gon\c{c}alves dos and Papa, Jo\~{a}o Paulo},
   year          = 2022,
   month         = 1,
@@ -3774,7 +3774,7 @@
   title         = {{Measurement of the Triple-Differential Cross-Section for the Production of Multijet Events using 139 fb{\^{}}{\{}-1{\}} of Proton-Proton Collision Data at {\textbackslash}sqrt{\{}s{\}} = 13 TeV with the ATLAS Detector to Disentangle Quarks and Gluons at the Large Hadron Collider}},
   author        = {Sauer, Christof},
   year          = 2023,
-  doi           = {10.11588/heidok.00033941},
+  doi           = {10.11588/HEIDOK.00033941},
   keywords      = {530, 530 Physics, ddc}
 }
 @article{schmitt_data_2017,
@@ -3791,18 +3791,18 @@
 }
 @article{schmitt_tunfold_2012,
   title         = {{TUnfold}: an algorithm for correcting migration effects in high energy physics},
-  shorttitle    = {TUnfold},
+  shorttitle    = {{TUnfold}},
   author        = {Schmitt, Stefan},
   year          = 2012,
-  journal       = {Jinst},
+  journal       = {JINST},
   volume        = 7,
   pages         = {T10003},
-  doi           = {10.1088/1748-0221/7/10/t10003},
+  doi           = {10.1088/1748-0221/7/10/T10003},
   note          = {\_eprint: 1205.6201},
   keywords      = {BETA, background, numerical methods, regularization, statistical}
 }
 @article{Schmitt2017DataPhysics,
-  title         = {Data Unfolding Methods in High Energy Physics},
+  title         = {{Data Unfolding Methods in High Energy Physics}},
   author        = {Schmitt, Stefan},
   year          = 2017,
   month         = 3,
@@ -3810,8 +3810,8 @@
   publisher     = {EDP Sciences},
   volume        = 137,
   pages         = 11008,
-  doi           = {10.1051/epjconf/201713711008},
-  issn          = {2100-014x},
+  doi           = {10.1051/EPJCONF/201713711008},
+  issn          = {2100-014X},
   url           = {https://www.epj-conferences.org/articles/epjconf/abs/2017/06/epjconf_conf2017_11008/epjconf_conf2017_11008.html},
   arxivid       = {1611.01927},
   keywords      = {EPJ, The European Physical Journal, astronomy, conference, physics, proceedings}
@@ -3824,7 +3824,7 @@
   volume        = 423,
   number        = 2,
   pages         = {439--445},
-  doi           = {10.1016/s0168-9002(98)01316-3},
+  doi           = {10.1016/S0168-9002(98)01316-3},
   issn          = {0168-9002},
   urldate       = {2025-07-18},
   abstract      = {We present an original implementation of a very elegant method to solve Q 2 evolution equations of perturbative QCD at NLO: the Dokshitzer--Gribov--Lipatov--Altarelli--Parisi (DGLAP) equations. Based on a seminal idea of Furmanski and Petronzio, our numerical treatment consists in expanding parton distributions and splitting functions on Laguerre polynomials, which reduces DGLAP integro-differential equations to a set of ordinary differential equations defined by recurrence. Then, we apply our evolution method to determine the gluon content of the Pomeron by realizing QCD fits on diffractive structure function.},
@@ -3832,7 +3832,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/EYQ9VT7K/Schoeffel - 1999 - An elegant and fast method to solve QCD evolution equations. Application to the determination of the.pdf;/Users/t-krishdesai/Zotero/storage/JX32SVBU/S0168900298013163.html}
 }
 @article{Segura2024APhysics,
-  title         = {A Practical Guide to Statistical Techniques in Particle Physics},
+  title         = {{A Practical Guide to Statistical Techniques in Particle Physics}},
   author        = {Segura, Alejandro and Parra, Angie Catalina},
   year          = 2024,
   month         = 11,
@@ -3865,7 +3865,7 @@
   volume        = 64,
   number        = 4,
   pages         = {1373--1384},
-  doi           = {10.1109/tap.2016.2529641},
+  doi           = {10.1109/TAP.2016.2529641},
   issn          = {1558-2221},
   url           = {https://ieeexplore.ieee.org/document/7406678},
   urldate       = {2025-07-15},
@@ -3888,8 +3888,8 @@
   volume        = 1,
   number        = 2,
   pages         = {113--122},
-  doi           = {10.1109/tmi.1982.4307558},
-  issn          = {1558-254x},
+  doi           = {10.1109/TMI.1982.4307558},
+  issn          = {1558-254X},
   url           = {https://ieeexplore.ieee.org/document/4307558},
   urldate       = {2025-07-13},
   abstract      = {Previous models for emission tomography (ET) do not distinguish the physics of ET from that of transmission tomography. We give a more accurate general mathematical model for ET where an unknown emission density \ensuremath{\lambda} = \ensuremath{\lambda}(x, y, z) generates, and is to be reconstructed from, the number of counts n\textasteriskcentered(d) in each of D detector units d. Within the model, we give an algorithm for determining an estimate \ensuremath{\lambda} of \ensuremath{\lambda} which maximizes the probability p(n\textasteriskcentered{\textbar}\ensuremath{\lambda}) of observing the actual detector count data n\textasteriskcentered over all possible densities \ensuremath{\lambda}. Let independent Poisson variables n(b) with unknown means \ensuremath{\lambda}(b), b = 1, \cdot{}\cdot{}\cdot{}, B represent the number of unobserved emissions in each of B boxes (pixels) partitioning an object containing an emitter. Suppose each emission in box b is detected in detector unit d with probability p(b, d), d = 1, \cdot{}\cdot{}\cdot{}, D with p(b, d) a one-step transition matrix, assumed known. We observe the total number n\textasteriskcentered = n\textasteriskcentered(d) of emissions in each detector unit d and want to estimate the unknown \ensuremath{\lambda} = \ensuremath{\lambda}(b), b = 1, \cdot{}\cdot{}\cdot{}, B. For each \ensuremath{\lambda}, the observed data n\textasteriskcentered has probability or likelihood p(n\textasteriskcentered{\textbar}\ensuremath{\lambda}). The EM algorithm of mathematical statistics starts with an initial estimate \ensuremath{\lambda}0 and gives the following simple iterative procedure for obtaining a new estimate \ensuremath{\lambda}new, from an old estimate \ensuremath{\lambda}old, to obtain \ensuremath{\Sigma}k, k = 1, 2, \cdot{}\cdot{}\cdot{}, \ensuremath{\lambda}new(b)= \ensuremath{\lambda}old(b) \ensuremath{\lambda}Dd=1 n\textasteriskcentered(d)p(b,d)/\ensuremath{\Sigma}\ensuremath{\lambda}old(b\ensuremath{\Sigma})p(b\ensuremath{\lambda},d),b=1,\cdot{}\cdot{}\cdot{}B.},
@@ -3897,7 +3897,7 @@
 }
 @misc{shi_pointrcnn_2019,
   title         = {{PointRCNN}: {3D} {Object} {Proposal} {Generation} and {Detection} from {Point} {Cloud}},
-  shorttitle    = {PointRCNN},
+  shorttitle    = {{PointRCNN}},
   author        = {Shi, Shaoshuai and Wang, Xiaogang and Li, Hongsheng},
   year          = 2019,
   month         = may,
@@ -3910,7 +3910,7 @@
   keywords      = {Computer Science - Computer Vision and Pattern Recognition}
 }
 @article{Shlomi2020GraphPhysics,
-  title         = {Graph Neural Networks in Particle Physics},
+  title         = {{Graph Neural Networks in Particle Physics}},
   author        = {Shlomi, Jonathan and Battaglia, Peter and Vlimant, Jean-Roch},
   year          = 2020,
   month         = 10,
@@ -3924,7 +3924,7 @@
   arxivid       = {2007.13681v2}
 }
 @article{Shmakov2025FullDiffusion,
-  title         = {Full Event Particle-Level Unfolding with Variable-Length Latent Variational Diffusion},
+  title         = {{Full Event Particle-Level Unfolding with Variable-Length Latent Variational Diffusion}},
   author        = {Shmakov, Alexander and Greif, Kevin and Fenton, Michael James and Ghosh, Aishik and Baldi, Pierre and Whiteson, Daniel},
   year          = 2025,
   month         = 1,
@@ -3960,10 +3960,11 @@
   year          = 2020,
   month         = {jun},
   journal       = {Journal of Instrumentation},
+  publisher     = {},
   volume        = 15,
   number        = {06},
   pages         = {P06005},
-  doi           = {10.1088/1748-0221/15/06/p06005},
+  doi           = {10.1088/1748-0221/15/06/P06005},
   url           = {https://dx.doi.org/10.1088/1748-0221/15/06/P06005},
   abstract      = {Machine-learning (ML) techniques are explored to identify   and classify hadronic decays of highly Lorentz-boosted   W/Z/Higgs bosons and top quarks.  Techniques without ML have   also been evaluated and are included for comparison.  The   identification performances of a variety of algorithms are   characterized in simulated events and directly compared with   data. The algorithms are validated using proton-proton collision   data at \surd{}s=13TeV, corresponding to an integrated   luminosity of 35.9 fb1.  Systematic uncertainties are assessed by   comparing the results obtained using simulation and collision data.   The new techniques studied in this paper provide significant   performance improvements over non-ML techniques, reducing the   background rate by up to an order of magnitude at the same signal   efficiency.}
 }
@@ -3997,7 +3998,7 @@
   keywords      = {Nuclear Experiment}
 }
 @article{Spinner2024Lorentz-EquivariantPhysics,
-  title         = {Lorentz-Equivariant Geometric Algebra Transformers for High-Energy Physics},
+  title         = {{Lorentz-Equivariant Geometric Algebra Transformers for High-Energy Physics}},
   author        = {Spinner, Jonas and Bres{\'{o}}, Victor and de Haan, Pim and Plehn, Tilman and Thaler, Jesse and Brehmer, Johann},
   year          = 2024,
   month         = 5,
@@ -4009,7 +4010,7 @@
   arxivid       = {2405.14806}
 }
 @article{StatisticalPhysics,
-  title         = {Statistical Methods in Particle Physics}
+  title         = {{Statistical Methods in Particle Physics}}
 }
 @misc{stephanovitch_optimal_2023,
   title         = {Optimal 1-{Wasserstein} {Distance} for {WGANs}},
@@ -4045,7 +4046,7 @@
   volume        = 45,
   number        = 1,
   pages         = {52--53},
-  doi           = {10.1134/s1063779614010985},
+  doi           = {10.1134/S1063779614010985},
   issn          = {1531-8559},
   urldate       = {2025-07-18},
   abstract      = {We review evolution equations for truncated Mellin moments (TMM) of the parton densities. The main finding of the presented approach is that the nth truncated moment of the parton distribution obeys the DGLAP-like equation, with a rescaled splitting function P{$\prime$}(z) = z n P(z). This approach allows one to restrict the analysis to the experimentally available Bjorken-x region. We present some applications of TMM to study the spin structure functions of the nucleon.},
@@ -4062,7 +4063,7 @@
   journal       = {The Annals of Statistics},
   volume        = 43,
   number        = 4,
-  doi           = {10.1214/14-aos1270},
+  doi           = {10.1214/14-AOS1270},
   issn          = {0090-5364},
   url           = {http://arxiv.org/abs/1310.4489},
   urldate       = {2025-07-14},
@@ -4079,7 +4080,7 @@
   volume        = 12,
   number        = 10,
   pages         = {P10002},
-  doi           = {10.1088/1748-0221/12/10/p10002},
+  doi           = {10.1088/1748-0221/12/10/P10002},
   issn          = {1748-0221},
   url           = {https://dx.doi.org/10.1088/1748-0221/12/10/P10002},
   urldate       = {2025-07-13},
@@ -4087,48 +4088,48 @@
   language      = {en}
 }
 @article{Tang2017DataMethod,
-  title         = {Data Unfolding with Wiener-SVD Method},
+  title         = {{Data Unfolding with Wiener-SVD Method}},
   author        = {Tang, W and Li, X and Qian, X and Wei, H and Zhang, C},
   year          = 2017,
   arxivid       = {1705.03568v2},
   keywords      = {KKKKKKKK: Unfolding, SVD, Wiener filter}
 }
 @article{Teodorescu2008ArtificialPhysics,
-  title         = {Artificial neural networks in high-energy physics},
+  title         = {{Artificial neural networks in high-energy physics}},
   author        = {Teodorescu, Liliana},
   year          = 2008,
-  publisher     = {Cern},
-  doi           = {10.5170/cern-2008-002.13},
+  publisher     = {CERN},
+  doi           = {10.5170/CERN-2008-002.13},
   url           = {https://cds.cern.ch/record/1100521},
   keywords      = {CERN Document Server, WebSearch}
 }
 @article{Terjek2019AdversarialRegularization,
-  title         = {Adversarial Lipschitz Regularization},
+  title         = {{Adversarial Lipschitz Regularization}},
   author        = {Terj{\'{e}}k, D\'{a}vid and {Terj{\'{e}}k} and {D{\'{a}}vid}},
   year          = 2019,
   month         = 1,
   journal       = {arXiv},
   pages         = {arXiv:1907.05681},
-  doi           = {10.48550/arxiv.1907.05681},
+  doi           = {10.48550/ARXIV.1907.05681},
   url           = {https://ui.adsabs.harvard.edu/abs/2019arXiv190705681T/abstract},
   arxivid       = {arXiv:1907.05681},
   keywords      = {Computer Science, Computer Vision and Pattern Recognition, Machine Learning, Statistics}
 }
 @article{TerrenceJ.Sejnowski2018TheIntelligence,
-  title         = {The Deep Learning Revolution: Machine Intelligence Meets Human Intelligence},
-  author        = {Terrence J. Sejnowski},
+  title         = {{The Deep Learning Revolution: Machine Intelligence Meets Human Intelligence}},
+  author        = {{Terrence J. Sejnowski}},
   year          = 2018,
   journal       = {MIT Press},
   isbn          = 9780262038034
 }
 @article{Thais2022GraphChallenges,
-  title         = {Graph Neural Networks in Particle Physics: Implementations, Innovations, and Challenges},
+  title         = {{Graph Neural Networks in Particle Physics: Implementations, Innovations, and Challenges}},
   author        = {Thais, Savannah and Calafiura, Paolo and Chachamis, Grigorios and Dezoort, Gage and Duarte, Javier and Ganguly, Sanmay and Kagan, Michael and Murnane, Daniel and Neubauer, Mark S and Terao, Kazuhiro},
   year          = 2022,
   arxivid       = {2203.12852v2}
 }
 @article{Thaler2011IdentifyingN-subjettiness,
-  title         = {Identifying boosted objects with N-subjettiness},
+  title         = {{Identifying boosted objects with N-subjettiness}},
   author        = {Thaler, Jesse and Van Tilburg, Ken},
   year          = 2011,
   month         = 3,
@@ -4137,14 +4138,14 @@
   volume        = 2011,
   number        = 3,
   pages         = {1--28},
-  doi           = {10.1007/jhep03(2011)015/metrics},
+  doi           = {10.1007/JHEP03(2011)015/METRICS},
   issn          = 10298479,
   url           = {https://link.springer.com/article/10.1007/JHEP03(2011)015},
   arxivid       = {1011.2268},
   keywords      = {Beyond standard model, Hadronic Colliders, Jets}
 }
 @article{Thaler2012MaximizingN-subjettiness,
-  title         = {Maximizing boosted top identification by minimizing N-subjettiness},
+  title         = {{Maximizing boosted top identification by minimizing N-subjettiness}},
   author        = {Thaler, Jesse and Van Tilburg, Ken},
   year          = 2012,
   month         = 2,
@@ -4153,7 +4154,7 @@
   volume        = 2012,
   number        = 2,
   pages         = {1--33},
-  doi           = {10.1007/jhep02(2012)093/metrics},
+  doi           = {10.1007/JHEP02(2012)093/METRICS},
   issn          = 11266708,
   url           = {https://link.springer.com/article/10.1007/JHEP02(2012)093},
   arxivid       = {1108.2701},
@@ -4168,7 +4169,7 @@
   isbn          = {978-1-107-03426-6},
   url           = {http://digitale-objekte.hbz-nrw.de/storage/2013/11/04/file_5/5371837.pdf},
   urldate       = {2025-07-18},
-  note          = {Oclc: 840462909},
+  note          = {OCLC: 840462909},
   abstract      = {"Unique in its coverage of all aspects of modern particle physics, this textbook provides a clear connection between the theory and recent experimental results, including the discovery of the Higgs boson at CERN. It provides a comprehensive and self-contained description of the Standard Model of particle physics suitable for upper-level undergraduate students and graduate students studying experimental particle physics. Physical theory is introduced in a straightforward manner with full mathematical derivations throughout. Fully-worked examples enable students to link the mathematical theory to results from modern particle physics experiments. End-of-chapter exercises, graded by difficulty, provide students with a deeper understanding of the subject. Online resources available at www.cambridge.org/MPP feature password-protected fully-worked solutions to problems for instructors, numerical solutions and hints to the problems for students and PowerPoint slides and JPEGs of figures from the book"-- Provided by publisher},
   language      = {eng},
   keywords      = {Electroweak interactions, Elementarteilchenphysik, Particles (Nuclear physics), Particles (Nuclear physics) Textbooks, Part\'{\i}cules (F\'{\i}sica nuclear), SCIENCE Nuclear Physics, Standard model (Nuclear physics), Textbooks}
@@ -4184,14 +4185,14 @@
   abstract      = {"Unique in its coverage of all aspects of modern particle physics, this textbook provides a clear connection between the theory and recent experimental results, including the discovery of the Higgs boson at CERN. It provides a comprehensive and self-contained description of the Standard Model of particle physics suitable for upper-level undergraduate students and graduate students studying experimental particle physics. Physical theory is introduced in a straightforward manner with full mathematical derivations throughout. Fully-worked examples enable students to link the mathematical theory to results from modern particle physics experiments. End-of-chapter exercises, graded by difficulty, provide students with a deeper understanding of the subject. Online resources available at www.cambridge.org/MPP feature password-protected fully-worked solutions to problems for instructors, numerical solutions and hints to the problems for students and PowerPoint slides and JPEGs of figures from the book"-- Provided by publisher},
   langid        = {english},
   keywords      = {Electroweak interactions,Elementarteilchenphysik,Particles (Nuclear physics),Particles (Nuclear physics) Textbooks,Particules (Fisica nuclear),SCIENCE Nuclear Physics,Standard model (Nuclear physics),Textbooks},
-  annotation    = {Oclc: 840462909}
+  annotation    = {OCLC: 840462909}
 }
 @misc{TruncatedSVDDocumentation,
-  title         = {TruncatedSVD -- scikit-learn 1.7.0 documentation},
+  title         = {{TruncatedSVD -- scikit-learn 1.7.0 documentation}},
   url           = {https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html}
 }
 @article{UCLDeepMind,
-  title         = {UCL x DeepMind}
+  title         = {{UCL x DeepMind}}
 }
 @book{usastandards,
   title         = {The Acoustical Foundations of Music},
@@ -4201,7 +4202,7 @@
   address       = {New York}
 }
 @article{VanStroud2024TransformersPhysics,
-  title         = {Transformers for Charged Particle Track Reconstruction in High Energy Physics},
+  title         = {{Transformers for Charged Particle Track Reconstruction in High Energy Physics}},
   author        = {Van Stroud, Samuel and Duckett, Philippa and Hart, Max and Pond, Nikita and Rettie, S\'{e}bastien and Facini, Gabriel and Scanlon, Tim},
   year          = 2024,
   month         = 11,
@@ -4211,7 +4212,7 @@
 }
 @article{vaslin_gan-ae_2023,
   title         = {{GAN}-{AE}: an anomaly detection algorithm for {New} {Physics} search in {LHC} data},
-  shorttitle    = {{Gan}-{ae}},
+  shorttitle    = {{GAN}-{AE}},
   author        = {Vaslin, Louis and Barra, Vincent and Donini, Julien},
   year          = 2023,
   month         = nov,
@@ -4228,7 +4229,7 @@
   keywords      = {Artificial Intelligence, Experimental Particle Physics, High-Energy Astrophysics, Learning algorithms, Machine Learning, Particle Physics}
 }
 @article{Vaswani2017AttentionNeed,
-  title         = {Attention Is All You Need},
+  title         = {{Attention Is All You Need}},
   author        = {Vaswani, Ashish and Brain, Google and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, \L{}ukasz and Polosukhin, Illia},
   year          = 2017,
   month         = 6,
@@ -4261,7 +4262,7 @@
   booktitle     = {Contributions to {Probability}},
   publisher     = {Academic Press},
   pages         = {207--214},
-  doi           = {10.1016/b978-0-12-274460-0.50023-0},
+  doi           = {10.1016/B978-0-12-274460-0.50023-0},
   isbn          = {978-0-12-274460-0},
   url           = {https://www.sciencedirect.com/science/article/pii/B9780122744600500230},
   urldate       = {2025-07-14},
@@ -4269,7 +4270,7 @@
   editor        = {Gani, J. and Rohatgi, V. K.}
 }
 @article{Vischia2020NewUnfolding,
-  title         = {New approaches to the problem of unfolding},
+  title         = {{New approaches to the problem of unfolding}},
   author        = {Vischia, Pietro},
   year          = 2020
 }
@@ -4279,7 +4280,7 @@
   year          = 2018,
   month         = jan,
   journal       = {PoS},
-  volume        = {Radcor2017},
+  volume        = {RADCOR2017},
   pages         = {046},
   doi           = {10.22323/1.290.0046},
   editor        = {Hoang, Andre and Schneider, Carsten},
@@ -4292,7 +4293,7 @@
   file          = {/Users/t-krishdesai/Zotero/storage/6LTMUXHX/Vogt et al. - 2018 - Four-loop results on anomalous dimensions and splitting functions in QCD.pdf}
 }
 @article{Wang2024InterpretingTagging,
-  title         = {Interpreting Transformers for Jet Tagging},
+  title         = {{Interpreting Transformers for Jet Tagging}},
   author        = {Wang, Aaron and Gandrakota, Abhijith and Ngadiuba, Jennifer and Sahu, Vivekanand and Bhatnagar, Priyansh and Khoda, Elham E and Duarte, Javier},
   year          = 2024,
   month         = 12,
@@ -4324,7 +4325,7 @@
   abstract      = {Any nonrelativistic theory may be rewritten by introducing fictitious elementary particles with arbitrary properties. No physical predictions are affected, provided that the interaction part of the Hamiltonian is correspondingly modified. The fictitious elementary particle provides a good representation of a real composite particle if the modified interaction is sufficiently weakened for perturbation theory to work. It corresponds to a truly elementary particle with infinite bare mass, and hence with �� =0. We show how the latter condition yields a sum rule for the coupling of a composite particle to its constituents as a function of energy. The sum rule can be used to evaluate such coupling constants as that for the proton-electron-hydrogen vertex. The mathematical method used is that developed by Schmidt for the study of the Fredholm equation, and corresponds to the extraction of a single factor from the full Fredholm determinant.}
 }
 @article{Weinberg:1979pi,
-  title         = {Conceptual Foundations of the Unified Theory of Weak and Electromagnetic Interactions},
+  title         = {{Conceptual Foundations of the Unified Theory of Weak and Electromagnetic Interactions}},
   author        = {Weinberg, Steven},
   year          = 1980,
   journal       = {Rev. Mod. Phys.},
@@ -4354,7 +4355,7 @@
   keywords      = {Computer Science - Machine Learning, Physics - Computational Physics, Statistics - Machine Learning}
 }
 @article{Winkler2019LearningFlows,
-  title         = {Learning Likelihoods with Conditional Normalizing Flows},
+  title         = {{Learning Likelihoods with Conditional Normalizing Flows}},
   author        = {Winkler, Christina and Worrall, Daniel and Hoogeboom, Emiel and Welling, Max},
   year          = 2019,
   month         = 11,
@@ -4362,7 +4363,7 @@
   arxivid       = {1912.00042}
 }
 @article{Winterhalder2022TargetingNetworks,
-  title         = {Targeting multi-loop integrals with neural networks},
+  title         = {{Targeting multi-loop integrals with neural networks}},
   author        = {Winterhalder, Ramon and Magerya, Vitaly and Villa, Emilio and Jones, Stephen P. and Kerner, Matthias and Butter, Anja and Heinrich, Gudrun and Plehn, Tilman},
   year          = 2022,
   month         = 4,
@@ -4371,7 +4372,7 @@
   volume        = 12,
   number        = 4,
   pages         = 129,
-  doi           = {10.21468/scipostphys.12.4.129},
+  doi           = {10.21468/SCIPOSTPHYS.12.4.129},
   issn          = 25424653,
   arxivid       = {2112.09145}
 }
@@ -4404,7 +4405,7 @@
   keywords      = {Bayesian inference, Deep generative model, High-dimensionality, Inverse problems, Markov Chain Monte Carlo, Multiscale estimation}
 }
 @article{Xu2023GenerativeFlow,
-  title         = {Generative Machine Learning for Detector Response Modeling with a Conditional Normalizing Flow},
+  title         = {{Generative Machine Learning for Detector Response Modeling with a Conditional Normalizing Flow}},
   author        = {Xu, Allison and Han, Shuo and Ju, Xiangyang and Wang, Haichen},
   year          = 2023,
   month         = 3,
@@ -4413,7 +4414,7 @@
   keywords      = {Conditional Normalizing Flow, Detector simulation, Generative Model, LHC}
 }
 @article{Xu2024LearningTransformer,
-  title         = {Learning Physical Simulation with Message Passing Transformer},
+  title         = {{Learning Physical Simulation with Message Passing Transformer}},
   author        = {Xu, Zeyi and Li, Yifei},
   year          = 2024,
   month         = 6,
@@ -4468,7 +4469,7 @@
   booktitle     = {30th {Rencontres} de {Moriond}: {Euroconferences}: {Clustering} in the {Universe}},
   pages         = {135--142},
   note          = {\_eprint: astro-ph/9505103},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @article{zech_analysis_2016,
   title         = {Analysis of distorted measurements – parameter estimation and unfolding},
@@ -4476,17 +4477,17 @@
   year          = 2016,
   month         = jul,
   note          = {\_eprint: 1607.06910},
-  keywords      = {Beta}
+  keywords      = {BETA}
 }
 @inproceedings{zech_regularization_2011,
   title         = {Regularization and error assignment to unfolded distributions},
   author        = {Zech, Gunter},
   year          = 2011,
-  booktitle     = {{Phystat} 2011},
-  publisher     = {Cern},
+  booktitle     = {{PHYSTAT} 2011},
+  publisher     = {CERN},
   address       = {Geneva},
   pages         = {252--259},
-  doi           = {10.5170/cern-2011-006.252},
+  doi           = {10.5170/CERN-2011-006.252},
   keywords      = {BETA, data analysis method, publishing, regularization, statistical analysis, talk: Geneva 2011/01/17}
 }
 @misc{zeng_solving_2024,
@@ -4516,7 +4517,7 @@
   keywords      = {Computer Science - Machine Learning, Statistics - Machine Learning}
 }
 @article{Zhang2006AIntervals,
-  title         = {A Modification for Bayesian Credible Intervals},
+  title         = {{A Modification for Bayesian Credible Intervals}},
   author        = {Zhang, Tonglin},
   year          = 2006,
   month         = 9,
@@ -4547,7 +4548,7 @@
   title         = {Multidimensional Deconvolution with Profiling},
   author        = {Zhu, Huanbiao and Desai, Krish and Kuusela, Mikael and Mikuni, Vinicius and Nachman, Benjamin and Wasserman, Larry},
   year          = 2024,
-  booktitle     = {Ml4ps},
+  booktitle     = {ML4PS},
   number        = 150,
   doi           = {https://doi.org/10.48550/arXiv.2409.10421},
   maintitle     = {NeurIPS},

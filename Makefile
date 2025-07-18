@@ -7,9 +7,17 @@ MAIN = main
 # Build directory
 BUILDDIR = build
 
+setup-aux-links: | $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)/chapters
+	@for f in $(CHAPTER_FILES); do \
+		ln -sf ../$(BUILDDIR)/$$(basename $$f .tex).aux $$(dirname $$f)/; \
+	done
+
+$(MAIN).pdf: $(ALL_FILES) setup-aux-links | $(BUILDDIR)
+
 # LaTeX compiler and flags
 LATEX = pdflatex
-LATEXFLAGS = -interaction=nonstopmode -output-directory=$(BUILDDIR)
+LATEXFLAGS = -interaction=nonstopmode -aux-directory=$(BUILDDIR) -output-directory=$(BUILDDIR)
 BIBER = biber
 BIBERFLAGS = --output-directory=$(BUILDDIR)
 
@@ -22,7 +30,7 @@ VIEWER = open  # macOS
 TEX_FILES = $(MAIN).tex thesis-preamble.tex abstract.tex acknowledgements.tex
 CHAPTER_FILES = $(wildcard chapters/*.tex)
 APPENDIX_FILES = $(wildcard appendices/*.tex)
-BIB_FILES = references.bib
+BIB_FILES = references.bib zotero.bib My\ Library.bib
 
 # All source files
 ALL_FILES = $(TEX_FILES) $(CHAPTER_FILES) $(APPENDIX_FILES) $(BIB_FILES)
@@ -37,16 +45,23 @@ $(BUILDDIR):
 # Main compilation rule
 $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 	@echo "=== First LaTeX pass ==="
-	$(LATEX) $(LATEXFLAGS) $(MAIN)
+	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Running Biber ==="
-	cd $(BUILDDIR) && $(BIBER) $(MAIN) || true
+	-cd $(BUILDDIR) && $(BIBER) $(MAIN)
 	@echo "=== Second LaTeX pass ==="
-	$(LATEX) $(LATEXFLAGS) $(MAIN)
+	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Third LaTeX pass (for references) ==="
-	$(LATEX) $(LATEXFLAGS) $(MAIN)
-	@echo "=== Moving PDF to root directory ==="
-	@cp $(BUILDDIR)/$(MAIN).pdf .
-	@echo "=== Compilation complete ==="
+	-$(LATEX) $(LATEXFLAGS) $(MAIN)
+	@echo "=== Moving PDF to root directory (if it exists) ==="
+	@if [ -f $(BUILDDIR)/$(MAIN).pdf ]; then \
+		mv $(BUILDDIR)/$(MAIN).pdf .; \
+		echo "PDF moved successfully"; \
+	else \
+		echo "Warning: No PDF was generated"; \
+	fi
+	@echo "=== Moving chapter aux files to build directory ==="
+	@mv chapters/*.aux $(BUILDDIR)/ 2>/dev/null || true
+	@echo "=== Compilation complete (with possible errors) ==="
 
 # Quick compile (no bibliography)
 quick: | $(BUILDDIR)
