@@ -356,8 +356,9 @@ For example, Rutherford scattering experiments revealed the existence of atomic 
     %
     This contamination creates what signal processing engineers call the false positive rate.
     
-    The mathematical relationship between true particle-level distributions and observed detector-level measurements follows the convolution integral
+    The mathematical relationship between true particle level distributions and observed detector level measurements follows the convolution integral
     \[
+        \label{eq:forward-folding}
         p(x) = \int r(x|z)\;p(z)\; \dd z
     \]
     Where \(p(x)\) is the detector level density, \(p(z)\) is the particle level density and \(r(x|z)\) serves as the response kernel, the conditional probability density that maps each possible true configuration \(z\) to the distribution of possible detector measurements \(x\).

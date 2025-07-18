@@ -34,15 +34,6 @@
 \SetTracking{encoding={*}, shape=sc}{40}
 \microtypesetup{protrusion=false}
 
-% ============================================================================
-% MATHEMATICS PACKAGES
-% ============================================================================
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{physics}
-\usepackage{nicefrac}
-\usepackage{mathtools}
 
 % ============================================================================
 % GRAPHICS AND VISUAL ELEMENTS
@@ -107,10 +98,21 @@
 \usepackage{pgffor}
 \usepackage{appendix}
 \usepackage{enumitem} % Better list environments
-\usepackage{siunitx} % SI units
+\usepackage{siunitx}
+\usepackage{xparse}
+\NewCommandCopy\siqty\qty
 \usepackage{comment} % Block comments
 
 % ============================================================================
+% MATHEMATICS PACKAGES
+% ============================================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{physics}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+%============================================================================
 % CUSTOM COLORS
 % ============================================================================
 \definecolor{darkred}{rgb}{1.0,0.1,0.1}

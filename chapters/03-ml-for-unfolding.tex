@@ -921,8 +921,8 @@ We examine three principal categories, generative models, discriminative models,
                 \end{equation}
                 In the unfolding context, the detector--level observables can serve as the conditioning variables, with the flow mapping from a base distribution to the particle--level distribution conditioned on detector measurements~\cite{Vischia2020NewUnfolding, Algren2023FlowReweighting}.
                 %
-                This approach enables explicit modelling of the posterior distribution
-                (p(z | x)) that unfolding aims to estimate, even when the spaces have different dimensions, effectively learning the inverse detector response while accounting for the inherent ambiguities and information loss in the measurement process.
+                This approach enables explicit modelling of the posterior distribution,
+                \(p(z\, |\, x)\), that unfolding aims to estimate, even when the spaces have different dimensions, effectively learning the inverse detector response while accounting for the inherent ambiguities and information loss in the measurement process.
                 %
                 The conditioning mechanism preserves the exact likelihood computation that makes normalising flows so attractive for uncertainty quantification, while providing the flexibility needed to handle realistic experimental scenarios where dimensional consistency cannot be guaranteed.
                 However, the choice of base distribution in normalising flows introduces an implicit prior that can significantly influence the unfolded results.

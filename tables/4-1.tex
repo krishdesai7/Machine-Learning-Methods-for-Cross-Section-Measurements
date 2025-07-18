@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption[Computational cost comparison between FBU and NPU]{Computational cost comparison between FBU and NPU for repeated unfolding tasks. NPU's amortised inference approach provides significant speed-up despite the initial training overhead.}
+\vspace{3mm}
+\label{tab:timing}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Method} & \textbf{Setup cost} & \textbf{Per run} & \textbf{Total (100 runs)} \\
+\hline
+FBU (10k MCMC draws) & -- & 40 sec & $\sim$67 min \\
+NPU (amortised) & 280 sec & $\sim$2 sec & $\sim$5 min \\
+\hline
+\textbf{Speed-up} & \multicolumn{3}{c|}{\textbf{13$\times$ faster}} \\
+\hline
+\end{tabular}
+\end{table}
