@@ -220,26 +220,26 @@
 \setstocksize{11in}{8.5in}
 \settrimmedsize{11in}{8.5in}{*}
 \nouppercaseheads
-\ifarxiv
-  \AtBeginDocument{%
-      \setlength\oddsidemargin   {36.1pt}%
-      \setlength\evensidemargin  {36.1pt}%
-      \setlength\marginparwidth {40pt}%
-    \setlength{\marginparsep}{10pt}%
-    \setlength{\topmargin}{0pt}%
-    \setlength{\headsep}{0.5in}%
-    \setlength{\textheight}{8.1in}%
-    \setlength{\textwidth}{6in}%
-    \def\dsp{\def\baselinestretch{2.0}\large\normalsize}
-    \dsp
-  }
-\else
-    \setlrmarginsandblock{1in}{*}{*}
-      \@tempdima=1in  \advance\@tempdima 25pt \advance\@tempdima\normalbaselineskip
-      \@tempdimb=.75in  \advance\@tempdimb 30pt
+% \ifarxiv
+%   \AtBeginDocument{%
+%       \setlength\oddsidemargin   {36.1pt}%
+%       \setlength\evensidemargin  {36.1pt}%
+%       \setlength\marginparwidth {40pt}%
+%     \setlength{\marginparsep}{10pt}%
+%     \setlength{\topmargin}{0pt}%
+%     \setlength{\headsep}{0.5in}%
+%     \setlength{\textheight}{8.1in}%
+%     \setlength{\textwidth}{6in}%
+%     \def\dsp{\def\baselinestretch{2.0}\large\normalsize}
+%     \dsp
+%   }
+% \else
+    \setlrmarginsandblock{1.75in}{1.5in}{*}
+    \@tempdima=1.5in  \advance\@tempdima 25pt \advance\@tempdima\normalbaselineskip
+    \@tempdimb=1.5in  \advance\@tempdimb 30pt
     \setulmarginsandblock{\@tempdima}{\@tempdimb}{*}
     \AtBeginDocument{\checkandfixthelayout}
-\fi
+% \fi
 % The Grad. Division requires that "Placement of page numbers must be
 % consistent throughout."
 
