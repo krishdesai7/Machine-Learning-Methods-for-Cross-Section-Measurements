@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\begin{tabular}{|l|c|p{8cm}|}
+\hline
+\textbf{Hyperparameter} & \textbf{Value} & \textbf{Description} \\
+\hline
+Discriminator layers     & 3             & Number of hidden layers in the discriminator \\
+Discriminator nodes      & 50            & Number of nodes per hidden layer \\
+Activation function      & ReLU          & Activation function for hidden layers \\
+Output activation        & Sigmoid       & Activation function for the output layer \\
+Optimizer                & \textsc{Adam}          & Optimization algorithm used for training \\
+Learning rate            & $5 \times 10^{-4}$ & Initial learning rate for the optimizer \\
+Batch size              & 10,000        & Number of training events in each batch \\
+Training epochs          & 50--100       & Number of full passes through the training dataset \\
+Gradient clip value      & 1.0           & Maximum allowed gradient norm for clipping \\
+\hline
+\end{tabular}
+\caption{Summary of training hyperparameters used in the model.
+%
+These values control the architecture, optimization behaviour, and regularization of the training process.}
+\label{tab:moment-unfolding-hyperparams}
+\end{table}
