@@ -480,7 +480,7 @@
         %
         The moment generating function (MGF), $M_Z(t) = \mathbb{E}[e^{tZ}]$, encapsulates the entire moment sequence via its Taylor expansion,
         \[
-            M_Z(t) \;=\; 1 + \sum_{n=1}^\infty \frac{t^n}{n!}\,\mathbb{E}[Z^n]~,
+            M_Z(t) \;=\; \sum_{n=0}^\infty \frac{t^n}{n!}\,\mathbb{E}[Z^n]~,
         \]
         and serves as a proxy for the full distribution.
         %
@@ -509,6 +509,7 @@
             %
             In particular, one finds a probability density of the form
             \[
+                \label{eq:infinite-generator}
                 p^*(z; \vb*\beta) \;=\; \frac{1}{P(\boldsymbol{\beta})}\,\exp\!\Big[-\sum_{a=1}^\infty\beta_a\,f_a(z)\Big]~,
             \]
             where $\beta_a$ are Lagrange multipliers adjusted to enforce the desired $\mathbb{E}_{p^*}[f_a(Z)] = c_a$, and $P(\boldsymbol{\beta}) = \int \exp(-\sum_a \beta_a f_a(z))\,\dd z$ is the normalisation factor (partition function).
@@ -558,7 +559,7 @@
             By keeping only the dominant modes, essentially the lowest frequency or largest size moments, SVD unfolding ensures stability at the cost of not fully utilising high frequency information.
             
             Both Tikhonov and SVD thereby regularise the moment space, either explicitly or implicitly limiting the effective number of moments that contribute to the unfolded solution.
-        \subsubsection{Iterative Bayesian unfolding (D'Agostini).}
+        \subsubsection{Iterative Bayesian unfolding.}
             IBU's approach to unfolding can be reinterpeted as iteratively matching moments of the true distribution to the data.
             %
             It starts with an initial guess for the true distribution, Generation, which corresponds to some initial moment estimates and alternately updates the expectations to better agree with the observed data.
@@ -691,327 +692,314 @@
         One would need to generate new events, a different approach entirely, or rely on extrapolation.
         %
         Thus, moment unfolding, like other reweighting methods, assumes that the generation's phase space is broad enough to contain the truth or that any deficiencies are corrected by separate procedures.
-        %        %
+        %
         It is worth noting that as we increase the number of moments or attempt to unfold the full distribution, the demand on simulation support becomes stricter: essentially all features of the Truth distribution must be present in the Generation to be recovered by reweighting.
-    \subsection{Extending Moment Unfolding}
-        This Ansatz can be viewed as a minimal deformation of the simulation needed to match data.
+    \subsection{Extending moment unfolding.}
+        The Boltzmann ansatz can be viewed as a minimal deformation of the simulation needed to match data.
         %
-        $\beta_a = 0$ for all $a$ corresponds to $g(z)=1$ (no reweighting, i.e. using the raw generation as is), and as we turn on $\beta_a$’s, we gently adjust the weight of each MC event based on its $z$ value.
+        $\beta_a = 0$ for all $a$ corresponds to $g(z)=1$.
         %
-        The exponential form guarantees that no arbitrary structure is introduced beyond that needed to fulfil the moment constraints i.e. it is the maximum entropy solution consistent with those constraints.\kd{}
+        This implies no reweighting, i.e. using the raw Generation as is.
         %
-        Another perspective is to see $g(z)$ as the Radon-–Nikodym derivative between the true distribution $p(z)$ and the generation $q(z)$, restricted to the family of functions parametrized by $\beta_a$.\kd{}
+         As one turns on $\beta_a$s, one adjusts the weight of each MC event based on its $z$ value.
         %
-        If the true distribution $p(z)$ lies within this family (for the chosen $T_a$ set), then there exists some $\boldsymbol{\beta}{\text{true}}$ such that $p(z) = g(z; \vb*{\beta}_{\text{true}}),q(z)$.
+        The exponential form guarantees that no arbitrary structure is introduced beyond that needed to fulfil the moment constraints i.e. it is the maximum entropy solution consistent with those constraints.
+        %
+        Another perspective is to see $g(z)$ as the Radon-–Nikodym derivative between the true distribution $p(z)$ and the generation $q(z)$, restricted to the family of functions parametrized by $\beta_a$~\cite{NikodymSurRadon, radon_theorie_1913}.
+        %
+        If the true distribution $p(z)$ lies within this family for the chosen $T_a$ set, then there exists some $\boldsymbol{\beta}_*$ such that $p(z) = g(z; \vb*{\beta}_*),q(z)$.
         %
         Even if $p(z)$ is outside this family, we expect that with a sufficiently rich set of basis functions $T_a$, one can approximate $p(z)$ in the moment sense.
         %
-        In summary, Eq.~\ref{eq:moment-reweight} translates our physics question (“what are the true moments?”) into a set of parameters $\beta_a$ to be determined.
+        In summary, \cref{eq:infinite-generator} translates the physics question into a set of parameters $\beta_a$ to be determined.
 
-        Once the optimal $\beta_a$ parameters are found, the unfolded moments are obtained immediately by computing the weighted averages in the reweighted particle--level sample.
+        Once the optimal $\beta_a$ parameters are found, the unfolded moments are obtained immediately by computing the weighted averages in the reweighted particle level sample.
         %
-        The unfolded $k$th moment of $Z$ is simply
+        The unfolded $k^\text{th}$ moment of $Z$ is simply
         \[
-            \langle Z^k \rangle_{\text{unfolded}} \;=\; \frac{\int z^k\,g(z)\,q(z)\,\dd z}{\int g(z)\,q(z)\,\dd z} ~,
+            \mathbb{E}\qty[Z^k] \rangle_{\text{unfolded}} \;=\; \frac{\int z^k\,g(z;\,\vb*\beta)\,q(z)\,\dd z} ~,
         \]
-        or in practice, the ratio of weighted sums over all generation events.
+        or in practice, the ratio of weighted sums over all generation events,
+        \[
+            \ev{Z^k} = \sum_{z\in \text{Gen.}} z^k\;g(z;\, \vb*\beta)
+        \]
         %
-        By construction, these unfolded moments will agree with the true moments of $p(z)$ if the procedure succeeds in finding $\beta_a$ such that the reweighted simulation matches the data atdetector-level.
+        By construction, these unfolded moments will agree with the true moments of $p(z)$ if the procedure succeeds in finding $\beta_a$ such that the reweighted simulation matches the data at detector level.
         %
-        Incorporating the normalization factor $P(\boldsymbol{\beta})$ (the denominator above) is important.
+        Incorporating the normalisation factor $P(\boldsymbol{\beta})$ in the \(g\) is important.
         %
-        It ensures that $g(z)$ does not arbitrarily change the total number of events.
+        It ensures that $g(z;\,\vb*\beta)$ does not arbitrarily change the total number of events.
         %
-        In statistical mechanics language, $P(\boldsymbol{\beta})$ is the partition function ensuring probability conservation.
+        In statistical mechanics language,
+        \[
+            P(\boldsymbol{\beta})  = \int g(z;\,\vb*\beta)\,q(z)\,\dd z
+        \]
+        is the partition function ensuring probability conservation.
         %
-        In the unfolding context, it guarantees that the reweighted distribution properly normalizes to the total cross section (or total event count) expected.
+        In the unfolding context, it guarantees that the reweighted distribution properly normalizes to the total cross section or total event count expected.
         %
-        There is no explicit formula linking $\beta_a$ to a simple goodness--of--fit measure at detector level, because the detector response $r(x|z)$ is typically a complex stochastic mapping.
+        There is no explicit formula linking $\beta_a$ to a simple goodness of fit measure at detector level, because the detector response $r(x|z)$ is typically a complex stochastic mapping.
         %
-        Instead, a machine learning approach evaluates and drives this optimization.
+        Instead, a machine learning approach evaluates and drives this optimisation.
         
         The Moment Unfolding method was demonstrated to yield accurate and statistically stable moment estimates in realistic scenarios.
         %
-        By avoiding any intermediate binning, it circumvents bin-size biases and fully utilizes the fine--grained shape information in the data.
+        By avoiding any intermediate binning, it circumvents bin size biases and fully utilizes the fine grained shape information in the data.
         %
         Moreover, it is remarkably efficient.
         %
-        Focusing on a handful of parameters $\beta_a$ is much simpler than attempting to learn a full function (as a generative model would).
+        Focusing on a handful of parameters $\beta_a$ is much simpler than attempting to learn a full function as a normal generative algorithm would.
         %
-        In essence, it reduces the unfolding task to a parameter fitting problem under the hood, albeit a high--dimensional, simulation--informed, adversarially--solved one. This focus provided a built--in regularization (as we emphasized, choosing small $n$ limits complexity).
+        In essence, it reduces the unfolding task to a parameter fitting problem under the hood, albeit a high dimensional, simulation informed and adversarially solved one. This focus provided a built in regularization through the number of moments unfolded.
         %
-        The results in Section~\kd{sec:results} showed that even with $n$ as small as \(2\) one can capture key shape characteristics of distributions.
-        %
+        The results in \cref{sec:results} showed that even with $n$ as small as \(2\) one can capture key shape characteristics of distributions.
+        
         However, ultimately one may wish to unfold the entire distribution without having to pre--select moments.
         %
-        This is where we transition to extending the Moment Unfolding concept to all moments, which leads us to the Reweighting Adversarial Networks (RAN) framework.
+        This is where the transition to extending the Moment Unfolding concept to all moments leads to the Reweighting Adversarial Networks (RAN) framework.
 
-        While unfolding a fixed set of moments is valuable, the ultimate goal in many analyses is to recover the complete differential cross section, effectively, to determine the true distribution $p(z)$ itself (within resolution limits).
+        While unfolding a fixed set of moments is valuable, the ultimate goal in many analyses is to recover the complete differential cross section, effectively, to determine the true distribution $p(z)$ itself within resolution limits.
         %
-        The Moment Unfolding framework provides a natural stepping stone to this goal. Conceptually, one can imagine increasing the number of moments $n$ in the weight function Eq.~\ref{eq:moment-reweight} to capture finer and finer detail of the distribution.
+        The Moment Unfolding framework provides a natural stepping stone to this goal. Conceptually, one can imagine increasing the number of moments $n$ in the weight function \cref{eq:moment-generator} to capture finer and finer detail of the distribution.
         %
-        In the limit $n \to \infty$ (or including an appropriate functional basis for $T_a(z)$), the weight function $g(z)$ could represent an arbitrarily complex reweighting, capable of morphing the simulation into the true distribution.
+        In the limit $n \to \infty$, the weight function $g(z, \vb*\beta)$ could represent an arbitrarily complex reweighting, capable of morphing the simulation into the true distribution.
         %
         In practice, however, trying to include a very large number of moment parameters directly poses challenges.
-        %
-        The normalization factor $P(\boldsymbol{\beta})$ (partition function) becomes increasingly complicated to compute or differentiate when $\boldsymbol{\beta}$ is high--dimensional, and the adversarial training may become unstable or inefficient when there are so many degrees of freedom to adjust.
-        %
-        In the initial Moment Unfolding studies, keeping $n$ small was important for stable training---it acted as a strong regularizer and simplified the learning problem.\kd{}
         
-        To extend the method toward full distributions, the Reweighting Adversarial Networks (RAN) approach was developed.\kd{}
+        The normalisation factor $P(\boldsymbol{\beta})$ becomes increasingly complicated to compute or differentiate when $\boldsymbol{\beta}$ is high dimensional, and the adversarial training may become unstable when there are so many degrees of freedom to adjust.
         %
-        RAN can be seen as Moment Unfolding taken to the continuum limit, where instead of a few predetermined moments, all aspects of the distribution are learned. Practically, RAN forgoes the explicit parametrization of $g(z)$ with a fixed set of $\beta_a$ multiplying known basis functions.
+        In the initial Moment Unfolding studies, keeping $n$ small was important for stable training---it acted as a strong regulariser and simplified the learning problem.
+        
+        To extend the method toward full distributions, the Reweighting Adversarial Networks (RAN) approach was developed.
         %
-        Instead, it employs a more general function approximator (such as a neural network or a high-capacity ansatz) to represent $g(z)$, which can adjust weights flexibly for different regions of phase space.
+        RAN can be seen as Moment Unfolding taken to the continuum limit, where instead of a few predetermined moments, all aspects of the distribution are learned.
+        %
+        Practically, RAN forgoes the explicit regularisation of $g(z, \vb*\beta)$ with a fixed set of $\beta_a$ multiplying known basis functions.
+        %
+        Instead, it employs a more general function approximator such as a neural network or some other high capacity ansatz to represent $g(z, vb*\beta)$, which can adjust weights flexibly for different regions of phase space.
         %
         The adversarial setup remains, but now the generator’s parameters are not directly interpretable as specific moments;
         %
         they are a more granular description of the weight function.
         %
-        The discriminator in RAN is tasked with comparing the fully continuous shapes of $\tilde{q}(x)$ and $p(x)$, effectively enforcing an infinite number of constraints (since matching two distributions means matching an infinite set of moments or test statistics). In this way, RAN builds on the moment-based approach by removing the artificial limit on the number of moments: the method `learns to unfold all the moments of a distribution'. \kd{}
+        The discriminator in RAN is tasked with comparing the fully continuous shapes of $\tilde{q}(x)$ and $p(x)$, in theory, enforcing an infinite number of constraints, since matching two distributions means matching an infinite set of moments or test statistics.
+        %
+        In this way, RAN builds on the moment based approach by removing the artificial limit on the number of moments: the method `learns to unfold all the moments of a distribution'.
 
-        One important innovation in RAN was the use of the Wasserstein GAN framework,\kd{} which provides a stable way to train the adversarial system even when the generator distribution and true distribution initially differ significantly.
-        %
-        The Wasserstein distance (or Earth Mover’s distance) offers a continuous and meaningful loss metric that correlates with distribution differences, which helped guide the training when $g(z)$ has high flexibility.
-        %
-        This addresses a subtle issue.
+        One important innovation in RAN was the use of the Wasserstein GAN framework~\cite{stephanovitch_optimal_2023}, which provides a stable way to train the adversarial system even when the generator distribution and true distribution initially differ significantly.
+
+        This brings up a subtle issue.
         %
         When extending to complete distributions, one must contend with the fact that $g(z)$ estimates the partition function from batch data.
         %
-        In a naive GAN, if $g(z)$ significantly changes normalization, the discriminator could easily detect a total rate difference, and the generator would then simply rescale everything to match the event counts, potentially neglecting shape differences.
+        In a naive GAN, if $g(z)$ significantly changes normalisation, the discriminator could easily detect a total rate difference, and the generator would then simply rescale everything to match the event counts, potentially neglecting shape differences.
         %
         By using an optimal transport loss and carefully constraining $g(z)$ to keep the total weight near unity, RAN avoids trivial solutions and focuses on shape adjustments.
         %
-        In effect, RAN had to incorporate the partition function normalization into the training.
+        In other words, if RAN does not incorporate the normalisation into its architectural design, if if the architecture leads to misestimations of the normalisation, RAN will be have to learn the correct normalisation, at the expense of learning other features. 
         %
         Although this was also true of Moment Unfolding, there is a quantitive difference.
         %
-        When $n$ was small, a few $\beta$ primarily tweak shape within a mostly normalized scheme, but misestimations of the partition function become very relevant when $g(z)$ becomes a free-form function.\kd{}
+        When $n$ was small, a few $\beta$ primarily tweak shape within a mostly normalised scheme.
         %
-        Section~\kd{sec:infiniteunfolding} is devoted to a detailed description of the RAN methodology; this section emphasizes the conceptual link: RAN is the natural extension of Moment Unfolding to the case where the number of moment--like features is unlimited.
+        Misestimations of the partition function become very relevant when $g(z)$ becomes a free form function.
 
         By allowing a more expressive reweighting function, RAN is able to unfold the entire distribution in an unbinned, non--iterative manner.
         %
         This stands in contrast to \textsc{OmniFold}, which, while also ultimately recovering the full distribution, does so via multiple iterative reweighting steps.
         %
-        RAN achieves a similar end point in one training loop by leveraging the powerful GAN paradigm.
+        RAN achieves a similar end point in one training loop by leveraging an adversarial paradigm.
         %
-        However, this power comes with technical challenges: the loss landscape is more complex and the risk of overfitting noise is higher when we essentially have as many ``parameters" as there are events.
+        However, this power comes with technical challenges: the loss landscape is more complex and the risk of failure to converge is higher when the models essentially have as many ``parameters" as there are events.
         %
-        Our implementation of RAN thus required additional care in training (e.g. gradient penalty terms for WGAN, spectral normalization, etc.) to ensure convergence to a physically sensible solution (one that generalizes and doesn’t chase statistical fluctuations).
+        The implementation of RAN thus required additional care in training\footnote{E.g., gradient penalty terms for WGAN, spectral normalization, etc.} to ensure convergence to a physically sensible solution that generalizes and does not chase statistical fluctuations.
         %
-        The success of RAN in toy examples and real data applications demonstrates that it is indeed possible to go from moments to complete spectra.,
+        The success of RAN in toy examples and simulated jet data applications demonstrates that it is indeed possible to go from moments to complete spectra.
 
-In summary, the progression from Moment Unfolding to full distribution unfolding can be seen as a continuum.
+In this way, the progression from Moment Unfolding to full distribution unfolding can be seen as a continuum.
 %
-At one end, we have a highly regularized method focusing on a few moments (stable but incomplete); at the other end, we have methods like RAN that aim to extract the entire distribution (complete but needing stronger techniques to control fluctuations).
+At one end is a highly stable method focusing on a few moments; at the other end, are methods like RAN that aim to extract the entire distribution, which requires stronger techniques to regularise.
 %
 Moment Unfolding paves the way to the more ambitious goal of unbinned differential cross section measurement via its extension to RAN.
 %
-This connection between moments and spectra ensures that the insights and constraints from one domain (e.g. theoretical expectations for certain moments) can be seamlessly integrated into the process of obtaining the full spectrum.
+This connection between moments and spectra ensures that the insights and constraints from one domain like theoretical expectations for certain moments can be seamlessly integrated into the process of obtaining the full spectrum.
 %
 By casting the unfolding problem in the language of moment constraints and exponential families, one can gain both intuitive and quantitative control over the unfolding, whether one stops at a few moments or pushes onward to recover the complete distribution.
 %
-This framework not only bridges classical and modern techniques but also provides a clear rationale for why unfolding even a handful of moments is a stepping stone to unfolding everything: the moments are the fingerprints of the distribution, and once one learns to reliably recover those fingerprints (even individually), one is well--equipped to tackle the entire handprint that is the full differential cross section.
+This framework not only forms a bridge between techniques but also provides a clear rationale for why unfolding even a handful of moments is a stepping stone to unfolding distributions.
+%
+The moments are the fingerprints of the distribution, and once one learns to reliably recover those fingerprints, one is better equipped to handle the the full differential cross section.
 
-\section{Methodology and Regularization}
-    A variety of regularization strategies have been developed historically and in contemporary machine learning (ML) approaches to ensure stable, physically meaningful unfolding solutions.
+\section{Methodology and regularisation.}
+    A variety of regularisation strategies have been developed historically and in contemporary machine learning approaches to ensure stable, physically meaningful unfolding solutions.
     %
-    This section begins by reviewing these strategies, from classical techniques to modern ML--based methods, before detailing how the Reweighting Adversarial Networks (RAN) methodology is designed to address regularization.
+    This section begins by reviewing these strategies, from classical techniques to modern ML based methods, before detailing how the Reweighting Adversarial Network (RAN) method is designed to address regularisation.
     %
-    The focus will be on the theoretical and conceptual aspects of the RAN approach, rather than low--level implementation details.
+    The focus of this section will be on the theoretical and conceptual aspects of the RAN approach, rather than on implementation details.
 
-    \subsection{Historical Approaches to Regularization}
-        Classical unfolding methods introduce explicit regularization to tame the ill--posed nature of the problem.
+    \subsection{Historical Approaches to Regularisation}
+        Classical unfolding methods introduce explicit regularisation to tame the ill--posed nature of the problem.
         %
-        A prominent example is {Tikhonov regularization}, which adds a penalty on the curvature or norm of the solution to the fitting objective.\kd{}
-        %
-        In a typical binned unfolding scenario with response matrix $\mathbf{R}$ relating true binned spectrum $\boldsymbol{\nu}$ to measured data $\boldsymbol{\mu}$, Tikhonov regularization finds the unfolded estimate by minimizing a modified $\chi^2$:
-        \begin{equation}
-            \hat{\boldsymbol{\nu}} = \underset{\vb*\nu}{\arg\min} \Big[\,|\mathbf{R}\boldsymbol{\nu} - \boldsymbol{\mu}|^2 + \lambda\,| \mathbf{L}(\boldsymbol{\nu}-\boldsymbol{\nu}_0)|^2 \Big]~,
-        \end{equation}
-        where $\mathbf{L}$ is typically a discrete derivative (smoothness) operator and $\boldsymbol{\nu}_0$ is a prior estimate.\kd{}
-        %
-        The regularization parameter $\lambda$ controls the bias–variance trade-off\kd{}.
-        %
-        $\lambda\to 0$ recovers an unbiased but high--variance solution, while large $\lambda$ biases $\hat{\boldsymbol{\nu}}$.
-        %
-        Techniques such as L--curve scans or cross--validation are used to choose $\lambda$ optimally.\kd{}
-        %
-        Tikhonov--style regularization (implemented for instance in \textsc{TUnfold}\kd{}) is widely used in precision measurements for its ability to suppress statistical noise when the true distribution is expected to be reasonably smooth\kd{cite}.
-        %
-        Related linear regularization schemes include {singular value decomposition (SVD) truncation}, which diagonalizes the response matrix and discards or down-weights contributions along directions with small singular values (which are dominated by noise)\kd{cite}.
-        %
-        This effectively regularizes the solution similarly to a Tikhonov cutoff, by eliminating high-frequency oscillatory components that are weakly constrained by data\kd{cite}. 
-        %
-        Another classical strategy is {iterative Bayesian unfolding} (often called D’Agostini or Richardson-–Lucy iterative method)\kd{cite}.
-        %
-        In this approach, an initial guess (prior) for the truth distribution is repeatedly updated using Bayes’ theorem and the observed data.
-        %
-        The regularization is introduced by not iterating to full convergence; stopping after a finite number of iterations (usually a few) serves as an implicit regularization that prevents overfitting to statistical fluctuations.\kd{}
-        %
-        The number of iterations thus plays a role analogous to $\lambda$ in controlling the smoothness of the outcome, with early stopping yielding a more biased (closer to the prior) but stabler result.\kd{}
-        %
-        Finally, {maximum entropy} methods introduce an entropic prior, favouring solutions that maximize information entropy subject to data constraints\kd{cite}. 
-        %
-        By penalizing deviations from a featureless (flat or known prior) distribution, maximum-entropy unfolding produces a smooth unfolded spectrum unless the data strongly indicate otherwise.
-        %
-        These “semi-classical” methods (e.g. SVD truncation, MaxEnt) were developed to reduce ad--hoc tuning.
-        %
-        For instance, maximizing entropy automatically regularizes by pushing the solution toward the least--informative shape consistent with the measurements\kd{cite}.
+        Several such examples are discussed in \cref{subsubsec:regularisation-techniques,subsubsec:regularisation-strategies, sec:binned-methods}
         %
         All of these classical techniques acknowledge the need for external constraints to obtain a stable inversion of the detector response.
 
-        In recent years, unbinned and high-dimensional unfolding methods based on machine learning have emerged, necessitating new ways to incorporate regularization.\kd{}
+        In recent years, unbinned and high dimensional unfolding methods based on machine learning have emerged, necessitating new ways to incorporate regularisation.
         %
-        Many ML-based approaches avoid explicit binning (thus eliminating bin--size artifacts) but must still combat the same amplification of statistical noise.
+        Many ML based approaches avoid explicit binning but must still combat the same amplification of statistical noise.
         %
-        Often, the regularization in ML approaches is \emph{implicit}, coming from network architectures and training protocols.\kd{}
+        Often, the regularization in ML approaches is \emph{implicit}, coming from network architectures and training protocols.
         %
         For example, deep neural networks have a finite capacity and tend to learn simpler patterns first, a form of Occam’s razor that can act as a prior.
         %
-        Choices of network depth, width, and activation functions impose smoothness biases on the learned mapping.\kd{}
+        Choices of network depth, width, and activation functions impose smoothness biases on the learned mapping.
         %
-        In convolutional networks, weight sharing and locality encode translational invariance, effectively constraining the space of possible unfoldings to those that respect certain symmetries.\kd{}
+        In convolutional networks, weight sharing and locality encode translational invariance, effectively constraining the space of possible unfolding results to those that respect certain symmetries.
         %
-        Many ML unfolding methods also apply standard regularization techniques from predictive modelling, such as weight decay ($L^2$ penalties)\kd{cite}, dropout\kd{cite}, or batch normalization, to prevent overfitting.
+        Many ML unfolding methods also apply standard regularisation techniques from predictive modelling, such as weight decay and $L^2$ penalties~\cite{dangelo_why_2024}, dropout~\cite{srivastava_dropout_2014}, or batch normalisation~\cite{Ioffe2015BatchShift}, to prevent overfitting.
         %
         These generic measures help ensure the learned model does not simply reproduce statistical fluctuations in the training sample.
 
         In adaptive or iterative ML unfolding algorithms, an explicit analogue of early stopping is used.
         %
-        The \textsc{OmniFold} method, for instance, performs successive reweighting iterations with neural classifiers.\kd{}  By limiting the number of iterations (often on the order of \(4-6\)) and monitoring when the updates become consistent with statistical uncertainty, \textsc{OmniFold} effectively regularizes the solution.\kd{}
+        The \textsc{OmniFold} method, for instance, performs successive reweighting iterations with neural classifiers.
         %
-        If iterated to completion, an algorithm like \textsc{OmniFold} would overfit the data (analogous to iterative Bayesian unfolding); halting earlier mitigates this risk.\kd{}
+        By limiting the number of iterations (often on the order of \(4-6\)) and monitoring when the updates become consistent with statistical uncertainty, \textsc{OmniFold} effectively regularises the solution.
         %
-        Neural network--based unfolding methods also permit incorporation of physics--informed constraints as a form of regularization.
+        If iterated to completion, an algorithm like \textsc{OmniFold} would overfit the data.
         %
-        For example, one can modify the loss function to penalize unphysical deviations or enforce known conservation laws and symmetries\kd{cite}.
+        This is analogous to iterative Bayesian unfolding; halting earlier mitigates this risk.
+        
+        Some neural network based unfolding methods also permit incorporation of physics informed constraints as a form of regularisation.
         %
-        Recent studies have integrated exact symmetry constraints into normalizing flow or invertible network architectures used for unfolding, so that the learned particle--level distribution automatically preserves quantities like momentum or charge\kd{cite}.
+        For example, one can modify the loss function to penalise unphysical deviations or enforce known conservation laws and symmetries~\cite{cui_knowledge-augmented_2022, hepmllivingreview, howard_advancing_2022, lagrave_equivariant_2022, pazos_towards_2024, unke_machine_2021, dopp_data-driven_2023, rieger_rwth}.
         %
-        This reduces the solution space a priori to physically plausible ones, which is a powerful regularization aligning with domain knowledge.
+        Recent studies have integrated exact symmetry constraints into normalizing flow or invertible network architectures used for unfolding, so that the learned particle level distribution automatically preserves quantities like momentum or charge~\cite{Bellagente2020InvertibleAgain, Ackerschott2023ReturningBelong}
+        %
+        This reduces the solution space \textit{a priori} to physically plausible ones, which is a powerful regularisation aligning with domain knowledge.
 
-        Beyond reweighting approaches, generative models learn to generate events from scratch so that, when passed through a detector simulation, they reproduce the observed data.\kd{}
+        Beyond reweighting approaches, generative models learn to generate events from scratch so that, when passed through a detector simulation, they reproduce the observed data~\cite{datta_unfolding_2018, Butter2020GANplifyingSamples}.
         %
-        Examples include normalizing flows and variational autoencoders trained to invert detector effects\kd{cite}.
+        Examples include normalising flows and variational autoencoders trained to invert detector effects.
         %
         These models face even greater risk of instability due to their high flexibility.
         %
-        Regularization here can take the form of strong prior distributions (for instance, seeding a flow with a known prior and only allowing limited deviation)\kd{cite}, or carefully tuned network constraints.
+        Regularisation here can take the form of strong prior distributions, for instance, seeding a flow with a known prior and only allowing limited deviation~\cite{Humble:2022vtm, Huetsch2024TheLearning}, or carefully tuned network constraints.
         %
-        In practice, the success of ML generative unfolding has been limited by the need for large training samples and the difficulty of covering the full phase space without introducing spurious modes\kd{cite}.
+        In practice, the success of ML generative unfolding has been limited by the need for large training samples and the difficulty of covering the full phase space without introducing spurious modes~\cite{Huetsch2024TheLearning, Canelli:2025ybb}.
         %
-        Indeed, most existing ML unfolding methods (\textsc{OmniFold} and variants\kd{cite}, flow-based methods\kd{cite}, etc.) still assume that the simulated data sample has sufficient overlap with the true distribution in all regions of interest.\kd{}
+        Indeed, most existing ML unfolding methods still assume that the Simulation sample has sufficient overlap with the Data in all regions of interest.
         %
-        If the simulation has zero or very little support in some region that the real data populate, no amount of reweighting or network fitting can compensate; this is the well-known curse of extrapolation in unfolding.
+        If the Simulation has zero or very little support in some region that the Data populates, no amount of reweighting or network fitting can compensate; this is a well known problem of extrapolation in unfolding.
 
-    \subsection{Regularization in RAN}
+    \subsection{Regularisation in RAN}
     \label{subsec:regularisation-in-ran}
-        The Reweighting Adversarial Network approach is expressly designed to address regularization challenges while performing unbinned unfolding in one stage.
+        The Reweighting Adversarial Network approach is expressly designed to address regularisation challenges while performing unbinned unfolding in one stage.
         %
-        RAN can be viewed conceptually as an extension of the \emph{Moment Unfolding} method\kd{cite}, which unfolded only a fixed set of distribution moments and thereby enjoyed a strong built--in regularization (by restricting to a few summary statistics).
+        RAN can be viewed conceptually as an extension of the \emph{Moment Unfolding} method, which unfolded only a fixed set of distribution moments and thereby enjoyed a strong built in regularisation by restricting to a few summary statistics.
         %
-        RAN lifts that restriction by attempting to unfold the entire distribution (the “infinite--moment” limit), requiring new regularization techniques to keep the problem well--defined.\kd{}
+        RAN lifts that restriction by attempting to unfold the entire distribution by extending to the ``infinite--moment'' limit, thus requiring new regularisation techniques to keep the problem well defined.
         %
-        Unlike \textsc{OmniFold}, which iteratively trains many separate classifiers, RAN solves for all weights in a single training round by jointly optimizing $g$ and $d$.
+        Unlike \textsc{OmniFold}, which iteratively trains many separate classifiers, RAN solves for all weights in a single training to convergence by jointly optimizing $g$ and $d$.
         %
-        This provides a significant computational advantage, but it demands a very stable training procedure because the full flexibility of $g(z)$ is unleashed at once.
+        This provides a significant computational advantage, but it demands a very stable training procedure because the full flexibility of $g(z; \vb*\beta)$ is unleashed at once.
 
-        To ensure stable and meaningful solutions, RAN incorporates several regularization driven design choices in its methodology.
+        To ensure stable and meaningful solutions, RAN incorporates several regularisation driven design choices in its methodology.
         %
         \subsubsection{Wasserstein GAN}
-            First and foremost, RAN employs a {Wasserstein GAN (WGAN)} framework for the adversarial training, in place of a standard (Jensen–Shannon divergence-based) GAN.
+            First and foremost, RAN employs a {Wasserstein GAN (WGAN)} framework for the adversarial training, in place of a standard Jensen--Shannon divergence based GAN.
             %
-            In a vanilla GAN, the discriminator $d(x)$ is trained to output a binary classification (real vs fake) and the generator is trained to fool it, typically using a binary cross--entropy or similar loss.
+            In a vanilla GAN, the discriminator $d(x)$ is trained to output a binary classification and the generator is trained to fool it, typically using a binary cross entropy or similar loss.
             %
-            Such losses correspond to minimizing a divergence like Kullback-–Leibler or Jensen–-Shannon; if the real and model distributions do not overlap, the gradient of these losses vanishes, leading to unstable or mode--collapsed solutions.
+            Such losses correspond to minimizing a divergence like Kullback--Leibler or Jensen--Shannon; if the real and model distributions do not overlap, the gradient of these losses vanishes, leading to unstable or mode collapsed solutions.
             %
-            By contrast, RAN leverages the Earth Mover (Wasserstein-1) distance as the measure of difference between distributions.\kd{}
+            By contrast, RAN leverages the Wasserstein distance as the measure of difference between distributions.
             %
-            The WGAN critic $d(x)$ does not output a class label but rather a real--valued score, which should be high for real data and low for simulated (reweighted) data.\kd{}
+            The WGAN critic $d(x)$ does not output a class label but rather a real valued score, which should be high for real data and low for simulated (or in RAN's case, reweighted) data.
             %
-            The generator seeks to maximize this critic score on the simulated data, thereby minimizing the Wasserstein distance between the weighted simulation and the true data distribution.
+            The generator seeks to maximise this critic score on the simulated data, thereby minimising the Wasserstein distance between the weighted Simulation and the Data distributions.
             %
             The objective function adopted in RAN’s training can be written as
             \begin{align}
                 \label{eq:ran_wgan_loss}
-                L_{\text{WGAN}}[g,d] &= \mathbb{E}_{x\sim \text{Data}}\big[d(x)\big] - \mathbb{E}_{(z,x)\sim \text{(Gen., Sim.)}}\big[g(z)\,d(x)\big]\\
-                \nonumber&+ \lambda\,\mathbb{E}\!\Big[(|\nabla_{\hat{x}}d(\hat{x})| - 1)^2\Big]~,
+                L_{\text{WGAN}}[g,d] &= \mathbb{E}_{x\sim \text{Data}}\big[d(x)\big] - \mathbb{E}_{(z,x)\sim \text{(Gen., Sim.)}}\big[g(z;\,\vb*\beta)\,d(x)\big]\\
+                \nonumber&+ \lambda\,\mathbb{E}\Big[\big(\norm{\grad_{\hat{x}}d(\hat{x})} - 1\big)^2\Big]~,
             \end{align}
-            where $x$ denotes a detector-level event from the real data or simulation, and $(z,x)\sim\text{(Gen., Sim.)}$ indicates a MC event with truth features $z$ and corresponding detector--level observation $x$ (the MC is generative, so $z\to x$ via the detector model).
+            where $x\sim\text{Data}$ denotes a detector level event from the Data, and $(z,x)\sim\text{(Gen., Sim.)}$ indicates a paired MC event with truth features $z$ and corresponding detector level observation $x$.
             %
-            The first two terms estimate the Wasserstein-1 distance between the true and reweighted simulated distributions.
+            The MC is generative, so $z\to x$ are paired via the detector model.
+            
+            The first two terms estimate the Wasserstein-1 distance between the Data and reweighted Simulation distributions.
             %
-            The last term is a \emph{gradient penalty}\kd{cite} (with strength $\lambda$) enforcing the requirement that $d(x)$ be \(1-\)Lipschitz continuous, as required for the Wasserstein distance theory.\kd{}
+            The last term is a \emph{gradient penalty}\cite{xia_penalty_2023} with strength $\lambda$), enforcing the requirement that $d(x)$ be \(1-\)Lipschitz continuous, as required for the Wasserstein distance theory~\cite{OptimalDistance}.
             %
-            This penalty drives $|\nabla d|$ toward unity on random points $\hat{x}$ interpolated between real and simulated samples, a technique introduced in Ref.~\kd{cite} to stabilize WGAN training.
+            This penalty drives $\norm{\grad d}$ toward unity on random points $\hat{x}$ interpolated between Data and Simulation samples, a technique introduced in~\cite{gulrajani_improved_2017} to stabilize WGAN training.
             %
-            The minimax game on the loss \eqref{eq:ran_wgan_loss} with respect to $g$ and $d$ corresponds to the following adversarial logic:
+            The minimax objective on the loss \cref{eq:ran_wgan_loss} with respect to $g$ and $d$ corresponds to the following adversarial logic:
             %
             \begin{enumerate}
-                \item $d$ tries to minimize $L_{\text{WGAN}}$ (making the data–sim discrepancy as large as possible by assigning higher scores to real data than to any weighted sim sample)
-                \item $g$ tries to maximize it (reducing discrepancy by adjusting weights $g(z)$ to make the sim look as “real” as possible).
+                \item $d$ tries to minimise $L_{\text{WGAN}}$ by making the Data--Simulation discrepancy as large as possible by assigning higher scores to real Data than to weighted Simulation samples.
+                \item $g$ tries to maximise it to make the reweighted Simulation look as similar as possible to Data by adjusting weights $g(z;\,\vb*\beta)$.
             \end{enumerate}
             At equilibrium, the weighted simulation cannot be distinguished from data by any \(1-\)Lipschitz function, meaning the distributions are empirically matched in the optimal transport sense.
     
-            The choice of a WGAN loss is fundamentally motivated by regularization considerations.
+            The choice of a WGAN loss is fundamentally motivated by regularisation considerations.
             %
-            Because the Wasserstein distance evaluates the “distance” between distributions in terms of an optimal transport cost, it provides smooth, meaningful gradients even when the support of the model and data distributions do not overlap perfectly.\kd{}
+            Because the Wasserstein distance evaluates the ``distance'' between distributions in terms of an optimal transport cost, it provides smooth, meaningful gradients even when the support of the model and data distributions do not overlap perfectly~\cite{arjovsky_wasserstein_2017, arjovsky_towards_2017}.
             %
-            In other words, if the simulation is deficient in some region of phase space, a standard GAN discriminator would drive $g(z)$ to extreme values (or simply saturate, providing no gradient) in an attempt to cover the deficit, often leading to unstable oscillations in $g(z)$ (very large weights assigned to a few events).
+            In other words, if the simulation is deficient in some region of phase space, a standard GAN discriminator would drive $g(z;\,\vb*\beta)$ to extreme values or simply saturate, providing no gradient in an attempt to cover the deficit, often leading to unstable oscillations in $g(z;\,\vb*\beta)$, with very large weights assigned to a few events.
             %
-            The WGAN critic, however, will assign a large positive $d(x)$ to real data regions with no simulated equivalent, but the gradient of its linear output will encourage nearby simulated events to increase in weight in a more controlled fashion, effectively telling the generator \emph{which direction} to move probability mass to reduce the discrepancy.
+            The WGAN critic, however, will assign a large positive $d(x)$ to real Data regions with no Simulation equivalent, but the gradient of its linear output will encourage nearby Simulation events to increase in weight in a more controlled fashion, effectively telling the generator \emph{which direction} to move probability mass to reduce the discrepancy.
             %
-            This greatly mitigates mode collapse and high-variance weight solutions.\kd{}
+            This greatly mitigates mode collapse and high-variance weight solutions~\cite{rosca_case_2021, doan_image_2020}.
             %
-            In our context of an “infinite--moment” unfolding (unconstrained by moment selection), using the WGAN framework is a key to avoiding the generator thrashing that occurred with a naive GAN approach.
+            In the context of an ``infinite moment'' unfolding unconstrained by moment selection, using the WGAN framework is very helpful to avoiding the generator instabilities that occur with a naive GAN approach.
             %
-            Empirically, we find that replacing the binary cross--entropy GAN loss with the WGAN loss stabilizes the training and yields a smoother weight distribution $g(z)$, especially in sparse regions of the detector feature space.
+            Empirically, replacing the binary cross--entropy GAN loss with the WGAN loss stabilises the training and yields a smoother weight distribution $g(z;\,\vb*\beta)$, especially in sparse regions of the detector feature space.
+            
+            An additional benefit is that RAN can, in fact, handle cases with {minimal detector level overlap} between Simulation and Data.
             %
-            An additional benefit is that RAN can handle cases with {minimal detector-level overlap} between simulation and data.
-            %
-            Since the Wasserstein metric remains finite as long as the support of the weighted simulation can be transported to cover data (even if initially disjoint), RAN does not strictly require the simulation and data distributions to overlap bin--by--bin.
+            Since the Wasserstein metric remains finite as long as the support of the weighted simulation can be transported to cover data, even if initially disjoint, RAN does not strictly require the simulation and data distributions to overlap bin--by--bin.
             %
             Of course, overlap at particle level is still required.
             %
-            RAN cannot invent truth--level events outside the generation’s support.
+            RAN cannot invent truth level events outside the generation’s support.
             %
-            Nonetheless, the ability to tolerate detector--level mismatches is a major advantage over methods that rely on probability ratios (which diverge when supports do not overlap).
+            Nonetheless, the ability to tolerate detector level mismatches is a major advantage over methods that rely on probability ratios, which diverge when supports do not overlap.
             %
-            In essence, the use of WGAN in RAN provides a strong form of regularization--by--design: it selects a smoother notion of distribution difference that avoids infinite gradients and excessive weight variance.
-        \subsubsection{Regularizing the critic: Lipschitz Constraints}
+            In essence, the use of WGAN in RAN provides a strong form of regularisation by design: it selects a smoother notion of distribution difference that avoids infinite gradients and excessive weight variance.
+        \subsubsection{Regularising the critic: Lipschitz constraints}
             The critic network $d(x)$ in RAN is subject to the \(1-\)Lipschitz constraint required by the Wasserstein theory.
             %
             We enforce this through two complementary regularization techniques.
             %
-            The first, already noted, is the \textbf{gradient penalty} term in Eq.~\eqref{eq:ran_wgan_loss}\kd{cite}.
+            The first, already noted, is the \textbf{gradient penalty} term in \cref{eq:ran_wgan_loss}.
             %
-            Rather than clipping weights (the original WGAN approach\kd{cite}, which can impede learning by reducing capacity), we adopt the improved strategy of penalizing the norm of the critic’s gradient on random interpolations to be close to 1.\kd{}
+            Rather than clipping weights\footnote{The original WGAN approach~\cite{arjovsky_wasserstein_2017}, which can impede learning by reducing capacity.}, RAN adopts the improved strategy of penalising the norm of the critic’s gradient on randomly sampled interpolations between Daa and Simulation to be close to 1.
             %
-            This encourages $d(x)$ to remain within the space of \(1-\)Lipschitz functions without harsh constraints on its parameters.
+            This smoothly encourages $d(x)$ to remain within the space of \(1-\)Lipschitz functions without a sharp constraint on its parameters.
+            
+            The second technique used to regularise the RAN training is \textbf{spectral normalisation} applied to the critic’s layers~\cite{miyato_spectral_2018}.
             %
-            The second technique is \textbf{spectral normalization} applied to the critic’s layers.\kd{}
+            Spectral normalisation rescales the weight matrix of each layer such that its largest singular value is 1.
             %
-            Spectral normalization rescales the weight matrix of each layer such that its largest singular value is 1\kd{cite}.
+            Doing so at every training step effectively bounds the Lipschitz constant of each linear component of $d(x)$, ensuring that $d(x)$ cannot change faster than a certain rate with respect to its input~\cite{scaman_lipschitz_2019, Terjek2019AdversarialRegularization, delattre_efficient_2023, mehta_effects_2023, meunier_dynamical_2022}.
             %
-            By doing so at every training step, we effectively bound the Lipschitz constant of each linear component of $d(x)$, ensuring that $d(x)$ cannot change faster than a certain rate with respect to its input.\kd{}
+            Even small violations of the Lipschitz condition can lead to training instabilities, since the critic might exploit them to push $L_{\text{WGAN}}$ lower, causing $g$ to react with wildly large weights.
             %
-            Even small violations of the Lipschitz condition can lead to training instabilities (the critic might exploit them to push $L_{\text{WGAN}}$ lower, causing $g$ to react with wildly large weights).
+            Spectral normalisation prevents the critic from assigning arbitrarily large scores to individual samples.
             %
-            Spectral normalization prevents the critic from assigning arbitrarily large scores to individual samples.\kd{}
-            %
-            This has an important regularizing effect on the generator’s behaviour.
+            This has an important regularising effect on the generator’s behaviour.
             %
             If $d(x)$ is bounded and smooth, the incentives for $g(z)$ to produce extremely large weight factors are reduced, because no single event can ever receive a disproportionately large score advantage.
             %
-            In effect, spectral normalization caps the influence of any one data–-simulation discrepancy on the loss.
+            In effect, spectral normalisation caps the influence of any individual Data–-Simulation discrepancy on the loss.
             %
-            The combined use of gradient penalties and spectral normalization in RAN was found to be effective for training stability---they keep the critic in check so that the adversarial game remains in a regime where gradients are informative and the generator’s updates remain moderate.
+            The combined use of gradient penalties and spectral normalisation in RAN was found to be effective for training stability---they keep the critic in check so that the adversarial training remains in a regime where gradients are informative and the generator’s updates remain moderate.
             %
-            With these in place, we substantially avoid the divergence and mode--collapse issues that plague naive adversarial training.\kd{}
+            With these in place, RAN substantially avoids the divergence and mode collapse issues that plague naive adversarial training~\cite{goodfellow_nips_2017, wiatrak_stabilizing_2020, Qian2021SelfNetworks, chen_cde-gan_2021 }.
 
-        \subsubsection{Regularizing the Generator: Initialization and Activation Constraints}
+        \subsubsection{Regularising the generator: initialisation and activation constraints.}
             On the generator side (the reweighting function $g(z)$), RAN incorporates two important measures to regularize the solution.  First, we initialize $g(z)$ to close to the identity function before beginning adversarial training.
             %
             In the context of unfolding, the “identity” reweighting corresponds to assigning weight 1 to every MC event (i.e. initially assuming the Monte Carlo truth distribution is correct and no reweighting is needed).
