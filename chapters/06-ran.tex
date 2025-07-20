@@ -1,33 +1,33 @@
 \chapter{RAN: Reweighting Adversarial Networks}
 \label{chap:ran}
-\section{The need for full spectral measurements}
+\section{The need for full spectral measurements.}
     \label{sec:need-for-density-unfolding}
-    \subsection{Motivation: Beyond Moments and Binned Spectra}
+    \subsection{Motivation: beyond moments and binned spectra.}
     Measurements in high energy physics traditionally report differential cross sections in a binned format, or even just a few summary statistics (moments) of a distribution. 
     %
-    This approach has produced numerous important results in the past\kd{cite}, but it fundamentally limits the information available for theoretical interpretation.
+    This approach has produced numerous important results in the past~\cite{GomezAmbrosio:2022mpm, Benato:2025rgo, ATLAS:2017dhr, alhroobSingleTopQuark,cowan_statistical_1998}, but it fundamentally limits the information available for theoretical interpretation.
     %
-    A small set of moments (e.g. mean, variance) offers only a coarse summary of a probability distribution and can hide critical features.
+    A small set of moments offers only a coarse summary of a probability distribution and can hide critical features.
     %
     In fact, infinitely many different distributions can share the same first few moments.
     %
-    Two observables with identical mean and variance may have drastically different tails or multi-modal structures that only a full distribution reveal.
+    Two observables with identical mean and variance may have drastically different tails or multi--modal structures that only a full distribution reveal.
     %
-    Thus, relying solely on low--order moments risks missing new physics signals or subtle QCD effects that manifest as shape differences rather than overall normalization changes.
+    Thus, relying solely on low order moments risks missing new physics signals or subtle QCD effects that manifest as shape differences rather than overall normalisation changes.
 
     Binning an observable into histograms is a more detailed approach than just quoting moments, but it too imposes significant limitations.
     %
-    Finite bin widths smear out fine structures and impose an arbitrary discretization on inherently continuous spectra.
+    Finite bin widths smear out fine structures and impose an arbitrary discretisation on inherently continuous spectra.
     %
-    Moreover, once data are binned, it becomes impossible to reconstruct or analyze the distribution for any arbitrary transformation of that observable without returning to the original unbinned data.
+    Moreover, once data are binned, it becomes impossible to reconstruct or analyse the distribution for any arbitrary transformation of that observable without returning to the original unbinned data.
     %
     For example, if a cross section is unfolded in bins of an angle $\theta$, one cannot later obtain the distribution in $\cos\theta$ or $\ln\theta$ except by repeating the unfolding from scratch.
     %
-    In contrast, an unbinned (or “full spectral”) measurement preserves maximum information, allowing \textit{a posteriori} reprocessing such as deriving moments, re-binning in different intervals, or studying functions of the measured observable.
+    In contrast, an unbinned, ``full spectral,'' measurement preserves maximum information, allowing \textit{a posteriori} reprocessing such as deriving moments, binning into different intervals, or studying functions of the measured observable.
     %
     This flexibility is especially valuable when comparing with various theoretical models, each of which may suggest different variables or summary statistics to highlight.
 
-    Another key motivation for capturing the \emph{full differential spectrum} is that many theoretical predictions in quantum chromodynamics (QCD) and beyond are sensitive to the detailed shape of distributions.
+    Another motivation for capturing the \emph{full differential spectrum} is that many theoretical predictions in quantum chromodynamics (QCD) and beyond are sensitive to the detailed shape of distributions.
     %
     New physics might appear as excess events in the tails of kinematic distributions, or subtle distortions across a spectrum rather than an overall rate change.
     %
@@ -35,109 +35,90 @@
     %
     By measuring the full spectrum, experimental results can be directly fed into global fits or theory calculations that integrate over the entire phase space.
     %
-    In summary, to fully exploit the data and enable the broadest possible comparisons to theory, it is imperative to go beyond a few moments or fixed--bin histograms and aim to unfold the continuous differential cross section itself.
+    In summary, to fully exploit the data and enable the broadest possible comparisons to theory, it is imperative to go beyond a few moments or fixed bin histograms and aim to unfold the continuous differential cross section itself.
 
-    Let us now discuss in more detail some of the central limitations of binned approaches and approaches focused on unfolding a few moments summarised above in greater detail.
+    The reminder of the this section discusses some of the central limitations of binned approaches and approaches focused on unfolding a few moments introduced above in greater detail.
     \begin{itemize}
-        \item \textbf{Information Loss:}
-            Low--order moments (such as mean or variance) condense an entire distribution into one or two numbers.
+        \item \textbf{Information loss.}
+            Low order moments condense an entire distribution into a small handful of numbers.
             %
-            This sacrifices information about higher--order fluctuations and tail behavior.
+            This sacrifices information about higher order fluctuations and tail behavior.
             %
-            Many distinct distributions can reproduce the same set of moments, so important differences (e.g. a long tail vs. a sharp cutoff) remain hidden if only moments are reported.
+            Many distinct distributions can reproduce the same set of moments, so important differences\footnote{e.g. a long tail vs. a sharp cutoff} remain hidden if only moments are reported.
             %
-            Even in cases where theory predicts moments more readily than spectra (as in some QCD calculations of energy scaling of moments\kd{cite}), relying exclusively on moments means discarding data that could otherwise constrain models.
+            Even in cases where theory predicts moments more readily than spectra\footnote{as in some QCD calculations of energy scaling of moments}, relying exclusively on moments means discarding data that could otherwise constrain models.
             %
             Binned histograms similarly integrate the underlying distribution over each bin, blurring details smaller than the bin width.
             %
-            Fine binning could, in principle, mitigate this, but the detector resolution and statistical limits cause too--fine bins to lead to instability due to bin migration effects \kd{cite} and large uncertainties.
-        \item \textbf{Binning Artifacts and Biases:}
+            Fine binning could, in principle, mitigate this, but the detector resolution and statistical limits one's ability to use bins that are too fine.
+            %
+            Too fine bins lead to instability due to bin migration effects and large uncertainties~\cite{Bessner:2017trm, LHCb:2023qav, ATLAS:2024hmk, CMS:2025dnx, Kutz:2024eaq, ATLAS:2016vlf}.
+        \item \textbf{Binning artifacts and biases.}
             Any choice of bin boundaries is inherently arbitrary.
             %
             Two experiments measuring the same observable might choose different binning schemes, complicating direct comparisons.
             %
             Small shifts in bin edges can redistribute events and lead to apparent differences that are purely due to binning choices rather than physics.
             %
-            Furthermore, when binning multivariate data (or examining an observable’s moments in bins of another quantity), the necessary discretization in each dimension can introduce artificial discontinuities.
+            Furthermore, when binning multivariate data\footnote{or examining an observable's moments in bins of another quantity}, the necessary discretisation in each dimension can introduce artificial discontinuities~\cite{GomezAmbrosio:2022mpm, Fiorendi:2014klw, KLOE-2:2025ggc, Ressegotti:2024szk, LHCb:2025eyf, Grosso:2024nho,}.
             %
-            These artifacts hinder comparing unfolded results with continuous theoretical predictions or with results from other experiments that used different bin definitions\kd{cite}.
-            %
+            These artifacts hinder comparing unfolded results with continuous theoretical predictions or with results from other experiments that used different bin definitions~\cite{Brehmer:2018hga}.
+            
             Additionally, binning can bias downstream analysis;
             %
-            for instance, extracting moments from a binned distribution requires assuming a shape within each bin (often a constant or linear interpolation).
+            for instance, extracting moments from a binned distribution requires assuming a shape within each bin~\footnote{often a constant or linear interpolation}.
             %
-            If the true distribution varies non--linearly inside the bin, the extracted moment is biased by the bin size and shape assumption such that even the sign of the error cannot be known \textit{a priori}.\kd{cite Moment Unfolding}
+            If the true distribution varies non--linearly inside the bin, the extracted moment is biased by the bin size and shape assumption such that even the sign of the error cannot be known \textit{a priori}~\cite{desai2024moment}.
             %
-            An unbinned measurement eliminates this intermediate step and potential bias.
-        \item \textbf{Limited Dimensionality:}
+            An unbinned measurement eliminates this intermediate step and the bias that can arise from it.
+        \item \textbf{Limited dimensionality.}
             Perhaps most importantly, binned unfolding severely constrains the number of observables one can unfold simultaneously.
             %
             Each additional dimension (feature) requires exponentially more bins to maintain a given resolution.
             %
-            In practice, traditional unfolding is often performed in one dimension at a time (or at most two) because higher--dimensional histograms would be too sparsely populated.
+            In practice, traditional unfolding is often performed in just one or two dimensions at a time because higher dimensional histograms would be too sparsely populated.
             %
             This precludes measuring cross sections differential in many variables at once.
             %
             It also means that if one is interested in an observable $O$ that is a complicated function of several kinematic quantities, one either must unfold those quantities jointly with fine binning (which is infeasible) or settle for unfolding a projection of $O$ in one dimension (which loses information).
             %
-            In contrast, unbinned approaches can handle high-dimensional data naturally, since they do not require constructing an \(d-\)dimensional grid of bins.
+            In contrast, unbinned approaches can handle high dimensional data naturally, since they do not require constructing an \(d-\)dimensional grid of bins.
             %
-            In principle, unfolding the full phase space (i.e. a fully differential cross section in all relevant kinematic variables) is only realistic with an unbinned strategy.
+            Unfolding the full phase space~\footnote{i.e. a fully differential cross section in all relevant kinematic variables} is only realistic with an unbinned strategy.
     \end{itemize}        
-    Table~\ref{tab:meas_compare} summarizes these differences between unbinned moment--based unfolding, binned density unfolding, and unbinned full--spectrum unfolding methods.
-    %
-    By construction, a full spectral measurement retains maximal information and avoids discretization issues, at the cost of a more challenging unfolding procedure.
-    %
-    These challenges, as discussed next, were a major deterrent historically, explaining why experiments long favoured simplified (binned or moment) results despite their limitations.
-    
-    \begin{table}
-        \centering
-        \caption{Comparison of measurement approaches.
-        %
-        Reporting only low--order moments loses most distribution information.
-        %
-        Binned differential cross sections retain shape information but suffer from discretization and limited dimensionality.
-        %
-        Full spectral measurements preserve the complete distribution, enabling maximal reusability and detailed theory comparisons, but require regularizing a much more ill--posed training.
-        }
-        \label{tab:meas_compare}
-        \begin{tabular}{lccc}
-            \toprule
-            \textbf{Aspect} & \textbf{Moments only} & \textbf{Binned spectrum} & \textbf{Full spectrum} \\
-            \midrule
-            Information           & Low   & Moderate & High \\
-            Reuse         & High      & Limited  & High \\
-            Dimensions    & Many       & 1 to 2   & Many \\
-            Stability              & Easy & Moderate & Hard \\
-            \bottomrule
-        \end{tabular}
-    \end{table}
 
+\input{tables/6-1.tex}
+
+    Table~\ref{tab:meas_compare} summarizes these differences between unbinned moment based unfolding, binned density unfolding, and unbinned full spectrum unfolding methods.
+    %
+    By construction, a full spectral measurement retains maximal information and avoids discretisation issues, at the cost of a more challenging unfolding procedure.
+    %
+    These challenges were a major deterrent historically, explaining why experiments long favoured simplified results despite their limitations.
     
-    \subsection{Use Cases}
-    Some of the most compelling motivations for unbinned unfolding unfolding of probability density functions come from specific classes of observables and analyses in high--energy physics that demand detailed distributions rather than summary measures.
+    \subsection{Use cases.}
+    Some of the most compelling motivations for unbinned unfolding of probability density functions come from specific classes of observables and analyses in high energy physics that demand detailed distributions rather than summary measures.
     %
     A few examples are
     \begin{itemize}
-        \item \textbf{Jet substructure observables:}
+        \item \textbf{Jet substructure observables.}
             %
             Modern studies of jet physics often examine intricate internal properties of jets, for example, the distribution of jet mass, angularity, $N-$subjettiness ratios like $\tau_{21}$, energy correlation functions, and so on.
             %
             These observables have rich distributions shaped by QCD radiation and hadronization inside the jet.
             %
-            For instance, the jet mass spectrum in hadronic collisions exhibits a steeply falling shape with resonance peaks or grooming--induced features in certain regions;
+            For instance, the jet mass spectrum in hadronic collisions exhibits a steeply falling shape with resonance peaks or grooming induced features in certain regions;
             %
             capturing these details is essential for validating parton shower models and grooming techniques.
             
-            If only the average jet mass or a few quantiles were reported, one would miss the full story of how often jets are heavy vs. light, or how substructure techniques sculpt the distribution.
+            If only the average jet mass or a few quantiles were reported, one would lose the structural information of how often jets are heavy versus light, or how substructure sculpts the distribution.
             %
-            Similarly, distributions of $\tau_{21}$ (a ratio used to tag two--prong substructure) contain information about the fraction of jets with two subjets vs. one, which is crucial for signal (e.g. boosted $W$) vs background (QCD jet) discrimination.
+            Similarly, distributions of $\tau_{21}$ \footnote{a ratio used to tag two prong substructure} contain information about the fraction of jets with two subjets versus one, which is crucial for signal (e.g. boosted $W$) vs background (QCD jet) discrimination.
             %
             Capturing the entire $\tau_{21}$ spectrum allows experimentalists and theorists to identify where in the distribution their models agree or fail, rather than just comparing an efficiency at a fixed cut.
+            
+            Unfolding these jet substructure distributions in an unbinned way provides a high resolution view of QCD dynamics and is increasingly necessary as theory tools\footnote{like analytic resummation or first principles simulation} improve to the point of predicting differential shapes\kd{cite}.
             %
-            Unfolding these jet substructure distributions in an unbinned way provides a high--resolution view of QCD dynamics and is increasingly necessary as theory tools (like analytic resummation or first--principles simulation) improve to the point of predicting differential shapes\kd{cite}.
-            %
-            In fact, recent measurements have demonstrated the power of full--phase--space unfolding for jets, using multivariate ML techniques to correct detector effects and obtain particle--level jet observable spectra without binning\kd{cite}.
+            In fact, recent measurements have demonstrated the power of full phase space unfolding for jets, using multivariate ML techniques to correct detector effects and obtain particle level jet observable spectra without binning\kd{cite}.
             %
             These cases underscore that jet physics benefits enormously from preserving the full shape information.
         \item \textbf{Charge and flavour sensitive observables:}

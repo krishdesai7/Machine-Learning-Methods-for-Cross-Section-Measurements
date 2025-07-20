@@ -1,0 +1,22 @@
+\begin{table}
+    \label{tab:meas_compare}
+    \centering
+    \caption{Comparison of measurement approaches.
+    %
+    Reporting only low--order moments loses most distribution information.
+    %
+    Binned differential cross sections retain shape information but suffer from discretization and limited dimensionality.
+    %
+    Full spectral measurements preserve the complete distribution, enabling maximal reusability and detailed theory comparisons, but require regularizing a much more ill--posed training.
+    }
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Aspect} & \textbf{Moments only} & \textbf{Binned spectrum} & \textbf{Full spectrum} \\
+        \midrule
+        Information           & Low   & Moderate & High \\
+        Reuse         & High      & Limited  & High \\
+        Dimensions    & Many       & 1 to 2   & Many \\
+        Stability              & Easy & Moderate & Hard \\
+        \bottomrule
+    \end{tabular}
+\end{table}
