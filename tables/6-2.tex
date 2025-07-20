@@ -1,0 +1,15 @@
+ \begin{table}
+            \centering
+            \caption[Comparison of unfolding method characteristics]{Comparison of key characteristics across different unfolding methods. ``Unbinned'' indicates whether the method can process continuous data without binning into fixed histograms. ``Iterative'' refers to whether multiple training iterations are required (distinct from neural network training epochs). ``Uses simulation'' indicates whether the method reweights existing Monte Carlo events (Yes) or generates new samples from scratch (No). The Reweighting Adversarial Network (RAN) method introduced in this chapter combines the advantages of unbinned processing and non-iterative training while leveraging prior simulations, positioning it between the computational efficiency of traditional methods and the flexibility of modern machine learning approaches.}
+            \label{tab:unfold_methods}
+            \begin{tabular}{lccc}
+                \toprule
+                \textbf{Method} & \textbf{Unbinned} & \textbf{Iterative} & \textbf{Uses sim.} \\
+                \midrule
+                Traditional (IBU, TUnfold) & No & Sometimes & Yes\\
+                Discriminative (\textsc{OmniFold})      & Yes & Yes & Yes \\
+                Generative (cINNs/VAEs)             & Yes & No  & No (from noise)\\
+                Adversarial reweight (RAN)        & Yes & No  & Yes \\
+                \bottomrule
+            \end{tabular}
+        \end{table}

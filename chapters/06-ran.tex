@@ -104,7 +104,7 @@
             %
             Modern studies of jet physics often examine intricate internal properties of jets, for example, the distribution of jet mass, angularity, $N-$subjettiness ratios like $\tau_{21}$, energy correlation functions, and so on.
             %
-            These observables have rich distributions shaped by QCD radiation and hadronization inside the jet.
+            These observables have rich distributions shaped by QCD radiation and hadronisation inside the jet.
             %
             For instance, the jet mass spectrum in hadronic collisions exhibits a steeply falling shape with resonance peaks or grooming induced features in certain regions;
             %
@@ -116,253 +116,239 @@
             %
             Capturing the entire $\tau_{21}$ spectrum allows experimentalists and theorists to identify where in the distribution their models agree or fail, rather than just comparing an efficiency at a fixed cut.
             
-            Unfolding these jet substructure distributions in an unbinned way provides a high resolution view of QCD dynamics and is increasingly necessary as theory tools\footnote{like analytic resummation or first principles simulation} improve to the point of predicting differential shapes\kd{cite}.
+            Unfolding these jet substructure distributions in an unbinned way provides a high resolution view of QCD dynamics and is increasingly necessary as theory tools\footnote{like analytic resummation or first principles simulation} improve to the point of predicting differential shapes~\cite{Canelli:2025ybb, H1:2021wkz, Shmakov:2024gkd}.
             %
-            In fact, recent measurements have demonstrated the power of full phase space unfolding for jets, using multivariate ML techniques to correct detector effects and obtain particle level jet observable spectra without binning\kd{cite}.
+            In fact, recent measurements have demonstrated the power of full phase space unfolding for jets, using multivariate ML techniques to correct detector effects and obtain particle level jet observable spectra without binning~\cite{Arratia:2021otl, Milton:2025mug,collaboration_machine_2024, collaboration_machine_2025, Aguilar-Saavedra:2014kpa}.
             %
             These cases underscore that jet physics benefits enormously from preserving the full shape information.
-        \item \textbf{Charge and flavour sensitive observables:}
+        \item \textbf{Charge and flavour sensitive observables.}
             %
             Some observables aim to distinguish particle charge or flavour inside complex final states, and their distributions can be especially telling.
             %
-            An example is the jet charge distribution, the electric charge of a jet computed from the momentum--weighted charges of its constituent particles.
+            An example is the jet charge distribution, the electric charge of a jet computed from the momentum weighted charges of its constituent particles.
             %
-            This quantity is used to tag whether a jet originated from a quark of a given electric charge (as opposed to a gluon, which has none).
+            This quantity is used to tag whether a jet originated from a quark of a given electric charge\footnote{as opposed to a gluon, which has none}.
             %
-            The jet charge is a continuous-valued observable that can take positive and negative values, and experiments measure its probability distribution for jets of various momenta.
+            The jet charge is a continuous valued observable that can take positive and negative values, and experiments measure its probability distribution for jets of various momenta.
             %
             The full shape of the jet charge distribution contains information about the underlying quark/gluon mixture and fragmentation processes;
             %
-            for instance, a broader distribution indicates a mix of high--charge (quark--origin) and zero--charge (gluon--origin) jets, whereas a narrow distribution peaked near zero suggests predominantly gluon jets.
+            for instance, a broader distribution indicates a mix of high charge (quark origin) and zero charge (gluon origin) jets, whereas a narrow distribution peaked near zero suggests predominantly gluon jets.
             %
-            Only by unfolding the entire jet charge spectrum (including its dependence on jet $p_T$) can one provide data precise enough to tune fragmentation models and compare to theoretical calculations of charge transport in jets\kd{cite}.
+            Only by unfolding the entire jet charge spectrum (including its dependence on jet $p_T$) can one provide data precise enough to tune fragmentation models and compare to theoretical calculations of charge transport in jets~\cite{CMS:2017yer,CMS:2020plq,Larkoski:2024uoc,Accardi:2022oog,Baldenegro:2024pfb,AbdulKhalek:2021gbh, Larkoski:2020JetLearning}.
             
-            Another example is the distribution of identified particle multiplicities (e.g. number of charged hadrons in an event or in a jet).
+            Another example is the distribution of identified particle multiplicities.\footnote{E.g., number of charged hadrons in an event or in a jet}
             %
             The multiplicity distribution is discrete but often measured as a histogram.
             %
-            It is a particularly challenging observable to unfold because it is strongly sensitive to soft QCD and hadronization effects.\kd{cite}
+            It is a particularly challenging observable to unfold because it is strongly sensitive to soft QCD and hadronization effects~\cite{Lyons:2011cli, Grosse-Oetringhaus:2009eis, ALICE:2022xip, Segura:2024srj, STAR:2022etb, Carli:2015qta, Skands:2014pea, Christiansen:2015yqa}.
             %
-            Two Monte Carlo generators might predict the same average multiplicity but differ in the width or tail of the multiplicity distribution, which affects extreme cases (like very high multiplicity events).
+            Two Monte Carlo generators might predict the same average multiplicity but differ in the width or tail of the multiplicity distribution, which affects extreme cases.\footnote{Like very high multiplicity events.}
             %
-            Such observables are often \emph{infrared--unsafe} theoretically (because soft particle emission has no cutoff, perturbative predictions diverge for the distribution shape), meaning theory must rely on phenomenological models.
+            Such observables are often \emph{infrared unsafe} theoretically,\footnote{ecause soft particle emission has no cutoff, perturbative predictions diverge for the distribution shape} meaning theory must rely on phenomenological models.
             %
-            The only way to constrain and improve those models is for experiments to provide the unfolded full distributions of these IR--unsafe observables at particle level.
+            The only way to constrain and improve those models is for experiments to provide the unfolded full distributions of these IR unsafe observables at particle level.
             %
             In summary, any analysis where internal structure, charge assignments, or other detailed event properties matter will benefit from (or even require) full spectral unfolding rather than a few summary numbers.
-        \item \textbf{Multi--differential and high--dimensional measurements:}
-            The ultimate form of “full” spectral measurement is unfolding in multiple kinematic dimensions simultaneously, effectively measuring a multi--differential cross section over a high--dimensional phase space.
+        \item \textbf{Multidifferential and high dimensional measurements.}
+            The ultimate form of ``full'' spectral measurement is unfolding in multiple kinematic dimensions simultaneously, effectively measuring a multi differential cross section over a high dimensional phase space.
             %
             While this is extremely challenging, certain physics questions demand correlating several observables.
             %
-            For example, consider measuring an observable $O$ as a function of another variable $Q$ (say, the distribution of jet substructure variable $O$ in bins of jet $p_T$ or event energy $Q$).
+            For example, consider measuring an observable $O$ as a function of another variable (or collection of variables) $\vb{Q}$\footnote{say, the distribution of jet charge $q$ in bins of jet $p_T$ or event energy $Q$}.
             %
-            With traditional methods, one would perform a two--dimensional unfolding (bins in $O$ vs bins in $Q$) to then extract moments or other features as a function of $Q$.\kd{cite Moment Unfolding}
+            With traditional methods, one would perform a two dimensional unfolding, choosing a projection of \(Q\) if needed (bins in $O$ vs bins in $Q$) to then extract moments or other features as a function of $Q$~\cite{CMS:2011xqa, ATLAS:2010jvh, ATLAS:2020ccu, CMS:2014eaj, ATLAS:2022zbu, D'Agostini:265717}.
             %
             Binning in two (or more) dimensions quickly suffers from sparse data in many bins and complicated systematic uncertainties.
             %
-            An unbinned approach, by contrast, could in principle unfold the joint $(O,Q)$ distribution without requiring an explicit grid, allowing arbitrary slicing and analysis after the fact.
+            An unbinned approach, by contrast, could in principle unfold the joint $(O,\vb{Q})$ distribution without requiring an explicit grid, allowing arbitrary slicing and analysis after the fact.
             %
-            This is especially relevant in the era of high--luminosity colliders, where huge datasets invite more differential measurements.
+            This is especially relevant in the era of high luminosity colliders, where huge datasets invite more differential measurements.
             %
-            Rather than publish dozens of separate one--dimensional spectra (each in a single kinematic region), one could publish a multi--dimensional unfolded distribution that coherently captures all correlations.
+            Rather than publish dozens of separate one dimensional spectra (each in a single kinematic region), one could publish a multi dimensional unfolded distribution that coherently captures all correlations.
             %
             Such a result would be far more powerful for global interpretations, albeit significantly more complex to obtain.
             %
             Unbinned density unfolding techniques are a step toward this ambitious goal, enabling higher dimensional unfolding than previously feasible with manageable uncertainties.
     \end{itemize}
-    \subsection{Challenges in Unfolding Full Distributions}
-        The push for unbinned, high--resolution unfolded spectra comes with substantial challenges.
+    \subsection{Challenges in unfolding full distributions.}
+        The push for unbinned, high resolution unfolded spectra comes with substantial challenges.
         %
-        Unfolding a full distribution (especially in multiple dimensions) is a markedly more ill--posed problem than unfolding a small set of summary statistics or coarse bins.
+        Unfolding a full distribution, especially in multiple dimensions, is a markedly more ill posed problem than unfolding a small set of summary statistics or coarse bins.
         %
         These challenges are statistical, physical, and computational.
 
-        At its core, unfolding requires inverting the detector response---a many--to--many mapping where a given particle--level distribution can produce a range of detector--level outcomes due to resolution and inefficiencies.
+        At its core, unfolding requires inverting the detector response---a many to many mapping where a given particle level distribution can produce a range of detector level outcomes due to resolution and inefficiencies.
         %
-        This inversion is ill--posed, that is to say, infinitely many particle--level spectra are, in principle, consistent (within uncertainties) with a given set of detector--level data, especially if the data are treated in fine detail.
+        This inversion is ill posed, that is to say, infinitely many particle level spectra are, in principle, consistent, within uncertainties, with a given set of detector level data, especially if the data are treated in fine detail.
         %
-        Small fluctuations or statistical noise in the detector--level histogram can cause huge oscillations in the naive unfolded solution if one attempts a direct inversion of the response matrix.
+        Small fluctuations or statistical noise in the detector level histogram can cause huge oscillations in the naive unfolded solution if one attempts a direct inversion of the response matrix.
         %
         In classical unfolding methods, this is well known.
         %
-        Directly inverting the response matrix $\mathbf{R}$ leads to amplified noise and unstable solutions.\kd{cite}
+        Directly inverting the response matrix $\mathbf{R}$ leads to amplified noise and unstable solutions.
         %
-        The problem is exacerbated when the “matrix” is essentially continuous (unbinned) since here one is trying to reconstruct a function rather than a finite vector, which has infinitely many degrees of freedom.
+        The problem is exacerbated when the ``matrix'' is essentially continuous (unbinned) since here one is trying to reconstruct a function rather than a finite vector, which has infinitely many degrees of freedom.
         %
-        Without any constraints or regularization, unfolding is mathematically underdetermined; one must introduce additional information to obtain a physical solution.
+        Without any constraints or regularisation, unfolding is mathematically underdetermined; one must introduce additional information to obtain a physical solution.
         %
-        This additional information can be statistical regularization (penalizing roughness in the solution), or a strong prior (initial guess of the spectrum) to guide the result.
+        This additional information can be statistical regularisation\footnote{E.g., penalizing roughness in the solution}, or a strong prior\footnote{Incorporated, e.g., initial guess of the spectrum} to guide the result.
         %
         Either way, the unfolded distribution will depend to some degree on these assumptions, which is a point of concern.
 
         All unfolding methods require some initial model or ansatz for the true distribution, explicitly or implicitly.
         %
-        Traditional regularized unfolding (e.g. Bayesian iterative methods or Tikhonov regularization) starts from a prior distribution and updates it in light of the data.
+        Traditional regularised unfolding (e.g. Bayesian iterative methods or Tikhonov regularisation) starts from a prior distribution and updates it in light of the data.
         %
-        If the prior is significantly wrong in a region where data have low sensitivity, the unfolded result may inherit that wrong shape (bias) because there isn’t enough information in the data to correct it.
+        If the prior is significantly wrong in a region where data have low sensitivity, the unfolded result may inherit that wrong shape (bias) because there isn't enough information in the data to correct it.
         %
-        For binned methods with strong regularization, the unfolded spectrum can end up looking very much like the prior except in regions where the data clearly indicate otherwise.
+        For binned methods with strong regularisation, the unfolded spectrum can end up looking very much like the prior except in regions where the data clearly indicate otherwise.
         %
-        When unfolding a full spectrum, prior dependence can be even trickier: with many bins or continuous degrees of freedom, there are more opportunities for the prior assumptions to creep in unless the method explicitly works to mitigate this.
+        When unfolding a full spectrum, prior dependence can be even trickier.
+        
+        With many bins or continuous degrees of freedom, there are more opportunities for the prior assumptions to creep in unless the method explicitly works to mitigate this.
         %
-        Modern ML based unbinned unfolding techniques like iterative reweighting (used by \textsc{\textsc{OmniFold}}) attempt to reduce prior bias by gradually adjusting the prior to fit the data\kd{cite}, but they still require that the initial simulation populate all regions of phase space that data might cover.\kd{cite}
+        Modern ML based unbinned unfolding techniques like iterative reweighting (used by {\textsc{OmniFold}) attempt to reduce prior bias by gradually adjusting the prior to fit the data, but they still require that the initial simulation populate all regions of phase space that data might cover.
         %
-        In other words, if the true distribution has support outside the domain of the starting simulation, no unfolding can recover that---a condition that applies to all known methods.
+        In other words, if the Truth has support outside the domain of the Generation, no unfolding can recover that---a condition that applies to all known methods.
         %
-        This need for sufficient overlap in the support of the prior and true distributions is a fundamental mathematical limitation: full spectral unfolding demands that our simulation model is flexible and broad enough to encompass the truth, at least roughly, or else certain features will be missed entirely.
+        This need for sufficient overlap in the support of the prior and true distributions is a fundamental mathematical limitation: full spectral unfolding demands that our Generation model is flexible and broad enough to encompass the Truth, at least roughly, or else certain features will be missed entirely.
+        %
+        Methods such as \textsc{OmniFold} that involve classification and reweighting at detector level in addition to particle level additionally require that Simulation populate the entire phase space of Data.
 
-        Unfolding more finely (or in more dimensions) inherently means extracting more parameters (or effectively, more bins worth of information) from the same finite dataset.
+        Unfolding more finely, or in more dimensions, inherently means extracting more parameters.\footnote{In effect, more bins worth of information.} from the same finite dataset.
         %
-        This trade--off means individual elements of the unfolded spectrum will have larger statistical uncertainties than if the data were aggregated into a few bins or moments.
+        This trade off means individual elements of the unfolded spectrum will have larger statistical uncertainties than if the data were aggregated into a few bins or moments.
         %
         For example, unfolding 100 bins will yield each bin count with larger uncertainty than if one had combined them into 10 bins.
         %
-        If not carefully handled, an unbinned unfolding will overfit statistical fluctuations in the observed data (referred to as \emph{sculpting} in the machine learning literature\kd{cite}.)
+        If not carefully handled, an unbinned unfolding will overfit statistical fluctuations in the observed data.\footnote{Referred to as \emph{sculpting} in the machine learning literature~\cite{Corso2023, ParticleDataGroup:2022pth}.}
         %
-        Effective regularization is essential to prevent noise amplification.
-        %
+        Effective regularisation is essential to prevent noise amplification.
+        
         Additionally, the detector response kernel must be well modelled.
         %
-        Any mismodeling (systematic error) can imprint itself on the unfolded result in complex and unpredictable ways.
+        Any mismodeling (systematic error) will imprint itself on the unfolded result in complex and unpredictable ways.
         %
-        When only a few numbers are extracted, one can sometimes correct for known detector biases by simple scale factors; but when unfolding an entire distribution, any mismodeling of the response shape can distort the unfolded spectrum non--uniformly.
+        When only a few numbers are extracted, one can sometimes correct for known detector biases by simple scale factors; but when unfolding an entire distribution, any mismodeling of the response shape can distort the unfolded spectrum non-uniformly.
         %
         This places high demands on detector simulation fidelity and on methods to incorporate systematic uncertainties (e.g. variations of the response model) into the unfolding procedure.
         %
         Fully Bayesian approaches or profile likelihood methods can propagate uncertainties to the unfolded spectrum, but doing so in high dimensions is computationally intensive.
         %
-        In short, the richer the information we unfold, the more careful we must be to quantify the reliability of each feature of the spectrum.
+        In short, the richer the information one unfolds, the more careful one must be to quantify the reliability of each feature of the spectrum.
 
-        Traditional unfolding algorithms (like solving $\mathbf{R}^{-1}\vb*{\mu}$ for binned histograms) scale poorly as the number of bins grows.
+        Traditional unfolding algorithms scale poorly as the number of bins grows.
         %
-        These traditional algorithms like iterative Bayesian unfolding (IBU, or D’Agostini method) are relatively fast for tens of bins but become slow for hundreds of bins, and practically unusable for thousands of bins or continuous data, as each iteration must refine a fine--grained distribution.
+        Even if one had infinite amounts of data and so unpopulated bins were not a concern, these traditional algorithms like iterative Bayesian unfolding (IBU, or the D'Agostini method) that are relatively fast for tens of bins become very slow for hundreds of bins, and practically unusable for thousands of bins or continuous data, as each iteration must refine a fine grained distribution.
         %
-        Unbinned algorithms, on the other hand, typically rely on machine learning or Monte Carlo sampling and are computationally expensive: they may involve training complex models on large datasets or performing high--dimensional optimizations.
+        Unbinned algorithms, on the other hand, typically rely on machine learning or Monte Carlo sampling.
         %
-        For instance, iterative reweighting methods train a classifier multiple times (each iteration is a full supervised learning task on the dataset)\kd{cite}, and generative approaches might require training a high--capacity generative model flow on millions of events.
+        They may involve training complex models on large datasets or performing high dimensional optimisations.
         %
-        These computations require substantial computing resources (CPU/GPU), careful hyperparameter tuning, and sometimes suffer from convergence issues.
+        For instance, iterative reweighting methods train a classifier multiple times\footnote{Each iteration is a full supervised learning task on the dataset}, and generative approaches might require training a high capacity generative model on millions of events.
         %
-        Ensuring that an unbinned unfolding converges to a stable solution without excessive computation is a non--trivial challenge.
+        These computations require substantial computing resources (CPU and GPU), careful hyperparameter tuning, and sometimes suffer from convergence issues.
         %
-        In summary, the practical feasibility of unfolding full spectra depends on advances in algorithms and computing, precisely the advances that modern machine learning--based methods aim to provide.
+        Ensuring that an unbinned unfolding converges to a stable solution without excessive computation is a non-trivial challenge.
+        %
+        In summary, the practical feasibility of unfolding full spectra depends on advances in algorithms and computing, precisely the advances that modern machine learning based methods aim to provide.
         
-        Despite these challenges, the drive to measure full spectra is strong because of the scientific payoff.
+        Despite the challenges that unfolding full spectra presents, the drive to measure full spectra is strong because of the scientific payoff.
         %
         The next subsection discusses how recent machine learning methods, including the RAN architecture, tackle these issues.
 
-    \subsection{Unbinned Unfolding Approaches}
+    \subsection{Unbinned unfolding approaches.}
         Recent years have seen rapid development of machine learning techniques for unfolding, which seek to overcome the limitations of traditional methods and make full spectral measurements possible in practice.
         %
-        Broadly, these approaches fall into two categories, those based on \textit{reweighting} an existing simulated sample to better agree with data, and those based on \textit{generating} new events (typically with generative models) to reproduce the data distribution.
+        Broadly, these approaches fall into two categories, those based on \textit{reweighting} an existing simulated sample to better agree with data, and those based on \textit{generating} new events\footnote{Typically with generative models.} to reproduce the data distribution.
         %
-        Both categories strive to avoid fixed histogram binning and instead work with unbinned data, using the power of ML to handle high--dimensional inputs and complex detector responses.
+        Both categories strive to avoid fixed histogram binning and instead work with unbinned data, using the power of ML to handle high dimensional inputs and complex detector responses.
 
-        One of the pioneering ML-based methods is \textbf{\textsc{\textsc{OmniFold}}}\kd{cite}, which introduced an unbinned, multivariate unfolding technique using iterative reweighting.
+        One of the pioneering ML based methods is \emph{\textsc{OmniFold}}, which introduced an unbinned, multivariate unfolding technique using iterative reweighting.
         %
-        \textsc{\textsc{OmniFold}} uses classifier neural networks to reweight a Monte Carlo sample.
+        {\textsc{OmniFold} uses classifier neural networks to reweight a Monte Carlo sample.
         %
-        Essentially, it trains a classifier to distinguish between data and simulation, and then uses the classifier output to assign weights to simulation events such that the weighted simulation better matches the data.
+        Essentially, it trains classifiers to distinguish between data and simulation, and then uses the classifier output to assign weights to simulation events such that the weighted simulation better matches the data.
         %
-        This procedure is done in stages (iterations) and at both detector and particle level in alternation.\kd{cite}
+        This procedure is done in stages (iterations) and at both detector and particle level in alternation.
         %
-        After several iterations, the method produces a set of weights for generation events that yield an unfolded distribution.
+        The method produces a set of weights for Generation events that yield an unfolded distribution.
         %
-        \textsc{\textsc{OmniFold}} demonstrated, for the first time, that one can simultaneously unfold many observables (even the entire event record) without binning, given a sufficiently flexible classifier and a robust iterative scheme.\kd{}
+        \textsc{OmniFold} demonstrated, for the first time, that one can simultaneously unfold many observables\footnote{And even the entire event record.} without binning, given a sufficiently flexible classifier and a robust iterative scheme.
         %
-        It has been successfully applied in multiple experimental analyses,\kd{}.
+        It has been successfully applied in multiple experimental analyses.
+        
+        The key advantages of \textsc{OmniFold} are that it naturally accounts for high dimensional correlations\footnote{Since the classifier can use any or all features} and it actively mitigates prior dependence by iterative refinement, effectively performing a form of expectation maximisation to find a self consistent unfolded result that does not overly rely on the initial generation distribution.
         %
-        The key advantages of \textsc{\textsc{OmniFold}} are that it naturally accounts for high--dimensional correlations (since the classifier can use any or all features) and it actively mitigates prior dependence by iterative refinement, effectively performing a form of expectation--maximization to find a self consistent unfolded result that does not overly rely on the initial generation distribution.
+        However, a noted downside is its computational cost: each iteration requires training two classifiers to convergence, and in realistic cases one might need $\numrange{5}{10}$ iterations, amounting to training a large number of networks.
         %
-        However, a noted downside is its computational cost: each iteration requires training two classifiers to convergence, and in realistic cases one might need $5 - 10$ iterations, amounting to training a large number of networks.
+        This iterative nature can also complicate uncertainty evaluation and hyperparameter tuning.\footnote{E.g., one must subjectively choose when to stop iterating to avoid instability.}
         %
-        This iterative nature can also complicate uncertainty evaluation and hyperparameter tuning (e.g. one must subjectively choose when to stop iterating to avoid instability).
-        %
-        Still, \textsc{\textsc{OmniFold}} set the stage for practical unbinned unfolding and proved the feasibility of full spectral measurements on real collider data.
+        Still, \textsc{OmniFold} set the stage for practical unbinned unfolding and proved the feasibility of full spectral measurements on real collider data.
 
         In parallel, other methods have explored using explicit generative models to unfold distributions.
         %
-        For example, VAEs have been employed to learn a mapping from random noise to particle--level distributions such that, when those events are passed through a detector simulation, the output matches the observed data distribution\kd{cite}.
+        For example, VAEs have been employed to learn a mapping from random noise to particle level distributions such that, when those events are passed through a detector simulation, the output matches the observed data distribution.
         %
-        Similarly, normalizing flows and other invertible neural networks have been used to model the probability density function of true observables and deform it until its convolution with the detector response matches data\kd{cite}.
+        Similarly, normalising flows and other invertible neural networks have been used to model the probability density function of true observables and deform it until its convolution with the detector response matches data.
         %
         These approaches are extremely powerful in principle: a sufficiently flexible generator could capture the full true distribution without needing a starting simulation.
         %
-        In practice, however, training such generative models is challenging
+        In practice, however, training such generative models is challenging.
         %
-        Pure generative unfolding would require vast amounts of data to constrain the high--dimensional space and can suffer from mode dropping (the generator might fail to produce some less common features of the distribution if not properly incentivized).
+        Pure generative unfolding would require vast amounts of data to constrain the high dimensional space and can suffer from mode dropping.\footnote{The generator might fail to produce some less common features of the distribution if not properly incentivised.}
         %
         Additionally, learning a full generative model from scratch means the method must learn \emph{both} the underlying physics distribution \emph{and} compensate for detector effects at the same time.
         %
-        This is a high--dimensional optimization that can be unstable or require careful conditioning.
+        This is a high dimensional optimisation that can be unstable or require careful conditioning.
         %
-        Some recent works have attempted to combine generative modelling with explicit usage of the known detector response to guide the training (for instance, using differentiable detectors or gradient-based deconvolution\kd{cite}), but these are still at the experimental stage.
+        Some recent works have attempted to combine generative modelling with explicit usage of the known detector response to guide the training\footnote{For instance, by using differentiable detectors or gradient-based deconvolution}, but these are still at the experimental stage.
 
-        Between pure reweighting (which uses an existing simulation as a starting point) and pure generation (which starts from random noise) lies an attractive compromise: use machine learning to \emph{reweight or recalibrate} an initial simulation in a single pass, by directly comparing its predictions to data.
+        Between pure reweighting (which uses an existing simulation as a starting point) and pure generation (which starts from random noise) lies an attractive compromise: using machine learning to \emph{reweight or recalibrate} an initial simulation in a single pass, by directly comparing its predictions to data.
         %
-        The \textbf{Reweighting Adversarial Networks (RAN)} method falls into this category.
+        The \textbf{Reweighting Adversarial Networks (RAN)} method is built on this approach.
         %
-        Other examples include optimal transport inspired methods that train a single neural network to learn a transport map by minimizing some distance between weighted simulation and data distributions\kd{cite}.
+        Other examples include optimal transport inspired methods that train a single neural network to learn a transport map by minimising some distance between weighted simulation and data distributions.
         %
         Such approaches leverage the fact that modern simulations are a good but imperfect approximation of reality; rather than throw them away and learn from scratch, it may be easier to learn small corrections (reweightings) to the simulation.
         %
         In this sense, RAN and similar methods treat unfolding as a density ratio estimation problem: find a function $g(z)$ such that the weighted MC distribution $g(z)\,q(z)$ matches the true distribution $p(z)$.
         %
-        If $Z$ denotes particle--level kinematics, this $g(z)$ effectively encapsulates how the Monte Carlo needs to be modified to agree with nature.
+        If $Z$ denotes particle level kinematics, this $g(z)$ effectively encapsulates how the Monte Carlo needs to be modified to agree with nature.
+        
+        The challenge is that we cannot observe $p(z)$ directly---we only have access to its smeared version at detector level.
         %
-        The challenge is that we cannot observe $p(z)$ directly---we only have its smeared version at detector level.
+        Therefore, these algorithms set up a two level training objective to adjust $g(z)$ based on how well the weighted events, after going through the detector simulation, agree with the detector level data.
         %
-        Therefore, these algorithms set up a {two-level} training objective to adjust $g(z)$ based on how well the weighted events, after going through the detector simulation, agree with the detector--level data.
-        %
-        This two-level problem is naturally addressed with adversarial setups (a simulator or reweight function competing against a discriminator) or with optimal transport objectives that connect particle and detector level distributions.
+        This two level problem is naturally addressed with adversarial setups that train a simulator or reweightor function in competition with a discriminator, or with optimal transport objectives that connect particle and detector level distributions.
 
-        In summary, the landscape of modern unfolding methods includes iterative classifiers (\textsc{\textsc{OmniFold}}) \kd{cite}, single--shot adversarial reweighting (e.g. RAN), and generative approaches (cINNs, VAEs)\kd{cite}, each with their own strengths.
+        In summary, the landscape of modern unfolding methods includes iterative classifiers (\textsc{OmniFold}), single shot adversarial reweighting (e.g. RAN), and generative approaches (cINNs, VAEs), each with their own strengths.
         %
-        Table~\ref{tab:unfold_methods} provides a high-level comparison.
+        \cref{tab:unfold_methods} provides a high level comparison.
         %
-        All these methods aim to enable unbinned, high-dimensional unfolding; they chiefly differ in how they incorporate prior knowledge, whether they iterate, and how computationally intensive they are.
+        All these methods aim to enable unbinned, high dimensional unfolding; they chiefly differ in how they incorporate prior knowledge, whether they iterate, and how computationally intensive they are.
         %
-        Notably, most current ML--based methods (except full generative ones) still require that the starting simulation has support in the regions of interest (the issue of support overlap).
+        Notably, most current ML based methods still require that the starting simulation has support in the regions of interest.
         %
-        They also share common challenges of training stability and overfitting prevention, which are addressed through techniques like regularization or specific loss functions (for instance, \textsc{OmniFold} uses early stopping of iterations, while adversarial methods use regularized discriminators).
+        They also share common challenges of training stability and overfitting prevention, which are addressed through techniques like regularisation or specific loss functions.\footnote{For instance, \textsc{OmniFold} uses early stopping of iterations, while adversarial methods use regularised neural network architectural constraints.}
 
-        \begin{table}
-            \centering
-            \caption{Comparison of unfolding methods. 
-            %
-            “Unbinned” indicates the method can use continuous data without fixed histograms.
-            %
-            “Iterative” indicates whether multiple training iterations are required (not counting training epochs, which all neural methods require internally).
-            %
-            “Perturbative” indicates that the method reweights a MC sample (as opposed to generating events from scratch).
-            %
-            RAN (this work) occupies a middle ground, using a prior simulation like \textsc{OmniFold} but aiming to avoid costly iterations by employing a stable adversarial training objective.}
-            \label{tab:unfold_methods}
-            \begin{tabular}{lccc}
-                \toprule
-                \textbf{Method} & \textbf{Unbinned} & \textbf{Iterative} & \textbf{Uses sim.} \\
-                \midrule
-                Traditional (IBU, TUnfold) & No & Sometimes & Yes\\
-                Discriminative (\textsc{OmniFold})      & Yes & Yes & Yes \\
-                Generative (cINNs/VAEs)             & Yes & No  & No (from noise)\\
-                Adversarial reweight (RAN)        & Yes & No  & Yes \\
-                \bottomrule
-            \end{tabular}
-        \end{table}
+        \input{tables/6-2.tex}
 
-    \subsection{Addressing Key Challenges}
-        The Reweighting Adversarial Networks (RAN) approach described in this chapter is designed to tackle the aforementioned challenges head--on, enabling full spectral unfolding with improved stability and efficiency.
+    \subsection{Addressing challenges.}
+        The Reweighting Adversarial Networks (RAN) approach described in this chapter is designed to tackle the aforementioned challenges head on, enabling full spectral unfolding with improved stability and efficiency.
         %
-        Here I outline how the methodology of RAN addresses the needs and difficulties detailed above (a complete description of the method follows in later sections, so the focus here is on concepts rather than implementation details).
+        This section outlines how the methodology of RAN addresses the needs and difficulties detailed above.\footnote{A complete description of the method follows in later sections, so the focus here is on concepts rather than implementation details.}
         
         RAN explicitly targets the entire distribution rather than a fixed set of moments.
         %
-        In fact, it can be viewed as an extension of the Moment Unfolding method\kd{cite} described in Chapter~\ref{chap:moment-unfolding} to infinitely many moments.
+        In fact, it can be viewed as an extension of the Moment Unfolding method described in \cref{chap:moment-unfolding} to infinitely many moments.
         %
-        By using a flexible neural network to parametrize the weighting function, RAN does not impose a rigid functional form limited to a few moment constraints.
+        By using a flexible neural network to parametrise the weighting function, RAN does not impose a rigid functional form limited to a few moment constraints.
         %
-        This means it has the capacity to adjust the simulation such that not only the first few moments, but \emph{all} features of the distribution (in principle, every differential element) are brought into agreement with the observed data.
+        This means it has the capacity to adjust the simulation such that not only the first few moments.
+        %
+        \emph{All} features of the distribution\footnote{In principle, every differential element.} are brought into agreement with the observed data.
         %
         Framing the problem this way ensures that when RAN converges, the result is a faithful unfolded spectrum, from which moments or any other summary statistic can be derived.
         %
@@ -376,119 +362,121 @@
         %
         The adversarial training framework means that a discriminator network looks at distributions of features (at detector level) and tries to tell apart weighted simulation from real data.
         %
-        If it finds any discrepancy, no matter how localized, the reweighting network is encouraged to adjust weights to eliminate that discrepancy.
+        If it finds any differences in the distributions, no matter how localised, the reweighting network is encouraged to adjust weights to eliminate that discrepancy.
         %
-        This is effectively a fine--grained comparison across the full phase space, without ever projecting data into predetermined bins.
+        This is effectively a fine grained comparison across the full phase space, without ever projecting data into predetermined bins.
         %
         As a result, RAN does not suffer from the bin alignment issues or interpolation biases that plague binned unfolding.
         %
-        Different experiments using RAN on the same observable should, in principle, get comparable results without worrying that one used 50\% purity bins and another used 70.7\% purity bins, since neither uses bins at all.
+        Different experiments using RAN on the same observable should, in principle, get comparable results without worrying that one used binning scheme A and the other binning scheme B, since neither would use bins at all.
         %
         The output of RAN can be presented as a smooth distribution or as a weighted event sample at particle level, which can then binned or analysed downstream as needed.
         %
-        This flexibility maximizes the utility of the measurement.
+        This flexibility maximises the utility of the measurement.
 
         One of the core design goals of RAN is to eliminate the need for multiple iterative reweighting cycles (as in \textsc{OmniFold}).
         %
-        Instead of training sequential classifiers for each iteration, RAN uses a single coupled training procedure where the particle--level reweighting function and the detector--level discriminator are learned together (analogous to a generator and critic in a Wasserstein GAN).
+        Instead of training sequential classifiers for each iteration, RAN uses a single coupled training procedure where the particle level reweighting function and the detector level discriminator are learned together.\footnote{Analogous to a generator and critic in a Wasserstein GAN.}
         %
-        This yields a one--shot solution for the weights after convergence.
+        This yields a one shot solution for the weights after convergence.
         %
         In practice, this means RAN trains one neural network (the reweighter) with feedback from another (the discriminator) in one integrated run.
         %
         The computational cost is roughly equivalent to training a single GAN rather than a dozen separate classifiers.
         %
-        As demonstrated in Sec.~\kd{ref RAN results}, this can lead to a significant reduction in runtime and resource usage for large--scale unfolding tasks\kd{cite}.
+        As demonstrated in \cref{sec:ran-results}, this can lead to a significant reduction in runtime and resource usage for large scale unfolding tasks.
         %
-        Furthermore, by using an optimal transport--based loss (inspired by the Wasserstein GAN) and techniques like spectral normalization in the discriminator, RAN achieves stable training dynamics.\kd{cite}
+        Furthermore, by using an optimal transport based loss (inspired by the Wasserstein GAN) and techniques like spectral normalisation in the discriminator, RAN achieves stable training dynamics.
         %
-        The Wasserstein metric provides a smooth loss function that correlates well with distribution difference, avoiding the chaotic or oscillatory behaviour that vanilla GANs can exhibit, described in Sec~\ref{subsubsec:GANs}.
+        The Wasserstein metric provides a smooth loss function that correlates well with distribution difference, avoiding the chaotic or oscillatory behaviour that vanilla GANs can exhibit, described in \cref{subsubsec:GANs}.
         %
-        Spectral normalization bounds the discriminator’s gradient, effectively regularizing the learning and preventing mode--collapse or instability.\kd{cite}
+        Spectral normalisation bounds the discriminator's gradient, effectively regularising the learning and preventing mode collapse or instability.
         %
-        These choices were crucial technical innovations needed to extend the moment--matching method to a full-spectrum matching method.\kd{cite}
+        These choices were crucial technical innovations needed to extend the moment matching method to a full spectrum matching method.
         %
         The end result is that RAN converges reliably to a solution where the weighted generation agrees with truth, all in a single training loop.
         %
         This addresses the computational challenge by trading an iterative series of simpler trainings for one more complex adversarial training, which has been shown to be tractable and efficient.
 
-        Like any reweighting--based approach, RAN does require a MCMC samples and will fail if the true distribution lies entirely the support of the generation.
+        Like any reweighting based approach, RAN does require a MCMC samples and will fail if the true distribution lies entirely the support of the generation.
         %
         However, RAN upon convergence, provably does not rely on the exact prior shape within the supported region.
         %
         The use of an adversarial loss means RAN is effectively solving a constrained optimization to find the weight function that makes the simulation statistically indistinguishable from data by reweighting only at particle level.
-        %
-        RAN’s connection to the Boltzmann entropy--inspired moment unfolding provides a theoretical understanding of how it approaches the “maximum entropy” solution consistent with the constraints (the data)\kd{cite}.
+        
+        RAN's connection to the Boltzmann entropy inspired moment unfolding provides a theoretical understanding of how it approaches the ``maximum entropy'' solution consistent with the constraints (the data).
         %
         This is desirable because the maximum entropy solution is the least biased one given the information at hand.
         %
-        In essence, RAN inherits the moment method’s stability from having a limited functional form, and compensates for the larger freedom of full spectra by adding proper regularization in training, thereby taming the ill--posedness.
+        In essence, RAN inherits the moment method's stability from having a limited functional form, and compensates for the larger freedom of full spectra by adding proper regularization in training, thereby taming the ill posedness.
 
-        An important practical aspect is that RAN yields physically reasonable unfolded distributions, such as non--negative weights and normalized total cross sections.
+        An important practical aspect is that RAN yields physically reasonable unfolded distributions, such as non negative weights and normalised total cross sections.
         %
-        By parametrizing the weight function as $g({z}) = \frac1P\exp(-NN({z}))$ (one convenient choice), we ensure $g({z})\ge 0$ for all events, so the unfolded cross section is positive--definite.
+        By parametrising the weight function as $g({z}) = \frac1P\exp(-NN({z}))$ (one convenient choice), we ensure $g({z})\ge 0$ for all events, so the unfolded cross section is positive definite.
         %
-        The training objective can be set up to include a normalization constraint or simply allow the weights to float the total normalization to match the data yield.
+        The training objective can be set up to include a normalisation constraint or simply allow the weights to float the total normalisation to match the data yield.
         %
         This avoids unphysical outcomes like negative weight factors or mismatched totals that can occur in some matrix inversion methods without extra constraints.
         %
         Moreover, because RAN operates at the level of reweighting actual events, the resulting weighted event sample can be validated easily.
         %
-        One can always forward--fold the weighted sample through the detector simulation to check that it indeed reproduces all features of the observed data (closure test).
+        One can always forward fold the weighted sample through the detector simulation to check that it indeed reproduces all features of the observed data.
         %
-        This built--in consistency check is a powerful advantage of the reweighting paradigm in general.
+        This built in consistency check is a powerful advantage of the reweighting paradigm in general.
         %
         It is straightforward to verify that the full spectral measurement is successful, by confirming that no residual differences remain between data and weighted simulation across all distributions of interest.
 
-        It's worth noting that the RAN framework could potentially be extended to perform background subtraction simultaneously with unfolding by modifying the weight parameterization to allow negative weights.
+        It is worth noting that the RAN framework could potentially be extended to perform background subtraction simultaneously with unfolding by modifying the weight parametrisation to allow negative weights.
         %
-        This might be particularly valuable for heavy ion physics, where background contamination presents significant challenges.\footnote{
-            While this extension has not been implemented or tested in the current work, allowing negative weights could potentially enable joint background subtraction and unfolding.
+        This might be particularly valuable for heavy ion physics, where background contamination presents significant challenges.
+        %
+        While this extension has not been implemented or tested in the current work, allowing negative weights could potentially enable joint background subtraction and unfolding.
             %
-            This approach might be especially valuable for heavy ion collisions where background separation is notoriously challenging due to the high multiplicity environment and complex underlying events \kd{arXiv:2402.10945}.
+            This approach might be especially valuable for heavy ion collisions where background separation is notoriously challenging due to the high multiplicity environment and complex underlying events~\cite{Mengel:2024fcl}.
             %
-            Several studies have explored related joint unfolding and background estimation approaches, including work on machine learning based background subtraction methods that can reduce fluctuations below the statistical limit \kd{Machine Learning based jet momentum reconstruction in heavy-ion collisions, arXiv:2305.16826 , arXiv:2402.10945}.
+            Several studies have explored related joint unfolding and background estimation approaches, including work on machine learning based background subtraction methods that can reduce fluctuations below the statistical limit~\cite{Haake:2018hqn, Do_2023, Mengel:2024fcl}.
             %
-            The difficult interplay between background subtraction and unfolding has been examined in detail by Apolinário et al.\kd{An analysis of the influence of background subtraction and quenching on jet observables in heavy-ion collisions}, who analyzed how different background subtraction methods affect jet observables in heavy ion collisions.
+            The difficult interplay between background subtraction and unfolding has been examined in detail in~\cite{Apolinario:2012cg}, which analysed how different background subtraction methods affect jet observables in heavy ion collisions.
             %
-            Recent research has also improved background subtraction techniques specifically for jet substructure measurements\kd{Improved background subtraction and a fresh look at jet sub-structure in JEWEL}, demonstrating that proper handling of medium response is crucial for meaningful comparison with experimental data
+            Recent research has also improved background subtraction techniques specifically for jet substructure measurements~\cite{Milhano:2022kzx}, demonstrating that proper handling of medium response is crucial for meaningful comparison with experimental data
             %
-            The theoretical framework of transport theory deconvolution with background contributions \kd{cite} could provide mathematical guidance for such extensions.
+            A theoretical framework of transport theory deconvolution with background contributions could provide mathematical guidance for such extensions.
             %
             Development of these capabilities would require careful validation and is left as future work.
-        }
-        In conclusion, RAN is conceived to meet the need for unfolding multivariate probability densities by addressing the key challenges that have historically prevented such measurements.
+
+        In summary, RAN is conceived to meet the need for unfolding multivariate probability densities by addressing the key challenges that have historically prevented such measurements.
         %
-        It leverages modern ML (specifically adversarial training and neural network flexibility) to unfold complete distributions without binning, while incorporating solutions to the statistical and computational pitfalls (regularization via WGAN, one--pass training, etc.).
+        It leverages modern ML\footnote{Specifically adversarial training and neural network flexibility} to unfold complete distributions without binning, while incorporating solutions to the statistical and computational pitfalls.\footnote{Regularisation via WGAN, one pass training, etc.}
+        %
+        This section has established \emph{why} a method like RAN is needed---because it enables us to unfold the maximal information from experimental data, the full differential cross section, in a way that is both theoretically and practically sound, thus empowering deeper insights into particle physics phenomena.
         %
         The following sections will describe the RAN methodology in detail and demonstrate its performance.
-        %
-        Here, we have established \emph{why} a method like RAN is needed---because it enables us to unfold the maximal information from experimental data, the full differential cross section, in a way that is both theoretically and practically sound, thus empowering deeper insights into particle physics phenomena.
 
+\section{From moments to complete differential cross section spectra.}
+    \cref{sec:need-for-density-unfolding} discussed the motivation for unfolding complete differential cross sections---retrieving the full distribution of an observable at particle level from distorted detector level data.
+    %
+    This section now builds a rigorous framework linking distribution moments to the full probability density, and review how leveraging moment constraints can facilitate unbinned unfolding.
+    %
+    Treating moments as fundamental constraints, as opposed to bin by bin values, establishes a pathway from a limited set of summary statistics to a complete unfolded spectrum.
+    %
+    This section first develops the theoretical foundation connecting moments and probability distributions\footnote{Including moment generating functions and maximum entropy arguments}, then surveys classical and modern unfolding methods that rely on moment constraints.\footnote{Such as regularization and entropy based techniques.}
+    %
+    This is followed by a discussion of the advantages and pitfalls of moment based unfolding, notably issues relating ill posedness and non uniqueness, and the regularisation strategies to mitigate them.
+    %
+    Finally, the Moment Unfolding method introduced in \cref{chap:moment-unfolding} will naturally be extended toward unfolding the entire distribution (all moments) via a GAN--like approach inspired by the Boltzmann distribution, setting the stage for a full differential cross section measurement.
 
-\section{From Moments to Complete Differential Cross Section Spectra}
-    In Sec.~\ref{sec:need-for-density-unfolding} we discussed the motivation for unfolding complete differential cross sections---retrieving the full distribution of an observable at particle--level from distorted detector--level data.
-    %
-    We now build a rigorous framework linking distribution moments to the full probability density, and review how leveraging moment constraints can facilitate unbinned unfolding.
-    %
-    By treating moments as fundamental constraints (as opposed to bin--by--bin values), we establish a pathway from a limited set of summary statistics to a complete unfolded spectrum.
-    %
-    This section first develops the theoretical foundation connecting moments and probability distributions (including moment--generating functions and maximum entropy arguments), then surveys classical and modern unfolding methods that rely on moment constraints (such as regularization and entropy--based techniques).
-    %
-    This is followed by a discussion of the advantages and pitfalls of moment--based unfolding, notably issues of ill--posedness and non--uniqueness, and the regularization strategies to mitigate them.
-    %
-    Finally, I explain how the Moment Unfolding method introduced in Chapter~\ref{chap:moment-unfolding} naturally extends toward unfolding the entire distribution (all moments) via a GAN--like approach inspired by the Boltzmann distribution, setting the stage for a full differential cross section measurement.
-
-    \subsection{Moments and the Full Probability Distribution}
-        Statistical moments provide a powerful, coarse--grained description of a probability distribution.
+    \subsection{Moments and the full probability distribution.}
+        Statistical moments provide a powerful, coarse grained description of a probability distribution.
         %
-        The $n$th moment (about zero) of a random variable $Z$ is $\mathbb{E}[Z^n]$, and moments about the mean (central moments) characterize the shape (variance, skewness, kurtosis, etc.) of the distribution.
+        The $n^\text{th}$ moment (about zero) of a random variable $Z$ is defined as the expectation value $\mathbb{E}[Z^n]$.
         %
-        In principle, an infinite sequence of moments can completely characterize a distribution.
+        Moments about the mean (central moments) characterise the shape (variance, skewness, kurtosis, etc.) of the distribution.
+        %
+        In principle, an infinite sequence of moments can completely characterise a distribution.
         %
         This is referred to as the moment representation of a distribution.
         %
-        If all moments ${\mu_1, \mu_2, \dots}$ are known and certain technical conditions hold (e.g. the moment-generating function exists in a neighbourhood of 0), then there is a unique probability density consistent with those moments.\kd{DOI:10.11647/obp.0333.07}\kd{cite one more}
+        If all moments $\{\mathbb{E}[Z^n]\}_{n=1}^\infty$ are known and certain technical conditions hold (e.g. the moment generating function exists on an open neighbourhood around the point of interest), then there is a unique probability density consistent with those moments~\cite{alma9914845810606531,Hausdorff1921,hornik_multilayer_1989,weierstras_uber_1885,taylor_methodus_1715}.
         %
         The moment generating function (MGF), $M_Z(t) = \mathbb{E}[e^{tZ}]$, encapsulates the entire moment sequence via its Taylor expansion,
         \[
@@ -496,7 +484,7 @@
         \]
         and serves as a proxy for the full distribution.
         %
-        In fact, knowledge of $M_Z(t)$ (or the characteristic function) allows one to reconstruct the probability density $p_Z(z)$ by inverse transformation.
+        In fact, knowledge of $M_Z(t)$ (or the characteristic function) allows one to reconstruct the probability density $p_Z(z)$ fully.
         %
         In short, an infinite set of moment constraints is mathematically equivalent to knowing the complete distribution.
 
@@ -504,144 +492,149 @@
         %
         A finite moment set underdetermines the distribution, because infinitely many distinct densities can share the same first $n$ moments.
         %
-        This non-uniqueness under finite information is closely related to the ambiguity of solutions when attempting to invert detector effects: the data usually provide limited “moments” of the true distribution (for example, binned event counts are themselves integrals of the true spectrum over bin ranges).
+        This non-uniqueness under finite information is closely related to the ambiguity of solutions when attempting to invert detector effects: the data usually provide limited ``moments'' of the true distribution.
+        %
+        For example, binned event counts are themselves integrals of the true spectrum over bin ranges.
         %
         As $n$ increases, the moment constraints become more informative and the space of consistent solutions shrinks, but noise and uncertainties also grow.
         %
         In the limit of $n\to\infty$, the true distribution would be recovered, but this limit cannot be reached exactly with finite and noisy data.
 
-        \subsubsection{The Maximum entropy principle and exponential families}
-            Given a few known moments, a common approach to approximate the underlying distribution is to apply the principle of maximum entropy.\kd{ISBN 3-89429-543-0}
+        \subsubsection{The maximum entropy principle and exponential families.}
+            Given a few known moments, a common approach to approximate the underlying distribution is to apply the principle of maximum entropy~\cite{Matzke:275528}.
             %
-            This principle dictates that, among all distributions satisfying the known moment constraints, we should prefer the one with the largest entropy (i.e. the least additional assumptions or information).
+            This principle dictates that, among all distributions satisfying the known moment constraints, we should prefer the one with the largest entropy.\footnote{I.e. minimal additional assumptions or information should be added to the prediction beyond what the constraints impose.}
             %
-            Imposing constraints on expectations $\mathbb{E}[f_a(Z)] = c_a$ (for some set of functions $f_a(Z)$ defining the moments of interest) leads to a unique maximum-entropy solution in the exponential family.
+            Imposing constraints on expectations $\mathbb{E}[f_a(Z)] = c_a$\footnote{For some set of functions $f_a(Z)$ defining the moments of interest.} leads to a unique maximum entropy solution in the exponential family.
             %
             In particular, one finds a probability density of the form
             \[
-                p^*(z) \;=\; \frac{1}{Z(\boldsymbol{\beta})}\,\exp\!\Big(-\sum_{a}\beta_a\,f_a(z)\Big)~,
+                p^*(z; \vb*\beta) \;=\; \frac{1}{P(\boldsymbol{\beta})}\,\exp\!\Big[-\sum_{a=1}^\infty\beta_a\,f_a(z)\Big]~,
             \]
-            where $\beta_a$ are Lagrange multipliers adjusted to enforce the desired $\mathbb{E}_{p^*}[f_a(Z)] = c_a$, and $Z(\boldsymbol{\beta}) = \int \exp(-\sum_a \beta_a f_a(z))\,\dd z$ is the normalization factor (partition function).
+            where $\beta_a$ are Lagrange multipliers adjusted to enforce the desired $\mathbb{E}_{p^*}[f_a(Z)] = c_a$, and $P(\boldsymbol{\beta}) = \int \exp(-\sum_a \beta_a f_a(z))\,\dd z$ is the normalisation factor (partition function).
             %
-            This is analogous to the Boltzmann distribution in statistical mechanics, which maximizes entropy given a fixed average energy.
+            This is analogous to the Boltzmann distribution in statistical mechanics, which maximises entropy given a fixed average energy.
             %
-            Indeed, if we choose $f_a(z) = z^a$ (the monomials), the above $p^*(z)$ is a Boltzmann--like ansatz with coefficients $\beta_a$ related to the distribution’s moments.
+            Indeed, if we choose $f_a(z) = z^a$ (the monomials), the above $p^*(z)$ is a Boltzmann--like ansatz with coefficients $\beta_a$ related to the distribution's moments.
             %
-            As we will see, this exponential--family form is central to our moment--based unfolding method.
+            As we will see, this exponential family form is central to our moment based unfolding method.
             %
-            It provides a flexible yet principled parameterization of the true distribution in terms of a finite set of parameters ${\lambda_a}$ or equivalently a finite set of moments.
+            It provides a flexible yet principled parametrisation of the true distribution in terms of a finite set of parameters ${\lambda_a}$ or equivalently a finite set of moments.
             %
             Crucially, if the list of moment constraints is extended and refined, $p^*(z)$ can approximate the true distribution arbitrarily well (approaching the actual $p_Z(z)$ as the number of moments grows).
             %
             Hence the full differential cross section can be reached in the limit of sufficiently many moment constraints.
 
-    \subsection{Unfolding with Moment Constraints: Classical and Modern Approaches}
-        Many unfolding methods, both classical and modern, can be interpreted as using moment constraints or related regularization assumptions to tackle the ill--posed inversion of detector effects.
+    \subsection{Unfolding with moment constraints: classical and modern approaches.}
+        Many unfolding methods, both classical and modern, can be interpreted as using moment constraints or related regularisation assumptions to tackle the ill posed inversion of detector effects.
         %
-        In a binned setting, each bin count can be seen as a moment (an integral of the continuous distribution against a top--hat basis function).
+        In a binned setting, each bin count can be seen as a moment.\footnote{As an integral of the continuous distribution against a top hat basis function.}
         %
         Unfolding those bin counts with minimal noise amplification often requires additional constraints such as limiting the number of iterations.
         %
-        Although not usually thought of in this fashion, this can be equivalently reformulated as effectively limiting the space of possible moment values of these distributions convolved with a top--hat function.
+        Although not usually thought of in this fashion, this can be equivalently reformulated as effectively limiting the space of possible moment values of these distributions convolved with a top hat function.
         
-        \subsubsection{Linear Regularized Unfolding (Tikhonov and SVD)}
-            One class of unfolding methods formulates the problem as a linear system $mu_i = \sum_j R_{ij} \nu_j$, where $mu_i$ are observed counts in detector bin $i$ and $\nu_j$ are the true distribution values (e.g. cross section in true bin $j$).
+        \subsubsection{Linear regularised unfolding (Tikhonov and SVD).}
+            One class of unfolding methods formulates the problem as the linear system of equations \cref{eq:forward-binned}.
             %
-            Solving for $\nu_j$ directly (e.g. matrix inversion or unregularized maximum likelihood) is notoriously unstable.
+            Solving for $\nu_j$ directly through matrix inversion or unregularised maximum likelihood is notoriously unstable.
             %
             Although we have discussed this in \cref{chap:theoretical-foundations}, we are now equipped to reformulate the problem in the language of moments.
             %
-            High--frequency fluctuations in $\nu$, equivalent to variations in high--order “moments”, can fit statistical noise in $\mu$.
+            High frequency fluctuations in $\nu$, equivalent to variations in high order ``moments'', can fit statistical noise in $\mu$.
             %
-            Tikhonov regularization addresses this by adding a penalty on undesirable solutions, usually favouring smoothness.\kd{A.N. Tikhonov, On the solution of improperly posed problems and the method of regularization,
-Sov. Math. 5 (1963) 1035.}
+            Tikhonov regularisation addresses this by adding a penalty on undesirable solutions, usually favouring smoothness~\cite{zbMATH03227378}.
             %
-            For example, one penalizes the squared second derivative of the unfolded spectrum or deviations from a prior guess.
+            For example, one penalises the squared second derivative of the unfolded spectrum or deviations from a prior guess.
             %
-            This effectively constrains the higher--order moments of the solution (suppressing oscillatory components that are poorly determined by data). The result is a bias toward smooth moment behaviour, trading a bit of bias for a dramatic reduction in variance.\kd{https://www.ippp.dur.ac.uk/Workshops/02/statistics/proceedings/cowan.pdf}\kd{see references}
+            This effectively constrains the higher order moments of the solution, suppressing oscillatory components that are poorly determined by data.
+            %
+            The result is a bias toward smooth moment behaviour, trading a bit of bias for a dramatic reduction in variance~\cite{Blobel:2002pu}.
             
-            Similarly, the singular value decomposition (SVD) unfolding method truncates small singular values of the response matrix.\kd{Michael Schmelling, The method of reduced cross-entropy. A general approach to unfold probabil-
-ity distributions, Nucl. Instrum. Methods A340 (1994) 400.}
+            Similarly, the singular value decomposition (SVD) unfolding method truncates small singular values of the response matrix~\cite{Schmelling:1993cd}.
             %
-            This is equivalent to discarding combinations of moments that cannot be determined well (those along directions of the solution space corresponding to tiny eigenvalues would otherwise blow up with noise).
+            This is equivalent to discarding combinations of moments that cannot be determined well.\footnote{Those along directions of the solution space corresponding to tiny eigenvalues would otherwise blow up with noise.}
             %
-            By keeping only the dominant modes, essentially the lowest--frequency or largest--size moments, SVD unfolding ensures stability at the cost of not fully utilizing high--frequency information.
+            By keeping only the dominant modes, essentially the lowest frequency or largest size moments, SVD unfolding ensures stability at the cost of not fully utilising high frequency information.
             
-            Both Tikhonov and SVD thereby regularize the moment space, either explicitly or implicitly limiting the effective number of moments that contribute to the unfolded solution.\kd{Cowan}
-        \subsubsection{Iterative Bayesian Unfolding (D’Agostini)}
-            The iterative method by D’Agostini \kd{cite}(known by various names; in HEP, Iterative Bayesian Unfolding) approaches unfolding as a successive moment matching procedure.
+            Both Tikhonov and SVD thereby regularise the moment space, either explicitly or implicitly limiting the effective number of moments that contribute to the unfolded solution.
+        \subsubsection{Iterative Bayesian unfolding (D'Agostini).}
+            IBU's approach to unfolding can be reinterpeted as iteratively matching moments of the true distribution to the data.
             %
-            It starts with an initial guess for the true distribution (the prior Monte Carlo prediction call `generation', which corresponds to some initial moment estimates) and alternately updates the expectations to better agree with the observed data.
+            It starts with an initial guess for the true distribution, Generation, which corresponds to some initial moment estimates and alternately updates the expectations to better agree with the observed data.
             %
-            At each iteration, the method reweights the Monte Carlo events by the ratio of data to simulation in each detector bin (effectively adjusting the candidate true distribution’s moments to reduce the discrepancy in those bins).
+            At each iteration, the method reweights the Monte Carlo events by the ratio of data to simulation in each detector bin, effectively adjusting the candidate true distribution's moments to reduce the discrepancy in those bins.
             %
-            This procedure can be interpreted as ensuring that the predicted detector--level counts (moments of the true distribution under the response) match the observed counts, one step at a time.
+            This procedure can be interpreted as ensuring that the predicted detector level counts (or all their moments) match the observed counts, one step at a time.
             %
-            The algorithm converges to a solution that maximizes the likelihood (in the limit of many iterations), but in practice one stops after a finite number of iterations to avoid over-fitting statistical fluctuations.\kd{cite cowan}
+            The algorithm converges to a solution that maximises the likelihood in the limit of many iterations, but in practice one stops after a finite number of iterations to avoid over-fitting statistical fluctuations.
             %
-            Stopping early or adding a prior is a form of regularization: it limits the effective degrees of freedom (moments) that are fitted, similar to Tikhonov or SVD albeit via a different mechanism.
+            Stopping early or adding a prior is a form of regularisation: it limits the effective degrees of freedom (moments) that are fitted, similar to Tikhonov or SVD albeit via a different mechanism.
             %
-            This iterative method has the advantage of intuitively incorporating a prior (the initial guess acts as a prior shape, providing stability if data are sparse) and is widely used due to its simplicity and ability to include prior knowledge.
+            This iterative method has the advantage of intuitively incorporating a prior (the initial guess acts as a prior shape, providing stability if data are sparse) and is widely used due to its simplicity and tractability.
         
-        \subsubsection{Entropy-Based Methods}
-            Another class of unfolding techniques explicitly incorporates entropy or information criteria to regularize the solution.
+        \subsubsection{Entropy-based methods.}
+            Another class of unfolding techniques explicitly incorporates entropy or information criteria to regularise the solution.
             %
-            The maximum entropy (MaxEnt) unfolding approach chooses the unfolded distribution that maximizes entropy subject to reproducing the observed detector data (usually via a likelihood term).\kd{cite cowan references}
+            The maximum entropy (MaxEnt) unfolding approach chooses the unfolded distribution that maximises entropy subject to reproducing the observed detector data, usually via a likelihood term~\cite{Narayan:1986wj}.
             %
-            In practice this might mean maximizing $S = -\sum_j \mu_j \ln(\mu_j)$ minus a term for agreement with data.
+            In practice this might mean maximising the entropy
+            \[
+                S = -\sum_j \mu_j \ln(\mu_j)
+            \]
+            minus a term for agreement with data.
             %
-            The solution tends to be as smooth and featureless as possible (high entropy) unless the data significantly demand a structure. Entropy regularization thus penalizes any extraneous moment fluctuations that are not required by the data, biasing toward a flat distribution in the absence of strong evidence for shape.\kd{cite C. Pruneau
-Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
+            The solution tends to be as smooth and featureless as possible (high entropy) unless the data significantly demand a structure.
             %
-            Schmelling’s method of reduced cross-entropy\kd{cowan [8]} is a related technique, effectively combining likelihood maximization with an entropy prior.
+            Entropy regularisation thus penalises any extraneous moment fluctuations that are not required by the data, biasing toward a flat distribution in the absence of strong evidence for shape.
             %
-            By treating the deviation from a prior distribution in terms of Kullback--Leibler divergence (relative entropy), one can incorporate prior knowledge while still preferring the least structured solution beyond that prior
+            Schmelling's method of reduced cross-entropy~\cite{Schmelling:1993cd} is a related technique, effectively combining likelihood maximisation with an entropy prior.
             %
-            These methods make the connection to moment constraints explicit in that they treat the unfolding problem as one of satisfying certain expectation values (the data constraints) while maximizing uncertainty elsewhere.
+            By treating the deviation from a prior distribution in terms of Kullback--Leibler divergence (relative entropy), one can incorporate prior knowledge while still preferring the least structured solution beyond that prior.
             %
-            As discussed, this yields an exponential--family solution.
+            These methods make the connection to moment constraints explicit in that they treat the unfolding problem as one of satisfying certain expectation values the data constraints, while maximising uncertainty elsewhere.
             %
-            In fact, the MaxEnt solution can be written in the form $p(z) \propto \exp(-\sum_a \beta_a f_a(z))$ where $f_a(z)$ are the functions defining the data constraints (for example, indicator functions for each detector bin to ensure those predicted counts match the observed).\kd{cowan}
+            As discussed, this yields an exponential family solution.
             %
-            This is formally identical to the moment--constrained maximum entropy distribution discussed above; the only difference is the nature of the constraints (data--driven constraints rather than actual physical moments of the distribution).
-        \subsubsection{Unbinned and Machine Learning--Based Methods}
+            In fact, the MaxEnt solution can be written in the form $p(z) \propto \exp(-\sum_a \beta_a f_a(z))$ where $f_a(z)$ are the functions defining the data constraints.\footnote{For example, indicator functions for each detector bin to ensure those predicted counts match the observed.}
+            %
+            This is formally identical to the moment constrained maximum entropy distribution discussed above; the only difference is the nature of the constraints.\footnote{Data-driven constraints rather than actual physical moments of the distribution.}
+        \subsubsection{Unbinned methods through the lens of moments.}
             With advances in computation, unbinned unfolding techniques have emerged that avoid histogramming data altogether.
             %
             These methods often use machine learning to compare distributions without bins.
             %
-            One prominent example is \textsc{OmniFold},\kd{} an unbinned iterative unfolding approach based on modern machine learning classifiers.
+            One prominent example is \textsc{OmniFold}, an unbinned iterative unfolding approach based on modern machine learning classifiers.
             %
-            \textsc{OmniFold} uses a classifier (often a neural network) to distinguish weighted simulation from data; the classifier’s output is used to reweight simulation events such that, after reweighting, the simulation is more similar to the data.
+            \textsc{OmniFold} uses a classifier (often a neural network) to distinguish weighted simulation from data; the classifier's output is used to reweight simulation events such that, after reweighting, the simulation is more similar to the data.
             %
-            This is done in an iterative fashion (multiple rounds, including both detector--level and particle--level weights) to converge to a set of per--event weights that yield an unfolded distribution matching the observed data.\kd{}
+            This is done in an iterative fashion (multiple rounds, including both detector level and particle level weights) to converge to a set of per event weights that yield an unfolded distribution matching the observed data.
             %
-            While \textsc{OmniFold} does not explicitly constrain low--order moments or use an analytic parametrization, it implicitly matches all features of the distribution that the classifier can discern---effectively attempting to equate the full set of moments by the end of the procedure.
+            While \textsc{OmniFold} does not explicitly constrain low order moments or use an analytic parametrisation, it implicitly matches all features of the distribution that the classifier can discern---effectively attempting to equate the full set of moments by the end of the procedure.
             %
-            In each iteration, the classifier focuses on the current differences between data and weighted simulation, which are often in some “mode” of the distribution; iterating allows successively finer differences (higher--order moments or localized shape features) to be corrected.
+            In each iteration, the classifier focuses on the current differences between data and weighted simulation, which are often in some ``mode'' of the distribution; iterating allows successively finer differences, higher order moments or localized shape features to be corrected.
             %
             This is conceptually similar to performing an increasingly detailed moment matching, guided by the ML classifier as a flexible test statistic.
             %
-            Other approaches employ adversarial neural networks or optimal transport metrics to directly learn the unfolded distribution in one go, rather than iteratively.\kd{}
+            Other approaches employ adversarial neural networks or optimal transport metrics to directly learn the unfolded distribution in one go, rather than iteratively.
             %
-            These can be seen as the next step in unbinned unfolding: using a generator model for the true distribution and a discriminator to enforce that the generator’s folded output looks like the data.
+            These can be seen as the next step in unbinned unfolding: using a generator model for the true distribution and a discriminator to enforce that the generator's folded output looks like the data.
             %
-            Such setups, inspired by Generative Adversarial Networks (GANs),\kd{} take advantage of the same idea that ultimately all moments need to match for the generated distribution to be indistinguishable from the data.
+            Such setups, inspired by Generative Adversarial Networks (GANs), take advantage of the same idea that ultimately all moments need to match for the generated distribution to be indistinguishable from the data.
+            
+            ML based methods are moving toward treating unfolding as a fitting problem, using flexible function approximators and powerful statistical distances (e.g. Wasserstein distance) to overcome binning and to handle large dimensional data.
             %
-            I will delve into one such adversarial approach, Reweighting Adversarial Networks (RAN), shortly.
-            %
-            For now, suffice it to note that modern ML--based methods are moving toward treating unfolding as a fitting problem, using flexible function approximators and powerful statistical distances (e.g. Wasserstein distance\kd{}) to overcome binning and to handle large dimensional data.
-            %
-            These methods still must address ill--posedness (e.g. through network architecture choices, training tricks, or implicit regularization like early stopping), but they offer a way to directly target the entire set of distributional degrees of freedom rather than pre--selecting a fixed set of basis functions.
-    \subsection{Benefits and Challenges of Moment Unfolding}
+            These methods still must address ill posedness\footnote{E.g. through network architecture choices, training tricks, or implicit regularization like early stopping}, but they offer a way to directly target the entire set of distributional degrees of freedom rather than pre-selecting a fixed set of basis functions.
+    \subsection{Benefits and challenges of moment unfolding.}
         Focusing on moments as the quantities to unfold offers several clear benefits.
         %
         First, moments are often directly related to physics predictions.
         %
-        Many theoretical models provide predictions for means, variances, or other moment--like observables (especially in QCD where sum rules and scaling laws involve moments of distributions).
+        Many theoretical models provide predictions for means, variances, or other moment-like observables, especially in QCD where sum rules and scaling laws involve moments of distributions.
         %
-        Unfolding at the level of moments thus yields results that can be compared to theory with minimal further processing.\kd{}
-        %
-        Second, by compressing the data into a few numbers, moment--based unfolding can greatly reduce statistical fluctuations and noise sensitivity.
+        Unfolding at the level of moments thus yields results that can be compared to theory with minimal further processing.
+        
+        Second, by compressing the data into a few numbers, moment based unfolding can greatly reduce statistical fluctuations and noise sensitivity.
         %
         A small set of global features (e.g. the first few moments) can usually be determined more precisely than an entire binned spectrum.
         %
@@ -649,17 +642,17 @@ Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
         %
         This was one motivation for the development of the Moment Unfolding method;
         %
-        measuring moments directly can be more precise and less sensitive to binning choices.\kd{}
+        measuring moments directly can be more precise and less sensitive to binning choices.
         %
-        Third, moment unfolding can simplify high--dimensional problems.
+        Third, moment unfolding can simplify high dimensional problems.
         %
-        In multi--differential measurements (with many kinematic variables), fully binning the data becomes impractical due to sparsity (“curse of dimensionality”).
+        In multi-differential measurements with many kinematic variables, fully binning the data becomes impractical due to sparsity (``curse of dimensionality'').
         %
-        But one might still meaningfully measure lower--dimensional moments, e.g. the average of some observable as a function of another variable, avoiding the need to populate multi--dimensional histograms.
+        But one might still meaningfully measure lower dimensional moments, such as the average of some observable as a function of another variable, avoiding the need to populate multi dimensional histograms.
         %
-        In summary, moment-based approaches concentrate on the most salient features of the distribution, potentially yielding robust, computationally efficient unfolding results when only those features are of interest.
+        In summary, moment based approaches concentrate on the most salient features of the distribution, potentially yielding robust, computationally efficient unfolding results when only those features are of interest.
 
-        However, there are important limitations and challenges inherent to moment--based unfolding.
+        However, there are important limitations and challenges inherent to moment based unfolding.
         %
         By construction, focusing on a limited set of moments discards information contained in the distribution beyond those moments.
         %
@@ -667,41 +660,39 @@ Data Analysis Techniques for Physical Scientists}\kd{Marshall:2001ax}
         %
         Thus unfolding only those moments provides an incomplete picture.
         %
-        This non--uniqueness means that moment--based results must be interpreted carefully.
+        This non-uniqueness means that moment based results must be interpreted carefully.
         %
         They answer only the questions they explicitly ask.
         %
-        For instance, if only the first two moments (mean and variance) are unfolded, any differences residing in the non--Gaussian shape (skewness, tails, multimodal structure) will go undetected.
+        For instance, if only the first two moments (mean and variance) are unfolded, any differences residing in the non-Gaussian shape like skewness, tails, or multimodal structure will go undetected.
         %
-        Moment unfolding shifts the ill--posedness to the choice of moments.
+        Moment unfolding shifts the ill posedness to the choice of moments.
         %
         One must assume or hope that the chosen moment set is sufficient to capture the physically relevant differences.
         %
         If an unexpected feature lies outside this span, it will be missed.
         %
-        This is connected to the concept of model dependence – choosing an insufficient set of moments imposes a bias (a kind of model) on the unfolding result.
+        This is connected to the concept of model dependence---choosing an insufficient set of moments imposes a choice of model on the unfolding result, thereby biasing them.
 
-        A few different options exist to regularize the problem.
+        A few different options exist to regularise the problem.
         %
-        For example, if unfolding a large number of moments, one might impose a smooth fal--off in the moment values (since very high--order moments tend to be increasingly sensitive to rare tails).
+        For example, if unfolding a large number of moments, one might impose a smooth fall off in the moment values, since very high order moments tend to be increasingly sensitive to rare tails.
         %
-        In our adversarial Moment Unfolding approach, the number of moments $n$ we choose to unfold acts as a regularization knob: a small $n$ strongly regularizes (since it ignores any structure beyond the $n$th moment), while a larger $n$ allows more detailed structure at the cost of higher variance and potential instability.\kd{}
+        In the adversarial Moment Unfolding approach, the number of moments $n$ chosen to unfold acts as a regularisation knob: a small $n$ strongly regularises, since it ignores any structure beyond the $n$th moment, while a larger $n$ allows more detailed structure at the cost of higher variance and potential instability.
         %
-        This is analogous to the bias–-variance trade--off in classic unfolding: using fewer moments yields a biased but low--variance estimate; using more approaches an unbiased full result but with higher variance (and risk of over--fitting data fluctuations).
-        %
-        One limitation of any reweighting-based unfolding (moment-based or otherwise) is the requirement of support overlap.
+        This is analogous to the bias-variance trade-off in classic unfolding: using fewer moments yields a biased but low variance estimate; using more approaches an unbiased full result but with higher variance and higher risk of over fitting data fluctuations.
+        
+        Another limitation of any reweighting based unfolding, moment based or otherwise, is the requirement of support overlap.
         %
         The method can only correct distributions within the support of the MC (prior) distribution.
         %
         If the true distribution has events in regions where the simulation has zero or negligible events, no amount of reweighting or moment adjustment can cover that gap.
         %
-        One would need to generate new events (a different approach entirely) or rely on extrapolation.
+        One would need to generate new events, a different approach entirely, or rely on extrapolation.
         %
-        Thus, moment unfolding, like other reweighting methods (\textsc{OmniFold}, RAN, etc.), assumes that the generation's phase space is broad enough to contain the truth (or that any deficiencies are corrected by separate means).
-        %
-        This is usually ensured by using a sufficiently generic simulation or augmenting it with additional samples if needed.
-        %
-        It is worth noting that as we increase the number of moments or attempt to unfold the full distribution, the demand on simulation support becomes stricter: essentially all features of the data distribution must be present in the starting sample to be recovered by reweighting.
+        Thus, moment unfolding, like other reweighting methods, assumes that the generation's phase space is broad enough to contain the truth or that any deficiencies are corrected by separate procedures.
+        %        %
+        It is worth noting that as we increase the number of moments or attempt to unfold the full distribution, the demand on simulation support becomes stricter: essentially all features of the Truth distribution must be present in the Generation to be recovered by reweighting.
     \subsection{Extending Moment Unfolding}
         This Ansatz can be viewed as a minimal deformation of the simulation needed to match data.
         %
@@ -1466,7 +1457,7 @@ This framework not only bridges classical and modern techniques but also provide
     Thus, this implementation satisfies the dual goals of performance and transparency, which are essential for trustable unfolding in high--energy physics.
 
 \section{Results}
-    \label{sec:results}
+    \label{sec:ran-results}
     We evaluate the Reweighting Adversarial Network (RAN) on two case studies: a targetting one--dimensional Gaussian unfolding task and a realistic jet substructure unfolding problem.
     %
     In each case, RAN’s performance is compared to two baseline methods, the \textsc{OmniFold} algorithm~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and Iterative Bayesian Unfolding (IBU)~\kd{DAgostini:1994fjx}.
