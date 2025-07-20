@@ -422,7 +422,8 @@ This section provides a rigorous mathematical framework for understanding neural
             \paragraph{Learning Rate Scheduling}is the process of dynamically adjusting the learning rate during training.
                 %
                 Some of the more common variants are step decay (reducing learning rate by a fixed factor after a set number of epochs), exponential decay (\(\eta_t = \eta_0 e^{-kt}\), and cosine annealing(\(\eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})(1 + \cos(\frac{t\pi}{T}))\)).
-        \subsubsection{Regularisation Techniques}
+        \subsubsection{Regularisation techniques.}
+        \label{subsubsec:regularisation-techniques}
             To improve stabilize the training, prevent overfitting, and increase generalization, various regularization methods are employed.
 
             \paragraph{\(L^p\) Regularisation} involves adding penalty terms to the loss function to penalize large weights.
@@ -584,7 +585,8 @@ This section provides a rigorous mathematical framework for understanding neural
             In practice, conditional density can be sampled to build an event wise response ensemble, or inserted as the likelihood term in Bayesian unfolding.
             %
             Nevertheless, the global inverse problem remains one must still correct for resolution\footnote{Efficiency and acceptance effects also need to be corrected for, but they are typically not encapsulated in the response matrix for unfolding.} regression alone cannot address.
-    \subsection{Regularization Strategies}
+    \subsection{Regularisation strategies.}
+    \label{subsubsec:regularisation-strategies}
         Supervised learning approaches to unfolding must address the inherently ill--posed nature of the inverse problem.
         %
         This requires effective regularization strategies to prevent the amplification of statistical fluctuations.
@@ -599,7 +601,7 @@ This section provides a rigorous mathematical framework for understanding neural
         %
         By halting the iteration process before full convergence, the method prevents overfitting to statistical fluctuations in the data.
 
-        Domain--specific physics knowledge can also be incorporated into the learning process through custom loss functions, model architectures, or constraints.
+        Domain specific physics knowledge can also be incorporated into the learning process through custom loss functions, model architectures, or constraints.
         %
         For example, conservation laws, symmetries, or known theoretical behaviours can be encoded to guide the supervised learning process toward physically plausible solutions.
     \subsection{Advantages and challenges}

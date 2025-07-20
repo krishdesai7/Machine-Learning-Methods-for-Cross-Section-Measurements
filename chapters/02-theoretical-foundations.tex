@@ -238,7 +238,7 @@ These methods have served the field well for decades, particularly for one--dime
 However, they all share the common limitation of requiring discretization of the underlying distributions, which becomes increasingly problematic as measurements probe higher--dimensional spaces and more complex observables.
 
 
-\section{Traditional Unfolding Methods in Experimental Analyses}
+\section{Traditional unfolding methods in experimental analyses.}
 \label{sec:binned-methods}
 Traditional unfolding methods form the bedrock of detector corrections in high-energy physics (HEP), balancing statistical rigour with computational practicality.
 %
@@ -368,7 +368,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         However, traditional methods remain indispensable for validation and low--dimensional precision measurements where interpretability is crucial.
         \kd{Re. ``Why can't we do this with MC", you could, but there's a few reasons to use traditional methods here. 1. Validation - if IBU agrees with NPE, that's a more valuable result because the two methods don't share any algorithmic assumptions. 2. There's something to be said for deterministic methods. 3. For low dim data where computational resources are not the constraint you can get a better handle on statistical uncertainties using traditional methods to achieve superior precision because you have explicit control over regularization parameters. You can tune smoothing constraints, priors, etc. with direct mathematical control. Because linear algebra is so algorithmically simple, you can ``backpropagate" the effect of your choices in real time, in a way that you can't really do with MC.}
         
-        \subsection{Regularization: Need, Approaches, and Limitations}  
+        \subsection{Regularization: Need, Approaches, and Limitations}
         The inherent ill--posedness of unfolding necessitates regularization to stabilize solutions against statistical fluctuations while preserving physical meaning.
         %
         This section systematically examines the theoretical justification for regularization, surveys dominant methodologies, and critically evaluates their limitations in high energy physics applications.
