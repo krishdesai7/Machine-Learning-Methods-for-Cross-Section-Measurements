@@ -1,15 +1,13 @@
 % thesis-preamble.tex
-
+\setlrmarginsandblock{1in}{1in}{*}
+\setulmarginsandblock{1.5in}{1.5in}{*}
+\checkandfixthelayout
 % ============================================================================
 % ENCODING AND FONTS
 % ============================================================================
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-% \usepackage{CrimsonPro}
-% \let\oldnormalfont\normalfont
-% \def\normalfont{\oldnormalfont\mdseries}
-% \renewcommand{\fmfont}{\fontsize{12}{14.5}\selectfont\rmfamily}
-% \renewcommand{\fmsmallfont}{\fontsize{12}{14}\selectfont\rmfamily}
+
 % ============================================================================
 % DOCUMENT LAYOUT AND TYPOGRAPHY
 % ============================================================================
@@ -212,4 +210,3 @@
 \renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
 \renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
 \renewcommand{\thesubparagraph}{\theparagraph.\oldstylenums{\arabic{subparagraph}}}
-

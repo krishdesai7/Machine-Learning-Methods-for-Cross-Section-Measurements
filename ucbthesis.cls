@@ -19,9 +19,9 @@
 \nouppercaseheads
 
 % Explicitly set the text width and margins
-\setlrmargins{1.5in}{*}{*}
-\@tempdima=1.5in  \advance\@tempdima 25pt \advance\@tempdima\normalbaselineskip
-\@tempdimb=1.5in  \advance\@tempdimb 30pt
+\setlrmargins{1in}{*}{*}
+\@tempdima=1in  \advance\@tempdima 25pt \advance\@tempdima\normalbaselineskip
+\@tempdimb=1in  \advance\@tempdimb 30pt
 \setulmarginsandblock{\@tempdima}{\@tempdimb}{*}
 \AtBeginDocument{\checkandfixthelayout}
 

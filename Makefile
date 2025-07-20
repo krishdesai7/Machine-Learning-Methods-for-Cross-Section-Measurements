@@ -7,19 +7,11 @@ MAIN = main
 # Build directory
 BUILDDIR = build
 
-setup-aux-links: | $(BUILDDIR)
-	@mkdir -p $(BUILDDIR)/chapters
-	@for f in $(CHAPTER_FILES); do \
-		ln -sf ../$(BUILDDIR)/$$(basename $$f .tex).aux $$(dirname $$f)/; \
-	done
-
-$(MAIN).pdf: $(ALL_FILES) setup-aux-links | $(BUILDDIR)
-
 # LaTeX compiler and flags
 LATEX = pdflatex
-LATEXFLAGS = -interaction=nonstopmode -aux-directory=$(BUILDDIR) -output-directory=$(BUILDDIR)
+LATEXFLAGS = -interaction=nonstopmode -output-directory=$(BUILDDIR)
 BIBER = biber
-BIBERFLAGS = --output-directory=$(BUILDDIR)
+BIBERFLAGS = 
 
 # Viewer (change according to your OS)
 VIEWER = open  # macOS
@@ -38,12 +30,17 @@ ALL_FILES = $(TEX_FILES) $(CHAPTER_FILES) $(APPENDIX_FILES) $(BIB_FILES)
 # Default target
 all: $(MAIN).pdf
 
-# Create build directory if it doesn't exist
+# Create build directory and subdirectories if they don't exist
 $(BUILDDIR):
 	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)/chapters
+	@mkdir -p $(BUILDDIR)/appendices
 
 # Main compilation rule
 $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
+	@echo "=== Creating symbolic links for subdirectories ==="
+	@ln -sfn ../chapters $(BUILDDIR)/chapters
+	@ln -sfn ../appendices $(BUILDDIR)/appendices
 	@echo "=== First LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Running Biber ==="
@@ -52,16 +49,9 @@ $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Third LaTeX pass (for references) ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
-	@echo "=== Moving PDF to root directory (if it exists) ==="
-	@if [ -f $(BUILDDIR)/$(MAIN).pdf ]; then \
-		mv $(BUILDDIR)/$(MAIN).pdf .; \
-		echo "PDF moved successfully"; \
-	else \
-		echo "Warning: No PDF was generated"; \
-	fi
-	@echo "=== Moving chapter aux files to build directory ==="
-	@mv chapters/*.aux $(BUILDDIR)/ 2>/dev/null || true
-	@echo "=== Compilation complete (with possible errors) ==="
+	@echo "=== Moving PDF to root directory ==="
+	@cp $(BUILDDIR)/$(MAIN).pdf .
+	@echo "=== Compilation complete ==="
 
 # Quick compile (no bibliography)
 quick: | $(BUILDDIR)
