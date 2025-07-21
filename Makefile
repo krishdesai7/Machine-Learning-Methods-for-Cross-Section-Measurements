@@ -41,10 +41,11 @@ $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 	@echo "=== Creating symbolic links for subdirectories ==="
 	@ln -sfn ../chapters $(BUILDDIR)/chapters
 	@ln -sfn ../appendices $(BUILDDIR)/appendices
+
 	@echo "=== First LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Running Biber ==="
-	-cd $(BUILDDIR) && $(BIBER) $(MAIN)
+	cd $(BUILDDIR) && $(BIBER) $(MAIN)
 	@echo "=== Second LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Third LaTeX pass (for references) ==="

@@ -1,0 +1,98 @@
+% UC Berkeley PhD Thesis
+% Author: Krish Desai
+% Title: Machine Learning Methods for Cross Section Measurements
+
+\documentclass{ucbthesis}
+\input{thesis-preamble}
+
+%\includeonly{chapters/06-ran.tex}
+\begin{document}
+
+% Metadata
+\title{Machine Learning Methods for Cross Section Measurements}
+\author{Krish Desai}
+\degreesemester{Spring}
+\degreeyear{2025}
+\degree{Doctor of Philosophy}
+\field{Physics}
+\cochairs{Professor Benjamin Nachman}{Professor Uros Seljak}
+\othermembers{
+  Professor Joshua Bloom \\
+  Professor Saul Perlmutter
+}
+\numberofmembers{4}
+\maketitle
+% \approvalpage  % Uncomment only for signature page printing
+\copyrightpage
+
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+\include{abstract}
+
+% ============================================================================
+% FRONT MATTER
+% ============================================================================
+\begin{frontmatter}
+
+% Dedication
+\begin{dedication}
+\null\vfil
+\begin{center}
+To my family, mentors, and friends\\
+\vspace{12pt}
+for their unwavering support and encouragement
+\end{center}
+\vfil\null
+\end{dedication}
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables  
+\listoftables
+\clearpage
+
+% Acknowledgements
+\include{acknowledgements}  % Create this file separately
+
+\end{frontmatter}
+
+% ============================================================================
+% MAIN MATTER
+% ============================================================================
+\pagestyle{headings}
+
+% Main chapters
+\include{chapters/01-introduction}
+\include{chapters/02-theoretical-foundations}
+\include{chapters/03-ml-for-unfolding}
+\include{chapters/04-npu}
+\include{chapters/05-moment-unfolding}
+\include{chapters/06-ran}
+\include{chapters/07-unbinned-inference}
+%\input{chapters/08-profiling}
+\include{chapters/09-symmetrygan}
+%\input{chapters/10-comparative-analysis}
+\include{chapters/11-conclusions}
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+%\printbibliography[heading=bibintoc,title={References}]
+
+% ============================================================================
+% APPENDICES
+% ============================================================================
+\appendix
+\include{appendices/A-math-proofs}
+\include{appendices/B-implementation}
+\include{appendices/C-supplementary-results}
+
+\end{document}
