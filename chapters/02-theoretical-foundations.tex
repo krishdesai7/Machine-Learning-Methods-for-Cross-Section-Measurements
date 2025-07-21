@@ -244,7 +244,7 @@ Traditional unfolding methods form the bedrock of detector corrections in high-e
 %
 This section provides an overview of established techniques, their mathematical foundations, implementation nuances, and limitations.
 
-\subsection{Bin--by--Bin Correction}  
+\subsection{Bin by bin correction.}  
 The simplest unfolding approach applies multiplicative correction factors to observed bin counts:  
 \begin{equation}
     \hat{\nu}_j = \frac{\mu_j - b_j}{C_j}, \quad C_j = \frac{\nu^{\text{MC}}_j}{\mu^{\text{MC}}_j},
@@ -541,7 +541,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             The assumption thus places stringent requirements on Monte Carlo coverage and highlights the importance of comprehensive phase space sampling in training data preparation for generative unfolding methods.
             %
             Hybrid approaches combining discriminative and generative components show promise for anomaly detection~\cite{DiMattia2019ADetection, Terjek2019AdversarialRegularization}.
-\section{Evaluation metrics for unfolding}
+\section{Evaluation metrics for unfolding.}
     The evaluation of unfolding methods presents unique challenges due to the ill--posed nature of the inverse problem.
     %
     While the goal of unfolding is conceptually straightforward, to recover the true particle--level distribution from detector--level observations, quantifying the success of this recovery requires careful consideration when the downstream use of the data is unknown.
@@ -555,13 +555,13 @@ However, it requires careful basis function placement to prevent endpoint spikes
     Metrics for assessing accuracy, precision, and uncertainty quantification are assessed and practical considerations for their application in high energy physics analyses are discussed.
 
     
-    \subsection{Statistical Metrics for Evaluating Point Estimates}
-        \subsubsection{Residual based metrics}
+    \subsection{Statistical metrics for evaluating point estimates.}
+        \subsubsection{Residual based metrics.}
             The most intuitive approach to evaluating an unfolding method is to compare the unfolded distribution to the true distribution when it is known\footnote{e.g., in simulation studies}.
             %
             Simple residual--based metrics quantify the difference between the estimated and true distributions.
             %
-            For binned methods, the bin--by--bin residual is defined as:
+            For binned methods, the bin by bin residual is defined as:
             \begin{equation}
                 \delta_i = \hat{t}_i - t_i
             \end{equation}
@@ -595,7 +595,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             One approach is to bin the unbinned unfolded distributions and then apply the above metrics, though this introduces binning artifacts that the unbinned method was designed to avoid.
 
-        \subsubsection{Distributional distance metrics}
+        \subsubsection{Distributional distance metrics.}
         \label{subsubsec:distributional-distance-metrics}
             Given the limitations of simple residual metrics, distributional distance measures provide a more comprehensive assessment of unfolding performance.
             %

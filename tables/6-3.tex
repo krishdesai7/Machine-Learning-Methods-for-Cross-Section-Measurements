@@ -1,0 +1,22 @@
+\begin{table}
+    \centering
+    \def\arraystretch{1.5}
+    \begin{tabular}{lcccccc}
+        \toprule
+        Method & $m$ & $M$ & $w$ & $\tau_{21}$ & $z_g$ & $\ln\rho$ \\
+        \midrule
+        RAN      & \textbf{3.35} & \textbf{1.19} & \textbf{0.59} & \textbf{0.15} & \textbf{0.80} & \textbf{0.20} \\
+        OmniFold & 8.02 & 4.43 & 0.81 & 0.78 & 6.32 & 4.15 \\
+        IBU      & 7.40 & 16.07 & 5.28 & 1.52 & 19.18 & 10.31 \\
+        \midrule
+        Generation & 11.71 & 25.39 & 26.95 & 5.50 & 12.85 & 61.54 \\
+        Data       & 33.42 & 71.01 & 181.65 & 60.27 & 97.40 & 378.43 \\
+        \bottomrule
+    \end{tabular}
+    \caption[Wasserstein distances between unfolded and true distributions]{Wasserstein-1 distances ($W_1$) between true distributions for six jet substructure observables and unfolded distributions produced by RAN, OmniFold, and IBU (performed on one dimensional projections onto each observable).
+    Values are scaled by $10^{-2}$ for $m$, $M$, and $\tau_{21}$; by $10^{-3}$ for $w$, $z_g$, and $\ln\rho$. 
+    RAN achieves the smallest distance for all observables, with particularly dramatic improvements for challenging observables.
+    %
+    Baseline distances for uncorrected Generation and Data are also shown for reference.}
+    \label{tab:comp-w}
+\end{table}

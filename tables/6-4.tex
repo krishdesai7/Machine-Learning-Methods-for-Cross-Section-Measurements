@@ -1,0 +1,21 @@
+\begin{table}
+    \centering
+    \def\arraystretch{1.5}
+    \begin{tabular}{lcccccc}
+        \toprule
+        Method & $m$ & $M$ & $w$ & $\tau_{21}$ & $z_g$ & $\ln\rho$ \\
+        \midrule
+        RAN      & \textbf{2.31} & \textbf{5.83} & \textbf{1.29} & \textbf{0.92} & \textbf{0.80} & \textbf{1.27} \\
+        OmniFold & 5.06 & 6.32 & 1.33 & 7.91 & 6.84 & 2.34 \\
+        IBU      & 5.11 & 16.07 & 7.06 & 17.51 & 11.90 & 3.53 \\
+        \midrule
+        Generation & 34.92 & 12.89 & 21.86 & 20.33 & 29.17 & 18.86 \\
+        Data       & 52.24 & 136.57 & 22.55 & 25.82 & 14.90 & 18.26 \\
+        \bottomrule
+    \end{tabular}
+    \caption[VLC divergence between unfolded and true distributions]{Vincze--Le Cam divergence, $\Delta_{\text{VLC}}$ between true distributions for six jet substructure observables and unfolded distributions produced by RAN, \textsc{OmniFold} and IBU (performed one observable at a time).
+    Values are scaled by $10^{-3}$ for $m$, $M$, and $\tau_{21}$; by $10^{-4}$ for $w$, $z_g$, and $\ln\rho$. 
+    RAN achieves the smallest divergence for all observables. 
+    Baseline divergences for uncorrected Generation and Data are also shown for reference.}
+    \label{tab:comp-vlc}
+\end{table}

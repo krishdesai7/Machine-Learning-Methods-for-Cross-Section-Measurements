@@ -145,7 +145,7 @@
             %
             Two Monte Carlo generators might predict the same average multiplicity but differ in the width or tail of the multiplicity distribution, which affects extreme cases.\footnote{Like very high multiplicity events.}
             %
-            Such observables are often \emph{infrared unsafe} theoretically,\footnote{ecause soft particle emission has no cutoff, perturbative predictions diverge for the distribution shape} meaning theory must rely on phenomenological models.
+            Such observables are often \emph{infrared unsafe} theoretically,\footnote{because soft particle emission has no cutoff, perturbative predictions diverge for the distribution shape} meaning theory must rely on phenomenological models.
             %
             The only way to constrain and improve those models is for experiments to provide the unfolded full distributions of these IR unsafe observables at particle level.
             %
@@ -831,6 +831,7 @@ This framework not only forms a bridge between techniques but also provides a cl
 The moments are the fingerprints of the distribution, and once one learns to reliably recover those fingerprints, one is better equipped to handle the the full differential cross section.
 
 \section{Methodology and regularisation.}
+\label{sec:ran-methodology-and-regularisation}
     A variety of regularisation strategies have been developed historically and in contemporary machine learning approaches to ensure stable, physically meaningful unfolding solutions.
     %
     This section begins by reviewing these strategies, from classical techniques to modern ML based methods, before detailing how the Reweighting Adversarial Network (RAN) method is designed to address regularisation.
@@ -957,7 +958,7 @@ The moments are the fingerprints of the distribution, and once one learns to rel
             %
             Empirically, replacing the binary cross--entropy GAN loss with the WGAN loss stabilises the training and yields a smoother weight distribution $g(z;\,\vb*\beta)$, especially in sparse regions of the detector feature space.
             
-            An additional benefit is that RAN can, in fact, handle cases with {minimal detector level overlap} between Simulation and Data.
+            An additional benefit is that RAN can, in fact, handle cases with minimal detector level overlap between Simulation and Data.
             %
             Since the Wasserstein metric remains finite as long as the support of the weighted simulation can be transported to cover data, even if initially disjoint, RAN does not strictly require the simulation and data distributions to overlap bin--by--bin.
             %
@@ -1000,37 +1001,41 @@ The moments are the fingerprints of the distribution, and once one learns to rel
             With these in place, RAN substantially avoids the divergence and mode collapse issues that plague naive adversarial training~\cite{goodfellow_nips_2017, wiatrak_stabilizing_2020, Qian2021SelfNetworks, chen_cde-gan_2021 }.
 
         \subsubsection{Regularising the generator: initialisation and activation constraints.}
-            On the generator side (the reweighting function $g(z)$), RAN incorporates two important measures to regularize the solution.  First, we initialize $g(z)$ to close to the identity function before beginning adversarial training.
+            On the generator side, RAN incorporates two important measures to regularize the solution.
             %
-            In the context of unfolding, the “identity” reweighting corresponds to assigning weight 1 to every MC event (i.e. initially assuming the Monte Carlo truth distribution is correct and no reweighting is needed).
+            First, $g(z;\,\vb*\beta)$ is initialised close to the identity function before beginning adversarial training.
             %
-            We realize this by initializing the neural network representing $g(z)$ such that its output $\approx 1$ for all $z$.
+            In the context of unfolding, the ``identity'' reweighting corresponds to assigning weight 1 to every MC event, i.e. initially assuming the Monte Carlo truth distribution is correct and no reweighting is needed..
             %
-            This initialization reflects our prior belief that the generator only needs to make relatively small, smooth adjustments to the starting simulation, which is a reasonable assumption in many cases where the Monte Carlo is tuned to approximate reality.
+            This initialisation reflects the prior belief that the generator only needs to make relatively small, smooth adjustments to the MC, which is a reasonable assumption in many cases where the Monte Carlo is approximate reality reasonably well.
             %
-            By starting close to the identity mapping, we avoid a situation where early in training the critic finds large differences and drives $g$ to extreme compensations.
+            By starting close to the identity mapping, RAN avoids a situation where early in training the critic finds large differences and drives $g$ to extreme compensations.
             %
-            Large fluctuations in weights early on can kick off a feedback loop of instability (the critic then sees a very irregular simulated distribution and reacts pathologically, etc.).
+            Large fluctuations in weights early on can kick off a feedback loop of instability.
             %
-            The initialization acts as a strong regularizer by biasing $g$ toward the null reweighting unless the data indicate otherwise.
+            The generator generates large weights in response to the critic's output, the critic then sees a very irregular simulated distribution and reacts pathologically, etc.
             %
-            This idea is analogous to using a Bayesian prior equal to the simulation and regularizing toward it at the start; only genuine discrepancies will pull $g$ away from \(1\).
+            The initialisation acts as a strong regulariser by biasing $g$ toward the null reweighting unless the data indicate otherwise.
             %
-            Indeed, from the perspective of classical regularization, our weight initialization is equivalent to choosing the simulated distribution as a prior and initially penalizing deviations from it.
+            This idea is analogous to using a Bayesian prior equal to the MC and regularising toward it at the start; only genuine discrepancies pull $g$ away from \(1\).
             %
-            We find that this leads to a much smoother evolution of the adversarial game---initially the critic cannot easily tell data from reweighted simulation because $g\approx 1$ still leaves them broadly similar, so $d$ learns gradually to distinguish the two, and $g$ then adapts gradually in turn.
+            Indeed, from the perspective of classical regularisation, RAN's weight initialisation is equivalent to choosing the MC as a prior and initially penalising deviations from it.
             %
-            This procedure significantly reduces the risk of the training falling into bad local minima or diverging in the first epochs.
+            This leads to a much smoother evolution of the adversarial game---initially the critic cannot easily distinguish Data from reweighted Simulation because $g\approx 1$ still leaves them broadly similar.
             %
-            In summary, initializing close to the identity provides a “cold start” regularization that keeps RAN in the perturbative regime where it performs best, rather than having to learn an unpredictable transformation from scratch.\kd{}
+            Over the course of the training, $d$ learns gradually to distinguish the two, and $g$ then adapts gradually in turn to make them more and more similar.
+            %
+            This procedure significantly reduces the risk of the training falling into bad local minima or diverging in the first few epochs.
+            %
+            In machine learning terminology, initialising close to the identity provides a ``cold start'' regularization that keeps RAN in the perturbative regime where it performs best, rather than having to learn an unpredictable transformation from scratch~\cite{houlsby_parameter-efficient_2019, pan_idinit_2025, zhao_zero_2022, Caselle2022StochasticTheory, jiang_algorithmic_2022}.
 
-            The second generator--side regularization is controling the asymptotic behaviour of the {generator output parameterization} for the weights.
+            The second generator--side regularisation is controlling the asymptotic behaviour of the generator output parametrisation for the weights.
             %
-            It is essential that $g(z)$ produce positive weights (events can only be reweighted by positive factors) and have the capacity to yield a wide range of values (some events might need weight $\gg 1$ if data are more abundant there, others weight $<1$ if data are scarce). 
+            It is essential that $g(z)$ produce positive weights because events can only be reweighted by positive factors, and have the capacity to yield a wide range of values  because some events might need weight $\gg 1$ if data are more abundant there, others weight $<1$ if data are scarce. 
+            
+            The most straightforward choice is to define $g(z) = \exp[f_\theta(z)]$ where $f_\theta(z)$ is the output of a neural network with no constraints, and the exponential ensures positivity and unboundedness.
             %
-            A naive choice is to define $g(z) = \exp[f_\theta(z)]$ where $f_\theta(z)$ is the output of a neural network with no constraints, and the exponential ensures positivity and unboundedness.
-            %
-            This choice is in a sense very well motivated by the Boltzmann distribution that inspired Moment Unfolding.
+            This choice is, in a sense, very well motivated by the Boltzmann distribution that inspired Moment Unfolding.
             %
             In practice however, one finds that this choice, while mathematically valid, leads to numerical instability.
             %
@@ -1038,134 +1043,175 @@ The moments are the fingerprints of the distribution, and once one learns to rel
             %
             Moreover, the gradient of $\exp[f_\theta(z)]$ is proportional to the output itself, so once a weight becomes huge, its gradient is huge too, often causing large and unstable oscillations.
             %
-            To remedy this, a custom activation was designed, that \emph{tames} the asymptotic growth of $g(z)$ at large network outputs while preserving the desired mathematical properties.
+            To remedy this, a custom activation was designed, that tames the asymptotic growth of $g(z)$ at large network outputs while preserving the desired mathematical properties.
             %
-            In the final layer of the $g(z)$ network, we replace the $\exp$ with a composite function $\log(1 + \mathrm{softplus}(x))$.
+            In the final layer of the $g(z)$ network therefore one is advised to replace the $\exp$ with a composite function
+            \[
+                g(z) = \frac1P\log(1 + \mathrm{softplus}(z)),
+            \]
+            where $\mathrm{softplus}(x) = \log(1+e^x)$ is a smooth approximation to a ReLU which grows linearly for large $x$, but is smooth everywhere~\cite{dugas_incorporating_2000, glorot_deep_2011}.
             %
-            $\mathrm{softplus}(x) = \log(1+e^x)$ is a smooth approximation to a ReLU (it grows linearly for large $x$, but is smooth everywhere)\kd{cite}.
-            %
-            Wrapping it in $\log(1+\cdot)$ further slows the growth for large inputs: as $x \to \infty$, $\mathrm{softplus}(x)\approx x$, so $\log(1+\mathrm{softplus}(x)) \approx \log(1+x) \sim \log x$.
-            %
+            Wrapping softplus in $\log(1+\cdot)$ further slows the growth for large inputs: as $x \to \infty$, $\mathrm{softplus}(x)\approx x$, so $\log(1+\mathrm{softplus}(x)) \approx \log(1+x) \sim \log x$.
+            
             Thus for very large raw network output $x$, this activation grows only logarithmically, instead of exponentially or even linearly.
+\cref{fig:ran-activations} illustrates the behaviour of the custom activation function compared to standard alternatives. The logarithmic scale reveals the dramatically different asymptotic behaviours: while the exponential function (orange dots) grows rapidly, the sigmoid function (violet dotted line) exhibits the opposite problem---it saturates at 1, making it impossible to assign large weights even when the data requires them. RAN's custom activation (blue solid line) navigates between these extremes, growing exponentially near zero but only logarithmically for large inputs.
+
+In the region near zero, shown in detail in the inset, the smooth activations exhibit similar behaviour, ensuring that small network outputs still produce meaningful weight variations. The ReLU (green dash-dot line), while computationally efficient, introduces a non-differentiable point at zero and zero gradients for negative inputs that can complicate gradient-based optimization. The sigmoid, softplus (red dashed line), and RAN's custom activation all maintain smoothness throughout their domain, with the sigmoid showing its characteristic S-shaped curve that begins to plateau even for moderate positive values.
+
+The key advantage of RAN's activation becomes apparent when considering the full range of possible inputs. Where the exponential would produce numerically unstable weights in the millions, ReLU and softplus would exhibit linear growth and the sigmoid would cap all weights at 1 regardless of how strongly the data demands larger values. RAN's $\log(1 + \text{softplus})$ activation provides unbounded but controlled growth. For large positive inputs, RAN's activation produces weights of order 1---large enough to be meaningful but small enough to maintain numerical stability.
+%
+This design acts as an adaptive regulariser, automatically preventing the numerical instabilities of exponential or even linear parametrisations while avoiding the expressivity limitations of bounded functions.
+
+            The key advantage of this activation is worth re-emphasising.
             %
+            For even modest positive inputs, where the natural choice of the exponential would produce weights in the millions or billions,\footnote{\(\exp(13)\sim\num{d6},\; \exp(20)\sim\num{d9}\)} RAN's $\log(1 + \text{softplus})$ activation yields much more manageable weights.\footnote{\(\log(1 + \text{softplus(13)}),\;\sim 2.5, \log(1 + \text{softplus(20)})\sim 3\).} This compression of the output range the loss function dynamics from experiencing numerical instability while preserving the relative ordering of weights. The activation thus acts as an adaptive regulariser, automatically preventing the numerical instabilities that plague naive exponential parametrisations without requiring explicit weight clipping or normalisation.
+            
+
+
+            \begin{figure}
+                \label{fig:ran-activations}
+                \includegraphics[width=\linewidth]{figures/chapter-06/activations.pdf}
+\caption[Comparison of activation functions for neural network weight parametrisation]{Comparison of activation functions considered for parametrising the generator weights $g(z)$. The main plot shows five functions on a logarithmic scale: the custom RAN activation $\log(1 + \text{softplus})$ (blue solid), exponential (orange dots), ReLU (green dash--dot), softplus (red dashed), and sigmoid (violet waved). The gray shaded region indicates the interval $[-2, 2]$, which is shown in detail in the inset with linear scaling. The exponential function exhibits rapid growth for moderately large inputs, while the sigmoid saturates at 1, preventing large weights when needed. ReLU exhibits linear growth, but returns zero gradients for negative inputs. Softplus also exhibits linear growth, but is a smooth function with nonzero gradients for all inputs.
+%
+The RAN activation balances these extremes, preserving smoothness, positivity, and positive gradients, while transitioning from exponential--like behaviour near zero to logarithmic growth for large $z$, providing numerical stability without imposing hard bounds.}
+            \end{figure}
             This adjusted activation guarantees that
             \begin{enumerate}
-                \item $g(z) > 0$ for any input (by construction of softplus and log),
-                \item \(g(z)\) can still produce arbitrarily large values in principle (no finite upper bound, unlike a sigmoid which saturates) so we do not limit the solution space unduly, but
+                \item $g(z) > 0$ for any input, by construction of softplus and log,
+                \item \(g(z)\) can still produce arbitrarily large values in principle. This activation function as no finite upper bound, unlike a sigmoid which saturates.%
+                This ensures that RAN does not limit the solution space unduly, 
                 \item Extremely large weights are disfavored because pushing $f_\theta(z)$ to $\gg 0$ yields only diminishing returns in $g(z)$.
             \end{enumerate}
-            In practice, this means the network would have to invest a lot of capacity to achieve a huge weight on a single event, which is only worth it if that truly reduces the Wasserstein distance significantly.
+            
+            In practice, this means the network would have to invest a lot of capacity to achieve a huge weight on a single event, which is only worthwhile if doing so reduces the Wasserstein distance significantly.
             %
             Typically, it will be more effective to increase weights more evenly on a group of events covering a region of phase space than to make one weight enormous.
             %
-            This activation function thus serves as an \emph{internal regularizer}, curbing the tendency of the solution to form spikes or outlier weights.
+            This activation function thus serves as an internal regulariser, curbing the tendency of the solution to form spikes or outlier weights.
             %
-            It is important to emphasize that this is a soft constraint.
-            %
-            Large weights are not forbidden, but the system must pay a price to realize them, much like a physical prior that discourages sharp discontinuities in the solution unless the data demand them.
+           Since this is a soft constraint, large weights are not forbidden, but the system must pay a price to realise them, much like a physical prior that discourages sharp discontinuities in the solution unless the data demand them.
             %
             The use of this modified activation proves to be crucial for achieving stable training in RAN; with the standard exponential, one observes frequent instances of a single event’s weight blowing up and derailing the fit, whereas the log--softplus activation yields more balanced weight distributions.
             %
-        \subsection{Regularizing via MC Prior}
-            Finally, it is worth noting an intrinsic form of regularization in RAN that comes “for free”: by construction, the unfolded result is expressed as a reweighted version of the initial generated truth sample.
+        \subsection{Regularising with MC Prior}
+            Finally, it is worth noting an intrinsic form of regularisation in RAN that comes ``for free'': by construction, the unfolded result is expressed as a reweighted version of the initial Generation sample.
             %
             This means the unfolded distribution cannot introduce structures that were not present (even in latent form) in the MC.
             %
             In effect, the MC provides a prior support and shape for the solution.
             %
-            If the true underlying distribution has features outside the MC’s support, RAN (like any reweighting method) cannot recover them.
+            If the true underlying distribution has features outside the MC’s support, RAN, like any reweighting method, cannot recover them.
             %
             But conversely, it will not produce spurious artifacts that violate known physics encoded in the simulation.
             %
-            This is similar in spirit to a Bayesian prior or a template fit: one starts with a template (the generation) and only deform it as necessary to fit the data.
+            This is similar in spirit to a Bayesian prior or a template fit: one starts with a template (the Generation) and only deform it as necessary to fit the data.
             %
-            The closer the generation is to reality, the less adjustment is needed (and the smaller the risk of overfitting).
+            The closer the Generation is to reality, the less adjustment is needed.
             %
-            RAN’s whole design of “tweaking a known density rather than learning a new one from scratch” is motivated by the desire to leverage this built--in regularization.
+            RAN’s design choice of ``tweaking a known density rather than learning a new one from scratch'' is motivated by the desire to leverage this built--in regularisation.
             %
             This allows RAN’s solutions to be smoother and more statistically robust than those from unconstrained generative models, precisely because $g(z)$ operates within the scaffolding of the Monte Carlo sample.
             %
-            This comes at the cost of some bias if the Monte Carlo is poor (no method can escape that without additional input), but it is a conscious regularization choice favouring stability over unrestricted flexibility.
+            This comes at the cost of some bias if the Monte Carlo is poor, which no method can escape that without additional external input, but is a conscious regularisation choice favouring stability over unrestricted flexibility.
 
-    In summary, the RAN methodology interweaves modern ML techniques with classical regularization principles to achieve a stable unfolding.
-    %
+    In summary, the RAN methodology interweaves modern ML techniques with classical regularisation principles to achieve a stable unfolding.
+        %
     The use of the Wasserstein distance (WGAN) provides a gentle, physics--aligned way of comparing distributions that avoids the brittleness of binary classification metrics.
-    %
-    Imposing Lipschitz continuity on the critic via gradient penalties and spectral normalization keeps the adversarial game well--behaved and prevents the discriminator from overemphasizing statistical noise.
+        %
+     Imposing Lipschitz continuity on the critic via gradient penalties and spectral normalization keeps the adversarial game well--behaved and prevents the discriminator from overemphasising statistical noise.
     %
     On the generator side, starting from the physical prior (simulation) and limiting the capacity for extreme weights (through initialization and activation choices) anchor the solution close to expected physics and discourage overfitting.
     %
-    Together, these innovations allow RAN to unfold full distributions in one shot (non--iteratively) without the severe instabilities that one might fear from an unconstrained GAN approach.
+    Together, these innovations allow RAN to unfold full distributions in one shot, non--iteratively, without the severe instabilities that one might fear from an unconstrained GAN approach.
     %
-    In effect, RAN attains a balance: it is flexible enough to accurately fit complex, high--dimensional data, yet sufficiently regularized to suppress unphysical oscillations and variance.
+    In effect, RAN attains a balance.
     %
-    The result is an unfolding method that achieves competitive or superior performance to iterative methods like \textsc{OmniFold}, while operating in a single training pass and maintaining controlled behaviour even in challenging regimes (such as limited detector overlap or low--statistics bins)\kd{cite}.
+    It is flexible enough to accurately fit complex, high--dimensional data, yet sufficiently regularised to suppress unphysical oscillations and variance.
+    %
+    The result is an unfolding method that achieves competitive or superior performance to iterative methods like \textsc{OmniFold}, while operating in a single training pass and maintaining controlled behaviour even in challenging regimes\footnote{Such as limited detector overlap or low--statistics bins.}.
     %
     The following sections will demonstrate these points quantitatively with examples, but the methodological foundation laid out here is key to understanding why RAN performs as well as it does.
     %
-    It marries the strengths of adversarial learning with the hard--earned lessons of regularization from decades of unfolding research, yielding a novel and powerful approach to this classic inverse problem.
-\section{ML Implementation}
+    It marries the strengths of adversarial learning with the hard--earned lessons of regularisation from decades of unfolding research, yielding a novel and powerful approach to this classic problem.
+\section{Machine learning implementation.}
+\label{sec:ran-ml-implementation}
     \subsection{Neural Network Architecture}
-        A Reweighting Adversarial Network (RAN) consists of two components: a \emph{generator} network that assigns event-wise weights, and a \emph{critic} network that evaluates the discrepancy between weighted simulation and data.
+        A Reweighting Adversarial Network (RAN) consists of two components: a \emph{generator} network that assigns event wise weights, and a \emph{critic} network that evaluates the discrepancy between weighted simulation and data.
         %
-        We implemented both as small fully-connected (dense) neural networks using the \textsc{TensorFlow~2/Keras} framework for prototyping \kd{cite}.
+        RAN implements both as small fully connected, dense, neural networks using the \textsc{TensorFlow~2/Keras} framework for prototyping~\cite{Abadi2016TensorFlow:Learning, chollet2015keras}.
         %
-        \footnote{The design is straightforward to reproduce in \textsc{PyTorch} using analogous layers and normalization techniques.}
+        \footnote{The design is straightforward to reproduce in \textsc{PyTorch} using analogous layers and normalisation techniques.}
         %
-        The architecture was kept intentionally simple to ensure stable training and avoid over--fitting, with identical layer widths for the generator and critic.
+        The architecture was kept intentionally simple to ensure stable training and avoid over fitting, with identical layer widths for the generator and critic.
 
-        The generator $g(z;\boldsymbol{\beta})$ takes as input the \emph{particle--level} feature vector $z \in \mathbb{R}^{N_T}$ of a generated event (for example, $N_T=1$ for one--dimensional toy data or $N_T=6$ for the multi--observable jet dataset described below).
+        The generator $g(z;\boldsymbol{\beta})$ takes as input the \emph{particle level} feature vector $z \in \mathbb{R}^{N_T}$ of a generated event, where \(N_T\) is the dimension of the Generation, and the Truth.
         %
-        It outputs a scalar weight $w=g(z)$ that reweights that event in order to correct the simulation towards data.
+        For example, $N_T=1$ for one dimensional toy data or $N_T=6$ for the multi--observable jet dataset described below.
+        
+        The generator outputs a scalar weight $w=g(z)$ that reweights that event in order to correct the Simulation towards Data.
         %
         The generator is a feed--forward multilayer perceptron with three hidden layers of 50 nodes each.
         %
-        Each hidden layer uses a Leaky Rectified Linear Unit (Leaky ReLU) activation \kd{cite maas2013rectifier}.
-        %
-        We apply batch normalization and a dropout of 20\% after each dense layer to promote stable training and reduce overfitting.
+        Each hidden layer uses a Leaky Rectified Linear Unit (Leaky ReLU) activation~\cite{Maas2013RectifierModels}, with parameter \(\alpha = 0.3.\)
+        \[
+            \textbf{LeakyReLU} (z;\,\alpha) = \max(z, 0) + \alpha\,\min(0, z).
+        \]
+        
+        Batch normalisation and a dropout of \(20\%\) is applied after each dense layer to promote stable training and reduce overfitting.
         %
         The final layer of the generator is a single linear neuron (no activation) producing a raw scalar $t$.
         %
         This output is then transformed to a positive weight.
         %
-        Instead of a direct exponential mapping (which can be prone to numerical instability for large positive or negative $t$), we employ a stabilized transformation,
+        Instead of a direct exponential mapping the stabilised transformation,
         \[ 
-            w \;=\; \ln\!\Big(1 + \text{softplus}(t)\Big)\,.
+            w \;=\; \log\Big(1 + \text{softplus}(t)\Big)\,.
         \]
+        is applied to \(t\).
          Finally, the set of weights ${w_i}$ in each mini--batch is normalized so that their average is unity.
          %
-         This batch--level normalization means the total weight of the simulated sample remains consistent (preserving overall event counts) and prevents trivial solutions where the network could simply scale all weights up or down without improving the relative distribution shape.
+         This batch level normalisation means the total weight of the simulated sample remains consistent, preserving overall event counts, by approximating the ``partition function''.
          %
          The generator network thus defines a differentiable reweighting function $g(z)$ that can smoothly adjust the contribution of each simulated event during training.
 
-        The critic $d(x;\boldsymbol{\theta})$ is a discriminator--like network that takes as input the {detector--level} feature vector $x \in \mathbb{R}^{N_D}$ of an event and outputs a real--valued score.
+        The critic $d(x;\,\boldsymbol{\theta})$ is a discriminator--like network that takes as input the detector level feature vector $x \in \mathbb{R}^{N_D}$ of an event and outputs a real valued score.
         %
-        This network is tasked with distinguishing the \textit{weighted} simulated data from the true data in the detector space, and its output is used as an approximate distance measure between the two distributions.
+        This network is tasked with distinguishing the weighted Simulation from the Data in the detector space, and its output is used as an approximate distance measure between the two distributions.
         %
-        Like the generator, the critic is implemented as a fully--connected network with three hidden layers of 50 nodes each, using Leaky ReLU activations and interleaved batch normalization and 20\% dropout.
+        Like the generator, the critic is implemented as a fully connected network with three hidden layers of 50 nodes each, using Leaky ReLU activations and interleaved batch normalisation and \(20\%\) dropout.
         %
         The output layer is a single linear node producing the critic score $d(x)$.
-        %
+        
         To satisfy the requirements of the Wasserstein GAN framework, the critic must be a \(1-\)Lipschitz function.
-        %
-        We enforce this constraint via {spectral normalization} on each dense layer’s weights \kd{cite}{DBLP:journals/corr/abs-2009-02773}.
         %
         As discussed, spectral normalization scales the layer weights such that their largest singular value is 1, effectively controlling the Lipschitz constant of $d$ without the need for weight clipping.
         %
-        This technique, combined with dropout, greatly improved training stability in the unbounded--weight setup by preventing the critic from becoming overly sensitive to outlier events.
+        This technique, combined with dropout, greatly improved training stability by preventing the critic from becoming overly sensitive to outlier events.
         %
-        Additionally, we apply a mild output clipping on the critic scores \kd{cite}, capping $d(x)$ within a reasonable range to eliminate spurious large values that could arise from statistical fluctuations (which in our context would correspond to unphysical negative probabilities or overly large separation scores).
+        Additionally, a mild output clipping is applied to the critic scores, capping $d(x)$ within a reasonable range to eliminate spurious large values that could arise from statistical fluctuations, which in this context would correspond to unphysical negative probabilities or overly large separation scores~\cite{dai_rethinking_2022, arjovsky_wasserstein_2017}.
         %
-        A schematic of the RAN architecture is shown in Fig.~\ref{fig:model-arch} \kd{(fig: model architecture)}.
+        A schematic of the RAN architecture is shown in \cref{fig:model-arch}.
         %
-        The balanced capacity of the generator and critic (each with $\mathcal{O}(10^4)$ trainable parameters) was found sufficient to learn the required reweighting functions without overfitting, given the complexity of the tasks considered.
+        \begin{figure}
+    \input{figures/chapter-06/model-arch}
+    \caption[RAN architecture with generator and critic networks]{Architecture of the Reweighting Adversarial Network (RAN). 
+    \textbf{Left:} The generator network processes particle level features through three hidden layers (50 nodes each) with LeakyReLU activation, batch normalization, and 20\% dropout. The output layer produces non negative event weights using the log--softplus activation.
+    \textbf{Right:} The critic network evaluates detector level features through spectrally normalised dense layers with LeakyReLU activation, layer normalisation, and dropout, outputting a scalar critic score.
+    %
+    The networks are trained adversarially using a Wasserstein loss with gradient penalty, where the critic learns to distinguish weighted Simulation from Data while the generator learns to reweight Generation such that the induced weights on Simulation minimise this distinction.}
+    \label{fig:model-arch}
+\end{figure}
 
-    \subsection{Adversarial Training Procedure}
+        The balanced capacity of the generator and critic, each with $\mathcal{O}(10^4)$ trainable parameters, was found sufficient to learn the required reweighting functions without overfitting, given the complexity of the tasks considered.
+
+    \subsection{Adversarial training procedure.}
         Training a RAN involves a minimax game between the generator and critic, similar in spirit to a Generative Adversarial Network (GAN).
         %
-        However, unlike a standard GAN that generates new events, our generator only reweights existing events, and we adopt the Wasserstein GAN (WGAN) approach \kd{cite}{pmlr-v70-arjovsky17a} for improved stability.
+        However, unlike a standard GAN that generates new events, RAN's generator only reweights existing events.
         %
-        The critic’s objective is to maximize the statistical distance (in the Wasserstein-1 sense) between the weighted simulation and the true data distributions at the detector level, while the generator’s objective is to produce weights that minimize this distance.
+        RAN adopts the Wasserstein GAN (WGAN) approach for improved stability.
+        %
+        The critic’s objective is to maximise the statistical distance, in the Wasserstein--1 sense, between the weighted simulation and the true data distributions at the detector level, while the generator’s objective is to produce weights for Generation such that the induced weights on Simulation minimise this distance.
         %
         Formally, let $p(x)$ be the true data distribution in detector space and $q(z, x)$ be the joint distribution of generation and simulation.
         %
@@ -1174,45 +1220,47 @@ The moments are the fingerprints of the distribution, and once one learns to rel
             L_d = -\mathbb{E}_{x\sim p}[\,d(x)\,]\;+\;\mathbb{E}_{(z, x)\sim q}\big[\,g(z)\,d(x)\,\big]\,,
             \label{eq:wgan_loss}
         \]
-        where $(z, x)$ denotes corresponding generation and simulation event pairs.
+        where $(z, x)$ denotes a corresponding Generation and Simulation event pair.
         %
-        $-L_d$ is an empirical estimate of the Wasserstein\(-1\) distance between the true distribution and the reweighted simulated distribution.
+        $-L_d$ is an empirical estimate of the Wasserstein\(-1\) distance between Data and reweighted Simulation.
         %
-        The generator, on the other hand, is trained to maximize this same quantity (equivalently, to minimize the negative critic loss $-L_d$), thereby pushing the weighted simulation to resemble the data.
+        The generator, on the other hand, is trained to maximise this same quantity (equivalently, to minimize the negative critic loss $-L_d$), thereby pushing the weighted Simulation to resemble the Data.
+        
+        Unlike the binary cross--entropy loss in a traditional GAN, the Wasserstein formulation provides a smooth, continuous loss landscape even when the two distributions do not overlap perfectly.
         %
-        Unlike the binary cross--entropy loss in a traditional GAN discriminator, the Wasserstein formulation provides a smooth, continuous loss landscape even when the two distributions do not overlap perfectly \kd{cite arjovsky2017wassersteingan}.
+        This is helpful for unfolding problems because even if detector effects cause $p(x)$ and the original $q(x)$ to have non-overlapping support in $x$, the WGAN critic can still provide informative gradients to the generator.
         %
-        This is helpful for unfolding problems because even if detector effects cause $p(x)$ and the original $q(x)$ to have disjoint support in $x$, the WGAN critic can still provide informative gradients to the generator.
+        This choice eliminates the severe mode collapse or large weight oscillations that occur when using the BCE loss in extant classifier based methods.
         %
-        This choice eliminates the severe mode collapse or large weight oscillations that occur when using the BCE loss in extant classifier based methods (the WGAN’s stronger theoretical guarantees, combined with the property that RAN only classifies at detector--level, and only reweights at particle--level, ensure the training remains well-behaved even with minimal overlap) \kd{cite gulrajani2017improvedtrainingwassersteingans}.
-        %
-        To further enforce the \(1-\)Lipschitz condition required by the Wasserstein theory, one can include a gradient penalty term \kd{cite gulrajani2017improvedtrainingwassersteingans} in the critic’s loss.
+        The WGAN’s stronger theoretical guarantees, combined with the property that RAN only classifies at detector level, and only reweights at particle level, ensure the training remains well behaved even with minimal overlap~\cite{gulrajani_improved_2017}
+        
+        To further enforce the \(1-\)Lipschitz condition required by the Wasserstein theory, one can include a gradient penalty term in the critic’s loss.
         %
         This penalty,
         \[
             L_{GP} = \lambda\,\mathbb{E}_{\hat{x}}\qty[(\norm{\nabla_{\hat{x}}d(\hat{x})}_2 - 1)^2],
         \]
-        is computed on random points $\hat{x}$ interpolated between real and generated samples.
+        is computed on randomly sampled points $\hat{x}$ uniformly interpolated between Data and reweighted Simulation.
         %
         $\lambda$ usually set between five and ten.
         %
-        The gradient penalty, together with spectral normalization, acts as a robust regularizer against critic over--training.
+        The gradient penalty, together with spectral normalisation, acts as a robust regulariser against critic over--training.
 
         Training proceeds by alternating between critic and generator updates in each iteration, following the typical WGAN--GP strategy.
         %
-        We used an update ratio of 3:2 (critic:generator), meaning the critic is updated slightly more frequently to keep it near optimality as the generator evolves \kd{cite}{arjovsky2017wassersteingan}.
+        The studies presented below used an update ratio of 3:2 for the critic:generator, meaning the critic is updated slightly more frequently to keep it near optimality as the generator evolves.
         %
         Pseudocode for one training cycle is outlined in Algorithm~\ref{alg:wgan-gp}.
 
         \begin{algorithm}
-            \caption{WGAN‑GP Training Step}
+            \caption{WGAN GP Training Step}
             \label{alg:wgan-gp}
             \KwIn{
               Data distribution $p(x)$, 
-              generation--simulation pairs \(q(z, x)\),
+              Generation, Simulation pairs \(q(z, x)\),
               critic $d_{\theta}$, 
               generator weights $g(z;\beta)$,\\
-              gradient‐penalty weight $\lambda$, 
+              gradient penalty weight $\lambda$, 
               critic steps $n_c$, 
               generator steps $n_g$, 
               batch size $B$
@@ -1249,398 +1297,421 @@ The moments are the fingerprints of the distribution, and once one learns to rel
           }
         }
         \end{algorithm}
-        These steps constitute one training iteration, and they are repeated until convergence criteria are met (typically tens of thousands of mini--batch iterations, depending on dataset size).
+        These steps constitute one training iteration, and they are repeated until convergence criteria are met.
         %
-        We optimize both networks using the RMSProp optimizer \kd{cite}, which we found to outperform Adam in our WGAN setting (consistent with previous studies \kd{cite DBLP:journals/corr/abs-1810-02525}).
+        Both networks are optimised using the RMSProp optimiser, which was found to outperform \textsc{Adam} in the WGAN setting, ,consistent with previous studies~\cite{henderson_where_2018}
         %
-        The learning rate for both generator and critic was set in the range $\eta \sim 1\times10^{-4}$ to $5\times10^{-4}$ (with the exact value tuned per dataset; for the toy example we used the lower end, while the more complex jet data benefited from a slightly higher rate around $2\times10^{-4}$).
+        The learning rate for both generator and critic are set in the range $\eta \sim 1\times10^{-4}$ to $5\times10^{-4}$, with the exact value tuned per dataset.
         %
-        We did not observe the need for explicit learning rate decay schedules beyond those automatically implemented by \textsc{Keras},\kd{} as training typically converged to a stable solution before any signs of stalling.
+        A need for explicit learning rate decay schedules beyond those automatically implemented by \textsc{Keras}, was not observed as training typically converged to a stable solution before any signs of stalling.
         %
-        A mini-batch size of $B=256$ was used for all experiments, providing a good balance between gradient estimate stability and computational efficiency.
+        A mini--batch size of $B=256$ was used for all experiments, providing a good balance between gradient estimate stability and computational efficiency.
+        
+        The studies presented in this chapter do not involve an exhaustive hyperparameter search; instead, they rely on standard GAN/WGAN settings from the literature and minor tuning.
         %
-        We note that we did not perform an exhaustive hyperparameter search; instead, we relied on standard GAN/WGAN settings from the literature and minor tuning.
-        %
-        In practice, we found the performance of RAN to be robust against moderate changes in these settings: for instance, altering the learning rate by a factor of two or using 40 or 60 nodes per layer (instead of 50) had no significant impact on the final unfolded distributions.
+        In practice, the performance of RAN is found to be robust against moderate changes in these settings: for instance, altering the learning rate by a factor of two or using 40 or 60 nodes per layer, instead of 50, had no significant impact on the final unfolded distributions.
         %
         This insensitivity suggests that the RAN method does not require fine--tuned hyperparameters to achieve reliable results, an important consideration for reproducibility.
     
-        Throughout training, we continuously monitor key loss terms to ensure the optimization remains stable.
+        Throughout training, key loss terms  should be continuously monitored to ensure the optimisation remains stable.
         %
-        In particular, we track the Wasserstein critic loss $L_d$ and the gradient penalty magnitude.
+        In particular, one should track the Wasserstein critic loss $L_d$ and the gradient penalty magnitude.
         %
-        A sharp increase in the gradient penalty or a sudden large oscillation in $L_d$ can indicate that the critic is violating the Lipschitz constraint or that the generator is producing pathological weights (a potential onset of mode collapse).
+        A sharp increase in the gradient penalty or a sudden large oscillation in $L_d$ can indicate that the critic is violating the Lipschitz constraint or that the generator is producing pathological weights, a potential onset of mode collapse.
         %
-        If such behaviour is observed, one can intervene by pausing training and lowering the learning rate or increasing regularization.
+        If such behaviour is observed, one can intervene by pausing training and lowering the learning rate or increasing regularisation before resuming from the last stable checkpoint.
+        
+        In the experiments presented, the use of spectral normalisation and gradient penalty together largely prevented such divergences.
         %
-        In our experiments, the use of spectral normalization and gradient penalty together largely prevented such divergences.
+        Here, it is important to re-emphasise that RAN’s one shot training, as opposed to an iterative approach, simplifies the overall optimisation schedule.
         %
-        We emphasize that RAN’s one--shot training (as opposed to an iterative approach) simplifies the overall optimization schedule: once the adversarial equilibrium is reached, we obtain the final reweighting function without needing multiple retraining cycles.
+        Once the adversarial equilibrium is reached, one immediately obtains the final reweighting function without needing multiple retraining cycles.
     
-    \subsection{Datasets and Preprocessing}
-        We applied the above architecture and training procedure to two representative unfolding scenarios: a controlled \(1-\)dimensional Gaussian example and a realistic high--dimensional jet physics example.
+    \subsection{Datasets and preprocessing.}
+        The aforementioned architecture and training procedure was applied to two representative unfolding scenarios: a controlled \(1-\)dimensional Gaussian example and a realistic high--dimensional jet physics example.
         %
-        These two cases allow us to validate the RAN implementation on both simple and complex distributions.
+        These two cases allow one to validate the RAN implementation on both simple and complex distributions.
 
-        \subsubsection{Gaussian Example}
+        \subsubsection{Gaussian example.}
             The first dataset is a synthetic scenario with known analytical truth, designed to illustrate RAN’s behavior under varying degrees of detector smearing.
             %
-            We generate two sets of events from normal distributions at the particle level, a “truth” distribution $Z_{\text{T}} \sim \mathcal{N}(\mu_{\text{true}},,1)$ and a “generator” (simulation) distribution $Z_{\text{G}} \sim \mathcal{N}(\mu_{\text{gen}},,1)$, with means chosen to be $\mu_{\text{true}}=0$ and $\mu_{\text{gen}}=-1$.
+            Generate two sets of events from normal distributions at the particle level, a ``Truth'' distribution $Z_{\text{T}} \sim \mathcal{N}(\mu_{\text{Truth}},\,1)$ and a ``Generation'' distribution $Z_{\text{G}} \sim \mathcal{N}(\mu_{\text{Gen.}},\,1)$, with means $\mu_{\text{Truth}}=0$ and $\mu_{\text{Gen.}}=-1$.
             %
-            We sample $10^4$ events from the truth distribution and $10^5$ events from the generation distribution.
+            Sample \(\num{d4}\) events from the Truth distribution and \(\num{d5}\) events from the generation distribution.
+            
+            To emulate detector effects, each particle-level value $z$ is transformed by a simple deterministic response: $x = S \cdot z$, where $S$ is a scalar ``smearing'' factor which is constant for any given individual unfolding experiment.
             %
-            To emulate detector effects, each particle-level value $z$ is transformed by a simple deterministic response: $x = S \cdot z$, where $S$ is a scalar “smearing” factor.
+            For example, when $S=1,$ the Data equals the Truth with no smearing, while $S>1$ stretches the distribution, reducing the overlap between the Data ($X_D = S\cdot Z_{\text{T}}$) and Simulation ($X_S = S\cdot Z_{\text{G}}$).
             %
-            For example, with $S=1$ the detector--level measurement equals the true value (no smearing), while $S>1$ stretches the distribution, reducing the overlap between the “data” ($x = S\cdot z_{\text{T}}$) and “simulated” ($x = S\cdot z_{\text{G}}$) detector--level observations.
+            Data is unfolded over a range of \(S\) values representing increasingly degraded detector responses.
+            
+            Since this is a one dimensional setup, \(N_T = N_D = 1\) i.e, each event is described by a single number.
             %
-            We consider a range of $S$ values to progressively degrade the overlap.
+            Apart from the deterministic scaling, no additional noise or inefficiency is introduced, so the challenge lies purely in the shift of distributions and, more importantly the lack of detector level support overlap as $S$ grows large.
             %
-            For this one--dimensional setup, $N_T = N_D = 1$ (each event is described by a single number).
+            No additional preprocessing of the input features is necessary since they are already standardised aside from mean shifts and bounded.
+            
+            During training, at each iteration draw a random batch of $B=256$ values from the $\num{d4}$ available smeared Data points and another batch of 256 from the $\num{d5}$ smeared Simulation points.
             %
-            Apart from the deterministic scaling, no additional noise or inefficiency is introduced, so the challenge lies purely in the shift of distributions and the lack of detector--level support overlap when $S$ is large.
-            %
-            We do not apply any additional preprocessing to the input features since they are already standardized (mean shifts aside) and bounded.
-            %
-            During training, at each iteration we draw a random batch of $B=256$ values from the $10^4$ available smeared data points and another batch of 256 from the $10^5$ smeared simulation points.
-            %
-            Because the simulation sample is larger, we cycle through it (randomly shuffled) such that multiple data epochs correspond to one pass through the simulation.
+            Because the Simulation sample is larger, cycle through it randomly shuffled such that multiple data epochs correspond to one pass through the simulation.
             %
             It is beneficial to shuffle and reshuffle both samples frequently during training to avoid any periodic artifacts given the fixed deterministic smearing.
             
-            The RAN is tasked with learning event weights $g(z)$ that correct the generation distribution (centered at $-1$) to match the true distribution (centered at 0), using only classification information from the $x$ domain where in extreme cases the distributions barely overlap.
+            The generator is tasked with learning event weights $g(z)$ that correct the Generation distribution centred at $-1$ to match the true distribution centred at 0, using only classification information from the $X$ domain where in extreme cases the distributions barely overlap.
+            
+            This toy example is especially useful for validating the implementation because the optimal reweighting function is known.
             %
-            This toy example is especially useful for validating the implementation because the underlying true reweighting function is known (in the limit of infinite statistics, the optimal weight would be proportional to the ratio of target to sim densities at $z$, which in this case is $\exp[-(z-\mu_{\text{true}})^2/2 + (z-\mu_{\text{gen}})^2/2]$, a Gaussian weight). It also allows us to verify that RAN’s adversarial training indeed converges to the correct solution, by comparing the unfolded distribution to the analytic expectation.
+            In the limit of infinite statistics, the optimal weight would be proportional to the ratio of Truth to Generation densities at $z$, which in this case is $\exp[-(z-\mu_{\text{Truth}})^2/2 + (z-\mu_{\text{Gen.}})^2/2]$, a Gaussian weight.
+            %
+            It also allows one to verify that RAN’s adversarial training indeed converges to the correct solution, by comparing the unfolded distribution to the analytic expectation.
 
-        \subsubsection{Jet Substructure Dataset}
-            The second dataset studied is a realistic example taken from high--energy particle physics, involving the unfolding of jet substructure observables.
+        \subsubsection{Jet substructure dataset}
+            The second dataset studied is a realistic example taken from high energy physics, involving the unfolding of jet substructure observables.
             %
-            We follow the setup of the \textsc{OmniFold} study \kd{cite Andreassen:2019cjw} to enable direct comparisons.
+            For this experiment, follow the setup of the \textsc{OmniFold} study described in~\cite{andreassen_omnifold_2020} to enable direct comparisons.
             %
-            Proton-proton collision events at $\sqrt{s}=14$~TeV were generated using two different Monte Carlo simulators, \textsc{Pythia}8.243 \kd{cite Sjostrand:2014zea,Sjostrand:2007gs} (with CMS Tune26 \kd{cite ATL-PHYS-PUB-2014-021}) provided the initial \emph{generation} sample, and \textsc{Herwig}~7.1.5 \kd{cite Bahr:2008pv,Bellm:2017bvx} was used to generate an independent sample treated as the \emph{truth} target distribution.
+            Proton--proton collision events at $\sqrt{s}=14$~TeV are generated using two different Monte Carlo simulators, \textsc{Pythia}8.243~\cite{Sjostrand:2014zea, Sjostrand:2007gs} with Tune 26~\cite{TheATLAScollaboration:2014rfk} provides the initial Generation sample, and \textsc{Herwig}~7.1.5~\cite{Bellm2017HerwigNote, Bahr:2008pv} is used to generate an independent sample treated as the Truth distribution.
             %
-            Each event in both samples contains a high-$p_T$ $Z$ boson (with $p_T^Z > 200$~GeV) decaying leptonically, produced back--to--back with a hadronic jet.
+            Each event in both samples contains a high-$p_T$ $Z$ boson with $p_T^Z > 200$~GeV decaying leptonically, produced back to back with a hadronic jet.
             %
-            The presence of a $Z$ boson trigger ensures a well--defined event sample and reduces acceptance differences.
+            The presence of a $Z$ boson trigger ensures a well defined event sample and reduces acceptance differences.
             %
-            The final--state particles in each event were passed through a fast detector simulation using \textsc{Delphes}~3.4.2 \kd{cite deFavereau:2013fsa} with a CMS detector configuration (including particle--flow reconstruction \kd{cite Mertens:2015kba,CMS:2017yfk}).
+            The final state particles in each event are passed through a fast detector simulation using \textsc{Delphes}~3.4.2~\cite{DeFavereau2014DELPHESExperiment} with a CMS detector configuration including particle flow reconstruction~\cite{Mertens:2015kba, CMS:2017yfk}.
             %
-            Jets are then reconstructed in both the particle--level and detector--level event records using the anti$-k_T$ clustering algorithm \kd{cite Cacciari:2008gp} (radius parameter $R=0.4$) as implemented in \textsc{FastJet}3.3.2 \kd{cite Cacciari:2011ma}.
+            Jets are then reconstructed in both the particle--level and detector--level event records using the anti$-k_T$ clustering algorithm~\cite{Cacciari:2008gp} with a radius parameter, $R=0.4$, as implemented in \textsc{FastJet}3.3.2~\cite{Cacciari2012FastJetManual}
+            
+            This dataset focuses on the hardest jet in each event, the jet that balances the $Z$ boson’s recoil, to define its observables.
             %
-            We focus on the hardest jet in each event (the jet that balances the $Z$ boson’s recoil) to define our observables.
-            %
-            For each jet, we consider six different substructure observables that characterize its internal pattern of particles.
+            For each jet, consider six different substructure observables that characterise its internal pattern of particles.
             %
             These include classic measures like the jet mass $m$ and jet breadth or width $w$, as well as more specialized variables such as the \(N-\)subjettiness ratio $\tau_{21}$, the groomed momentum fraction $z_g$ from the Soft Drop algorithm, and a logarithmic version of the dimensionless jet mass $\ln\rho$.
             %
-            Precise definitions of these observables follow those in Ref.\kd{cite Andreassen:2019cjw}, and we refer the reader there or to Appendix \kd{ref} for the formulae.
+            Precise definitions of these observables follow those in \cite{andreassen_omnifold_2020}.
             %
-            In total, each jet is described by a feature vector of $N_T = N_D = 6$ numbers (since the same set of observables is defined at particle--level and, after \textsc{Delphes} simulation, at detector--level).
+            In total, each jet is described by a feature vector of $N_T = N_D = 6$ numbers (since the same set of observables is defined at particle level and, after \textsc{Delphes} simulation, at detector level).
             %
             These six features form the input to the RAN networks.
+            
+            It is helpful to whiten (z--score) these inputs to minimise finite precision and overflow errors.
             %
-            It is helpful to whiten (z--score)\kd{} these inputs to minimize finite precision and overflow errors.
+            Prepared the data such that the particle level Truth sample from textsc{Herwig} contains on the order of $\num{d6}$ jets, and the  particle level Generation sample from \textsc{Pythia}, a similar order of magnitude.
             %
-            We prepared the data such that the truth sample (\textsc{Herwig}, particle--level) contained on the order of $10^6$ jets, and the simulation sample (\textsc{Pythia}, particle-level) a similar order of magnitude.
+            The detector level representations for each sample are obtained via the same \textsc{Delphes} procedure, yielding paired $(z, x)$ examples for \textsc{Pythia} and independent $x$ examples for \textsc{Herwig}.
+            
+            During training, treat the \textsc{Delphes+Herwig} jets as the Data distribution $p(x)$ and the \textsc{Delphes+Pythia} jets as the initial Simulation, $q(x)$.
             %
-            The detector--level representations for each sample are obtained via the same \textsc{Delphes} procedure, yielding paired $(z, x)$ examples for \textsc{Pythia} and independent $x$ examples for \textsc{Herwig}.
-            %
-            During training, we treat the \textsc{Delphes+Herwig} jets as our “real data” distribution $p(x)$ and the \textsc{Delphes+Pythia} jets as the initial $q(x)$. %
             At each iteration, mini-batches of $B=256$ jets are drawn from each distribution.
             %
-            Given the relatively large size of the samples, we did not need to worry about cycling through the data too many times; we simply train for a fixed number of iterations (determined by early stopping as described next).
+            Given the relatively large size of the samples, one need not worry about cycling through the data too many times and can simply train for a fixed number of iterations determined by early stopping.
             %
-            We ensured that each jet in the training sample is used many times over the course of training, which is important for the generator to refine the weights on all regions of phase space.
+            Ensure that each jet in the training sample is used many times over the course of training, which is important for the generator to refine the weights on all regions of phase space..
             %
-            Notably, because RAN’s generator applies weights at the particle level (prior to detector simulation), it effectively learns to reweight the \textsc{Pythia} particle-level jets such that, after \textsc{Delphes}, their distribution of observables matches that of the \textsc{Delphes}-processed \textsc{Herwig} jets.
+            Once training is complete, the learned weights $w = g(z)$ can be applied directly to the Generation events to produce an unfolded distribution for each observable, which we can then compare to the Truth, i.e. \textsc{Herwig} particle level distribution.
+            
+            It is important to emphasise that in this experiment the ``data'' is fully simulated, \textsc{Herwig+Delphes} rather than experimental observations or measurements.
             %
-            Once training is complete, those learned weights $w = g(z)$ can be applied directly to the \textsc{Pythia} particle--level events to produce an unfolded distribution for each observable, which we can then compare to the true \textsc{Herwig} particle--level distribution.
+            This is a common practice in validation studies, allowing us to quantitatively evaluate the accuracy of the unfolding by comparing to known truth.
             %
-            We emphasize that in this example the “data” is actually fully simulated (\textsc{Herwig+Delphes}) rather than collider observations;
-            %
-            this is a common practice in validation studies, allowing us to quantitatively evaluate the accuracy of the unfolding by comparing to known truth.
-            %
-            The RAN method, of course, does not rely on knowing the truth distribution during training—it only uses the detector--level information, so it is directly applicable to real data once validated.
+            However, as is the case with any proposed method, the gold standard of its quality will be demonstrated through future work applying it to real experimental data.
 
-    \subsection{Training Monitoring and Validation}
+    \subsection{Training, monitoring and validation.}
         To ensure reliable performance and prevent overtraining, one should employ a rigorous monitoring and validation regimen during RAN training.
         %
-        First, one should partitioned each dataset into a training set (used to update network parameters), a smaller validation set (used only for performance monitoring), and a testing set.
+        First, one should partitioned each dataset into a training set used to update network parameters, a smaller validation set, used for performance monitoring during the training, and a testing set.
         %
-        The ratios used were training:validation:testing \(70:15:15\)
+        The ratios used were training : validation : testing \(= 70:15:15.\)
         %
         The validation data is not seen by the networks during gradient updates, but one computes the same losses on it to check how well the model generalizes.
         %
-        Specifically, after every fixed number of training iterations (for instance, every 100 mini-batch updates), one evaluates the critic loss $L_d$ on the validation batch and tracks its evolution.
+        Specifically, after every fixed number of training iterations, one evaluates the critic loss $L_d$ on the validation batch and tracks its evolution.
         %
-        If one observes the validation loss starting to increase while the training loss continues to decrease, this is a clear sign of overfitting i.e. the critic is learning spurious differences that do not generalize, or the generator is over--adjusting to peculiarities of the training sample.
+        If one observes the validation loss starting to increase while the training loss continues to decrease, this is a clear sign of overfitting i.e. the critic is learning spurious differences that do not generalise, or the generator is over adjusting to peculiarities of the training sample.
         %
         In such cases, one should invoke an \emph{early stopping} criterion.
         %
-        In our implementation, early stopping was triggered if the validation Wasserstein distance (approximated by $-L_f$ on the validation set) had not improved for 10 consecutive evaluation intervals.
+        In the implementation described, early stopping is triggered if the validation Wasserstein distance, approximated by $-L_f$ on the validation set, has not improved for 10 consecutive evaluation intervals.
         %
         Once triggered, one stops training and rolls back to the generator state that had the best validation performance.
         %
-        This strategy ensures that one did not over--train the critic to exploit statistical noise, which would manifest as unstable weights when applied to new data.
+        This strategy ensures that one did not overtrain the critic to exploit statistical noise, which would manifest as unstable weights when applied to hitherto unseen validation data.
 
-        In addition to the WGAN loss, one can track several high--level divergence metrics between the reweighted generation and truth distributions.
+        In addition to the WGAN loss, one can track several other high level divergence metrics between the reweighted Generation and Truth distributions.
         %
-        While these metrics are not used to train the model (since truth is not known in real applications), they are extremely useful to diagnose convergence and compare to alternative methods.
+        While these metrics are not used to train the model, since truth is not known in real applications, they are extremely useful to diagnose convergence and compare to alternative methods.
         %
         One such metric is the \textbf{Wasserstein-1 distance} itself between the weighted and true distributions.
         %
-        Although our critic provides an estimate of this distance via the loss, one can also compute it independently for simpler cases.
+        Although the critic provides an estimate of this distance at detector level via the loss, one can also compute it at particle level independently for simpler cases.
         %
-        For the 1D Gaussian example, the Wasserstein distance has a closed-form (it reduces to the difference in means when both distributions are Gaussian with equal width), and for the jet observables one can calculate one-dimensional Wasserstein distances for each observable’s distribution individually.
+        For the 1D Gaussian example, the Wasserstein distance has a closed form which reduces to the difference in means when both distributions are Gaussian with equal width, and for the jet observables one can calculate one dimensional Wasserstein distances for each observable’s distribution individually.
         %
-        One can also monitored the \textbf{Vincze–Le Cam (VLC) divergence} \kd{cite DBLP:journals/corr/abs-2009-10838, nishiyama2022relationstightboundssymmetric} between the unfolded (reweighted) generation and the truth.
-        %
-        The VLC divergence, sometimes referred to as the triangular discrimination, is a symmetric divergence measure defined for two probability density functions $p$ and $q$ as
-        \[
-            \Delta_{VLC}(p,q) \;=\; \frac{1}{2}\int_{-\infty}^{\infty}\frac{\big(p(x)-q(x)\big)^2}{\,p(x)+q(x)\,}\,\dd x\,.
-        \]
-        Lower values indicate closer agreement between distributions ($\Delta_{VLC}=0$ if and only if $p=q$).
+        One can also monitor the Vincze–Le Cam (VLC) divergence, introduced in \cref{subsubsec:distributional-distance-metrics}, between the unfolded reweighted Generation and the Truth.
+        Lower values indicate closer agreement between distributions and $\Delta_{VLC}=0$ if and only if $p=q$.
         %
         This metric is particularly sensitive to differences in the tails of distributions and provides complementary check to the Wasserstein distance.
-        %
-        During training, one could periodically apply the current set of weights $g(z)$ to a large sample of simulation events and then evaluate $\Delta_{VLC}$ and the Wasserstein distance between this weighted sample and the truth sample (using the known truth in validation studies).
+        
+        During training, one could periodically apply the current set of weights $g(z)$ to a large sample of simulation events and then evaluate $\Delta_{VLC}$ and the Wasserstein distance between this weighted sample and the truth sample using the known Truth events in validation studies.
         %
         A decreasing trend in both metrics as training progresses signals that RAN is converging towards the correct reweighting.
         
-        For instance, in the Gaussian example with moderate smearing, we observed the VLC divergence between the weighted simulation and truth drop rapidly in the first few dozen iterations and flatten out at a low value, indicating that the generator had found an effective weighting scheme.
+        For instance, in the Gaussian example with moderate smearing, one observes the VLC divergence between the weighted Generation and Truth drop rapidly in the first few dozen epochs and then flatten out at a low value, indicating that the generator had found an effective weighting scheme.
         %
-        Similar behavior was seen in the jet case: the combined six-dimensional weight optimization gradually improved the agreement in all observables.
+        Similar behaviour is seen in the jet case: the combined six-dimensional weight optimisation gradually improves the agreement in all observables.
         %
-        By the end of training, the unfolded distributions for all six jet observables were nearly indistinguishable from the truth, as quantified by final Wasserstein distances on the order of a few times $10^{-2}$ and VLC divergence on the order of $10^{-3}$ (see \kd{cite Andreassen:2019cjw} for comparable benchmarks with iterative methods).
-        %
-        We include summary tables (Table~\ref{tab:comp_wass} and Table~\ref{tab:comp_vlc} in Section~\ref{sec:results}) comparing these divergence metrics for RAN versus other methods; the RAN implementation achieves competitive or superior scores, validating our training procedure.
+        By the end of training, the unfolded distributions for all six jet observables are nearly indistinguishable from the truth, as quantified by final Wasserstein distances on the order of $10^{-2}$ and VLC divergence on the order of $10^{-3}$.\footnote{See~\cite{andreassen_omnifold_2020} for comparable benchmarks involving iterative methods.}
+        
+        Summary tables \cref{tab:comp_wass, tab:comp_vlc} are included in \cref{sec:ran-results} comparing these divergence metrics for RAN versus other methods; the RAN implementation achieves competitive or superior scores, validating the training procedure described.
 
-        Crucially, the monitoring process also guards against the possibility of divergence or weight blow--up.
+        Crucially, the monitoring process also guards against the possibility of divergence or weight blow up.
         %
-        If at any point the training appears to destabilize (e.g. the critic loss oscillates wildly or the weights $\qty{g(z)}$ start to become extremely large for a small subset of events), we can intervene by either stopping early or introducing additional regularization.
+        If at any point the training appears to destabilise\footnote{E.g., the critic loss oscillates wildly or the weights $\qty{g(z)}$ start to become extremely large for a small subset of events,}, one can intervene by stopping early and/or introducing additional regularization.
         %
-        In practice, thanks to the built-in regularizers (spectral norm, gradient penalty, dropout), such pathological behaviour was rare.
-        %
-        One symptom we might encounter in some trials was the appearance of a few very large weights in sparsely populated regions of phase space.
+        In practice, thanks to the regularisation implemented (spectral norm, gradient penalty, dropout), such pathological behaviour was rare.
+        
+        One symptom one might encounter in some trials is the appearance of a few very large weights in sparsely populated regions of phase space.
         %
         This is a known issue in unfolding problems.
         %
-        When there are regions that have little simulated density but non--negligible data density, any method will assign large weights to the few simulation events in that region.
+        When there are regions that have little MC density but non-negligible data density, any reweighting based method will assign large weights to the few simulation events in that region, and RAN is no exception.
         %
-        RAN is no exception;
+        Nonetheless, the spectral normalisation on the critic help limit how fast and how large those weights could grow.
         %
-        nonetheless, the spectral normalization on the critic help limit how fast and how large those weights could grow.
-        %
-        If needed, one could impose an explicit cap on weights or an additional \(L_p\) norm term in the loss to penalize overly large weights, but we did not find this necessary for our benchmarks.
+        If needed, one could impose an explicit cap on weights or an additional \(L_p\) norm term in the loss to penalize overly large weights, but this was not found to be necessary for these benchmarks.
 
-    In summary, the ML implementation of RAN described above proved to be robust and reproducible across the different datasets.
+    In summary, the ML implementation of RAN described above provees to be robust and reproducible across the different datasets.
     %
-    By carefully specifying the architecture (with sufficient complexity to learn the needed reweighting, but regularized to avoid overfitting), using a stable training objective (Wasserstein GAN with gradient penalty) and optimizer (RMSProp), and employing diligent monitoring/early--stopping criteria, we ensured that the training converges reliably to a good solution.
+    By carefully specifying the architecture with sufficient complexity to learn the needed reweighting, but regularised to avoid overfitting, by using a stable training objective in the Wasserstein divergence with gradient penalty and optimiser, RMSProp, and by employing diligent monitoring and early stopping criteria, one ensures that the training converges reliably to a good solution.
+    
+    The design choices were informed by both theoretical considerations such as the advantage of WGAN for non-overlapping support and practical experimentation like the choice of 3 critic updates per 2 generator updates for efficiency.
     %
-    The design choices were informed by both theoretical considerations (e.g. the advantage of WGAN for non--overlapping supports) and practical experimentation (e.g. the choice of 3 critic updates per 2 generator updates for efficiency).
+    The resulting RAN model can be straightforwardly re-implemented in common deep learning frameworks and the reported hyperparameters can serve as a baseline for future applications.
     %
-    The resulting RAN model can be straightforwardly re--implemented in common deep learning frameworks, and our reported hyperparameters can serve as a baseline for future applications.
-    %
-    All training scripts and data have been made available open--source to facilitate verification and reuse.
-    %
-    Thus, this implementation satisfies the dual goals of performance and transparency, which are essential for trustable unfolding in high--energy physics.
+    All training scripts and data will be made available open--source to facilitate verification and reuse.
 
 \section{Results}
     \label{sec:ran-results}
-    We evaluate the Reweighting Adversarial Network (RAN) on two case studies: a targetting one--dimensional Gaussian unfolding task and a realistic jet substructure unfolding problem.
+    This section evaluates the Reweighting Adversarial Network (RAN) on the two case studies described in the preceding section.
     %
-    In each case, RAN’s performance is compared to two baseline methods, the \textsc{OmniFold} algorithm~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and Iterative Bayesian Unfolding (IBU)~\kd{DAgostini:1994fjx}.
+    In each case, RAN’s performance is compared to two baseline methods, the \textsc{OmniFold} algorithm and Iterative Bayesian Unfolding (IBU).
     %
-    We report quantitative divergence metrics for each method and analyse their ability to reproduce the true (particle--level) distributions (closure tests), as well as the methods’ stability under statistical fluctuations.
+    Quantitative divergence metrics are reported for each method that measure their ability to reproduce the Truth distributions, as well as the methods’ stability under statistical fluctuations.
 
-    \subsection{Gaussian Model with Smearing}
-        We first consider a targeted unfolding scenario to stress-test RAN in a regime of limited detector--level overlap.
+    \subsection{Gaussian model with smearing.}
+        This study represents a targeted unfolding scenario to stress test RAN in a regime of limited detector level overlap.
         %
-        In this model, the truth particle--level distribution is a Gaussian $T \sim \mathcal{N}(0,,1)$, while the initial simulation (prior) distribution is $G \sim \mathcal{N}(-1,,1)$.
+        As the smearing factor increases above unity, the Data and Simulation become increasingly separated, with less and less overlapping support, even though the underlying particle level distributions remain fixed.
         %
-        This introduces a modest discrepancy at particle level (a mean offset of 1 unit).
-        %
-        We then simulate a detector response that scales each observable by a constant “smearing” factor.
-        %
-        As the smearing factor increases above unity, the detector--level distributions of the data (smeared truth) and simulation (smeared prior) become increasingly separated (with less overlapping support), even though the underlying particle--level distributions remain fixed.
-        %
-        This controlled setup allows us to examine how each unfolding method copes with a progressively worsening mismatch between the observed (detector--level) data and the simulation.
+        This controlled setup allows an examination how each unfolding method copes with a progressively worsening mismatch between the Data and Simulation.
         %
         Notably, methods like \textsc{OmniFold} rely reweighting at the detector level, which can fail if the detector--level supports do not overlap well.
         %
-        In contrast, RAN performs reweighting before the detector simulation (at particle level) and uses an optimal transport--based loss to compare detector--level outputs.
+        In contrast, RAN performs reweighting at particle level and uses an optimal transport based loss to compare detector level outputs.
         %
-        We therefore expect RAN to be more robust in scenarios with poor detector--level overlap, provided the particle--level distributions still cover each other.
+        One therefore expects RAN to be more robust in scenarios with poor detector level overlap, provided the particle level distributions still cover each other.
 
-        To quantify performance, we use the Wasserstein\(-1\) distance ($W_1$) and the Vincze–-Le Cam (VLC) divergence $\Delta_{VLC}$ between the unfolded outcome and the true distribution as metrics of accuracy.
+        To quantify performance the Vincze–-Le Cam (VLC) divergence $\Delta_{VLC}$ between the unfolded outcome and the true distribution are used as metrics of accuracy.
         %
-        Figure~\kd{fig:omnifold-comp} summarizes the unfolding accuracy as a function of the smearing factor, with $\Delta_{VLC}$ plotted for RAN and \textsc{OmniFold}.
-        %
-        At minimal smearing (factor $1.0$, essentially an identity detector response), both methods perform excellently, and \textsc{OmniFold} achieves a slightly smaller divergence to truth than RAN (for example, at smearing $1$, $\Delta_{VLC}$ for \textsc{OmniFold} is $0.057\times10^{-3}$, compared to RAN’s $0.122\times10^{-3}$).
-        %
-        This confirms that when the detector effects are negligible and the problem reduces to a straightforward reweighting, \textsc{OmniFold}’s direct classifier--based approach is very effective---indeed, it finds a nearly perfect weighting in this easy regime.
+        \cref{fig:omnifold-comp} summarizes the unfolding accuracy as a function of the smearing factor, with $\Delta_{\text{VLC}}$ plotted for RAN and \textsc{OmniFold}.
 
-        However, as the smearing increases and detector--level overlap deteriorates, \textsc{OmniFold}’s performance degrades sharply.
+        At minimal smearing, both methods perform excellently, and \textsc{OmniFold} achieves a slightly smaller divergence to truth than RAN.
         %
-        Beyond a smearing factor of about $1.5$, the \textsc{OmniFold} solution’s divergence from truth grows rapidly.
+        For example, at smearing $S = 1, \Delta_{\text{VLC}}$ for \textsc{OmniFold} is $0.057\times10^{-3}$, compared to RAN’s $0.122\times10^{-3}$.
         %
-        By the highest smearing values tested (where the detector--level simulation and data distributions are almost disjoint), \textsc{OmniFold}’s unfolded result significantly deviates from the true distribution (nearly an order of magnitude worse $\Delta_{VLC}$ compared to the no--smear case).
+        This confirms that when the detector effects are small and distributions have good support, the problem reduces to a straightforward reweighting and \textsc{OmniFold}’s direct classifier based approach is very effective.
         %
-        This is consistent with expectations.
+        Indeed, it finds a nearly perfect weighting in this regime.
+
+        However, as the smearing increases and detector level overlap deteriorates, \textsc{OmniFold}’s performance degrades.
         %
-        \textsc{OmniFold} tried to reweight at detector level, and when it cannot find common phase space between data and simulation, it struggles to assign meaningful weights.
+        Beyond a smearing factor of about $5$, the \textsc{OmniFold} solution’s divergence from truth grows significantly.
+        %
+        By the highest smearing values tested, where the Simulation and Data distributions are almost disjoint, \textsc{OmniFold}’s unfolded result significantly deviates from the true distribution, nearly two orders of magnitude worse $\Delta_{VLC}$ compared to the no smearing case.
+        
+        These observations are consistent with expectations.
+        %
+        \textsc{OmniFold} tries to reweight at detector level, and when it cannot find common phase space between Data and Simulation, it struggles to assign meaningful weights.
         %
         In stark contrast, RAN maintains a stable performance across the entire range of smearings.
         %
-        As shown in Figure~\kd{fig:omnifold-comp}, RAN's $\Delta_{VLC}$ remains approximately constant (with only slight variation within statistical error) as smearing increases.
+        As shown in \cref{fig:omnifold-comp}, RAN's $\Delta_{\text{VLC}}$ remains approximately constant, with only slight variation within statistical error, as smearing increases.
         %
-        Even at the largest smearing factors, RAN's divergence to truth is essentially the same as it was at zero smearing, indicating that RAN successfully unfolds the distribution despite scalar multiplication.
+        Even at the largest smearing factors, RAN's divergence with Truth is essentially the same as it was at zero smearing, indicating that RAN successfully unfolds the distribution despite separation in detector level distributions.
         %
-        This behaviour can be attributed to RAN's methodological property of only reweighting at particle level, combined with its use of an optimal transport loss at detector level, which, unlike a classifier, does not require overlapping support to provide a meaningful gradient---the adversarial training can adjust weights to minimize the Wasserstein distance between the smeared simulation and data, even if those distributions are partially disjoint.
+        This behaviour can be attributed to RAN's methodological property of only reweighting at particle level, combined with its use of an optimal transport loss at detector level, which, unlike a classifier, does not require overlapping support to provide a meaningful gradient---the adversarial training can adjust weights to minimize the Wasserstein distance between the smeared Simulation and Data, even if those distributions are partially disjoint.
         %
-        The error bars in Figure~\kd{fig:omnifold-comp} (representing 1$\sigma$ uncertainties from bootstrapping the experiment) confirm the statistical stability of each method.
+        The error bars in \cref{fig:omnifold-comp}, representing 1$\sigma$ uncertainties computed by bootstrapping the experiment, confirm the statistical stability of each method.
         %
-        RAN’s results are consistent across bootstrap resamples, and while \textsc{OmniFold}’s uncertainty also grows with smearing, the trend of degradation is clear beyond the error bars.
+        RAN’s results are consistent across bootstrap resamples, and while \textsc{OmniFold}’s uncertainty also grows with smearing.
         %
-        In summary, this Gaussian study demonstrates that RAN is robust to limited detector--level support, recovering the true distribution reliably in a single pass, whereas \textsc{OmniFold} requires sufficient detector--level overlap to perform optimally. This advantage of RAN becomes critical in more complex, realistic scenarios where detector effects can be large.
-    \subsection{Jet Substructure Unfolding Results}
-        We next assess RAN on a realistic high-energy physics unfolding task: correcting jet substructure observables from detector--level “measured” data to particle--level truth.
+        In summary, this Gaussian study demonstrates that RAN is robust to limited detector level support, recovering the true distribution reliably in a single pass, whereas \textsc{OmniFold} requires sufficient detector level overlap to perform optimally.
         %
-        This example serves as a stringent test of RAN’s ability to handle multi--dimensional, non--Gaussian distributions with sharp features and long tails.
+        This advantage of RAN becomes valuable in scenarios where detector effects can be large.
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/chapter-06/OF_delta.pdf}
+    \caption[Unfolding performance comparison between RAN and OmniFold under varying detector smearing]{Comparison of unfolding performance under increasing detector smearing. 
+    The Vincze--Le Cam divergence ($\Delta_{\text{VLC}}$) between unfolded and true distributions is shown as a function of the smearing factor for RAN (black circles) and OmniFold (red triangles). 
+    While OmniFold achieves slightly better accuracy at minimal smearing, its performance degrades sharply as smearing increases, reflecting its reliance on detector-level overlap. 
+    In contrast, RAN maintains stable performance across all smearing levels, demonstrating robustness to limited detector-level support. 
+    The particle-level simulation baseline (yellow diamonds) is shown for reference. 
+    Error bars indicate 1$\sigma$ bootstrap confidence intervals.}
+    \label{fig:omnifold-comp}
+\end{figure}
+    \subsection{Jet substructure unfolding results.}
+        This study assesses RAN on a realistic high energy physics unfolding task involving correcting jet substructure observables from detector level Data (simulated) to particle level Truth.
         %
-        The observables chosen span a range of distribution shapes---from broad distributions to sharply peaked ones and those with kinematic cutoffs---providing a comprehensive testbed.
+        This example serves as a stringent test of RAN’s ability to handle multidimensional, non-Gaussian distributions a range of complex features and long tails.
         %
-        The unfolding task is to reweight the \textsc{Pythia} generation such that, after detector simulation, it matches the “data” distribution (here, the \textsc{Herwig} detector-level output), and then to compare the reweighted \textsc{Pythia} particle-level jets to the \textsc{Herwig} particle-level truth.
+        The observables chosen span a range of distribution shapes---from broad distributions to sharply peaked ones and those with kinematic cutoffs---providing a comprehensive test-bed.
         %
-        RAN is applied to learn a single weighting function $g(z)$ that assigns a weight to each \textsc{Pythia} event (based on its features) to achieve this alignment, as described in Secs.\ref{subsec:arch}–\ref{subsec:mlimplement}.
+        RAN is applied to learn a single weighting function $g(z)$ that assigns a single weight to each six dimensional Generation event based on its features to achieve this alignment between Data and reweighted Simulation, as described in \cref{sec:ran-methodology-and-regularisation,sec:ran-ml-implementation}.
         %
-        For comparison, we also apply \textsc{OmniFold}~\kd{Andreassen:2019cjw,Andreassen:2021zzk} and the classical IBU~\kd{DAgostini:1994fjx} to the same task.
+        For comparison \textsc{OmniFold} and the classical IBU are also applied to the same task.
         %
-        Since IBU is a binned algorithm, we perform separate one--dimensional IBU unfolds for each observable using a fine histogram binning, to benchmark its performance on each projection of the data.
+        Since IBU is a binned algorithm, one must perform separate one--dimensional IBU unfolds for each observable using a fine histogram binning, to benchmark its performance on each one dimensional projection of the data.
 
-        \subsubsection{Overall performance}
-            Figure~\kd{fig:particle-level-distribution} presents the unfolded particle--level distributions for each of the six jet observables, for RAN, IBU, and \textsc{OmniFold}, compared to the truth distributions.
+        \subsubsection{Overall performance.}
+\begin{figure}
+    \centering
+    \includegraphics[width = \linewidth]{figures/chapter-06/six_var_with_ratio.pdf}
+    \caption[Unfolded particle level distributions for six jet substructure observables, comparing RAN, \textsc{OmniFold}, and IBU.]{Particle level distributions of six jet substructure observables after unfolding. 
+    Each panel shows the Truth distribution as the blue filled histogram, the uncorrected Generation as the orange filled histogram, and unfolded results from RAN (black solid), \textsc{OmniFold} (red dashed), and IBU (green dotted). 
+    
+    The observables span a range of distribution types: jet mass $m$ and soft-drop mass $M$ (left column), constituent multiplicity and jet width $\tau_1$ (middle column), and $N$-subjettiness ratio $\tau_{21}$ and groomed momentum fraction $\ln\rho$ (right column).
+    
+    The sub--panel under each panel shows the ratio of each unfolded result to truth, demonstrating that RAN achieves close agreement across all observables, particularly in challenging regions such as distribution tails.
+    
+    Error bars represent the \(1\sigma\) interval computed by training 20 independent runs for each method on the same dataset with different random initialisation.}
+    \label{fig:particle-level-distribution}
+\end{figure}
+            \cref{fig:particle-level-distribution} presents the unfolded particle--level distributions for each of the six jet observables, for RAN, IBU, and \textsc{OmniFold}, compared to the truth distributions.
             %
-            Each panel shows the truth spectrum (\textsc{Herwig}, treated as “true” data) in solid blue, the generation in orange, the unfolded result from RAN as a black dashed line, and the unfolded result from \textsc{OmniFold} as a red dashed line, and the result from IBU as a green dashed line.
+            Each panel shows the truth spectrum (\textsc{Herwig}, treated as ``Truth'') in filled blue, the generation in filled orange, the unfolded result from RAN as a black solid line, and the unfolded result from \textsc{OmniFold} as a red dashed line, and the result from IBU as a green dotted line.
             %
-            The lower ratio sub--panels display the unfolded/Truth ratio for each method, indicating how well each method closes the gap to truth across the range of each observable.
+            The ratio sub--panels below each panel display the unfolded/Truth ratio for each method, indicating how well each method closes the gap to truth across the range of each observable.
             %
-            We observe that both RAN and \textsc{OmniFold} achieve good agreement with truth across all observables, a non--trivial accomplishment given the complexity of the distributions, but RAN consistently provides a closer match, particularly in regions that are challenging to unfold.
+            Both RAN and \textsc{OmniFold} achieve good agreement with truth across all observables, a non-trivial accomplishment given the complexity of the distributions, and RAN consistently provides a close match, particularly in regions that are challenging to unfold.
             %
-            For example, in the jet mass distribution (Fig.\kd{fig:particle-level-distribution}, top-left panel), the \textsc{Pythia} simulation initially undershoots the probability in the high-mass tail and misplaces the peak.
+            For example, in the jet mass distribution in \cref{fig:particle-level-distribution}'s, top-left panel, the Generation from \textsc{Pythia} initially undershoots the probability in the high mass tail and misplaces the peak relative to \textsc{Herwig}.
             %
-            After unfolding, RAN’s distribution closely follows the truth curve: it accurately reproduces the peak around $m\approx 20$ GeV and the long tail up to high masses. \textsc{OmniFold} also significantly improves the agreement, but its ratio plot reveals a slight residual bias in the tail (deviations of order 5–10\% from unity in the highest mass bins), whereas RAN’s ratio is within a few percent of unity throughout.
+            After unfolding, RAN’s distribution closely follows the truth curve: it accurately reproduces the peak around $m\approx 20$ GeV and the long tail up to high masses. \textsc{OmniFold} also significantly improves the agreement, but its ratio plot reveals a slight residual bias in the tail, with deviations of order 5–10\% from unity in the highest mass bins, whereas RAN’s ratio is within a few percent of unity throughout.
             %
             A similar pattern is seen for the $N$-subjettiness ratio $\tau_{21}$.
             %
-            The generator (\textsc{Pythia}) initially produces a broader $\tau_{21}$ distribution than truth (\textsc{Herwig}), indicating an overestimation of two--prong substructure.
+            The generator (\textsc{Pythia}) initially produces a broader $\tau_{21}$ distribution than Truth (\textsc{Herwig}), indicating an overestimation of two--prong substructure.
             %
-            RAN’s unfolding narrows this distribution to align almost exactly with the truth shape, correcting both the peak and the tail of the $\tau_{21}$ spectrum; \textsc{OmniFold} moves in the right direction but leaves a noticeable difference (the \textsc{OmniFold} unfolded $\tau_{21}$ distribution remains slightly too broad, with the ratio to truth dipping below 1.0 in the peak region and rising above 1.0 at higher $\tau_{21}$).
+            RAN’s unfolding narrows this distribution to align almost exactly with the truth shape, correcting both the peak and the tail of the $\tau_{21}$ spectrum; \textsc{OmniFold} moves in the right direction but leaves a noticeable difference.
             %
-            For observables like the jet width $w$ and logarithmic groomed mass $\ln\rho$, which have sharply peaked distributions near zero and long tails, RAN again excels: it captures the steep drop-off and the tail behavior with high fidelity, whereas \textsc{OmniFold} shows small mismodeling in the intermediate region (for $w$) or tail (for $\ln\rho$).
+            The \textsc{OmniFold} unfolded $\tau_{21}$ distribution remains slightly too broad, with the ratio to truth dipping below 1.0 in the peak region and rising above 1.0 at higher $\tau_{21}$).
+            
+            For observables like the jet width $w$ and logarithmic groomed mass $\ln\rho$, which have sharply peaked distributions near zero and long tails, RAN again demonstrates strong performance.
             %
-            The groomed momentum fraction $z_g$ is a particularly challenging variable because of its hard cutoff at $z_g=0.5$.
+            It captures the steep drop off and the tail behaviour with high fidelity, where \textsc{OmniFold} shows small mismodeling in the intermediate region for $w$ and tail for $\ln\rho$.
+            
+            The groomed momentum fraction $z_g$ is a particularly challenging variable because of its hard cut-off at $z_g=0.5$.
             %
-            Generative or reweighting methods often struggle to reproduce such cutoff behavior precisely.
+            Generative or reweighting methods often struggle to reproduce such cut-off behaviour precisely.
             %
-            We find that RAN handles this boundary reasonably well
+            RAN is demonstrated to handle this boundary reasonably well
             %
-            The unfolded $z_g$ distribution from RAN matches the truth both in the low--$z_g$ region and near the cutoff, correctly recovering the falling slope as $z_g \to 0.5^-$.
+            The unfolded $z_g$ distribution from RAN matches the truth both in the low $z_g$ region and near the cut-off, correctly recovering the falling slope as $z_g \to 0.5^-$.
             %
-            \textsc{OmniFold}’s result for $z_g$ is also reasonable but tends to slightly undercorrect near the cutoff (its ratio is a bit below 1.0 approaching 0.5, indicating a remaining deficit in events just below the cutoff).
+            \textsc{OmniFold}’s result for $z_g$ is also quite close to truth with slight undercorrection near the cutoff.
             %
-            Finally, the constituent multiplicity $M$ (number of particles in the jet) is an interesting case.
+            Finally, the constituent multiplicity $M$. number of particles in the jet. is a particualarly interesting case.
             %
             It is a discrete distribution with a long tail.
             %
             RAN succeeds in reducing the discrepancy at both the low-$M$ and high-$M$ extremes, yielding an unfolded distribution that tracks the truth across the full range.
             %
-            \textsc{OmniFold} improves the multiplicity distribution in the bulk region but exhibits larger fluctuations in the very high-multiplicity tail (partly due to limited statistics there and the difficulty for the classifier to learn in sparse regions).
+            \textsc{OmniFold} improves the multiplicity distribution in the bulk region but exhibits larger fluctuations in the very high-multiplicity tail partly due to limited statistics there and the difficulty for the classifier to learn in sparse regions.
             %
-            In summary, qualitatively, RAN’s unfolded spectra are virtually indistinguishable from the truth for all six observables, within statistical uncertainties, whereas \textsc{OmniFold} shows minor but noticeable deviations in certain challenging regions.
+            In summary, qualitatively, RAN’s unfolded spectra are virtually indistinguishable from the truth for all six observables, within statistical uncertainties,
+            
+            The ratio plots in \cref{fig:particle-level-distribution} highlight RAN’s performance. The RAN/Truth ratio is close to 1.0 across the phase space, while the.
             %
-            The ratio (closure) plots in Fig.\kd{fig:particle-level-distribution} highlight RAN’s better closure: the RAN/Truth ratio is closer to 1.0 (often within a few percent) across the phase space, while the \textsc{OmniFold}/Truth ratio deviates by up to 5–15\% in some bins (especially in the tails of $m$, $M$, $\tau_{21}$, and $\ln\rho$).
-
-            To make these comparisons quantitative, we compute the Wasserstein\(-1\) distances ($W_1$) and VLC divergences between each unfolded distribution and the truth distribution for all methods.
+            To make these comparisons quantitative, the Wasserstein\(-1\) distances ($W_1$) and VLC divergences between each unfolded distribution and the truth distribution for all methods are computed.
+\input{tables/6-3}
+\input{tables/6-4}
+            \cref{tab:comp-w,tab:comp-vlc} summarise these metrics for RAN, \textsc{OmniFold}, and IBU on each jet observable.
             %
-            Table~\kd{tab:comp-w} and Table~\kd{tab:comp-vlc} summarize these metrics for RAN, \textsc{OmniFold}, and IBU on each jet observable (lower values indicate better agreement with truth; the tables also include, for reference, the baseline distances for the Generation vs. truth and Data vs. truth distributions with no unfolding).
+            IBU is performed on one dimensional projections onto each jet observable.
             %
-            RAN achieves the smallest divergence from truth in every one of the six observables under both metrics.
+            Lower values indicate better agreement with Truth.
             %
-            In particular, RAN outperforms \textsc{OmniFold} by a substantial margin in those observables identified as challenging: for the jet mass $m$, $W_1$(RAN) is $3.35\times10^{-2}$ (in units of the table’s scale) compared to \textsc{OmniFold}’s $8.02\times10^{-2}$, a roughly factor--of--2 improvement.
+            The tables also include, for reference, the baseline distances for the Generation vs. Truth and Data vs. Truth distributions with no unfolding.
             %
-            For the logarithmic groomed mass $\ln\rho$, RAN’s $W_1$ distance is $0.20\times10^{-3}$, dramatically smaller than \textsc{OmniFold}’s $4.15\times10^{-3}$ – an order-of-magnitude reduction, indicating RAN has far better accuracy in the extreme tail of this distribution.
+            RAN achieves the smallest divergence from Truth under both metrics.
             %
-            Similarly, for $z_g$, RAN’s $W_1$ is about $0.80\times10^{-3}$ vs. \textsc{OmniFold}’s $6.32\times10^{-3}$, reflecting how well RAN handled the cutoff region.
+            One also observed that IBU, a binned, per--observable method, generally underperforms the unbinned methods here.
             %
-            Even in observables where \textsc{OmniFold} performed strongly, such as jet width $w$, RAN still edges out a win ($0.59\times10^{-3}$ vs. $0.81\times10^{-3}$).
+            This is likely due to binning and statistical issues: the need to choose finite bin widths leads to information loss and large uncertainties in sparse regions.
             %
-            The VLC divergence results (Table~\kd{tab:comp-vlc}) tell a consistent story: RAN yields the lowest $\Delta_{VLC}$ for all observables, with \textsc{OmniFold} typically second--best.
-            %
-            For example, $\Delta_{VLC}(m)$ is 2.31 (in the table’s scaled units) for RAN, versus 5.06 for \textsc{OmniFold} and 5.11 for IBU.
-            %
-            In some cases the gap between RAN and \textsc{OmniFold} is negligible (jet width $w$: 1.29 vs 1.33), while in others it is significant (multiplicity $M$: 5.83 vs 6.32 for \textsc{OmniFold} and a much larger 16.07 for IBU, indicating IBU struggled with $M$; or $\tau_{21}$: 0.92 vs 7.91 for \textsc{OmniFold}, an order of magnitude difference).
-            %
-            We emphasize that IBU, being a binned, per--observable method, generally underperforms the unbinned methods here.
-            %
-            This is likely due to binning and statistical issues: the need to choose finite bin widths leads to information loss and large uncertainties in sparse regions (for $M$, the tail probabilities in high bins were not well--estimated, leading to an inflated divergence).
+            For $M$, for example, the tail probabilities in high bins were not well estimated, leading to inflated divergence.
             %
             In contrast, RAN and \textsc{OmniFold} operate on unbinned data and can leverage the full event information, yielding superior precision.
+            
+            It is also noteworthy that RAN’s advantage is achieved while producing a single set of event level weights that simultaneously correct all six distributions.
             %
-            It is noteworthy that RAN’s advantage is achieved while producing a single set of event--level weights that simultaneously correct all six distributions.
+            In other words, RAN, like \textsc{OmniFold}, inherently unfolds the joint multi--dimensional distribution of these observables without splitting the problem into one dimensional projections
             %
-            In other words, RAN (like \textsc{OmniFold}) inherently unfolds the joint multi--dimensional distribution of these observables without splitting the problem into one dimension at a time.
-            %
-            The fact that a single model can balance all observables and still attain better per-observable accuracy is a strong testament to the effectiveness of the adversarial reweighting approach.
+            The fact that a single model can balance all observables and still attain good per observable accuracy is a strong testament to the effectiveness of the adversarial reweighting approach.
 
-            Beyond accuracy, stability and efficiency are important considerations for unfolding methods.
+            Stability and efficiency, in addition to accuracy, are important considerations for unfolding methods.
             %
-            We examined the stability of the RAN training by performing multiple independent training runs and by bootstrapping subsets of the jet dataset.
+            The stability of a RAN's training can probed by performing multiple independent training runs and by bootstrapping subsets of the jet dataset.
             %
-            The variations in the resulting unfolded distributions (and in the $W_1$/VLC metrics) were found to be small, on the order of a few percent, indicating that the RAN solution is robust to statistical fluctuations and the stochastic nature of training.
+            The variations in the resulting unfolded distributions, and in the $W_1$/VLC metrics are found to be small, on the order of a few percent, indicating that the RAN solution is robust to statistical fluctuations and the stochastic nature of training.
             %
-            Likewise, \textsc{OmniFold}’s iterative procedure, when run on the same data with different initializations, converged to comparable results (though minor differences in the weights per iteration can occur, the final distributions were consistent within uncertainties).
+            Likewise, \textsc{OmniFold}’s iterative procedure, when run on the same data with different initialisations, converged to comparable results.
+            %
+            Though minor differences in the weights per iteration can occur, the final distributions were consistent within uncertainties, lending confidence to the RAN's unfolded output.
             %
             IBU, being an analytic iterative method, showed negligible run-to-run variation for fixed binning.
             %
             However, all iterative methods raise the question of convergence and tuning.
             %
-            \textsc{OmniFold} requires choosing a stopping criterion or number of iterations (too few iterations can under--correct, too many can overfit the statistical noise), and IBU similarly depends on the number of iterations (or an implicit regularization).
+            \textsc{OmniFold} requires a subjective choice of a stopping criterion or number of iterations.
             %
-            In our \textsc{OmniFold} implementation we used five iterations (the standard approach advocated in ~\kd{Andreassen:2019cjw}) which was sufficient for good performance; using more iterations does not notably improve the agreement and can introduce instability.
+            Too few iterations can under correct, too many can overfit the statistical noise.
             %
-            RAN avoids this ambiguity entirely, since it is a one--shot training.
+            IBU similarly depends on a subjective choice of the number of iterations.
             %
-            In practice, we found RAN’s training to converge steadily without signs of overtraining (monitored via validation loss) and to reach a stable solution within a few dozen epochs.
+            In the \textsc{OmniFold} implementation employed in the studies in this section, five iterations are used, which is the standard approach advocated in~\cite{andreassen_omnifold_2020}, which was sufficient for good performance; using more iterations does not notably improve the agreement and can introduce instability.
             %
-            In terms of computational cost, RAN’s single--pass adversarial training (using a Wasserstein GAN-like setup) was comparable to the cost of a single \textsc{OmniFold} iteration.
+            A RAN avoids this ambiguity entirely, since it is trained in one shot to convergence.\footnote{To be clear, a RAN, like any other machine learning based algorithm involves a host of subjective choices, including but not limited to the specific architecture chosen to create the neural networks, to the large array of hyperparameters involved in any neural network training. The point being made here is that iterative ML based methods also require all of these subjective choices, and require the subjective choice of the number of iterations in addition to the other choices.}
             %
-            But since \textsc{OmniFold} required two classifier trainings per iteration (one at detector level, one at particle level) and we performed two iterations (four trainings total), the overall runtime for RAN was roughly a fifth of that for \textsc{OmniFold} on this problem.
+            In practice, one finds that RANs train to convergence steadily without signs of overtraining, monitored via the validation loss, and reach a stable solution within a few dozen epochs.
             %
-            IBU is extremely fast for one--dimensional histograms, but extending IBU to many dimensions would be combinatorially expensive (and practically impossible for high-dimensional continuous observables), whereas RAN and \textsc{OmniFold} scale gracefully to high--dimensional data.
+            In terms of computational cost, a RAN’s single--pass adversarial training using the Wasserstein GAN-like setup is comparable to the cost of a one \textsc{OmniFold} iteration.
             %
-            Thus, RAN offers an attractive trade--off: it achieves equal or better accuracy than \textsc{OmniFold} on these benchmark tasks, while being simpler to use (no iterative loop to manage) and potentially more efficient.
+            But since \textsc{OmniFold} requires two classifier trainings per iteration, and OmniFold was trained for five iterations in these studies, the overall time needed to train a RAN was roughly a fifth of that for \textsc{OmniFold} on these problems.
+            %
+            IBU is extremely fast for one dimensional histograms, but extending IBU to many dimensions would be combinatorially expensive in terms of computational cost, and practically impossible due to a lack of enough data to fill the bins of high dimensional histograms, whereas RANs and \textsc{OmniFold} scale gracefully to high--dimensional data.
+            %
+            Thus, a RAN offers an attractive trade--off: it achieves equal or better accuracy than \textsc{OmniFold} on these benchmark tasks, while being simpler to use, since it has no iterative loop to manage, and potentially more efficient.
 
     \subsubsection{Generality of results}
-    Combined with the findings from the Gaussian experiments, these jet experiments suggest that RAN’s advantages are not specific to a particular distribution but rather reflect general features of the algorithm.
-    %
-    RAN’s ability to handle non-overlapping detector effects (demonstrated in the Gaussian toy study) implies it could be deployed in experimental scenarios with poor detector resolutions or acceptance gaps, where traditional unfolding might struggle.
-    %
-    The jet study confirms that RAN scales to complex, realistic tasks, providing high--fidelity unfolding for multiple correlated observables in a single training.
-    %
-    We expect that these properties would carry over to other unfolding applications.
-    %
-    For example, measurements of other final states or higher--dimensional distributions (such as multi--variate phase--space distributions) should similarly benefit from RAN’s unbinned, non--iterative approach.
-    %
-    Of course, some caution is warranted when extrapolating beyond the tested cases: real experimental data may involve additional complexities like non--identical simulation vs. reality in ways not captured by generator differences alone, or require careful treatment of systematic uncertainties in the unfolding procedure.
-    %
-    However, the closure tests performed here (using one simulator’s data as “pseudo-data” and another’s as truth) are a stringent validation, and RAN passes them with flying colours.
-    %
-    In particular, RAN’s strong performance on observables with sharp features ($z_g$ cutoff) and heavy tails ($m$, $\ln\rho$) bodes well for its application to other distributions where similar challenges arise (e.g. distributions with kinematic edges or long perturbative tails).
-    %
-    Moreover, RAN’s inherently multivariate nature means that, unlike IBU, it can preserve and unfold correlations between observables, an important aspect for modern high--dimensional analyses in particle physics.
-    %
-    In summary, the results presented in this section demonstrate that RAN achieves state--of--the--art unfolding performance on both simple and complex tasks.
-    %
-    It matches or exceeds the accuracy of established methods like \textsc{OmniFold} and IBU, while offering improved stability in difficult scenarios and simplifying the unfolding workflow.
-    %
-    These characteristics make RAN a promising tool for future precision measurements and exploratory studies in which unfolding high--dimensional data without bias is critical.
+        Combined with the findings from the Gaussian experiments, these jet experiments suggest that a RAN’s advantages are not specific to a particular distribution but rather reflect general features of the algorithm.
+        %
+        A RAN’s ability to handle non-overlapping detector effects, demonstrated in the Gaussian toy study, implies it could be helpful in experimental scenarios with poor detector resolutions or acceptance gaps, where traditional unfolding might struggle.
+        %
+        The jet study confirms that RANs scale to complex, realistic tasks, providing high fidelity unfolding for multiple correlated observables in a single training.
+        %
+        One expects that these properties would carry over to other unfolding applications.
+        %
+        For example, measurements of other final states or higher dimensional distributions,\footnote{Such as multivariate phase space distributions.} should similarly benefit from a RAN’s unbinned, non--iterative algorithm.
+        %
+        Moreover, RAN’s inherently multivariate nature means that, unlike IBU, it can preserve and unfold correlations between observables, an important aspect for modern high--dimensional analyses in particle physics.
+        
+        Certainly, caution is warranted when extrapolating beyond the tested cases.
+        %
+        Real experimental data may involve additional complexities in ways not captured by generator differences alone, or require careful treatment of systematic uncertainties in the unfolding procedure.
+        %
+        Although the RAN performs well on the closure tests described in this section, it remains that case that RANs have only been validated so far using one simulator's output as ``pseudo-data'' and another's as MC, rather than on real experimental measurements.
+        
+        In summary, the results presented in this section demonstrate that RANs achieve state of the art unfolding performance on both simple and complex tasks.
+        %
+        They matches or exceed the accuracy of established methods like \textsc{OmniFold} and IBU, while offering improved stability in difficult scenarios and simplified unfolding workflows.
+        %
+        These characteristics make RANs a promising tool for future precision measurements and exploratory studies in which unfolding high dimensional data without bias is critical.

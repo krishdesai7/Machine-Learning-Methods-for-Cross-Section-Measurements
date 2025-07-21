@@ -1,0 +1,116 @@
+\begin{tikzpicture}[font=\sffamily, >=stealth, node distance=1cm]
+
+% Big dashed box for the Generator
+\node[draw, dashed, thick, inner sep=10pt, minimum width=6cm, minimum height=10cm, 
+      label={[above left, anchor=west, yshift=-0.5cm, xshift=2.25cm]{\Huge \textbf{$g$}}}] (genBox) {};
+
+% Input arrow into the generator box
+\node[above=of genBox.north, yshift=-0.5cm] (genInput) {\large\textbf{Generation} ($z$)};
+
+
+% Inside the Generator: the repeated block.
+% Place the first block in the top-left of the dashed box.
+\node[draw, rectangle, rounded corners, fill=green!20, minimum width=2.5cm, minimum height=1cm] 
+  (dense) at ([xshift=0.cm,yshift=-1cm]genBox.north) {Dense};
+\draw[->, thick] (genInput) -- (dense);
+\node[draw, rectangle, rounded corners, fill=green!25, minimum width=2.5cm, minimum height=1cm, below=1cm of dense] 
+  (lrelu) {LeakyReLU};
+
+\node[draw, rectangle, rounded corners, fill=green!30, minimum width=2.5cm, minimum height=1cm, below=1cm of lrelu] 
+  (bnorm) {BatchNorm};
+
+\node[draw, rectangle, rounded corners, fill=green!30, minimum width=2.5cm, minimum height=1cm, below=1cm of bnorm] 
+  (drop) {Dropout(0.2)};
+
+% Connect the blocks in sequence with arrows.
+\draw[->, thick] (dense) -- (lrelu);
+\draw[->, thick] (lrelu) -- (bnorm);
+\draw[->, thick] (bnorm) -- (drop);
+
+% A looping arrow indicating that the Dense -> LeakyReLU -> LayerNorm -> Dropout block is repeated 15 times.
+\draw[->, thick, bend left=45] (drop.west) to (dense.west);
+
+% Final block: output layer (outside the loop)
+\node[draw, rectangle, rounded corners, fill=green!40, minimum width=2.5cm, minimum height=1cm, below=1cm of drop] 
+  (final){exp};
+
+% Connect the looped block to the final block.
+\draw[->, thick] (drop) -- (final);
+
+% Output arrow from the generator box.
+\node[below=of genBox.south, yshift=0.5cm] (genOutput) {\large\textbf{Event weights} $g(z)$};
+\draw[->, thick] (final) -- (genOutput);
+
+\node[draw, dashed, thick, inner sep=10pt, minimum width=6cm, minimum height=10cm, 
+      label={[above left, anchor=west, yshift=-0.5cm, xshift=-2.75cm]{\Huge \textbf{$d$}}}] (critBox) [right=3cm of genBox] {};
+
+
+
+% Input arrow into the Critic box
+\node[above=of critBox.north, yshift=-0.5cm] (critInput) {\large\textbf{Simulation $\vb*{\cup}$ Data} $(x)$};
+
+\coordinate (A) at ($(genOutput.east) + (-0.4,11.76)$);
+\draw[-{Latex[length=2mm,width=2mm]}, double, thick, OliveGreen, in=190]
+  ($(genOutput.north east)+(-0.4, -0.2)$) -- (A) -- (critInput.west)
+  node[midway, below, sloped] {\large \textbf{Induced weights}};
+% Inside the Critic: the repeated block (4 times).
+\node[draw, rectangle, rounded corners, fill=blue!50, minimum width=2.5cm, minimum height=2cm, 
+       label={[yshift=-0.8cm]above:{Spectral Norm}}] 
+       (specBox) at ([xshift=0cm,yshift=-1.5cm]critBox.north) {};
+
+\node[draw, rectangle, rounded corners, fill=blue!10, minimum width=2cm, minimum height=1cm] 
+       (dense) at ([yshift=-0.3cm]specBox.center) {Dense};
+  \draw[->, thick] (critInput) -- (specBox);
+  
+\node[draw, rectangle, rounded corners, fill=blue!20, minimum width=2.5cm, minimum height=1cm, below=0.5cm of specBox] 
+  (sleaky) {LeakyReLU};
+
+\node[draw, rectangle, rounded corners, fill=blue!30, minimum width=2.5cm, minimum height=1cm, below=0.5cm of sleaky] 
+  (sdrop) {Dropout};
+
+\node[draw, rectangle, rounded corners, fill=blue!40, minimum width=2.5cm, minimum height=1cm, below=0.5cm of sdrop] 
+  (snorm) {LayerNorm};
+
+% Connect these blocks.
+\draw[->, thick] (specBox) -- (sleaky);
+\draw[->, thick] (sleaky) -- (sdrop);
+\draw[->, thick] (sdrop) -- (snorm);
+
+% Looping arrow for the critic repeated block (4 times).
+\draw[->, thick, bend right=45] (snorm.east) to (specBox.east);
+
+% Final block for the Critic: output layer.
+\node[draw, rectangle, rounded corners, fill=blue!50, minimum width=2.5cm, minimum height=2cm, 
+       label={[yshift=-0.8cm]above:{Spectral Norm}}] 
+       (sfinal) [below=0.5cm of snorm] {};
+       
+\node[draw, rectangle, rounded corners, fill=blue!10, minimum width=2cm, minimum height=1cm] 
+       (slinear) at ([yshift=-0.3cm]sfinal.center) {Linear};
+
+\draw[->, thick] (snorm) -- (sfinal);
+
+% Output arrow from the Critic box.
+\node[below=of critBox.south, yshift=0.5cm] (critOutput) {\large\textbf{Critic Score} $d(x)$};
+\draw[->, thick] (sfinal) -- (critOutput);
+
+\node[draw, ellipse, thick, fill=red!10, minimum width=3cm, minimum height=2cm] (lossNode) at ($(genBox)!0.5!(critBox) + (0,-3cm)$) {\large\textbf{Wasserstein Loss}};
+
+\draw[-{Latex[length=2mm, width=2mm]}, double, RoyalBlue, bend left=45, thick](critOutput.west) to (lossNode);
+
+\node (junction) at ($(lossNode.north) + (0,1.5cm)$) {};
+
+% Draw the common arrow from the loss node to the junction,
+% and label that common segment.
+\draw[-, double, red, thick]
+  (lossNode.north) -- (junction.north)
+  node[near end, above, sloped]{\large\textbf{Gradient}}node[near end, below, sloped]{\large\textbf{Update}};
+
+% From the junction, branch off to the two big boxes.
+\draw[-{Latex[length=2mm,width=2mm]}, double, red, thick] (junction.north) to[out=90, in=-60]  ($(genBox.north east)+(-0.5,-0.9)$)
+  node[very near start, above, sloped]{};
+\draw[-{Latex[length=2mm,width=2mm]}, double, red, thick] (junction.north) to[out=90, in=-120] ($(critBox.north west)+(.5,-0.9)$)
+  node[midway, above, sloped]{\quad};
+
+
+
+\end{tikzpicture}
