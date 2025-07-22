@@ -973,7 +973,7 @@ the maximum likelihood estimator is distributed as
             %
             If it stabilises, $B$ is sufficient.
             
-            The standard error on a bootstrap derived standard deviation is $\nicefrac{\sigma}{\sqrt{2(B-1)}},$ so returns diminishin as $B$ grows.
+            The standard error on a bootstrap derived standard deviation is $\nicefrac{\sigma}{\sqrt{2(B-1)}},$ so returns diminishing as $B$ grows.
         \paragraph{Computational cost and parallelisation.}
             Each bootstrap replica involves an independent analysis of the dataset, and so parallelisation can offer overwhelming computational gains.
             %
@@ -1090,23 +1090,21 @@ the maximum likelihood estimator is distributed as
         %
         In addition, a larger Monte Carlo (MC) sample of $10^5$ events is generated from a prior Gaussian with mean \(0.0\) and variance \(1.0.\)
         %
-        This MC sample plays two roles---it provides an initial guess of the truth distribution for unfolding, and it is used to derive the detector response.
+        This Generation sample plays two roles---it provides an initial guess of the truth distribution for unfolding, and it is used to derive the detector response.
         %
-        Notably, the MC’s particle--level distribution differs from the true distribution, mimicking the realistic situation in which the nominal simulation does not perfectly match reality.
+        Notably, the Generation distribution differs from the true distribution, mimicking the realistic situation in which the nominal MC does not perfectly match reality.
 
-        Both the true dataset and the MC sample are passed through a detector response model.
-        %
-        Simulate detector-level measurements by smearing each particle--level event with an independent Gaussian error of mean 0 and a certain resolution $\sigma_{\text{det}}$, representing finite detector resolution.
+        Both the Truth and the Generation datasets are passed through a detector response model to simulate detector level measurements by smearing each particle level event with an independent Gaussian error of mean 0 and a certain resolution $\sigma_{\text{det}}$, representing finite detector resolution.
         %
         Examine multiple smearing levels, with $\sigma_{\text{det}}$ ranging from \(0\), no smearing, i.e. a perfect detector, up to \(0.75\), substantial resolution degradation.
         %
-        The smeared true sample represents the detector--level data that an experiment would observe, while the smeared MC sample represents the detector--level simulation.
+        The smeared Truth sample represents the detector level Data that an experiment would observe, while the smeared Generation sample represents the detector level Simulation.
         
     \subsection{Fully binned baseline}
     \label{subsec:fully_binned_demo}
         To establish a baseline, first consider this simple one--dimensional unfolding scenario using a known Gaussian distribution and the traditional binned unfolding approach.
         %
-        In this fully binned context, generate Gaussian particle--level and detector--level data, apply Iterative Bayesian Unfolding (IBU), and perform a standard binned parameter fit to the unfolded histogram.
+        In this fully binned context, generate Gaussian particle level and detector level data, apply Iterative Bayesian Unfolding (IBU), and perform a standard binned parameter fit to the unfolded histogram.
         %
         The goal is to characterise the bias, variance, and confidence interval coverage of the inferred Gaussian parameters under simple conditions, before proceeding to more advanced unbinned methods in subsequent sections.
         
@@ -1122,69 +1120,167 @@ the maximum likelihood estimator is distributed as
             %
             The choice of binning is kept constant for the unfolding procedure and subsequent analysis.
             %
-            An illustration of the distributions at truth level and detector level is shown in Fig.~\ref{fig:distributions-1d}, including a visualization of the smearing kernel (resolution function).
-            
-            Using the large MC sample, we construct a detector response matrix mapping particle--level bins to detector--level bins.
+            An illustration of the distributions at truth level and detector level is shown in \cref{fig:distributions-1d}.
+            %
+            \cref{fig:smearing-examples} shows the Simulation distribution at smearnings \(\sigma_{\text{det}}\in \qty{0.00, 0.25, 0.50, 0.75}\) and the corresponding response matrices.
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-particle_level.pdf}
+    \caption{Particle level distributions comparing the Truth (blue) with parameters $\mu_{\text{true}} = 0.2$ and $\sigma^2_{\text{true}} = 0.81$ with the Generation distribution (orange) with parameters $\mu_{\text{prior}} = 0$ and $\sigma^2_{\text{prior}} = 1.00$.
+    %
+    The histograms represent normalised frequency distributions from $N_{\text{true}} = 10^4$ and $N_{\text{MC}} = 10^5$ samples respectively, while the dashed curves show the corresponding analytical Gaussian probability density functions.}
+    \label{fig:particle-level}
+  \end{subfigure}
+  \hfill
+  % (b) detector-level
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-detector_level.pdf}
+    \caption{Detector level distributions after applying Gaussian smearing with resolution $\sigma_{\text{det}} = 1.0$. The Data distribution (blue) has parameters $\mu_{\text{data}} = 0.2$ and $\sigma^2_{\text{data}} = 1.81$, while the Simulation distribution (orange) has $\mu_{\text{sim}} = 0$ and $\sigma^2_{\text{sim}} = 2.00$.
+    %
+    The smearing particle to detector level is Gaussian with $\sigma^2_{\text{det}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{smearing}}$, demonstrating the convolution of detector resolution effects.}
+    \label{fig:detector-level}
+  \end{subfigure}
+  \caption[Detector and particle level distributions for the study on correlations during inference.]{Comparison of particle level and detector level distributions. Panel (a) shows the particle level distributions where the Truth (blue histogram and dashed curve) differs from the Generation (orange histogram and dashed curve). The true distribution is characterized by a shifted mean ($\mu_{\text{true}} = 0.2$) and reduced variance ($\sigma^2_{\text{true}} = 0.81$) compared to the Generation ($\mu_{\text{prior}} = 0$, $\sigma^2_{\text{prior}} = 1.00$).
+
+  
+  Panel (b) demonstrates the effect of finite detector resolution through Gaussian smearing with $\sigma_{\text{det}} = 1.0$, which convolves with the underlying distributions to produce broader observed distributions at the detector level.
+  %
+  The detector-level variances increase according to the quadrature sum $\sigma^2_{\text{detector}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{det}}$, yielding $\sigma^2_{\text{data}} = 1.81$ and $\sigma^2_{\text{sim}} = 2.00$ for the Data and Simulation respectively.
+  }
+  \label{fig:distributions-1d}
+\end{figure}
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-smearing_examples.pdf}
+    \caption{Detector level distributions as a function of detector resolution $\sigma_{\text{det}}$.
+    %
+    Step histograms show the normalised density of Simulation samples ($N = 10^5$) after applying Gaussian smearing with $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Dashed curves represent the corresponding analytical Gaussian probability density functions with variance $\sigma^2_{\text{total}} = \sigma^2_{\text{MC}} + \sigma^2_{\text{det}} = 1 + \sigma^2_{\text{det}}$.
+    %
+    The progression from $\sigma_{\text{det}} = 0$ (perfect detector) to $\sigma_{\text{det}} = 0.75$ demonstrates how increasing detector resolution degrades the measurement precision, with total variances ranging from 1.00 to 1.56.}
+    \label{fig:smearing-examples}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-response_matrix.pdf}
+    \caption{Discretised response matrices $R(x_i|z_j)$ representing the conditional probability of measuring an event in detector level bin $i$ given that it was generated in particle level bin $j$.
+    %
+    Each matrix element is normalised such that $\sum_i R(x_i\mid z_j) = 1$ for all $j$.
+    The four panels correspond to detector resolutions $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$, showing the transition from a diagonal matrix (perfect resolution) to increasingly off diagonal structures as detector smearing increases. Cell values indicate migration probabilities.}
+    \label{fig:response-matrices}
+  \end{subfigure}
+  \caption{Characterisation of detector response effects through progressive smearing of Monte Carlo simulation. Panel (a) illustrates the impact of finite detector resolution on the observed distributions, showing how the Generation is broadened by convolution with Gaussian response functions of width $\sigma_{\text{det}}$. The total observed variance follows the quadrature sum $\sigma^2_{\text{observed}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{det}}$.
+  %
+  Panel (b) presents the corresponding binned response matrices $R(x_i\mid z_j)$, which encode the probability of bin migration due to detector effects.
+  %
+  For perfect resolution ($\sigma_{\text{det}} = 0$), the response matrix is diagonal, indicating no bin migration.
+  %
+  As detector resolution degrades, off diagonal elements become increasingly prominent, quantifying the probability of events generated in bin $j$ being reconstructed in neighbouring bins.
+  }
+  \label{fig:smearing-and-response}
+\end{figure}
+            Using the large MC sample, construct a detector response matrix mapping particle level bins to detector level bins.
             %
             Each element $R_{ij}$ of this matrix gives the probability for an event originating in truth bin $i$ to be reconstructed in detector bin $j$.
             %
             In practice, $R_{ij}$ is obtained by binning the MC events by their true and smeared values.
             %
             The response matrix, along with the smeared data histogram, serves as input to the unfolding algorithm.\footnote{In Bayesian terms, the unsmeared MC histogram also provides a prior estimate for the truth distribution.}
+            %
+            \cref{fig:response-matrices} shows the response matrices estimated using Generation--Simulation pairs for various levels of smearing.
     
-            We then apply the IBU algorithm\kd{cite} to the binned detector--level data in order to unfold the effects of smearing.
+            Then apply the IBU algorithm to the binned Data in order to unfold the effects of smearing.
             %
-            Starting from the prior MC truth distribution, IBU iteratively updates the estimate of the truth histogram by comparing the MC and data in the detector space and applying Bayes' theorem to reweight contributions back to truth space. 
+            Starting from the Generation distribution, IBU iteratively updates the estimate of the Truth histogram by comparing the Simulation and Data in the detector space and applying Bayes' theorem to reweight contributions back to particle space. 
             %
-            We iterate until convergence, obtaining an unfolded truth distribution for the data.
-            %
+            In this study, IBU was iterated for five iterations.
+            
             This unfolded result consists of bin counts (or densities) for the truth histogram, along with an estimated covariance matrix for those bin counts.
             %
-            The bin-to-bin covariances arise from the finite statistics of the data and from the smearing correlations introduced by the unfolding procedure.
+            The bin--to--bin covariances arise from the finite statistics of the data and from the smearing correlations introduced by the unfolding procedure.
+            
+            One can estimate the covariance matrix of the unfolded histogram by repeating the unfolding on many statistically independent pseudo experiments, similar to bootstrapping. 
             %
-            In this study, we estimate the covariance matrix of the unfolded histogram by repeating the unfolding on many statistically independent toy datasets, described below, and via bootstrapping;
+            After unfolding, perform a binned fit to extract the parameters of the underlying distribution (in this case, the Gaussian’s mean $\mu$ and variance $\sigma^2$).
             %
-            both methods were checked to give consistent results for the uncertainties. 
-    
-            After unfolding, we perform a binned fit to extract the parameters of the underlying distribution (in this case, the Gaussian’s mean $\mu$ and variance $\sigma^2$).
+            For each unfolded histogram, a $\chi^2$ minimisation is used to fit a Gaussian model to the unfolded data.
             %
-            For each unfolded histogram, a $\chi^2$ minimization is used to fit a Gaussian model to the unfolded data.
-            %
-            Importantly, the theoretical Gaussian model is integrated over each bin to yield the expected content in that bin for given values of $\mu$ and $\sigma^2$, so that the comparison between the model and the unfolded histogram is exact with no interpolation or bin-centre approximation.
-            %
+            Importantly, the theoretical Gaussian model is integrated over each bin to yield the expected content in that bin for given values of $\mu$ and $\sigma^2$, so that the comparison between the model and the unfolded histogram is exact with no interpolation or bin centre approximation.
+            
             The fit’s $\chi^2$ is computed using the full covariance matrix of the unfolded bins, thereby incorporating all statistical correlations between bins.
             %
-            The outcome of the fit is a pair of best--fit parameters $(\hat{\mu}, \hat{\sigma}^2)$ along with their asymptotic uncertainty estimates (one standard deviation errors) derived from the curvature of the $\chi^2$ at the minimum.
+            The outcome of the fit is a pair of best--fit parameters $(\hat{\mu}, \hat{\sigma}^2)$ along with their asymptotic uncertainty estimates (\(1\sigma\) intervals) derived from the curvature of the $\chi^2$ at the minimum.
             %
-            For comparison, we also consider a \emph{diagonal-covariance} fit, repeating the same procedure but using only the diagonal elements of the covariance, functionally treating unfolded bin counts as if they were independent.
+            For comparison, this study also consider a \emph{diagonal covariance} fit, repeating the same procedure but using only the diagonal elements of the covariance, functionally treating unfolded bin counts as if they were independent.
             %
-            This allows us to see the impact of neglecting inter--bin correlations on the inferred uncertainties.
+            This allows one to see the impact of neglecting inter--bin correlations on the inferred uncertainties.
+            %
+            To numerically evaluate the bias, variance, and confidence interval coverage of this procedure, the entire analysis is repeated for each pseudo--experiment.
             
-            To evaluate the bias, variance, and confidence interval coverage of this procedure, we repeat the entire analysis for each pseudo--experiment.
-            
-            This ensemble provides a distribution of fitted parameter values $\hat{\mu}$ and $\hat{\sigma}^2$ from which we can quantify the bias, which is the difference between the average fitted value and the true value, the variance or spread of the estimates (related to the expected statistical uncertainty), and the empirical coverage of confidence intervals.
+            This ensemble provides a distribution of fitted parameter values $\hat{\mu}$ and $\hat{\sigma}^2$ from which one can quantify the bias, which is the difference between the average fitted value and the true value, the variance or spread of the estimates (related to the expected statistical uncertainty), and the empirical coverage of confidence intervals.
             %
-            In practice, one could alternatively use bootstrapping on a single dataset to assess these metrics; indeed, we have checked that bootstrapped replicas yield consistent uncertainty estimates as the independent toys, confirming that our ensemble size is sufficient.
+            In practice, one could alternatively use bootstrapping on a single dataset to assess these metrics; indeed, this study has also checked that bootstrapped replicas yield consistent uncertainty estimates as the independent toys, confirming that the ensemble size is sufficient.
 
-            \begin{figure}
-                \centering
-                \includegraphics[width=0.95\linewidth]{figures/distributions-1d-with-resolution.pdf}
-                \caption{Histograms showing the datasets from the one--dimensional Gaussian study.
-                %
-                The distributions on the left show the true distribution of the observable compared with the generation distribution.
-                %
-                The centre panel shows the data distribution of the observable compared with the simulation.
-                %
-                The right histogram shows the resolution function (Gaussian smearing kernel).
-                %
-                For visualization, 31 bins are used in the range [$-5,5$].}
-                \label{fig:distributions-1d}
-            \end{figure}
-            Using the above procedure, we obtain an unfolded result and fit for each pseudo--experiment, and we can now examine the bias and variance of the estimates.
+            Use the above procedure to obtain an unfolded result and fit for each pseudo--experiment.
             %
+            One can now examine the bias and variance of the estimates.
+\begin{figure}
+    \centering
+    % (a) mu uncertainty
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-07/mu_error_plot_with_errorbars_ratio.pdf}
+        \caption{Asymptotic uncertainty on the Gaussian mean parameter $\mu$ as a function of detector resolution $\sigma_{\text{det}}$.
+        %
+        The lower panel displays the ratio of diagonal to full covariance uncertainties, demonstrating systematic overestimation by factors reaching 1.4 at $\sigma_{\text{det}} = 1.0$.}
+        \label{fig:mu_error_plot_with_errorbars}
+    \end{subfigure}
+    \hfill
+    % (b) variance uncertainty
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-07/var_error_plot_with_errorbars_ratio.pdf}
+        \caption{Asymptotic uncertainty on the variance parameter $\sigma^2$ as a function of detector resolution $\sigma_{\text{det}}$.
+        %
+        The diagonal approximation increasingly overestimates the uncertainty as detector resolution degrades, with the ratio reaching approximately 1.5 at $\sigma_{\text{det}} = 1.0$, indicating that neglecting bin correlations leads to measurable over-coverage.}
+        \label{fig:var_error_plot_with_errorbars}
+    \end{subfigure}
+    \caption[Comparison of uncertainty estimation methods for binned unfolded distribution parameters as a function of detector resolution.]{Comparison of uncertainty estimation methods for binned unfolded distribution parameters as a function of detector resolution. Panels (a) and (b) show the asymptotic uncertainties for the Gaussian mean $\mu$ and variance $\sigma^2$ parameters, respectively. The analysis compares three approaches: (i) full covariance matrix treatment accounting for all correlations (green circles), (ii) diagonal covariance approximation that neglects off-diagonal terms (pink squares), and (iii) empirical validation through 500 independent pseudo-experiments (green stars). The excellent agreement between the full covariance asymptotic errors and bootstrap derived uncertainties validates the analytical error propagation framework. The diagonal approximation consistently overestimates uncertainties, with the discrepancy growing monotonically with detector smearing. This overestimation arises from neglecting negative correlations between bins introduced by the normalisation constraint in the unfolding procedure. Proper treatment of the full covariance structure is essential for when extracting distribution parameters through subsequent fits.}
+    \label{fig:uncertsfullybinned}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-07/mu_mean_values_with_errorbars_ratio.pdf}
+        \caption{Mean best-fit values of the Gaussian mean parameter $\mu$ as a function of detector resolution $\sigma_{\text{det}}$.
+        %
+        The lower panel shows the ratio to truth, demonstrating unbiased parameter extraction within statistical uncertainties across all detector resolutions.}
+        \label{fig:mu_mean_values_with_errorbars}
+    \end{subfigure}
+    \hfill
+    % (b) variance central values
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-07/var_mean_values_with_errorbars_ratio.pdf}
+        \caption{Mean best-fit values of the variance parameter $\sigma^2$ as a function of detector resolution $\sigma_{\text{det}}$. The presentation follows panel (a). The slight systematic trend toward misestimation at large $\sigma_{\text{det}}$ may arise from regularization bias in the unfolding procedure or finite binning effects.}
+        \label{fig:var_mean_values_with_errorbars}
+    \end{subfigure}
+    \caption[Validation of unbiased parameter extraction from unfolded distributions across varying detector resolutions.]{Validation of unbiased parameter extraction from unfolded distributions across varying detector resolutions. Panels (a) and (b) display the mean best-fit values for the mean $\mu$ and variance $\sigma^2$ parameters, respectively, obtained by fitting unfolded distributions from 500 independent pseudo-experiments. The analysis demonstrates that both the full covariance matrix treatment (green circles) and diagonal approximation (pink squares) yield unbiased central values, recovering the true parameters (red dashed lines: $\mu_{\text{true}} = 0.2$, $\sigma^2_{\text{true}} = 0.81$) within statistical uncertainties across the full range of detector resolutions tested.
+    %
+    Error bars represent the standard error of the mean over the ensemble of pseudo-experiments, quantifying the precision. The ratio panels confirm parameter recovery within uncertainties, of truth values, validating the unfolding procedure's ability to correct for detector effects without introducing systematic biases. The consistency between full and diagonal covariance approaches for central values indicates that while correlation treatment significantly impacts uncertainty estimation, it does not affect the the point estimates.
+    }
+    \label{fig:centralvaluesfullybinned}
+\end{figure}
             The analysis is repeated for each value of the detector resolution $\sigma_{\text{det}}\in[0, 0.75]$ to see how worsening detector effects impact the inference.
             %
-            Figure~\ref{fig:mu_mean_values_with_errorbars} and Fig.\ref{fig:var_mean_values_with_errorbars} summarize the accuracy or bias of the method, showing the mean fitted $\mu$ and $\sigma^2$ across 500 trials as a function of the detector smearing.
+            \cref{fig:mu_mean_values_with_errorbars} and \cref{fig:var_mean_values_with_errorbars} summarize the accuracy or bias of the method, showing the mean fitted $\mu$ and $\sigma^2$ across 500 trials as a function of the detector smearing.
             %
             Figure\ref{fig:uncertsfullybinned} focuses on the precision and uncertainty coverage, comparing the nominal 1$\sigma$ errors from the fits to the actual spread of the results.
             %
@@ -1192,7 +1288,7 @@ the maximum likelihood estimator is distributed as
             %
             For all tested smearing levels, the average fitted mean $\langle \hat{\mu}\rangle$ remains within statistical uncertainty of the true value, \(0.2\), and the average fitted variance $\langle \hat{\sigma}^2\rangle$ within statistical uncertainty of \(0.81\).
             %
-            In Fig.\ref{fig:mu_mean_values_with_errorbars} and Fig.\ref{fig:var_mean_values_with_errorbars}, the data points (averaged best-fit values) lie on or around the horizontal red dashed lines marking the true parameters.
+            In Fig.\ref{fig:mu_mean_values_with_errorbars} and Fig.\ref{fig:var_mean_values_with_errorbars}, the averaged best fit values lie on or around the horizontal red dashed lines marking the true parameters.
             %
             The deviations are well within the statistical error bars\footnote{the standard error of the mean over the 500 trials}, indicating no significant bias in the unfolding or fitting procedure.
             %
@@ -1202,7 +1298,7 @@ the maximum likelihood estimator is distributed as
     
             When using the full covariance matrix in the $\chi^2$ fit, the asymptotic uncertainty estimates for $\hat{\mu}$ and $\hat{\sigma}^2$ are found to be in excellent agreement with the actual distribution of fit results across the ensemble.
             %
-            In Fig.~\ref{fig:uncertsfullybinned}, the green circle markers show the average $1\sigma$ uncertainties from the fits (i.e. the fit errors from the covariance matrix of each fit) as a function of detector resolution.
+            In \cref{fig:uncertsfullybinned}, the green circle markers show the average $1\sigma$ uncertainties from the fits (i.e. the fit errors from the covariance matrix of each fit) as a function of detector resolution.
             %
             These are virtually indistinguishable from the green star markers, which indicate the empirical RMS standard deviation of the 500 fitted values at each resolution.
             %
@@ -1210,9 +1306,9 @@ the maximum likelihood estimator is distributed as
             %
             This agreement implies that the reported 68\% confidence intervals have the correct coverage:
             %
-            approximately 68\% of the pseudo--experiments' $\hat{\mu}$ (or $\hat{\sigma}^2$) results lie within $\pm1\sigma$ of the true value, as expected for well--calibrated uncertainties.
+            approximately 68\% of the pseudo--experiments' $\hat{\mu}$ (or $\hat{\sigma}^2$) results lie within $\pm1\sigma$ of the true value, as expected for well calibrated uncertainties.
             %
-            As the detector resolution worsens, the uncertainty on the inferred parameters grows, reflecting the loss of information, but at each point, the full--covariance \(\chi^2\) fit's uncertainty remains an accurate representation of the actual variance in the results.
+            As the detector resolution worsens, the uncertainty on the inferred parameters grows, reflecting the loss of information, but at each point, the full covariance \(\chi^2\) fit's uncertainty remains an accurate representation of the actual variance in the results.
     
             If one ignores the off--diagonal elements of the unfolded covariance matrix and assumes the bins are independent, the inferred uncertainties become misestimated.
             %
@@ -1220,120 +1316,120 @@ the maximum likelihood estimator is distributed as
             %
             The pink square markers in Fig.~\ref{fig:uncertsfullybinned} show the average fit uncertainty on $\mu$ and $\sigma^2$ obtained when using only the diagonal uncertainties.
             %
-            These are significantly larger than both the true ensemble spread (green stars) and the full--covariance errors (green circles) once any non-zero smearing is present.
+            These are significantly larger than both the true ensemble spread (green stars) and the full covariance asymptotic errors (green circles) once any non-zero smearing is present.
+
             %
-            At the highest smearing tested, $\sigma_{\text{det}}=0.75$, the diagonal--fit uncertainty is roughly $\sim20\%$ higher than the actual RMS of the results.
+            This overly conservative error estimate would lead to over-coverage of confidence intervals.
             %
-            This overly conservative error estimate would lead to over coverage of confidence intervals.
-            %
-            The nominal 68\% interval contains the true value substantially more than 68\% of the time).
-            %
+            The nominal 68\% interval contains the true value substantially more than 68\% of the time.
+            
             This indicates an inefficient use of information.
             %
             The fit is effectively double--counting fluctuations in each bin that in reality are anti--correlated with fluctuations in other bins.
             %
             These findings reinforce that incorporating the full covariance matrix from the unfolding is essential to obtaining reliable and correctly sized confidence intervals in the fully binned approach, and suggests that this may be the case in unbinned approaches too.
-    
-            \begin{figure}
-                \centering
-                \subfloat[]{\includegraphics[width=0.43\linewidth]{figures/mu_error_plot_with_errorbars_ratio.pdf}
-                \label{fig:mu_error_plot_with_errorbars}}\quad
-                \subfloat[]{\includegraphics[width=0.45\linewidth]{figures/var_error_plot_with_errorbars_ratio.pdf}
-                \label{fig:var_error_plot_with_errorbars}}
-                \caption{Mean asymptotic \(1\sigma\) error versus detector smearing for the Gaussian (a) mean $\mu$ and (b) variance $\sigma^2$.
-                %
-                Results are shown for fits using the full covariance matrix (green circle markers) and using only the diagonal elements of the covariance (pink square markers).
-                %
-                The green stars represent the ``true" uncertainty determined by the standard deviation of the 500 fitted values from pseudo-experiments.
-                %
-                Observe that the asymptotic errors from the full--covariance fits agree very well with the ensemble spread (green circles overlapping green stars), while the diagonal--only approximation consistently overestimates the uncertainties, especially at larger smearing values (pink squares lie above the green stars).}
-            \label{fig:uncertsfullybinned}
-        \end{figure}
-        \begin{figure}
-            \centering
-            \subfloat[]{\includegraphics[width=0.43\linewidth]{figures/mu_mean_values_with_errorbars_ratio.pdf}
-            \label{fig:mu_mean_values_with_errorbars}}\quad
-            \subfloat[]{\includegraphics[width=0.43\linewidth]{figures/var_mean_values_with_errorbars_ratio.pdf}
-            \label{fig:var_mean_values_with_errorbars}}
-            \caption{
-                The mean best-fit value of the Gaussian (a) $\mu$ and (b) $\sigma^2$ as a function of the detector smearing.
-                % 
-                Each point represents the average fitted value over 500 pseudo-experiments, with error bars showing the standard error on the mean (SEM).
-                %
-                The horizontal dashed red lines indicate the true parameter values ($\mu_{\text true}=0.2$ and $\sigma^2_{\text true}=0.81$).
-                %
-                Both fitting methods, using the full unfolded covariance (green circles) and using only diagonal uncertainties (pink squares), yield valid central values, demonstrating that the unfolding procedure is unbiased.
-            }
-        \end{figure}
-    
-        In summary, this study in the fully binned regime demonstrates that a conventional unfolding approach (IBU) combined with rigorous statistical treatment produces unbiased and well--calibrated inference of physics parameters.
+            
+        In summary, this study in the fully binned regime demonstrates that a conventional unfolding approach (IBU) combined with rigorous statistical treatment produces unbiased and well calibrated inference of physics parameters.
         %
         The unfolded results, when analysed with their full covariance matrix, give parameter estimates whose uncertainties accurately reflect the true spread across experiments, ensuring correct confidence interval coverage.
         %
-        We also see that simplifying assumptions like treating unfolded bins as independent can skew the uncertainty estimates, in this case, making them overly conservative, even though the point estimates remain correct.
+        The study also shows that simplifying assumptions like treating unfolded bins as independent can skew the uncertainty estimates, in this case, making them overly conservative, even though the point estimates remain correct.
         %
-        These findings provide a critical baseline for comparison with the unbinned methods discussed in the next sections.
+        These findings provide a firm baseline for comparison with the unbinned methods discussed in the next sections.
         %
-        In the following section, we will investigate how unbinned unfolding techniques handle event correlations and whether they can achieve a similar level of statistical reliability as this fully binned approach. The lessons learned here, particularly the necessity of accounting for induced correlations, will carry forward as we transition to unbinned inference on correlated data.
-    \subsection{Correlation Diagnostics after Unbinned Unfolding}
+        After a brief detour to discuss correlation diagnostics after unbinned unfolding, following section will investigate how unbinned unfolding techniques handle event correlations and whether they can achieve a similar level of statistical reliability as this fully binned approach.
+        %
+        The lessons learned here, particularly the necessity of accounting for induced correlations, will carry forward as one transitions to unbinned inference on correlated data.
+        
+    \subsection{Correlation diagnostics after unbinned unfolding}
     \label{subsec:weight_correlations}
-        Before confronting any inference procedure with an unbinned output, we must first quantify the statistical dependencies that the unfolding induces.
+        Before confronting any inference procedure with an unbinned output, one must first quantify the statistical dependencies that the unfolding induces.
         %
-        This subsection introduces two complementary diagnostics that make those correlations both {visible} and {quantifiable}.
+        This subsection introduces two complementary diagnostics that make those correlations both visible and quantifiable.
         \begin{enumerate}
-            \item the \textbf{pairwise weight–-distance correlation} $\rho(|x_i-x_j|)$ between all pairs unfolded events $i$ and $j$, and
-            \item the \textbf{bin--bin covariance matrix} $C_{ab} = \operatorname{Cov}[\,\vb*{\nu}_a,\vb*{\nu}_b\,]$ of a fine histogram binned {after} unfolding.
+            \item The \textbf{pairwise weight–-distance correlation} $\rho(|x_i-x_j|)$ between all pairs unfolded events $i$ and $j$, and
+            \item The \textbf{bin--bin covariance matrix} $C_{ab} = \operatorname{Cov}[\,\vb*{\nu}_a,\vb*{\nu}_b\,]$ of a fine histogram binned {after} unfolding.
         \end{enumerate}
         Both are evaluated for four detector resolutions $\sigma_{\det}\in\{0,0.25,0.50,0.75\}$ and for two distinct estimators, {KDE} and neural network (\textsc{NN}) conditional density estimators.
-        %
-        The results are displayed in \cref{fig:weight-corr} and \cref{fig:hist-cov}, respectively, and form the empirical basis for the coverage study in \cref{subsec:unbinned_data}.
-        \subsubsection{Pairwise weight–-distance correlations}
-        For every event, by considering the weight distributions across pseudo–-experiments one can compute the correlation coefficient, defined as
+
+\begin{figure}
+    \centering
+    % Store the footnote counter
+    \setcounter{footnote}{18}  % Set to whatever the current number should be minus 1
+    % (a) KDE correlations
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-correlation-vs-distance-1d-set1.pdf}
+        \caption{KDE based \textsc{OmniFold}: Weight correlations decay exponentially with separation distance, maintaining values of $\sim$0.1 at distances of 2--3 units for $\sigma_{\text{det}} = 0.75$~\cite{Desai:2025mpy}.\footnotemark}
+        \label{fig:weight-corr-kde}
+    \end{subfigure}
+    \stepcounter{footnote}
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-correlation-vs-distance-1d-set2.pdf}
+        \caption{NN-based \textsc{OmniFold}: Weight correlations exhibit rapid decay, becoming negligible beyond $|x_i - x_j| \approx 1$ for all detector resolutions~\cite{Desai:2025mpy}.\footnotemark}
+        \label{fig:weight-corr-nn}
+    \end{subfigure}
+    \caption[Event wise weight correlations as a function of separation distance for different unfolding methods.]{Average pairwise correlation between unfolding weights as a function of absolute distance $|x_i - x_j|$ between events in the observable space. Both panels show results $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Error bars represent the RMS variation of correlation values within each distance bin. Panel (a) shows the KDE approach which exhibits more localised correlations. Panel (b) displays the neural network (NN) method, which produces longer-range correlations. The characteristic correlation length scales approximately linearly with detector resolution. These correlation patterns have important implications for statistical analyses of unfolded data.
+    }
+    \label{fig:weight-correlation-vs-distance-1d}
+\end{figure}
+\addtocounter{footnote}{-2}
+\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
+\stepcounter{footnote}
+\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
+
+        The results are displayed in \cref{fig:weight-correlation-vs-distance-1d} and \cref{fig:weight-histogram-covariance-1d}, respectively, and form the empirical basis for the coverage study in \cref{subsec:unbinned_data}.
+        
+        \subsubsection{Pairwise weight--distance correlations}
+        For every event, by considering the weight distributions across pseudo--experiments one can compute the correlation coefficient, defined as
         \[
-            \rho_{ij} = \frac{\mathrm{Cov}(w_i,w_j)}{\sigma_{w_i}\,\sigma_{w_j}}]
+            \rho_{ij} = \frac{\mathrm{Cov}(w_i,w_j)}{\sigma_{w_i}\,\sigma_{w_j}}
         \]
         One can then average $\rho_{ij}$ in bins of $\Delta x = |x_i-x_j|$, where $x$ is the unfolded observable.\footnote{
             %
-            The average is taken after combining results from 500 pseudo–experiments; error bars in \cref{fig:weight-corr} denote the ensemble {RMS} of $\rho_{ij}$ in each $\Delta x$ bin, thereby incorporating both the statistical fluctuation correlations and any run-‐to-‐run variability of the unfolding.
+            The average is taken after combining results from 500 pseudo–experiments; error bars in \cref{fig:weight-correlation-vs-distance-1d} denote the ensemble RMS of $\rho_{ij}$ in each $\Delta x$ bin, thereby incorporating both the statistical fluctuation correlations and any run-‐to-‐run variability of the unfolding.
             }
             %
-            A few different features of the resulting curves (upper panels for {KDE}, lower for {NN}) are worth nothing.
+            A few different features of the resulting curves in \cref{fig:weight-correlation-vs-distance-1d} (\cref{fig:weight-corr-kde} for {KDE}, \cref{fig:weight-corr-nn} for {NN}) are worth nothing.
             \begin{itemize}
-            \item \emph{Perfect detector ($\sigma_{\det}=0$):}
+            \item \textbf{Perfect detector ($\sigma_{\det}=0$):}
                 %
-                One should expect the average pair-–wise correlation to be $\rho(|\Delta x|)\!\simeq\!0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, \textsc{OmniFold} reproduces the {factorised likelihood} limit in which event weights are statistically independent\kd{cite:Andreassen:2019cjw}.
+                One should expect the average pairwise correlation to be $\rho(|\Delta x|) \simeq 0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, \textsc{OmniFold} reproduces the {factorised likelihood} limit in which event weights are statistically independent~\cite{andreassen_omnifold_2020,Milton:2025mug}.
                 %
-                At $\Delta x = 0$ we trivially should expect $\rho(0)=1$ because every event is, of course, perfectly correlated with itself, and this is indeed what \cref{fig:weight-corr} demonstrates too.
+                At $\Delta x = 0$ we trivially should expect $\rho(0)=1$ because every event is, of course, perfectly correlated with itself.
                 %
-                In the truly ideal i.i.d. case, one would expect the fall off from $\rho(0)=1$ to $\rho(|\Delta  x|>0)\!=\!0$ to resemble a Dirac $\delta$ at the origin.
+                In both \cref{fig:weight-corr-kde, fig:weight-corr-nn}, it is correctly the case that \(\rho(0) = 1\) and \(\rho(|\Delta x| \gg 1 \simeq 0.\)
+                
+                In the truly ideal i.i.d. case, one would expect the fall off from $\rho(0)=1$ to $\rho(|\Delta  x|>0) = 0$ to resemble a Dirac $\delta$ at the origin.
                 %
                 The {KDE} estimator indeed approaches this limit.
                 %
-                Its kernel bandwidth determines a correlation length \(\ell \lesssim\!0.15\).\kd{cite:Wasserman2006, WandJones1995}.
+                Its kernel bandwidth determines a correlation length \(\ell \lesssim\!0.15\).\cite{2006AllStatistics, wand_kernel_1994}.
                 %
-                By contrast, even with extensive experimentation with architecture and hyperparameter tuning we find that {NN} priors leave a residual plateau $\rho\!\approx\!$\,$0.75$ around $\ell\!\approx\!1$, which then leads to the damped oscillatory structure of the correlation curve.
+                By contrast, even with extensive experimentation with architecture and hyperparameter tuning one finds that {NN} priors leave a residual plateau $\rho\approx0.75$ around $\ell\approx1$, which then leads to the damped oscillatory structure of the correlation curve.
                 %
                 One could speculate about reasons why unfolding with neural networks even in the perfect detector resolution case should lead to correlated weights.
                 %
-                I propose two potential explanations.
+                Two potential explanations are
                 \begin{enumerate}
-                    \item \emph{Network smoothness:} the shared weights in the neural network classifier impose a finite ``receptive field, \kd{cite:Minderer2021SmoothNN,WeightConditioning2024} causing nearby events to receive similar gradient updates and hence correlated weights; and
+                    \item \emph{Network smoothness:} the shared weights in the neural network classifier impose a finite ``receptive field,''~\cite{miller_information-theoretic_1995, djolonga_robustness_2021, saratchandran_weight_2024} causing nearby events to receive similar gradient updates and hence correlated weights; and
                     \item \emph{Global normalisation:} \textsc{OmniFold} enforces $\sum_i w_i = N_{\text{MC}}$ at every iteration.
                     %
-                    This normalization might be introducing a weak positive correlation of size $1/N$ even in the absence of detector effects\kd{cite:Cowan2011Stats}. 
+                    This normalisation might be introducing a weak positive correlation of size $1/N$ even in the absence of detector effects~\cite{cowan_highlights_2011,1937PropertiesTests}.
                 \end{enumerate}
                 Although numerically tiny, this effect, whatever its underlying explanation sets the optimistic lower bound on variance reduction when working with neural networks.
                 %
-                Thus even the idealised zero--smearing case does not yield {perfectly} independent weights in practice, a useful caution when quoting statistical uncertainties from inference using ML processed data.
+                Thus even the idealised zero--smearing case does not yield perfectly independent weights in practice, a useful caution when quoting statistical uncertainties from inference using ML processed data.
             \item \emph{Mild smearing (\(\sigma_{\det}=0.25\)):}
                 %
-                Short--range correlations of order \(\rho\gtrsim 0.5\) appear for \(\Delta x\lesssim0.4\).
+                Short range correlations of order \(\rho\gtrsim 0.5\) appear for \(\Delta x\lesssim0.4\).
                 %
                 These are already sufficient to reduce the {effective sample size}
                 \[
-                  N_{\text{eff}} = N/\!\bigl[\,1+(N-1)\rho\bigr]
+                  N_{\text{eff}} = \frac{N}{1+(N-1)\rho}
                   \]
-                  \kd{cite} considerably.
+                  considerably.
                   %
                   \(\rho < 0\) for \(\Delta \in [1, 2]\), as expected.
                   %
@@ -1348,85 +1444,111 @@ the maximum likelihood estimator is distributed as
                 %
                 In that regime $N_\text{eff}$ collapses explaining why a naïve fit ignoring  correlations would significantly misestimate errors.
             \end{itemize}
-            The \textsc{NN} generally yields more long range, but {slightly weaker} correlations than the \textsc{KDE} at the same resolution, suggesting that a higher-‐capacity estimator might be able to better absorb detector noise. 
+            The \textsc{NN} generally yields more long range, but {slightly weaker} correlations than the \textsc{KDE} at the same resolution, suggesting that a higher capacity estimator might be able to better absorb detector noise. 
             %
             However, the qualitative behaviour is identical;
-            any non–zero smearing produces, long‐range weight correlations that violate the i.i.d. assumption built into standard unbinned likelihoods\kd{cite}.
+            any non-zero smearing produces, long range weight correlations that violate the i.i.d. assumption built into standard unbinned likelihoods\kd{cite}.
         \subsubsection{Histogram covariance matrices.}
             Since most downstream analyses eventually bin the unfolded events, a histogram covariance matrix can be effective to visualize the correlations.
             %
-            To visualise the impact on such \emph{binned} summaries we fill a 40‐bin histogram in the range $[-4,4]$ for each pseudo–experiment and compute
+            The impact on such \emph{binned} summaries can be visualised by filling a 40 bin histogram in the range $[-4,4]$ for each pseudo--experiment and computing
             \[
               C_{ab} = \bigl\langle
                          (N_a-\bar N_a)(N_b-\bar N_b)
                        \bigr\rangle.
             \]
             %
-            The matrices, shown in Fig.~\kd{fig:hist-cov}, reinforce the observations from the correlation curves.
+            The matrices, shown in \cref{fig:weight-histogram-covariance-1d}, reinforce the observations from the correlation curves.
             %
             Even at zero smearing, while KDE produces a nearly diagonal $C_{ab},$ \textsc{OmniFold}'s weights exhibit small but noticable off diagonal elements.
             %
-            Growing the smearing leads to pronounced \emph{anti-‐correlations} along the first off–-diagonal and coherent positive correlations far from the diagonal.
+            Growing the smearing leads to pronounced \emph{anti--correlations} along the first off diagonal and coherent positive correlations far from the diagonal.
             %
-            For $\sigma_{\det}=0.75$ the largest off–diagonal coefficient reaches $|\rho_{ab}|\simeq0.5$, echoing the plateau seen in $\rho(|\Delta x|)$.  These patterns are almost identical for {KDE} and {NN} analyses.
+            For $\sigma_{\det}=0.75$ the largest off diagonal coefficient reaches $|\rho_{ab}|\simeq0.5$, echoing the plateau seen in $\rho(|\Delta x|)$.  These patterns are almost identical for KDE and NN analyses.
 
-            Such strong off–-diagonal structure rigorously explains why a $\chi^2$ fit that {ignores} covariances by using only the diagonal of $C$ leads to miscoverage.
+            Such strong off diagonal structure rigorously explains why a $\chi^2$ fit that ignores covariances by using only the diagonal of $C$ leads to significant miscoverage.
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-histogram-covariance-1d.pdf}
+        \caption{KDE-based \textsc{OmniFold}: Covariance matrices exhibit concentrated correlation structures with significant values ($>0.1$) confined primarily to nearest and next to nearest neighbour bins.\footnotemark}
+        \label{fig:covar-kde}
+    \end{subfigure}
+    \stepcounter{footnote}
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-histogram-covariance-1d-nn.pdf}
+        \caption{NN-based \textsc{OmniFold}: Covariance matrices exhibit broad correlation bands extending $\ge10$ bins from the diagonal at $\sigma_{\text{det}} = 0.75$.\footnotemark}
+        \label{fig:covar-nn}
+    \end{subfigure}
+    \caption[Covariance structure of binned unfolded distributions for KDE and NN-based methods.]{Covariance matrices of binned histograms constructed from unfolded distributions for $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Each axis represents the covariance structure of a 40--bin histogram over $[-4, 4]$ in the observable space, with bin width $\Delta x = 0.2$. Matrix elements $\rho_{ij}$ represent the correlation between bins $i$ and $j$.
+    %
+    Panel (a) displays results from KDE and Panel (b) shows NN results, both using the \textsc{OmniFold} method. Both methods exhibit a clear progression from nearly diagonal matrices at perfect resolution to increasingly correlated structures as detector resolution degrades.
+    %
+    The integrated correlation strength, sum of absolute off-diagonal elements, increases approximately quadratically with $\sigma_{\text{det}}$, reflecting the information loss that must be compensated through correlated adjustments.
+    %
+    These covariance matrices are essential inputs for rigorous statistical analysis of unfolded data, and must be propagated through any subsequent fits or hypothesis tests to obtain correct uncertainties.}
+    \label{fig:weight-histogram-covariance-1d}
+\end{figure}
+\addtocounter{footnote}{-2}
+\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
+\stepcounter{footnote}
+\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
         \subsubsection{Implications}
             The correlation diagnostics presented here {empirically validate} the theoretical expectation that \textsc{OmniFold} weights are correlated.
             %
-            Quantifying the strength and range of those correlations enables an \emph{a priori} estimate of how badly an independence‐-based error formula will fail\kd{cite}.
+            Quantifying the strength and range of those correlations enables a rough estimate of how badly an independence based error formula will fail.
             %
-            They provide {input templates} and motivation for developing a rigorous covariance‐aware asymptotic method.
-            %
-            With these diagnostics in hand, we are now equipped to benchmark the statistical performance of binned and unbinned inference workflows on unbinned unfolded data, which is the subject of the next subsection.
-    \subsection{Unbinned Unfolding: Binned and Unbinned Inference}
+            With these diagnostics in hand, one is now equipped to benchmark the statistical performance of binned and unbinned inference workflows on unbinned unfolded data.
+    \subsection{Unbinned unfolding: binned and unbinned inference.}
     \label{subsec:unbinned_data}
-        Having established a fully binned baseline in the previous section, we now examine two inference workflows that utilize unbinned unfolding on the same Gaussian data.
+        Having established a fully binned baseline in \cref{subsec:fully_binned_demo}, this section examines two inference workflows that utilise unbinned unfolding on the same Gaussian data.
         %
-        Both approaches start by unfolding the detector--level data without binning, producing a set of weighted events at truth--level.
+        Both approaches start by unfolding the detector level data without binning, producing a set of weighted events at truth level.
         %
-        Because the deconvolution process induces non--negligible correlations between event weights (especially for finite detector smearing, as evidenced by the covariance patterns in \cref{fig:weight-histogram-covariance-1d}), these workflows differ in how they handle those correlations.
+        Because the deconvolution process induces non-negligible correlations between event weights as evidenced by the covariance patterns in \cref{fig:weight-correlation-vs-distance-1d,fig:weight-histogram-covariance-1d}, these workflows differ in how they handle those correlations.
     
         When performing binned inference on unbinned unfolded data, the unfolded weighted events are aggregated into a histogram, and a binned template fit is performed using a $\chi^2$ statistic that includes the full binned covariance matrix.
         %
-        In these experiments, the unfolded distribution is fit to the parametric Gaussian model (with mean $\mu$ and variance $\sigma^2$) by integrating the model prediction over the histogram bins.
+        In this workflow the unfolded distribution is fit to the parametric Gaussian model with mean $\mu$ and variance $\sigma^2$ by integrating the model prediction over the histogram bins.
         %
         The covariance matrix of the bins is estimated from an ensemble of repeated pseudo--experiments.
-        %
-        One then obtains best fit parameters by $\chi^2$ minimization and determines their uncertainties via the usual $\Delta\chi^2=1$ criterion.
+        
+        One then obtains best fit parameters by $\chi^2$ minimisation and determines their uncertainties via the usual $\Delta\chi^2=1$ criterion.
         %
         This approach is analogous to a standard binned analysis except that the data have been unfolded using an unbinned method.
         %
-        Crucially, it retains statistical rigour by propagating the full unfolding--induced covariance into the fit.
+        In this was this workflow offers a statistically rigorous method to propagate the full unfolding--induced covariance into the fit.
     
-        Alternatively, one could attempt to fit the parametric model directly to the weighted events using an unbinned maximum--likelihood procedure that ignores inter--event correlations.
+        Alternatively, one could attempt to fit the parametric model directly to the weighted events using an unbinned maximum likelihood procedure that ignores inter--event correlations.
         %
-        One constructs the negative log likelihood,
+        One constructs the weighted negative log--likelihood,
         \[
-            \operatorname{NLL}(\theta) = -\sum_{i=1}^N w_i \ln P(x_i \mid \theta),
+            \operatorname{NLL}(\theta) = -\sum_{i=1}^N w_i \log p(x_i \mid \theta),
         \]
-        where $x_i$ and $w_i$ are the kinematic value and weight of event $i$, and $P(x_i|\theta)$ is the model density for parameters $\theta=(\mu,\sigma^2)$.
-        %
-        This unbinned likelihood sum is maximized to obtain the best fit $\hat\theta$.
+        where $x_i$ and $w_i$ are the kinematic value and weight of event $i$, and $p(x_i|\theta)$ is the model density for parameters $\theta=(\mu,\sigma^2)$.
+        
+        This unbinned likelihood sum is maximised to obtain the best fit $\hat\theta$.
         %
         The Hessian (curvature) of the NLL at the optimum provides an asymptotic error estimate for $\theta$.
         %
         Equivalently, one finds the $\Delta\ln L=0.5$ offset for a $1\sigma$ interval.
-        %
-        This workflow assumes statistical independence of events.\kd{cite:Cowan:2002in,Blobel:2203257}.
+        
+        This workflow assumes statistical independence of events~\cite{cowan_survey_2002, blobel, Blobel:2011fih, Blobel2013Unfolding}.
         %
         Thus, while method the latter method yields a fit and a formal error bar, these must be interpreted with caution since the underlying likelihood model is misspecified.
     
         Both of the above approaches are applied to the same Gaussian datasets described earlier in \cref{subsec:setup}.
         %
-        Unfolding is performed with the \textsc{OmniFold} algorithm\kd{cite:Andreassen:2019cjw,Andreassen:2021zzk}.
+        Unfolding is performed with the \textsc{OmniFold} algorithm.
         %
-        In the one dimensional setting we also test a KDE based implementation.
+        In the one dimensional setting a KDE based implementation is also tested.
         %
         For each resolution setting, the 500 pseudo--data samples are unfolded and then subjected to both the aforementioned inference procedures.
         %
-        This allows us to compare the bias, uncertainty estimation, and coverage of the two workflows against the fully binned baseline.
-        \paragraph{Parameter Bias}
+        This allows a comparison of the bias, uncertainty estimation, and coverage of the two workflows against the fully binned baseline.
+        \subsubsection{Parameter bias}
             Both unbinned workflows yield fitted parameter values that are consistent with those from the binned baseline.
             %
             In fact, we find no appreciable additional bias introduced by the unbinned unfolding step or the choice of inference method.
