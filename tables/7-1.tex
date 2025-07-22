@@ -1,0 +1,29 @@
+\begin{table}
+    \centering
+    \caption[Sources of correlated uncertainties in cross section measurements]{Sources of correlated uncertainties in cross section measurements and their impact on unfolded distributions. 
+    These correlations affect parameter extraction, uncertainty propagation, and confidence interval coverage in physics analyses.}
+    \label{tab:correlations}
+    \begin{tabular}{p{0.18\linewidth} p{0.77\linewidth}}
+        \toprule
+        \textbf{Source} & \textbf{Impact on unfolded distributions} \\
+        \midrule
+        \textbf{Detector resolution} & 
+        Finite resolution causes true events to migrate between measurement bins, inducing statistical correlations in the unfolded spectrum. 
+        This migration induced covariance must be properly modelled to avoid biasing shape sensitive fits and to correctly propagate uncertainties through the unfolding procedure. \\
+        
+        \textbf{Pileup effects} & 
+        Additional particles from simultaneous interactions contaminate all events within a luminosity block. 
+        Residual uncertainties after pileup subtraction create correlated systematic effects across events and bins, affecting both normalisation and shape measurements. 
+        The correlation strength typically scales with instantaneous luminosity and is therefore expected to be increasingly challenging to address in future high luminosity experiments. \\
+        
+        \textbf{Unfolding and regularisation} & 
+        Smoothness constraints or penalty terms couple adjacent bin estimates or event weights, transforming independent Poisson counts into correlated random variables. 
+        The resulting off--diagonal covariance terms can be non-trivial, particularly for aggressive regularisation schemes. 
+        This coupling must be propagated to downstream analyses. \\
+        
+        \textbf{Systematic Uncertainties} & 
+        Experimental systematics (luminosity calibration, trigger efficiency, energy scale) and theoretical uncertainties (PDF sets, scale variations) affect multiple bins coherently. 
+        These produce positive correlations that, if neglected, lead to underestimated uncertainties on integrated quantities and incorrect confidence intervals for extracted parameters. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
