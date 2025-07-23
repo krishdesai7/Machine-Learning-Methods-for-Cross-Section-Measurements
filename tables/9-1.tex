@@ -1,0 +1,51 @@
+\begin{table}
+    \centering
+    \caption[Comparative analysis of unfolding and symmetry discovery methods in particle physics.]{Comparison of unfolding and symmetry discovery approaches in high-energy physics data analysis. While unfolding aims to correct detector effects to recover true physical distributions, symmetry discovery seeks to identify invariance properties directly from data. These complementary techniques can be combined synergistically: unfolding provides cleaner distributions where symmetries become more apparent, while discovered symmetries can constrain and regularise the unfolding process. This bidirectional relationship enables more robust extraction of physical information from experimental data, particularly in scenarios where detector effects might obscure underlying symmetries or where symmetry constraints can help resolve unfolding ambiguities.}
+    \label{tab:unfolding_vs_symmetry}
+    \begin{tabular}{@{}p{0.12\linewidth} p{0.41\linewidth} p{0.41\linewidth}@{}}
+        \toprule
+        \textbf{Aspect} & \textbf{Unfolding} & \textbf{Symmetry discovery} \\
+        \midrule
+        \textbf{Primary goal} & 
+        Reconstruct true distributions from detector level observations by inverting detector response & 
+        Identify transformation groups under which distributions remain invariant \\
+        \midrule
+        \textbf{Inputs} & 
+        \begin{tabular}[t]{@{}l@{}}
+        • Measured detector level data\\
+        • Detector response matrix or\\
+        • Regularisation scheme
+        \end{tabular} & 
+        \begin{tabular}[t]{@{}l@{}}
+        • Measured or unfolded data\\
+        • Parametrised transformations\\
+        • Invariance test statistics
+        \end{tabular} \\
+        \midrule
+        \textbf{Outputs} & 
+        \begin{tabular}[t]{@{}l@{}}
+        • Differential cross sections\\
+        • Probability density functions\\
+        • Uncertainties/correlations
+        \end{tabular} & 
+        \begin{tabular}[t]{@{}l@{}}
+        • Symmetry generators/parameters\\
+        • Invariance confidence levels\\
+        • Conserved quantities
+        \end{tabular} \\
+        \midrule
+        \textbf{Basis} & 
+        Incorporates domain knowledge through priors/constraints to regularise ill posed inverse problem & 
+        Tests generic transformation classes allowing data driven discovery of invariances \\
+        \midrule
+        \textbf{Approach} & 
+        Statistical inference problem to invert \(p(x) =\int r(x\mid z)\,p(z)\,\dd z\) & 
+        Hypothesis testing framework to evaluate $p({x}) \stackrel{?}{=} p(g({x}))\cdot|g'(x)|$ \\
+        \midrule
+        \textbf{Benefit} & 
+        Produces distributions where true physical symmetries manifest more clearly, enabling validation of theoretical predictions and discovery of emergent invariances & 
+        Discovered symmetries constrain unfolding solution space, reducing regularisation dependence and 
+improving stability of deconvolution \\
+        \bottomrule
+    \end{tabular}
+\end{table}

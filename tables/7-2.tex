@@ -1,0 +1,65 @@
+\begin{longtable}{M M M M}
+    \caption[Gaussian model parameters for multidimensional unfolding validation studies.]{Gaussian model parameters used in \(d=2, 4, 6\) unfolding validation studies. Generation parameters define the Generation distribution, Detector parameters specify the smearing, and Truth parameters define the Truth distribution. $\boldsymbol{\mu}$ and $\boldsymbol{\sigma}$ list the component means and standard deviations, and $\boldsymbol{\rho}$ is the correlation matrix.
+    %
+    The mismatch between Generation and Truth parameters tests the unfolding method.}
+    \label{tab:highD-params} \\
+    \toprule
+    & \textbf{Generation} & \textbf{Detector} & \textbf{Truth} \\
+    \midrule
+    \endfirsthead
+    
+    \multicolumn{4}{c}{\textit{Table \ref{tab:highD-params} continued from previous page}} \\
+    \toprule
+    & \textbf{Generation} & \textbf{Detector} & \textbf{Truth} \\
+    \midrule
+    \endhead
+    
+    \midrule
+    \multicolumn{4}{r}{\textit{Continued on next page}} \\
+    \endfoot
+    
+    \bottomrule
+    \endlastfoot
+    
+    \multicolumn{4}{c}{\(d = 2\)} \\
+    \midrule
+    \vb*{\mu} & \mqty[0.0\\1.0] & & \mqty[0.2\\0.8] \\[16pt]
+    \boldsymbol{\sigma} & \mqty[1.0\\1.5] & \mqty[0.5\\0.8] & \mqty[0.9\\1.3] \\[16pt]
+    \rho & \mqty[1.0 & -0.6 \\ -0.6 & 1.0] & & \mqty[1.0 & -0.6 \\ -0.6 & 1.0] \\
+    \pagebreak
+    \multicolumn{4}{c}{\(d = 4\)} \\
+    \midrule
+    \vb*{\mu} & \mqty[1.0\\0.0\\-0.5\\0.5] & & \mqty[0.8\\0.1\\-0.6\\0.7] \\[16pt]
+    \boldsymbol{\sigma} & \mqty[1.0\\0.7\\1.1\\0.8] & \mqty[0.4\\0.5\\0.6\\0.3] & \mqty[0.8\\0.6\\1.0\\0.6] \\[16pt]
+    \rho & \mqty[
+        1.0 & 0.1 & -0.2 & 0.3\\
+        0.1 & 1.0 & 0.0 & 0.1\\
+        -0.2 & 0.0 & 1.0 & 0.7\\
+        0.3 & 0.1 & 0.7 & 1.0] & & 
+    \mqty[
+        1.0 & 0.0 & -0.3 & 0.4\\
+        0.0 & 1.0 & 0.2 & 0.0\\
+        -0.3 & 0.2 & 1.0 & 0.5\\
+        0.4 & 0.0 & 0.5 & 1.0] \\
+    \pagebreak  % Force page break here
+    \multicolumn{4}{c}{\textbf{6-Dimensional Configuration}} \\
+    \midrule
+    \vb*{\mu} & \mqty[1.0\\ 0.0\\-0.5\\ 0.5\\-1.0\\ 0.3] & & 
+    \mqty[0.8\\ 0.1\\-0.6\\ 0.7\\-0.8\\ 0.1] \\[16pt]
+    \boldsymbol{\sigma} & \mqty[1.0\\ 0.7\\ 1.1\\ 0.8\\ 1.2\\ 1.4] & \mqty[0.4\\0.5\\0.6\\0.3\\0.4\\0.4] & 
+    \mqty[0.8\\ 0.6\\ 1.0\\ 0.6\\ 1.0\\ 1.1] \\[16pt]
+    \rho & \mqty[
+        1.0 & 0.1 & 0.2 & -0.3 & 0.0 & 0.0\\
+        0.1 & 1.0 & 0.0 & -0.2 & 0.3 & 0.1\\
+        0.2 & 0.0 & 1.0 & 0.1 & -0.2 & 0.3\\
+        -0.3 & -0.2 & 0.1 & 1.0 & 0.1 & 0.0\\
+        0.0 & 0.3 & -0.2 & 0.1 & 1.0 & 0.7\\
+        0.0 & 0.1 & 0.3 & 0.0 & 0.7 & 1.0] & & 
+    \mqty[
+        1.0 & 0.0 & 0.2 & -0.2 & 0.1 & 0.0\\
+        0.0 & 1.0 & 0.0 & -0.1 & 0.2 & 0.0\\
+        0.2 & 0.0 & 1.0 & 0.0 & -0.3 & 0.4\\
+        -0.2 & -0.1 & 0.0 & 1.0 & 0.2 & 0.0\\
+        0.1 & 0.2 & -0.3 & 0.2 & 1.0 & 0.5\\
+        0.0 & 0.0 & 0.4 & 0.0 & 0.5 & 1.0] \\
+\end{longtable}

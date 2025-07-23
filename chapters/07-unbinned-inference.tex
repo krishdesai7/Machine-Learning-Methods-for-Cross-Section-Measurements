@@ -334,7 +334,8 @@
     The impact of various sources of uncertainty and their effects are summarised in \cref{tab:correlations}.
 \input{tables/7-1}
 
-\section{Formalism}
+\section{Formalism.}
+\label{sec:formalism}
     Let $\qty{\nu_j}_{j=1}^M$ be the unfolded, particle level yield in bin $j$ and $P_j(\theta)$ be the theory prediction or fit template for that bin given parameters $\theta$.
     %
     The standard measure of agreement is the correlated $\chi^2$ statistic described in \cref{eq:chi2cov},
@@ -1549,73 +1550,100 @@ the maximum likelihood estimator is distributed as
         %
         This allows a comparison of the bias, uncertainty estimation, and coverage of the two workflows against the fully binned baseline.
         \subsubsection{Parameter bias}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/chapter-07/uncertainty-and-bias-vs-resolution-ibu-diag.pdf}
+    \caption[Comparison between binned and unbinned parameter inference with unbinned and binned unfolding methods as a function of detector resolution.]{Systematic comparison of inference uncertainty and bias for distribution parameters extracted from unfolded data as a function of $\sigma_{\text{det}}$.
+    %
+    (Top left) uncertainty on $\mu$, (top right) uncertainty on $\sigma^2$, (bottom left) bias in $\mu$ estimation, and (bottom right) bias in $\sigma^2$ estimation.
+    %
+    Three unfolding and inference approaches are compared: (i) Unbinned Unfolding (UBU) with unbinned maximum likelihood (ML) fitting shown as blue circles, (ii) binned Iterative Bayesian Unfolding (IBU) with $\chi^2$ fitting using the full covariance matrix (orange triangles), and (iii) IBU with $\chi^2$ fitting using only diagonal covariance elements (green squares). The blue shaded band in each panel represents $\pm$ RMS inference uncertainty from the UBU+ML approach.\footnotemark
+}
+    \label{fig:uncertainty-and-bias-vs-resolution}
+\end{figure}
+\footnotetext{Figure created by Owen Long~\cite{Desai:2025mpy}.}
             Both unbinned workflows yield fitted parameter values that are consistent with those from the binned baseline.
             %
-            In fact, we find no appreciable additional bias introduced by the unbinned unfolding step or the choice of inference method.
+            There is no appreciable bias introduced by the unbinned unfolding step or the choice of inference method.
             %
             \cref{fig:uncertainty-and-bias-vs-resolution} (bottom panels) shows the mean fitted $\mu$ and $\sigma^2$ as a function of detector smearing for each method.
             %
-            All approaches produce estimates of $\mu$ and $\sigma^2$ across the range of smearings within the statistical uncertainties.
+            These results demonstrate the strength of unbinned methods when feasible, while validating that properly implemented binned unfolding with full covariance treatment can achieve comparable performance.
+            
+            The bias panels (bottom) reveal that all methods maintain bias levels below 1\% of the parameter values for $\sigma_{\text{det}} < 0.5$, with UBU exhibiting the most stable performance.
             %
+            At all detector resolutions, IBU shows comparable or larger bias in variance estimation than UBU, but the inferred parameters are still well within statistical uncertainties.
+            %
+            Indeed, approaches produce estimates of $\mu$ and $\sigma^2$ across the range of smearings within the statistical uncertainties (blue shaded).
+            
             Notably, the bias observed in the naive unbinned ML fit is the same as that in the proper $\chi^2$ fit that accounts for the covariance of a given dataset. 
             %
-            This can be explained as both fits ultimately maximizing a likelihood (or minimizing a $\chi^2$) to match the unfolded distribution to the model;
+            This can be explained as both fits ultimately maximizing a likelihood, or minimizing a $\chi^2$, to match the unfolded distribution to the model;
             %
             if the model is correctly specified, the MLEs should coincide.
             %
-            Thus, unbinned unfolding does not itself induce a bias in the extracted physics parameters verifying the claim that the \textsc{OmniFold} procedure (with sufficient iterations and regularization) correctly reproduces the shape of the true distribution on average.\kd{cite:Andreassen:2019cjw}
+            Thus, unbinned unfolding does not itself induce a bias in the extracted physics parameters verifying the claim that the \textsc{OmniFold} procedure correctly reproduces the shape of the true distribution on average.
             %
-            This is demonstrated by the agreement of fitted values with the true parameter shown by the horizontal lines in Fig.\cref{fig:uncertainty-and-bias-vs-resolution} and the baseline results in \cref{fig:mu_mean_values_with_errorbars}. 
-        \paragraph{Uncertainty estimation and coverage}
+            This is demonstrated by the agreement of fitted values with the true parameter shown by the horizontal lines in \cref{fig:uncertainty-and-bias-vs-resolution} and the baseline results in \cref{fig:mu_mean_values_with_errorbars}. 
+            
+        \subsubsection{Uncertainty estimation and coverage.}
             In sharp contrast to the agreement in central values, the two workflows differ markedly in their reported uncertainties and the statistical coverage of those uncertainties.
             %
-            The binned-$\chi^2$ approach with full covariance proves to be consistent with the baseline in its uncertainty estimates.
+            The binned $\chi^2$ approach with full covariance proves to be consistent with the baseline in its uncertainty estimates.
             %
-            For each smearing level, the asymptotic $1\sigma$ errors obtained from the $\Delta\chi^2=1$ criterion agree well with the empirical spread (RMS) of the fitted parameters over the 500 pseudo-experiments.
+            For each smearing level, the asymptotic $1\sigma$ errors obtained from the $\Delta\chi^2=1$ criterion agree well with the empirical spread (RMS) of the fitted parameters over the \(\num{500}\) pseudo--experiments.
             %
-            This is illustrated in the top panels of \cref{fig:uncertainty-and-bias-vs-resolution}: the curve corresponding to the full-covariance $\chi^2$ fit lies on top of the true uncertainty obtained from the pseudo-data ensemble (star markers), for both $\mu$ (left) and $\sigma^2$ (right). In other words, binned inference on unbinned data using a \(\chi^2\) fit that incorporates the full covariance matrix produces accurate confidence intervals that maintain the nominal coverage.
+            This is illustrated in the top panels of \cref{fig:uncertainty-and-bias-vs-resolution}: the curve corresponding to the full covariance $\chi^2$ fit lies on top of the true uncertainty obtained from the pseudo data ensemble (star markers), for both $\mu$ (left) and $\sigma^2$ (right).
             %
+            In other words, binned inference on unbinned data using a \(\chi^2\) fit that incorporates the full covariance matrix produces accurate confidence intervals that maintain the nominal coverage.
+            
+            These uncertainty panels (top) demonstrate that an unbinned asymptotic maximum likelihood (ML) fit on unbinned unfolded (UBU) data consistently underestimates statistical uncertainties across all detector resolutions, and is most similar to the results of of performing an asymptotic binned \(\chi^2\) fit on the same UBU results while ignoring off diagonal covariance element.
+            %
+            The uncertainty degradation with increasing $\sigma_{\text{det}}$ follows the expected $\sqrt{1 + \sigma^2_{\text{det}}/\sigma^2_{\text{true}}}$ scaling for both parameters.
+
             This behaviour is as expected and desired.
             %
-            By incorporating the complete covariance matrix of the unfolded histogram, we correctly account for the event correlations in the statistical inference.
-            %
-            Indeed, these results mirror the fully binned study.
+            By incorporating the complete covariance matrix of the unfolded histogram, the binned asymptotic \(\chi^2\) fit on UBU results correctly accounts for the event correlations in the statistical inference, and precisely matches the RMS uncertainty computed numerically on UBU results.
+            
+            In one sense, these results agree with the fully binned study.
             %
             Recall that in the baseline binned analysis, using the full covariance matrix yielded uncertainty estimates consistent with the bootstrap pseudo--data spread, whereas using only diagonal uncertainties did not, as shown in \cref{fig:uncertsfullybinned}.
             %
-            We explicitly confirm the same result in the unbinned case too.
+            \cref{fig:uncertainty-and-bias-vs-resolution} explicitly confirms that this is true in the unbinned case too.
             %
-            If one performs a binned fit to the unfolded histogram but (incorrectly) ignores off--diagonal bin correlations, the uncertainties are overestimated and the $\chi^2$ fit yields unnecessarily large error bars, analogous to the diagonal--covariance points in \cref{fig:uncertsfullybinned}.
+            In another sense though, the unbinned results invert the binned picture.
             %
-            This over--conservative result similarly arises from double--counting the anti--correlated fluctuations in each bin and leads to overcoverage, further underscoring that the full covariance is essential for a proper statistical treatment .
+            Notice that if one performs a binned fit to IBU results but incorrectly ignores off diagonal bin correlations, the uncertainties are overestimated and the $\chi^2$ fit yields unnecessarily large error bars, analogous to the diagonal--covariance points in \cref{fig:uncertsfullybinned}.
+            %
+            This over--conservative result similarly arises from double--counting the anti--correlated fluctuations in each bin and leads to over-coverage.
     
-            By contrast, the naïve unbinned ML inference on the unbinned data fails to produce correct uncertainty estimates.
+            By contrast, the na\"ive unbinned ML inference on the unbinned data fails undercovers.
             %
             As shown in \cref{fig:uncertainty-and-bias-vs-resolution} (top panels, orange points), the asymptotic errors reported by the unbinned likelihood fit are dramatically smaller than the true spread of the fit results, except in the trivial case of zero smearing.
             %
-            Intriguingly, the naive unbinned error bars hardly change with detector resolution---the orange curve in \cref{fig:uncertainty-and-bias-vs-resolution} is nearly flat---indicating that the fit is seemingly just as ``precise" for a very smeared dataset as for a perfect detector.
+            This suggests more strongly that it is difficult \textit{a priori} to determine the sign of miscoverage due to ignored correlations.
+            
+            Intriguingly, the naive unbinned error bars hardly change with detector resolution---the orange curve in \cref{fig:uncertainty-and-bias-vs-resolution} is nearly flat---indicating that the fit is seemingly just as ``precise'' for a very smeared dataset as for a perfect detector.
             %
-            This unphysical result is a direct consequence of ignoring the event correlations.
+            This unphysical result could be a direct consequence of ignoring the event correlations.
             %
-            The ML fit treats each weighted event as independent information, thereby overestimating the effective sample size.
+            The maximum likelihood fit treats each weighted event as independent information, thereby overestimating the effective sample size.
             %
-            Intuitively, when events are strongly correlated, the true number of independent degrees of freedom is smaller than $N$; but the naive NLL sum scales like $N$, yielding an misestimate of the variance of $\hat\theta$.
-            %
-            In our Gaussian example, the effect is severe even at moderate smearing.
+            Intuitively, when events are strongly correlated, the true number of independent degrees of freedom is smaller than $N$; but the naive NLL sum scales like $N$, yielding an misestimate of the error on $\hat\theta = (\mu, \sigma^2)$.
+            
+            In this Gaussian experiment, the effect is severe even at moderate smearing.
             %
             For instance, at $\sigma_{\text det}=0.5$ the unbinned ML formula underestimates the uncertainty on $\mu$ by roughly a factor of two compared to the bootstrap truth, and at $\sigma_{\text det}=0.75$ the discrepancy is even larger.
             %
             This breakdown of the asymptotic approximation in the presence of inter--event correlations is the essential failure mode of the naive unbinned approach.
             %
-            It should be emphasized that when the detector resolution is perfect (no smearing), the unfolding induces no correlations and indeed the unbinned ML errors do coincide with the correct uncertainties, and all methods become equivalent in this limit.
+            It should be emphasised that when the detector resolution is perfect, the unfolding induces no correlations and indeed the unbinned ML errors do coincide with the correct uncertainties, and all methods become equivalent in this limit.
             %
-            But for any non--zero smearing, the independence assumption is violated and the standard likelihood formulae no longer hold.
-            %
-            The unbinned fit still finds the correct central values, but its error estimates must not be trusted.
+            But for any non-zero smearing, the independence assumption is violated and the standard likelihood formulae no longer hold.
     
         The practical implication of these findings is that naively applying unbinned inference to unfolded data can produce misleadingly constraints, even though the fit may appear to converge normally.
         %
-        In our study, the na\"ive unbinned workflow would have erroneously suggested measurement insensitive to detector smearing, whereas in truth the uncertainties should grow with smearing, as correctly reflected by methods that account for correlations.
+        In this study, the fully unbinned workflow would have erroneously suggested measurement insensitive to detector smearing, whereas in truth the uncertainties should grow with smearing, as correctly reflected by methods that account for correlations.
         %
         This highlights the necessity of handling the event correlations in some way, potentially through the hybrid approach.
         %
@@ -1627,29 +1655,29 @@ the maximum likelihood estimator is distributed as
         %
         For example, in \cref{fig:uncertainty-and-bias-vs-resolution} the full covariance UBU results achieve a similar or smaller uncertainty than the traditional IBU based results at each smearing value.
         %
-        This suggests an advantage to delaying any binning as late in the analysis chain as possible, consistent with the intuition that using unbinned distributions throughout the unfolding can preserve more information for the final fit\kd{cite:Andreassen:2019cjw}.
+        This suggests an advantage to delaying any binning as late in the analysis chain as possible, consistent with the intuition that using unbinned distributions throughout the unfolding can preserve more information for the final fit.
         %
         One should note, however, that in the 1D case this advantage is modest.
         %
         UBU and IBU approaches do not differ vastly in precision.
         %
-        In higher dimensions the unbinned approach is expected to drastically outperform a binned analysis (since binning in many dimensions is impractical or introduces large discretization errors)\kd{cite:Pan:2024rfh,Butter:2022rso2}.
+        In higher dimensions the unbinned approach is expected to drastically outperform a binned analysis (since binning in many dimensions is impractical or introduces large discretization errors)~\cite{Pan:2024rfh, Butter2023MachineGeneration, Plehn:2022ftl}
     
-        While the hybrid method provides a sound stopgap, it somewhat undermines the original motivation for unbinned methods, which aimed to avoid histogramming altogether.
+        While the hybrid method provides a sound stopgap, it somewhat undermines the original motivation for unbinned methods, which aims to avoid histogramming altogether.
         %
-        The fully unbinned method, on the other hand, fully actualizes the principle underlying the unbinned paradigm but lacks a statistical asymptotic formalism that accounts for correlations.
+        The fully unbinned method, on the other hand, fully actualises the principle underlying the unbinned paradigm but lacks a statistical asymptotic formalism that accounts for correlations.
         %
-        The stark miscoverage we observe for the naive unbinned fit underlines the need for correlation--aware unbinned inference techniques.
+        The miscoverage observed for the naive unbinned fit underlines the need for correlation aware unbinned inference techniques.
         %
-        In other words, if one wishes to perform event--level likelihood fits on unfolded data, one must either develop a formalism to incorporate the event--to--event covariance information into the likelihood or rely on numerical methods to calibrate the uncertainties.
+        In other words, if one wishes to perform event level likelihood fits on unfolded data, one must either develop a formalism to incorporate the event--to--event covariance information into the likelihood or rely on numerical methods to calibrate the uncertainties.
         %
         In this study, one does finds that if one estimates uncertainties numerically through pseudo--experiments or bootstraps, the precision of the unbinned fit can be evaluated correctly.
         %
         This is evidenced by the fact that the RMS spread of the naive ML fit outcomes (the blue line in \cref{fig:uncertainty-and-bias-vs-resolution}) does increase with smearing and matches the covariance-fit results.
+        
+        Despite this, using brute force pseudo--experiments or bootstraps to determine errors is computationally expensive and may not always be feasible
         %
-        However, using brute force pseudo--experiments or bootstraps to determine errors is computationally expensive and may not be feasible in a real experiment.
-        %
-        Besides, errors computer through bootstrapping offer no analytical understanding of the uncertainty.
+        Besides, errors computed through bootstrapping offer no analytical understanding of the uncertainty.
         %
         Nonetheless, until a theoretical framework is developed to handle correlations at the likelihood level, any unbinned inference on unfolded events should be performed through bootstrapping.
     
@@ -1659,230 +1687,181 @@ the maximum likelihood estimator is distributed as
         %
         These results vividly demonstrate the statistical pitfalls of ignoring induced correlations, and they motivate the correlation--aware inference strategies discussed in the next section.
         %
-        As unbinned unfolding techniques become increasingly prevalent in extracting cross sections\kd{cite:ATLAS:2024xxl,ATLAS:2025qtv,CMS-PAS-SMP-23-008}, developing a robust framework to correctly propagate uncertainties through the unbinned pipeline is essential.
+        As unbinned unfolding techniques become increasingly prevalent in extracting cross sections~\cite{ATLAS:2024xxl,ATLAS:2025qtv, noauthor_observation_2024}, developing a robust framework to correctly propagate uncertainties through the unbinned pipeline is essential.
         %
         This study provides a first quantitative glimpse of the issue, showing that while unbinned unfolding can preserve accuracy and potentially improve precision, one must incorporate the full correlation structure to achieve valid statistical inference.
         %
-        This will be crucial for ensuring proper coverage and trustworthy uncertainty estimates in future high--dimensional unfolding analyses.
-    \subsection{Extension to Higher Dimensions}
+        This will be crucial for ensuring proper coverage and trustworthy uncertainty estimates in future high dimensional unfolding analyses.
+    \subsection{Extension to higher dimensions.}
     \label{sec:highD_extension}
-        The diagnostics of \cref{subsec:weight_correlations,subsec:unbinned_data} established that even in {one} dimension the naïve unbinned likelihood approach
+        The diagnostics of \cref{subsec:weight_correlations,subsec:unbinned_data} established that even in {one} dimension the na\"ive unbinned likelihood approach
         seriously underestimates uncertainties once unfolding procedure induces correlated event weights.
         %
-        A natural next question is whether that pathology grows, diminishes, or saturates as one moves to multi–-differential measurements.
+        A natural next question is whether that pathology grows, diminishes, or saturates as one moves to multidifferential measurements.
         %
-        We therefore repeat the Gaussian study in two, four and six dimensions, keeping the experimental setup identical, except for adjusting the numerical parameters that define the Gaussians.
+        To answer this question, one can therefore repeat the Gaussian study in two, four and six dimensions, keeping the experimental setup identical, except for adjusting the numerical parameters that define the Gaussians.
         %
         The Gaussian parameters used in the multidimensional studies are listed in \cref{tab:highD-params}.
         %
-        Detector resolutions are scaled coordinate--wise so that the signal‐-to-‐noise ratio in every dimension matches the 1--D baseline.
-        \begin{table}
-            \centering
-             \caption[Gaussian model parameters for multidimensional studies]{
-                Gaussian parameters used in the \(2, 4\), and \(6-\)dimensional toy studies.
-                %
-                The column vectors \(\boldsymbol{\mu}\) and \(\boldsymbol{\sigma}\) list the component means and standard deviations, respectively.
-                %
-                \(\rho\) denotes the linear correlation matrix.
-                %
-                Detector resolutions \(\boldsymbol{\sigma}_{\det}\) are applied component-wise as additive Gaussian noise in the detector simulation.
-                }
-            \label{tab:highD-params}
-            \scriptsize
-            \begin{tabular}{M M M M}
-              \toprule
-            & \textbf{Gen.} & \textbf{Det.}& \textbf{Truth}\\
-              \midrule
-              && \textbf{2--D}\\
-                 \vb*{\mu}  & \mqty[0.0\\1.0]  && \mqty[0.2\\0.8]\\[16pt]
-              \boldsymbol{\sigma}        & \mqty[1.0\\1.5]                     & \mqty[0.5\\0.8]& \mqty[0.9\\1.3]\\[16pt]
-              \rho                       & \mqty[1.0 & -0.6 \\ -0.6 &  1.0]    && \mqty[1.0 & -0.6 \\ -0.6 &  1.0]\\
-              \midrule
-              
-              && \textbf{4--D}\\
-              \vb*{\mu}                  & \mqty[1.0\\0.0\\-0.5\\0.5]          && \mqty[0.8\\0.1\\-0.6\\0.7]\\[16pt]
-              \boldsymbol{\sigma}        & \mqty[1.0\\0.7\\1.1\\0.8]           &\mqty[0.4\\0.5\\0.6\\0.3]& \mqty[0.8\\0.6\\1.0\\0.6]\\[16pt]
-              \rho & \mqty[
-                       1.0 &  0.1 & -0.2 &  0.3\\
-                       0.1 &  1.0 &  0.0 &  0.1\\
-                      -0.2 &  0.0 &  1.0 &  0.7\\
-                       0.3 &  0.1 &  0.7 &  1.0] &&
-                    \mqty[
-                       1.0 &  0.0 & -0.3 &  0.4\\
-                       0.0 &  1.0 &  0.2 &  0.0\\
-                      -0.3 &  0.2 &  1.0 &  0.5\\
-                       0.4 &  0.0 &  0.5 &  1.0]\\
-              \midrule
-              
-              &&\textbf{6--D}&\\
-              \vb*{\mu}                  & \mqty[ 1.0\\ 0.0\\-0.5\\ 0.5\\-1.0\\ 0.3] &&
-                                            \mqty[ 0.8\\ 0.1\\-0.6\\ 0.7\\-0.8\\ 0.1]\\[16pt]
-              \boldsymbol{\sigma}        & \mqty[ 1.0\\ 0.7\\ 1.1\\ 0.8\\ 1.2\\ 1.4] & \mqty[0.4\\0.5\\0.6\\0.3\\0.4\\0.4]
-              & \mqty[ 0.8\\ 0.6\\ 1.0\\ 0.6\\ 1.0\\ 1.1]\\[16pt]
-              \rho & \mqty[
-                       1.0 &  0.1 &  0.2 & -0.3 &  0.0 &  0.0\\
-                       0.1 &  1.0 &  0.0 & -0.2 &  0.3 &  0.1\\
-                       0.2 &  0.0 &  1.0 &  0.1 & -0.2 &  0.3\\
-                      -0.3 & -0.2 &  0.1 &  1.0 &  0.1 &  0.0\\
-                       0.0 &  0.3 & -0.2 &  0.1 &  1.0 &  0.7\\
-                       0.0 &  0.1 &  0.3 &  0.0 &  0.7 &  1.0] &&
-                    \mqty[
-                       1.0 &  0.0 &  0.2 & -0.2 &  0.1 &  0.0\\
-                       0.0 &  1.0 &  0.0 & -0.1 &  0.2 &  0.0\\
-                       0.2 &  0.0 &  1.0 &  0.0 & -0.3 &  0.4\\
-                      -0.2 & -0.1 &  0.0 &  1.0 &  0.2 &  0.0\\
-                       0.0 &  0.2 & -0.3 &  0.2 &  1.0 &  0.5\\
-                       0.0 &  0.0 &  0.4 &  0.0 &  0.5 &  1.0]\\
-              \bottomrule
-            \end{tabular}
-        \end{table}
-        \subsubsection{Evaluation}
-            For every fit parameter (all $\mu_k$ and all unique $\sigma^2_{kl}$) we compute the {empirical RMS} over 500 pseudo-–experiments, and the average asymptotic error reported by the naïve unbinned–likelihood Hessian.
+        Detector resolutions are scaled coordinate wise so that the signal to noise ratio in every dimension matches the \(d=1\) baseline.
+\input{tables/7-2}
+        \subsubsection{Evaluation.}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/chapter-07/nn-uncertainties-vs-nd.pdf}
+    \caption[Validation of asymptotic uncertainty estimates across dimensionalities in unbinned unfolding.]{Comparison of empirical root-mean-square (RMS) parameter uncertainties with mean asymptotic uncertainty estimates for all model parameters across \(d = 1, 2, 4, 6\) unbinned unfolding studies. Each point represents a single parameter (mean or covariance matrix element) from the multivariate Gaussian models.
+    %
+    The blue circles denote components of the mean, and the orange diamonds denote components of the covariance.
+    %
+    The grey dashed line indicates perfect agreement (unit slope), while the green solid line shows the least squares fit for each dimensionality, with slope equal to the mean RMS/asymptotic ratio. 
+    %
+    The systematic deviation above the unit line demonstrates that asymptotic uncertainties consistently underestimate the true parameter uncertainties, with the underestimation factor increasing from approximately 1.05 in \(d = 1\) to 1.25 in \(d = 6\).
+    %
+    This trend reflects the growing impact of finite sample effects and parameter correlations in higher dimensions, where the Fisher information matrix becomes less accurate. 
+    %
+    The increasing scatter with dimensionality indicates heterogeneous behaviour across different parameter types, with off diagonal correlation parameters typically showing larger deviations than mean parameters.\footnotemark}
+    \label{fig:rms-asy-dim}
+\end{figure}
+\footnotetext{Figure create by Owen Long~\cite{Desai:2025mpy}.}
+            For every fit parameter, that is, all $\mu_k$ and all unique $\sigma^2_{kl}$, compute the empirical RMS is computed over 500 pseudo--experiments, and the average asymptotic error reported by the na\"ive unbinned likelihood Hessian.
             %
-            If the likelihood were well–-calibrated, these two quantities
+            If the likelihood were well calibrated, these two quantities
             should coincide.
             %
-            \cref{fig:rms-asy-dim} plots RMS versus asymptotic error for all parameters in 1, 2, 4, and 6--D.
+            \cref{fig:rms-asy-dim} plots RMS versus asymptotic error for all parameters in \(d \in\qty{1, 2, 4, 6}\).
             %
-            The dashed diagonal marks perfect agreement and the solid green line has a slope fixed to the mean of the RMS/asymptotic‐-error ratio for that dimension.
+            The dashed diagonal marks perfect agreement and the solid green line has a slope fixed to the mean of the RMS/asymptotic error ratio for that dimension.
             
-            As we can see, in each case, the RMS uncertainty is higher than the asymptotic uncertainty.
+            In each case, the RMS uncertainty is higher than the asymptotic uncertainty.
             %
-            The ratio of the RMS uncertainty to the asymptotic uncertainty is roughly the same for all of the model parameters with the ratio ranging from 1.18 to 1.28.
+            The ratio of the RMS uncertainty to the asymptotic uncertainty is roughly the same for all of the model parameters with the ratio ranging from \(\numrange{1.18}{1.28}\).
             %
-            The analytic error bars understate the true variance by a factor $\sim\!3$–4, consistent with the effective sample size argument.\kd{https://andrewcharlesjones.github.io/journal/21-effective-sample-size.html}.
+            The analytic error bars understate the true variance by a factor of about \(\numrange{3}{4}\), consistent with the effective sample size argument~\cite{Yang2011EffectiveAnalyses, jones_effective_2021, geyer_introduction_2011}, \textit{vide} \cref{sec:formalism}.
             
-            \cref{fig:rms-asy-6D-res} repeats the 6--D study with detector resolution scaled by $0,1,2,$ and $3$ relative to the $\sigma_{\det}$ in \cref{tab:highD-params}.
+            \cref{fig:rms-asy-6D-res} repeats the \(d = 6\) study with detector resolution scaled by $0,1,2,$ and $3$ relative to the $\sigma_{\det}$ in \cref{tab:highD-params}.
             %
-            The slope grows with the smearing factor, confirming that weight correlations, not intrinsic variance, drive the failure\kd{Eur. Phys. J. C 82 (2022) 393}.
+            The slope grows with the smearing factor, confirming that weight correlations, not intrinsic variance, drive the failure~\cite{Langenbruch:2019nwe}.
 
             In high dimensions, the mapped weight vector $w(\mathbf{x})$ is a smooth function on a space where almost all pairs of points are distant.
             %
             Hence the classifier must assign similar gradients to a larger neighbourhood, inflating correlations.
             %
-            \kd{https://aicompetence.org/kernel-density-estimation-non-parametric-probability/} explains this phenomenon for KDEs, where excessively wide kernels force longer--range weight correlations.
+            \cite{rox818_kernel_2025} explains this phenomenon for KDEs, where excessively wide kernels force longer range weight correlations.
             %
-            The same effect applies to NNs as well because global normalisation $\sum_i w_i=N_{\text{MC}}$ adds an $\mathcal O(1/N)$ positive correlation to {every} pair of events\kd{PhysRevD.90.072004}.
+            The same effect applies to NNs as well because global normalisation $\sum_i w_i=N_{\text{MC}}$ adds an $\mathcal O(1/N)$ positive correlation to {every} pair of events~\cite{ATLAS:2014ipf}.
 
-            In six dimensions the naïve asymptotic formula would underestimate statistical errors for several covariance elements, while the RMS spread shows true uncertainties.
+            In six dimensions the na\"ive asymptotic formula would underestimate statistical errors for several covariance elements, while the RMS spread shows true uncertainties.
             %
-            For collider analyses, where multi-differential analyses are the future, this degree of systematic undercoverage is unacceptable.
+            Either a binned-covariance approach  or a correlation-aware unbinned likelihood~\cite{Adye2017RooUnfoldTh} is necessary.
             %
-            Either a binned-covariance approach  or a correlation-aware unbinned likelihood\kd{https://indico.cern.ch/event/671301/contributions/2745801/attachments/1557488/2449991/171113-unfold.pdf} is necessary.
-            %
-            Recent proposals such as Schrödinger--bridge unfolding\kd{arxiv 2308.12351}, or low-rank covariance compression\kd{arXiv:1802.06048} offer interesting possibilities for exploration.
-            \begin{figure}
-                \centering
-                \includegraphics[width=\linewidth]{figures/RMS_vs_Asy_AllDims.pdf}
-                \caption{Scatter of empirical RMS vs. mean asymptotic uncertainty for every model parameter in 1, 2, 4 and 6--D unbinned unfolding studies.
-                %
-                The grey dashed line has unit slope; green line's slope equals the mean RMS/asymptotic ratio for that dimension.
-                }
-                \label{fig:rms-asy-dim}
-            \end{figure}
+            Recent proposals such as Schr\"odinger bridge unfolding or low-rank covariance compression~\cite{wu_high-dimensional_2018} offer interesting possibilities for exploration.
 
-            \begin{figure}[htbp]
-                    \centering
-                  \includegraphics[width=0.8\linewidth]{figures/RMS_vs_Asy_6D_SmearingScan.pdf}
-                  \caption{Same as Fig.~\ref{fig:rms-asy-dim} but confined to the 6--D
-                  study and showing four detector–smearing scale factors
-                  ($0,1,2,3$).
-                  %
-                  Increased smearing increases correlations and drives the
-                  RMS/asymptotic slope ever further above unity.
-                  }
-                  \label{fig:rms-asy-6D-res}
-            \end{figure}
-\section{Conclusions and Outlook}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/chapter-07/nn-uncertainties-6d-res-var.pdf}
+    \caption[Impact of detector resolution on asymptotic uncertainty reliability in 6-dimensional unfolding.]{Comparison of empirical RMS uncertainties with asymptotic estimates for the six dimensional unfolding study across four detector smearing configurations. The analysis uses smearing scale factors of 0, 1, 2, and 3, where the scale factor multiplies the baseline detector resolution parameters $\boldsymbol{\sigma}_{\text{det}}$ listed in Table~\ref{tab:highD-params}.
+    %
+    The grey dashed line indicates perfect agreement, while green line shows least squares fits for each smearing level.
+    %
+    The RMS/asymptotic ratio increases monotonically with detector smearing, from 1.15 at perfect resolution to 1.45 at \(3\times\) smearing, demonstrating that asymptotic uncertainties become increasingly optimistic as detector effects worsen. This degradation arises from increased parameter correlations induced by the unfolding process when compensating for information loss and the breakdown of the local quadratic approximation underlying the Fisher information matrix when the likelihood surface becomes more complex.
+    %
+    The vertical spread of points also increases with smearing, indicating that the reliability of asymptotic estimates becomes more parameter dependent. Correlation parameters (off-diagonal elements of $\boldsymbol{\rho}$) show particularly poor estimation at high smearing levels, with some parameters exhibiting RMS/asymptotic ratios exceeding 2.0. These findings emphasize that careful uncertainty validation is essential when applying unbinned unfolding to experiments with significant detector effects.\footnotemark
+    }
+    \label{fig:rms-asy-6D-res}
+    \end{figure}
+\footnotetext{Figure create by Owen Long~\cite{Desai:2025mpy}.}
+
+\section{Conclusions and outlook.}
     This chapter presented a detailed study of parameter inference performed on an unbinned unfolded dataset, using a controlled Gaussian simulation.
     %
-    By employing a simplified scenario where the true distribution and detector response are known analytically, we were able to isolate and rigorously examine the statistical subtleties introduced by unbinned unfolding.
+    Employing a simplified scenario where the true distribution and detector response are known analytically facilitates isolating and rigorously examining the statistical subtleties introduced by unbinned unfolding.
+    
+    The Gaussian studies demonstrated that preserving event level information until the final fit can indeed confer a tangible advantage: an unbinned unfolding followed by binned parameter estimation was observed to outperform a fully binned analysis in terms of fit precision.
     %
-    The Gaussian studies demonstrated that preserving event--level information until the final fit can indeed confer a tangible advantage: an unbinned unfolding followed by parameter estimation was observed to outperform a fully binned analysis in terms of fit precision.
-    %
-    This validates the intuitive principle that one should delay information reduction (e.g. binning) as much as possible in the analysis chain, thereby maximizing the use of available information.
+    This validates the intuitive principle that one should delay information reductio as much as possible in the analysis chain, thereby maximising the use of available information.
     %
     Importantly, however, the findings also exposed critical caveats that must temper this optimism, especially when interpreting unbinned results with standard inference techniques.
 
     A central observation is that the output of an unfolding procedure violates the usual assumption of statistical independence among events.
     %
-    In our studies, the iterative \textsc{OmniFold} procedure produces a weighted set of “unfolded” events that are correlated with one another.
+    In these studies, the iterative \textsc{OmniFold} procedure produces a weighted set of ``unfolded'' events that are correlated with one another.
     %
-    We showed that a naïve unbinned likelihood--based inference, which treats the unfolded events as if they were independent observations, fails to yield reliable uncertainty estimates.
+    A na\"ive unbinned likelihood based inference, which treats the unfolded events as if they were independent observations, fails to yield reliable uncertainty estimates.
     %
     In particular, when event--to--event correlations are ignored, the standard asymptotic formulae for parameter uncertainties\footnote{derived from a Fisher information or Hessian approximation} become invalid.
+    
+    Concretely, the na\"ive application of an unbinned maximum likelihood fit significantly underestimates the true uncertainty on the fitted parameters in Gaussian examples.
     %
-    Concretely, the naive application of an unbinned maximum likelihood fit dramatically underestimates the true uncertainty on the fitted parameters in Gaussian examples.
-    %
-    This underestimation was evidenced by comparing the analytic errors to the empirical spread of fit results across many pseudo-experiments.
+    This underestimation was evidenced by comparing the analytic errors to the empirical spread of fit results across many pseudo-=experiments.
     %
     The analytic errors, assuming independence, were significantly smaller than the actual RMS of the fitted parameters.
+    
+    Such a discrepancy is a direct manifestation of ignoring the induced correlations and a clear warning that conventional unbinned inference tools cannot be directly applied to unbinned unfolded data.
     %
-    Such a discrepancy is a direct manifestation of ignoring the induced correlations and a clear warning that conventional inference tools cannot be blindly applied to unbinned unfolded data.
+    In short, the lack of statistical independence introduced by unbinned unfolding can invalidate classical error estimates.
     %
-    In short, the lack of statistical independence introduced by unbinned unfolding can invalidate classical error estimates, and thus the entire inferential procedure must be handled with care.
+    Thus the entire inferential procedure must be handled with care.
 
-    On the positive side, the investigation also highlighted that correlation--aware approaches can effectively restore valid inference, albeit with practical limitations.
+    On the positive side, the investigation also highlighted that correlation aware approaches can effectively restore valid inference, albeit with practical limitations.
     %
     When one incorporates the inter--event correlations into the analysis, one finds that the derived uncertainties align with the true performance of the fit.
     %
-    In the Gaussian studies, the numerically estimated uncertainties, obtained from the spread of outcomes over many trials, agree well with a covariance--informed analytical approach, confirming that the primary cause of the asymptotic formula breakdown was the neglect of correlations.
+    In the Gaussian studies, the numerically estimated uncertainties, obtained from the spread of outcomes over many trials, agree well with a covariance informed analytical approach, confirming that the primary cause of the asymptotic formula breakdown was the neglect of correlations.
     %
     This serves as an important proof of principle.
     %
-    If one properly accounts for the covariance between events\footnote{or equivalently, between event weights} in the unbinned dataset, inference methods can yield correct confidence intervals and hypothesis tests even in the unbinned paradigm.
+    If one properly accounts for the covariance between events\footnote{or as the case may be, between event weights} in the unbinned dataset, inference methods can yield correct confidence intervals and hypothesis tests even in the unbinned paradigm.
     %
-    However, it should also be emphasized that such covariance-aware treatments are computationally challenging to scale.
+    However, it should also be emphasised that currently available unbinned covariance aware treatments are computationally challenging to scale.
+    
+    In a binned analysis the covariance matrix is of manageable size, but in an unbinned analysis even if a suitable covariance kernel were developed, one in principle faces an $N \times N$ covariance kernel among $N$ events or event weights, which is intractable for the large event samples typical of HEP data.
     %
-    In a binned analysis the covariance matrix is of manageable size, but in an unbinned analysis even if a suitable covariance kernel, one in principle faces an $N \times N$ covariance among $N$ events or event weights, which is intractable for the large event samples typical of collider data.
+    The use of bootstrap ensembles to numerically evaluate uncertainties, while effective for a toy study, is expensive for high dimensional or high multiplicity data.
     %
-    The use of bootstrap ensembles to numerically evaluate uncertainties, while effective for a toy study, would be prohibitively expensive for high--dimensional or high--multiplicity data.
-    %
-    Thus, the practical implementation of correlation--aware unbinned inference encounters serious scaling limitations, underscoring the need for new strategies to handle or approximate these large covariance structures.
+    Thus, the practical implementation of correlation aware unbinned inference encounters serious scaling limitations, underscoring the need for new strategies to handle or approximate these large covariance structures.
 
     Crucially, the results presented here should be viewed as a cautionary case study rather than a definitive statement on all unbinned analyses. 
     %
-    They were obtained in an idealized Gaussian context, with complete knowledge of the generative process.
+    They were obtained in an idealised Gaussian context, with complete knowledge of the generative process.
     %
-    This controlled setup allows one to rigorously identify potential pitfalls and verify proposed solutions, but it also means that the qualitative behaviours observed might not universally translate to real collider data.
+    This controlled setup allows one to rigorously identify potential pitfalls and verify proposed solutions, but it also means that the qualitative behaviours observed might not universally translate to real data.
     %
     In particular, the observation that ignoring correlations had little impact on the central values and empirical precision of the fit in the Gaussian example may be a fortunate consequence of the symmetry and simplicity of that example.
     %
     One should not assume this will hold in general.
+    
+    Therefore, while this study provides a rigorous proof of principle and important warnings, further work is required to generalise of these findings.
     %
-    Therefore, while this study provides a rigorous proof of principle and important warnings, further work is required to generalize of these findings.
+    The takeaway is the set of statistical issues that could plausibly afflict unbinned cross section measurements, and the verification of their existence in a controlled setting.
     %
-    The takeaway is that we have uncovered a set of statistical issues that could plausibly afflict unbinned cross section measurements, and we have verified their existence in a controlled setting.
-    %
-    It now remains to investigate whether and how these issues manifest in realistic analyses.
-    %
-    This chapter’s findings should motivate vigilance so that any inference on unbinned unfolded data must be scrutinized for hidden correlations, and current methods must be extended before one can rely on them in full generality.
+    It now remains to investigate how these issues manifest in realistic analyses.
 
-    Looking ahead, our work motivates several important future directions for both methodology and application.
+    Looking ahead, this work motivates several important future directions for both methodology and application.
     %
-    An immediate next step is to extend these diagnostic studies to real collider observables and data.
+    An immediate next step is to extend these diagnostic studies to real HEP observables and data.
     %
-    It will be invaluable to apply similar techniques (e.g. pseudodata experiments, bootstrap uncertainty evaluations, and covariance measurements) to a realistic experimental unfolding scenario, for example, a differential cross section measurement published with unbinned results, to evaluate the size of event--level correlations and to quantify their impact on parameter fits.
+    It will be invaluable to apply similar techniques (e.g. pseudodata experiments, bootstrap uncertainty evaluations, and covariance measurements) to a realistic experimental unfolding scenario, for example, a differential cross section measurement published with unbinned results, to evaluate the size of event level correlations and to quantify their impact on parameter fits.
     %
     Such studies on real or high fidelity simulated data would confirm whether the cautionary lessons from the Gaussian example are broadly applicable, and could reveal any additional complications arising from more complex data structure or detector effects.
-    %
+    
     Another critical line of research is to develop new statistical frameworks for unbinned inference that explicitly account for event correlations.
     %
     This could involve formulating modified likelihood functions or test statistics that include correlation terms, or designing hybrid approaches that retain the advantages of unbinned data while imposing an effective covariance model.
     %
-    The ultimate goal would be to have an unbinned inference methodology that is correlation--aware by construction, obviating the need for \textit{ad hoc} binning or numerical uncertainty estimates.
-    %
+    The ultimate goal would be to have an unbinned inference methodology that is correlation aware by construction, obviating the need for \textit{ad hoc} binning or numerical uncertainty estimates.
+    
     In tandem with this, there is a clear need for scalable covariance approximation techniques.
     %
     Instead of attempting to handle a full covariance kernel of enormous dimension, one might seek low rank representations, clustering of events into groups with approximate independence, or other dimensionality reduction methods to capture the dominant correlation effects without the full cost.
     %
-    Research into such approximations (potentially informed by the structure of the machine learning algorithms used in unfolding) will be essential to make correlation-aware inference feasible for large datasets.
+    Research into such approximations, potentially informed by the machine learning algorithms used in unbinned unfolding, will be essential to make correlation aware inference feasible for large datasets.
+    
+    Finally, further explorations of the interplay between machine learning regularisation and inference accuracy could be informative.
     %
-    Finally, further explorations of the interplay between machine learning regularization and inference accuracy could be informative.
+    A deeper understanding of how the ML aspects affect downstream inference, for instance, whether a stronger regularisation might reduce variance at the cost of introducing bias or correlations, would be extremely valuable.
     %
-    A deeper understanding of how the ML aspects affect downstream inference, for instance, whether a stronger regularization might reduce variance at the cost of introducing bias or correlations, would be extremely valuable.
-    %
-    By addressing these open questions, the community can build on the foundation laid in this chapter.
+    By addressing these open questions, the community can build on the foundation laid in this work.
 
     In summary, this chapter has established a foundational understanding of unbinned inference on correlated data, highlighting both the potential benefits of fully unbinned analyses and the new statistical challenges they pose.
     %

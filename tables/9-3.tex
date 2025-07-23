@@ -1,0 +1,56 @@
+\begin{longtable}{@{}m{0.18\linewidth}m{0.27\linewidth}m{0.49\linewidth}@{}}
+    \caption[Symmetry breaking induced by detector effects in HEP experiments.]{Ideal SM symmetries and detector induced symmetry breaking in HEP experiments.
+    %
+    While fundamental interactions may respect certain symmetries exactly,  detector geometries, material distributions and reconstruction algorithms violate these symmetries at measurement level.
+    %
+    The table illustrates how common detector limitations transform SM symmetries.
+    %
+    These effects must be carefully modelled in simulations and corrected through calibration to extract the underlying physics.
+    }
+    \label{tab:detectorSym} \\
+    \toprule
+    \textbf{Symmetry} &
+    \textbf{Ideal outcome} &
+    \textbf{Detector effect} \\
+    \midrule
+    \endfirsthead
+    
+    \multicolumn{3}{c}{\textit{Table \ref{tab:detectorSym} continued from previous page}} \\
+    \toprule
+    \textbf{Symmetry} &
+    \textbf{Ideal outcome} &
+    \textbf{Detector effect} \\
+    \midrule
+    \endhead
+    
+    \midrule
+    \multicolumn{3}{r}{\textit{Continued on next page}} \\
+    \endfoot
+    
+    \bottomrule
+    \endlastfoot
+    
+    \textbf{Azimuthal rotation} $\phi \to \phi + \alpha$ &
+    Rotational invariance: uniform distribution in $\phi \in [0, 2\pi]$. No preferred transverse direction &
+    Discrete $n$-fold symmetry: detector segmentation creates $\phi-$dependent acceptance.
+    %
+    Dead material between modules introduces periodic inefficiencies.
+    %
+    Triggers based on detector regions further break symmetry \\
+    
+    \textbf{Lorentz boost} $\beta_z \to \beta_z + \Delta\beta$ &
+    Physics invariant under longitudinal boosts; cross sections expressible in terms of Lorentz scalars. &
+    Lab frame dependence: fixed detector geometry defines preferred frame. Forward boosts push particles beyond acceptance. Resolution degrades for highly boosted objects. Trigger thresholds defined in lab frame are not invariant \\
+    
+    \(\mqty*{\textbf{Parity}\\ \vb x \to -\vb x}\) &
+    For P conserving processes: equal rates and distributions for original and parity transformed events &
+    Geometric asymmetry: detectors rarely possess reflection symmetry about $z=0$. Forward and backward regions have different instrumentation, acceptance, and resolution. Magnetic field direction picks out handedness \\
+    
+    \(\mqty*{\textbf{Charge}\\\textbf{conjugation} \\q \to -\bar q}\) &
+    C symmetric interactions produce particles and antiparticles with identical rates and kinematic distributions &
+    Charge dependent efficiency: opposite charges bend oppositely in magnetic field, sampling different detector regions. Material interactions differ (e.g., $K^+$ vs $K^-$ nuclear cross sections). Trigger and particle ID algorithms may have charge bias \\
+    
+    \textbf{Permutation Symmetry} $(i \leftrightarrow j)$ &
+    For identical particles: joint distribution exhibits exchange symmetry &
+    Position dependent response: particles in different regions experience different resolutions, efficiencies, and systematics. Ordering by $p_T$ obscures underlying symmetry. Combinatorial background differs for same region vs different region pairs \\
+\end{longtable}
