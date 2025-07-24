@@ -312,7 +312,7 @@
         %
         For example, in a jet physics context, one could unfold the \emph{full shape} of the two-dimensional distribution of jet mass vs. $\tau_{21}$ simultaneously as a function of jet $p_T$.
         %
-        With RAN, such richly differential results become attainable, enabling more incisive tests of QCD models and parton--shower Monte Carlo tuning \kd{cite}.
+        With RAN, such richly differential results become attainable, enabling more incisive tests of QCD models and parton--shower Monte Carlo tuning.
         %
         Likewise, previously hidden features of the data---a slight excess of events in a tail here, a subtle correlation between angles and energies there---can be faithfully captured.
         %
@@ -324,9 +324,9 @@
     
         In parallel, our methods address the pressing demand for \emph{improved precision and uncertainty management} in current and future experiments.
         %
-        The HL-LHC will deliver an enormous dataset \footnote{On the order of $3\,\text{ab}^{-1}$ of proton-proton collisions\kd{cite}}, driving statistical uncertainties to unprecedented lows.
+        The HL-LHC will deliver an enormous dataset \footnote{On the order of $3\,\text{ab}^{-1}$ of proton-proton collisions}, driving statistical uncertainties to unprecedented lows.
         %
-        The challenge is that systematic uncertainties, detector calibrations, modeling of physics processes, etc., will become the dominant limiting factor for many measurements.
+        The challenge is that systematic uncertainties, detector calibrations, modelling of physics processes, etc., will become the dominant limiting factor for many measurements.
         %
         NPU directly speaks to this challenge.
         %
@@ -348,7 +348,7 @@
         %
         Unfolding in heavy--ion is notoriously difficult due to the immense underlying event background and the fact that the ``truth" itself (the hard scatter before quenching) is not directly observable.
         %
-        While our methods have not yet been tested on heavy--ion data, real or simulated, one can envision using a technique like RAN to reweight a simulated dataset to match the distributions observed in heavy--ion collisions, and potentially, through allowing negative weights, simulteneously enable background subtraction as well.
+        While our methods have not yet been tested on heavy--ion data, real or simulated, one can envision using a technique like RAN to reweight a simulated dataset to match the distributions observed in heavy--ion collisions, and potentially, through allowing negative weights, simultaneously enable background subtraction as well.
         %
         In doing so, the algorithm would effectively be learning the distribution of medium--induced energy loss and distortion that needs to be applied to particle--level events to reproduce the heavy-ion measurements.
         %
@@ -364,7 +364,7 @@
         %
         Unbinned unfolding can maximize the information extracted from each event, pushing the precision frontier.
         %
-        For example, an $e^+e^-$ collider experiment could unfold the angular distributions of decay products in a multi--body Higgs decay with full correlations, achieving a level of differential precision that would sharpen sensitivity to subtle effects \footnote{such as higher-order electroweak corrections or contact interactions \kd{cite}}.
+        For example, an $e^+e^-$ collider experiment could unfold the angular distributions of decay products in a multi--body Higgs decay with full correlations, achieving a level of differential precision that would sharpen sensitivity to subtle effects \footnote{such as higher-order electroweak corrections or contact interactions}.
         %
         In short, from the hottest quark--gluon plasma to the cleanest lepton collisions, the techniques presented here can broaden the physics reach.
 
@@ -440,7 +440,7 @@
         %
         In analyses where backgrounds are large as a fraction of the signal\footnote{e.g. underlying event in heavy-ion collisions or large QCD backgrounds in certain searches}, the unfolding algorithm might be able to allocate negative weights to simultaneously subtract background and unfold the signal, an ability beyond the scope of most current methods.
         %
-        The interplay between detector smearing and background subtraction is delicate,\kd{cite} and naive approaches can amplify fluctuations or distort the unfolded spectrum.
+        The interplay between detector smearing and background subtraction is delicate, and naive approaches can amplify fluctuations or distort the unfolded spectrum.
         %
         Developing methods that robustly handle background--contaminated data remains an open challenge.
     \subsection{Systematic uncertainty propagation in ML methods}
@@ -458,7 +458,7 @@
         %
         Ideally, one would want to estimate nuisance parameters from unfolded data, but also one would want to unfold data with the nuisance parameters profiled.
         %
-        \kd{cite} offers a promising approach to profile and unfold simultaneosly in a fully unbinned manner, but further work in needed in this direction.
+        \cite{zhu2024multidimensional} offers a promising approach to profile and unfold simultaneously in a fully unbinned manner, but further work in needed in this direction.
 
         \subsection{Future Directions}
             To address the challenges outlined above and to fully leverage the methods developed in this thesis, several concrete directions for future research are described below.
@@ -470,7 +470,7 @@
                 %
                 Instead of the traditional two--step approach, where one wants to unfold before one profiles and one wants to profile before one unfolds, one could perform a \emph{joint fit} that includes both the unfolded spectrum and the nuisance parameters.
                 %
-                For example, \kd{cite} trains a reweighting network that not only matches detector-level distributions but is explicitly conditioned on nuisance parameters\footnote{such as energy scale shifts or resolution uncertainties}, updating those parameters in tandem with the unfolding until a combined optimum is reached.
+                For example,~\cite{zhu2024multidimensional} trains a reweighting network that not only matches detector-level distributions but is explicitly conditioned on nuisance parameters\footnote{such as energy scale shifts or resolution uncertainties}, updating those parameters in tandem with the unfolding until a combined optimum is reached.
                 %
                 By profiling systematics during the unfolding, the resulting particle--level distribution would come with systematics already ``folded in" to its uncertainty bands, obviating the need for \textit{post hoc} variation tests.
                 %
@@ -482,11 +482,11 @@
                 %
                 A fully realized implementation of this approach would mark a significant advancement in how experimental collaborations handle systematics.
              \subsubsection{Theoretical guarantees for ML-based unfolding}
-                As ML methods become central to unfolding, it is important to develop a rigorous theoretical understanding of their behavior.
+                As ML methods become central to unfolding, it is important to develop a rigorous theoretical understanding of their behaviour.
                 %
                 Future work should aim to establish conditions under which ML-based unfolding approaches are statistically consistent and unbiased, and to derive performance guarantees\footnote{e.g. convergence rates or coverage properties} analogous to classical estimators.
                 %
-                Mathematical proofs of convergence provide experimentalists with the confidence to use novel methods\kd{cite}.
+                Mathematical proofs of convergence provide experimentalists with the confidence to use novel methods.
                 
                 Similarly, formalizing uncertainty quantification in ML unfolding is a critical goal.
                 %
