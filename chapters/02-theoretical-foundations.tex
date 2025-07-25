@@ -296,7 +296,7 @@ Bayesian methods regularize through prior distributions \(p(z)\), yielding poste
 Common priors include uniform priors, entropy maximization \(p(z) \propto \exp(-\sum z_j \log z_j)\)~\cite{maeda_new_2013} and Gaussian processes enforcing smoothness~\cite{bozson_unfolding_2018}.
 %
 These provide natural uncertainty quantification but suffer from high computational cost, scaling poorly with dimensionality~\cite{cowan_bayesian_2007},sensitivity to prior misspecification, especially in low-statistics regions~\cite{cowan_bayesian_2006}, and difficulty interpreting credible intervals as frequentist coverage~\cite{james_statistics_2004}.
-\kd{Re. ``why?" this is the fundamental difference between a Bayesian and frequentist analysis right? A credible interval treats the parameter as uncertain and the data as fixed, whereas a confidence interval treats the data as uncertain and the parameter as fixed. So depending on the suitablility of the prior chosen, and 95\% credible interval could only have 80\% frequentist coverage unless you have infinite data to wash out the prior.}
+
 IBU, also known as Lucy Richardson deconvolution or D'Agostini iterative unfolding~\cite{dagostini_improved_2010} is an expectation maximization (EM) algorithm iteratively updates truth estimates
 \begin{equation}
     \nu_j^{(k+1)} = \nu_j^{(k)} \sum_{i=1}^{N_{\text{Data}}} \frac{R_{ij}\; \mu_i}{\sum_{l=1}^{N_{\text{Truth}}} R_{il} \;\nu_l^{(k)}}
@@ -366,7 +366,6 @@ However, it requires careful basis function placement to prevent endpoint spikes
         These limitations motivated the use of machine learning in unfolding, a transition explored in subsequent sections.
         %
         However, traditional methods remain indispensable for validation and low--dimensional precision measurements where interpretability is crucial.
-        \kd{Re. ``Why can't we do this with MC", you could, but there's a few reasons to use traditional methods here. 1. Validation - if IBU agrees with NPE, that's a more valuable result because the two methods don't share any algorithmic assumptions. 2. There's something to be said for deterministic methods. 3. For low dim data where computational resources are not the constraint you can get a better handle on statistical uncertainties using traditional methods to achieve superior precision because you have explicit control over regularization parameters. You can tune smoothing constraints, priors, etc. with direct mathematical control. Because linear algebra is so algorithmically simple, you can ``backpropagate" the effect of your choices in real time, in a way that you can't really do with MC.}
         
         \subsection{Regularization: Need, Approaches, and Limitations}
         The inherent ill--posedness of unfolding necessitates regularization to stabilize solutions against statistical fluctuations while preserving physical meaning.

@@ -696,7 +696,7 @@ This section explores the most prominent deep learning architectures employed in
     %
     Similar principles can be applied to develop transformer--based unfolding methods.
     %
-    \textsc{OmniLearn}~\cite{Mikuni2025MethodTasks}, a foundation model built on the transformer architecture, demonstrates the ability of such models to improve the accuracy, precision, or speed of a wide range of physics tasks.\kd{Should I say all? It feels weird to catagorically say all, but maybe it really is all.}
+    \textsc{OmniLearn}~\cite{Mikuni2025MethodTasks}, a foundation model built on the transformer architecture, demonstrates the ability of such models to improve the accuracy, precision, or speed of a wide range of physics tasks.
 
     The attention mechanisms in transformers provide an additional benefit.
     %
@@ -710,7 +710,7 @@ This section explores the most prominent deep learning architectures employed in
     %
     Architectures such as Lorentz Group Equivariant Networks\cite{Bogatskiy2020LorentzPhysics} ensure that the neural network respects these fundamental symmetries by design.
     %
-    For problems where energy conservation is essential, specialized architectures can enforce this constraint by design.\kd{Re. ``Why would energy be conserved,"  for specific decay channels in hermetic detectors you would expect near-complete energy measurement, right? What I was trying to say was if your specific problem involves energy conservation, there are architectures that can enforce the constraint, not that all or even most problems have energy conservation. But maybe I'm misunderstanding, in which case, happy to remove this sentence.}
+    For problems where energy conservation is essential, specialized architectures can enforce this constraint by design.
     %
     These networks ensure that the total energy is preserved between detector--level and particle--level representations, reducing the space of possible solutions and improving physical consistency.
     %
@@ -1344,7 +1344,7 @@ We examine three principal categories, generative models, discriminative models,
                 %
                 In contrast, GANs can seamlessly learn mappings between spaces of different dimensions through their neural network architectures~\cite{bellagente_how_2020}.
                 %
-                The generator network can incorporate latent variables to account for missing information when mapping from lower to higher dimensions, while attention mechanisms and pooling operations handle dimension reduction in the opposite direction~\cite{datta_unfolding_2018, erdmann_precise_2019}. This flexibility allows GANs to preserve more information during the unfolding process and avoid the information loss associated with binning in traditional methods~\cite{andreassen_omnifold_2020}.
+                The generator network can incorporate latent variables to account for missing information when mapping from lower to higher dimensions, while attention mechanisms and pooling operations handle dimension reduction in the opposite direction~\cite{datta_unfolding_2018,Erdmann_2019}. This flexibility allows GANs to preserve more information during the unfolding process and avoid the information loss associated with binning in traditional methods~\cite{andreassen_omnifold_2020}.
         
 
         \paragraph{Limitations}
@@ -1876,4 +1876,3 @@ The familiarity of binned representations also facilitates communication with th
     %
     Recent analyses have developed methods for efficiently propagating systematic uncertainties through ML unfolding pipelines, often employing ensemble techniques or incorporating uncertainty sources directly into the training procedure~\cite{Falcao:2025jom,Huang2025MachineTechnique}.
 
-\kd{Yeah, I was not being precise about the use use of the term ``measurement'' here, and was using it to refer to both real and simulated data. I think I've corrected it now, but please let me know if I've missed something. Also in some cases the references are not behaving. I've made not of the ones that are not and am fixing them.}

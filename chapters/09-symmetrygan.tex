@@ -928,9 +928,9 @@ This principle, when combined with a framework of inertial reference densities, 
     The SymmetryGAN architecture modifies this framework with a symmetry transformation module $g_\theta: \mathcal{X} \to \mathcal{X}$, parametrized by learnable parameters $\theta$, which acts on both real samples. The discriminator receives transformed pairs $(x, T_\theta(x)),$ learning to identify distribution preserving transformations. When the discriminator cannot distinguish between a sample and its transformed version, the transformation $T_\theta$ represents an symmetry of the distribution.
     %
     The inertial reference dataset, while not explicitly shown in this diagram, is incorporated directly into the generator architecture in \cref{sec:empirical-experiments}}
-    \label{fig:schematic}
+    \label{fig:symmetrygan-schematic}
 \end{figure}
-    \cref{fig:schematic} shows the modified GAN architecture of \textsc{SymmetryGAN}.
+    \cref{fig:symmetrygan-schematic} shows the modified GAN architecture of \textsc{SymmetryGAN}.
     
     \subsection{Machine Learning with Inertial Restrictions}
     The incorporation of inertial reference densities, as established in \cref{subsec:inertial_densities}, presents both theoretical necessity and practical challenges.
@@ -943,7 +943,7 @@ This principle, when combined with a framework of inertial reference densities, 
             %
             The loss function is extended to include terms from the inertial distribution \(p_I\)
             \[
-                \widetile L[g,d,d_I] = L[g,d] + \lambda L_I[g,d_I]
+                \widetilde L[g,d,d_I] = L[g,d] + \lambda L_I[g,d_I]
             \]
             where \(d_I\) is a separate discriminator network specialized for the inertial distribution.
             %
@@ -997,11 +997,11 @@ M \;=\;
 \;R(\vb\theta)\;D(\vb r)\;S(u) + \vb v,
 \]
 where
-\)
+\(
 \pm I_n\in Z,\quad R(\vb\theta)\in K,\quad D(\vb r)\in A,\quad S(u)\in N,\quad \vb v\in V.
 \)
 \end{theorem}
-\noindent\textbf{Example (}\(n=2\)\textbf{).}  In two dimensions these matrices take the form
+In two dimensions these matrices take the form
 \begin{gather}
 I_2=\begin{bmatrix}1&0\\0&-1\end{bmatrix},\\
 R(\theta)=\begin{bmatrix}\cos\theta & -\sin\theta\\
@@ -1012,7 +1012,7 @@ v=\begin{bmatrix}v_1\\v_2\end{bmatrix}.
 \end{gather}
 Hence every $g\in\operatorname{Aff}_2(\R)$ admits the six parameter representation
 \[
-g(x)=\sqrt{|d|}\,\bigl(I_2\bigr)^{\frac{1-\sgn(d)}{2}}
+g(x)=\sqrt{|d|}\,\bigl(I_2\bigr)^{\frac{1-\text{sgn}(d)}{2}}
 R(\theta)\,D(r)\,S(u)\,x \;+\;v,
 \qquad d=\det g,
 \]
@@ -1427,7 +1427,7 @@ which is well suited to gradient based optimization over the space of affine sym
             %
             Final state particles reconstructed by \textsc{Delphes} are clustered into anti$-k_T$ jets with radius parameter $R=1$ using \textsc{FastJet} 3.3.0 \cite{Cacciari:2008gp,Cacciari2008TheAlgorithm,Cacciari2012FastJetManual}.
             %
-            Events must pass a single jet trigger requiring $p_T>\num{1.2}{\TeV}$;
+            Events must pass a single jet trigger requiring $p_T>\siqty{1.2}{\TeV}$;
             %
             the subsequent analysis is restricted to the two highest$-p_T$ jets in each event, where transverse momentum is defined by $p_T=\sqrt{p_x^{2}+p_y^{2}}$.
 \begin{figure}

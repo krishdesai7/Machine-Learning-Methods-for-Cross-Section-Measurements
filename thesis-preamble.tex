@@ -1,67 +1,60 @@
 % thesis-preamble.tex
-\setlrmarginsandblock{1in}{1in}{*}
-\setulmarginsandblock{1.5in}{1.5in}{*}
-\checkandfixthelayout
 % ============================================================================
-% ENCODING AND FONTS
+% LANGUAGE SUPPORT
 % ============================================================================
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-
-% ============================================================================
-% DOCUMENT LAYOUT AND TYPOGRAPHY
-% ============================================================================
-\usepackage{geometry}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 
-% Microtype for better typography
-\usepackage
-% [protrusion=false, expansion=true, factor=1100, final, 
-%             tracking=true, kerning=true, spacing=true, 
-%             babel=true]
-            {microtype}
-\microtypecontext{spacing=nonfrench}
-\SetExtraKerning[unit=space]
-    {encoding={*}, family={bch}, series={*}, size={footnotesize,small,normalsize}}
-    {\textendash={800,800},
-     "28={ ,150},
-     "29={150, },
-     \textquotedblleft={ ,150},
-     \textquotedblright={150, }}
-\SetTracking{encoding={*}, shape=sc}{40}
-\microtypesetup{protrusion=false}
-
-%============================================================================
+% ============================================================================
 % MATHEMATICS PACKAGES
 % ============================================================================
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{nicefrac}
 \usepackage{mathtools}
-%============================================================================
-% GRAPHICS AND VISUAL ELEMENTS
+    \renewcommand{\[}{\begin{equation}}
+    \renewcommand{\]}{\end{equation}}
+\usepackage{nicefrac}
+\usepackage{bbm}
+\usepackage{siunitx}    % For units and numbers
+\usepackage{xparse}     % For advanced command definitions
+ % Workaround for siunitx/physics compatibility
+\NewCommandCopy\siqty\qty 
+\usepackage{physics}  % Note: Must be loaded after siunitx if both are used
+
+% ============================================================================
+% GRAPHICS AND FIGURES
 % ============================================================================
 \usepackage{graphicx}
 \usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{array}
-\usepackage{longtable}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
-\usetikzlibrary{positioning,calc,arrows.meta,fit,shapes,backgrounds, shapes.symbols,decorations.markings
-}
-\usepackage{pdflscape}
-\usepackage{bbm}
+\usetikzlibrary{positioning,calc,arrows.meta,fit,shapes,backgrounds,
+                shapes.symbols,decorations.markings}
 
 % ============================================================================
-% ALGORITHMS AND CODE
+% TABLES
+% ============================================================================
+\usepackage{multirow}
+\usepackage{longtable}
+
+% Column type for math mode in tables
+\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
+
+% ============================================================================
+% SPECIALIZED PACKAGES
 % ============================================================================
 \usepackage[ruled,vlined]{algorithm2e}
-\usepackage{listings} % For code listings if needed
+\usepackage{listings}
+\usepackage{pdflscape}  % For landscape pages
+
+% ============================================================================
+% UTILITIES
+% ============================================================================
+\usepackage{pgffor}     % For loops
+\usepackage{appendix}   % For appendix formatting
+\usepackage{enumitem}   % Better list environments
+\usepackage{comment}    % Block comments
+\usepackage{url}        % URL formatting
 
 % ============================================================================
 % BIBLIOGRAPHY
@@ -75,13 +68,9 @@
 ]{biblatex}
 \addbibresource{references.bib}
 
-% Ensure bibliography is printed and proper backend is used
-%\AtEndDocument{\printbibliography}
-
 % ============================================================================
-% HYPERLINKS AND CROSS-REFERENCES
+% CROSS-REFERENCES (load after most other packages)
 % ============================================================================
-
 \usepackage[
     hidelinks,
     pdfusetitle,
@@ -93,127 +82,27 @@
     pdfborder={0 0 0},
     colorlinks=false
 ]{hyperref}
-\usepackage{url}
+
 \usepackage[capitalise,noabbrev]{cleveref}
-\crefname{equation}{Eq.}{Eqs.}
-\crefname{figure}{Fig.}{Figs.}
-\crefname{table}{Table}{Tables}
-\crefname{section}{Section}{Sections}
-\crefname{chapter}{Chapter}{Chapters}
 \crefname{paragraph}{Section}{Sections}
 \crefname{subparagraph}{Section}{Sections}
 
 % ============================================================================
-% UTILITIES
-% ============================================================================
-\usepackage{pgffor}
-\usepackage{appendix}
-\usepackage{enumitem} % Better list environments
-\usepackage{siunitx}
-\usepackage{xparse}
-\NewCommandCopy\siqty\qty
-\usepackage{comment} % Block comments
-\usepackage{physics} % MUST BE LOADED AFTER SIUNITX
-
-
-% 
-%============================================================================
-% CUSTOM COLORS
-% ============================================================================
-\definecolor{darkred}{rgb}{1.0,0.1,0.1}
-\definecolor{darkgreen}{rgb}{0.1,0.7,0.1}
-\definecolor{darkblue}{rgb}{0.1,0.1,0.7}
-\definecolor{commentcolor}{rgb}{0.5,0.5,0.5}
-
-% ============================================================================
-% EDITORIAL COMMANDS
-% ============================================================================
-% For draft versions - remove or comment out for final version
-\newcommand{\kd}[1]{\textbf{\color{darkred}[#1 --KD]}}
-\newcommand{\bn}[1]{\textbf{\color{darkgreen}[#1 --BN]}}
-\newcommand{\todo}[1]{\textbf{\color{darkblue}[TODO: #1]}}
-\newcommand{\note}[1]{\textbf{\color{commentcolor}[Note: #1]}}
-
-% For final version, uncomment these to remove all editorial marks:
-% \renewcommand{\kd}[1]{}
-% \renewcommand{\bn}[1]{}
-% \renewcommand{\todo}[1]{}
-% \renewcommand{\note}[1]{}
-
-% ============================================================================
-% MATHEMATICAL NOTATION
+% CUSTOM MATHEMATICAL NOTATION
 % ============================================================================
 % Common operators
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
-% Shortcuts
-\newcommand{\inv}{^{-1}}
+% Number sets
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
+
+% Common shortcuts
+\newcommand{\inv}{^{-1}}
 \newcommand{\qt}{\widetilde{q}}
-
-% Vectors and matrices
-\renewcommand{\vec}[1]{\boldsymbol{#1}}
-\newcommand{\mat}[1]{\boldsymbol{#1}}
-
-% Probability
-\newcommand{\prob}[1]{\mathbb{P}\left(#1\right)}
-\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
-
-% ============================================================================
-% THEOREM ENVIRONMENTS
-% ============================================================================
-\theoremstyle{definition}
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-
-% ============================================================================
-% CUSTOM ENVIRONMENTS
-% ============================================================================
-% Shorthand for equations
-\renewcommand{\[}{\begin{equation}}
-\renewcommand{\]}{\end{equation}}
-
-% Column type for math mode in tables
-\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
-
-% ============================================================================
-% DOCUMENT SETTINGS
-% ============================================================================
-% Paragraph indentation
-\usepackage{indentfirst}
-% Double spacing
-\def\dsp{\def\baselinestretch{2.0}\large\normalsize}
-\dsp
-
-% Caption formatting
-\addtolength{\abovecaptionskip}{\baselineskip}
-
-% Prevent widows and orphans
-\widowpenalty=10000
-\clubpenalty=10000
-
-% Float placement
-\renewcommand{\topfraction}{0.85}
-\renewcommand{\bottomfraction}{0.85}
-\renewcommand{\textfraction}{0.1}
-\renewcommand{\floatpagefraction}{0.85}
-
-\setcounter{secnumdepth}{6}
-\setcounter{tocdepth}{6}
-\renewcommand{\thechapter}{\Roman{chapter}}
-\renewcommand{\thesection}{\thechapter.\Alph{section}}
-\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
-\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
-\renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
-\renewcommand{\thesubparagraph}{\theparagraph.\oldstylenums{\arabic{subparagraph}}}
