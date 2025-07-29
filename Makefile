@@ -1,5 +1,9 @@
 MAIN = main
 BUILDDIR = build
+CHAPTER_DIR = chapters
+APPENDIX_DIR = appendices
+TABLE_DIR = tables
+FIG_DIR = figures
 
 LATEX = pdflatex
 LATEXFLAGS = -interaction=nonstopmode -output-directory=$(BUILDDIR) -file-line-error
@@ -10,10 +14,10 @@ VIEWER = open  # macOS
 
 # Source files
 TEX_FILES = $(MAIN).tex thesis-preamble.tex abstract.tex acknowledgements.tex
-CHAPTER_FILES = $(wildcard chapters/*.tex)
-APPENDIX_FILES = $(wildcard appendices/*.tex)
-TABLE_FILES = $(wildcard tables/*.tex)
-FIG_FILES = $(wildcard figures/*/*.tex)
+CHAPTER_FILES = $(wildcard $(CHAPTER_DIR)/*.tex)
+APPENDIX_FILES = $(wildcard $(APPENDIX_DIR)/*.tex)
+TABLE_FILES = $(wildcard $(TABLE_DIR)/*.tex)
+FIG_FILES = $(wildcard $(FIG_DIR)/*/*.tex)
 BIB_FILES = references.bib
 
 ALL_FILES = $(TEX_FILES) $(CHAPTER_FILES) $(APPENDIX_FILES) $(BIB_FILES) $(TABLE_FILES) $(FIG_FILES) ucbthesis.cls
@@ -25,16 +29,16 @@ $(BUILDDIR):
 
 $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 	@echo "=== Creating symbolic links for subdirectories ==="
-	@ln -sfn ../chapters $(BUILDDIR)/chapters
-	@ln -sfn ../appendices $(BUILDDIR)/appendices
-	@ln -sfn ../figures $(BUILDDIR)/figures
-	@ln -sfn ../tables $(BUILDDIR)/tables
+	@ln -sfn ../$(CHAPTER_DIR) $(BUILDDIR)/$(CHAPTER_DIR)
+	@ln -sfn ../$(APPENDIX_DIR) $(BUILDDIR)/$(APPENDIX_DIR)
+	@ln -sfn ../$(FIG_DIR) $(BUILDDIR)/$(FIG_DIR)
+	@ln -sfn ../$(TABLE_DIR) $(BUILDDIR)/$(TABLE_DIR)
 	@ln -sfn ../references.bib $(BUILDDIR)/references.bib
 	
 	@echo "=== First LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Running Biber ==="
-	cd $(BUILDDIR) && $(BIBER) $(MAIN)
+	-cd $(BUILDDIR) && $(BIBER) $(MAIN)
 	@echo "=== Second LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Third LaTeX pass (for references) ==="
@@ -45,10 +49,11 @@ $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 
 # Quick compile (no bibliography)
 quick: | $(BUILDDIR)
-	@ln -sfn ../chapters $(BUILDDIR)/chapters
-	@ln -sfn ../appendices $(BUILDDIR)/appendices
-	@ln -sfn ../figures $(BUILDDIR)/figures
-	@ln -sfn ../tables $(BUILDDIR)/tables
+	@ln -sfn ../$(CHAPTER_DIR) $(BUILDDIR)/$(CHAPTER_DIR)
+	@ln -sfn ../$(APPENDIX_DIR) $(BUILDDIR)/$(APPENDIX_DIR)
+	@ln -sfn ../$(FIG_DIR) $(BUILDDIR)/$(FIG_DIR)
+	@ln -sfn ../$(TABLE_DIR) $(BUILDDIR)/$(TABLE_DIR)
+	@ln -sfn ../references.bib $(BUILDDIR)/references.bib
 	$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@cp $(BUILDDIR)/$(MAIN).pdf .
 
@@ -64,6 +69,7 @@ clean:
 # Clean everything including PDF
 cleanall: clean
 	@echo "Removing PDF..."
+	@rm -f $(CHAPTER_DIR)/*.aux
 	@rm -f $(MAIN).pdf
 
 # Final version (remove draft mode, editorial comments)

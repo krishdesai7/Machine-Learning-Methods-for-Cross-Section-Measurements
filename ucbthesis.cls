@@ -5,16 +5,25 @@
 % CLASS OPTIONS AND BASE CLASS
 % ============================================================================
 % Load memoir with your preferred options
-\LoadClass[oneside,12pt]{memoir}
 
+% Spacing options
+\DeclareOption{singlespace}{\def\@ucbspacingcmd{\ssp}}
+\DeclareOption{onehalfspace}{\def\@ucbspacingcmd{\hsp}}
+\DeclareOption{doublespace}{\def\@ucbspacingcmd{\dsp}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
+% Default spacing
+\ExecuteOptions{onehalfspace}
+
+% Process options
+\ProcessOptions\relax
+\LoadClass[oneside,12pt]{memoir}
 % ============================================================================
 % REQUIRED PACKAGES
 % ============================================================================
 \RequirePackage[T1]{fontenc}
 \RequirePackage{microtype}
 \RequirePackage{amsthm}
-\RequirePackage{etoolbox}  % For \pretocmd
-\RequirePackage{mdframed}  % For theorem environments
+\RequirePackage{mdframed}  % For framed theorem environments
 
 % ============================================================================
 % PAGE GEOMETRY
@@ -324,5 +333,5 @@
   \renewcommand{\thepage}{\arabic{page}}
   \setcounter{page}{1}
 }
-
+\preto\mainmatter{\@ucbspacingcmd}
 \endinput
