@@ -1,4 +1,39 @@
 \chapter{Introduction and Physics Background}
+\section{Units and Conventions}
+\label{sec:units_and_conventions}
+    Even though nature does not establish preferred units, the physics that describes it requires establishing a common language and framework.
+    %
+    In high energy physics, the choice of units reflects a not simply an arbitrary choice, but a philosophical stance about the nature of reality.
+    %
+    While everyday experience suggests that meters, kilograms, and seconds might be the most suitable units to express the physical world, particle physics reveals that speed, action, and energy form more natural rulers for measuring the universe at its smallest scales.
+    %
+    \begin{definition}
+        \emph{Natural Units} are a system where \(\hbar = c = 1\), effectively setting the speed of light and quantum of action as fundamental measuring sticks.
+        %
+        This choice transforms all physical quantities into powers of energy.
+    \end{definition}
+    
+\input{tables/1-1.tex}
+The beauty of natural units emerges when considering quantum field theory. The Klein-Gordon equation for a scalar field φ:
+(∂²/∂t² - ∇² + m²)φ = 0
+reveals that mass m has dimensions of inverse length - it sets the characteristic scale over which quantum fields oscillate. A particle with mass 1 GeV has a Compton wavelength of approximately 0.2 femtometers, roughly the size of a proton.
+Coordinate Systems and Relativistic Geometry
+At a hadron collider, the choice of coordinates must respect the underlying symmetries of the physics. The laboratory frame provides a natural Cartesian system:
+
+z-axis: Along the beam direction (longitudinal)
+x-axis: Horizontal, pointing toward the center of the accelerator ring
+y-axis: Vertical, completing the right-handed system
+
+However, the partons within colliding hadrons carry unknown fractions of the beam momentum, making the center-of-mass frame of each collision unknowable. This fundamental uncertainty motivates a coordinate system that transforms simply under longitudinal Lorentz boosts.
+
+Pseudorapidity (η): Defined as η = -ln[tan(θ/2)], where θ is the polar angle from the beam axis. Under a longitudinal boost with velocity β, a massless particle's η transforms as η → η + tanh⁻¹(β).
+
+The mathematical elegance of pseudorapidity becomes apparent when we expand its definition:
+η = -ln[tan(θ/2)] = (1/2)ln[(|p| + pz)/(|p| - pz)] = tanh⁻¹(pz/|p|)
+For massless particles, differences in η remain invariant under longitudinal boosts, motivating the ubiquitous angular distance metric:
+ΔR² = Δη² + Δφ²
+where φ is the azimuthal angle around the beam axis. This metric approximates the geometric angle between particles in the detector while remaining approximately boost-invariant.
+
 \section{The Standard Model: Theoretical framework}
 The Standard Model of particle physics represents one of the most significant intellectual achievements in modern science.
 %
@@ -414,8 +449,8 @@ This dissertation focuses on developing, analyzing, and applying novel machine l
 The primary contributions of this thesis include:
 
 \begin{enumerate}
-\item Development of Neural Posterior Unfolding (NPU), enhancing binned approaches through normalizing flows and amortized inference
-\item Introduction of Moment Unfolding, directly deconvolving distribution moments without binning
+\item Development of \textsc{Neural Posterior Unfolding} (NPU), enhancing binned approaches through normalizing flows and amortized inference
+\item Introduction of \textsc{Moment Unfolding}, directly deconvolving distribution moments without binning
 \item Creation of Reweighting Adversarial Networks (RAN), a general framework for unbinned spectrum unfolding
 \item Analysis of event correlations in unfolded data and their impact on uncertainty estimation
 \item Investigation of symmetry discovery with \textsc{SymmetryGAN} and its connections to measurement constraints

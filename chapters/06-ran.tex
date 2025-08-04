@@ -135,7 +135,7 @@
             %
             for instance, a broader distribution indicates a mix of high charge (quark origin) and zero charge (gluon origin) jets, whereas a narrow distribution peaked near zero suggests predominantly gluon jets.
             %
-            Only by unfolding the entire jet charge spectrum (including its dependence on jet $p_T$) can one provide data precise enough to tune fragmentation models and compare to theoretical calculations of charge transport in jets~\cite{CMS:2017yer,CMS:2020plq,Larkoski:2024uoc,Accardi:2022oog,Baldenegro:2024pfb,AbdulKhalek:2021gbh, Larkoski:2020JetLearning}.
+            Only by unfolding the entire jet charge spectrum (including its dependence on jet $p_T$) can one provide data precise enough to tune fragmentation models and compare to theoretical calculations of charge transport in jets~\cite{CMS:2017yer,CMS:2020plq,Larkoski:2024uoc,Accardi:2022oog,Baldenegro:2024pfb,AbdulKhalek:2021gbh, Larkoski2020JetLearning}.
             
             Another example is the distribution of identified particle multiplicities.\footnote{E.g., number of charged hadrons in an event or in a jet}
             %
@@ -157,7 +157,7 @@
             %
             For example, consider measuring an observable $O$ as a function of another variable (or collection of variables) $\vb{Q}$\footnote{say, the distribution of jet charge $q$ in bins of jet $p_T$ or event energy $Q$}.
             %
-            With traditional methods, one would perform a two dimensional unfolding, choosing a projection of \(Q\) if needed (bins in $O$ vs bins in $Q$) to then extract moments or other features as a function of $Q$~\cite{CMS:2011xqa, ATLAS:2010jvh, ATLAS:2020ccu, CMS:2014eaj, ATLAS:2022zbu, D'Agostini:265717}.
+            With traditional methods, one would perform a two dimensional unfolding, choosing a projection of \(Q\) if needed (bins in $O$ vs bins in $Q$) to then extract moments or other features as a function of $Q$~\cite{CMS:2011xqa, ATLAS:2010jvh, ATLAS:2020ccu, CMS:2014eaj, ATLAS:2022zbu, DAgostini:265717}.
             %
             Binning in two (or more) dimensions quickly suffers from sparse data in many bins and complicated systematic uncertainties.
             %
@@ -342,7 +342,7 @@
         
         RAN explicitly targets the entire distribution rather than a fixed set of moments.
         %
-        In fact, it can be viewed as an extension of the Moment Unfolding method described in \cref{chap:moment-unfolding} to infinitely many moments.
+        In fact, it can be viewed as an extension of the \textsc{Moment Unfolding} method described in \cref{chap:moment-unfolding} to infinitely many moments.
         %
         By using a flexible neural network to parametrise the weighting function, RAN does not impose a rigid functional form limited to a few moment constraints.
         %
@@ -404,7 +404,7 @@
         %
         The use of an adversarial loss means RAN is effectively solving a constrained optimization to find the weight function that makes the simulation statistically indistinguishable from data by reweighting only at particle level.
         
-        RAN's connection to the Boltzmann entropy inspired moment unfolding provides a theoretical understanding of how it approaches the ``maximum entropy'' solution consistent with the constraints (the data).
+        RAN's connection to the Boltzmann entropy inspired \textsc{Moment Unfolding} provides a theoretical understanding of how it approaches the ``maximum entropy'' solution consistent with the constraints (the data).
         %
         This is desirable because the maximum entropy solution is the least biased one given the information at hand.
         %
@@ -463,7 +463,7 @@
     %
     This is followed by a discussion of the advantages and pitfalls of moment based unfolding, notably issues relating ill posedness and non uniqueness, and the regularisation strategies to mitigate them.
     %
-    Finally, the Moment Unfolding method introduced in \cref{chap:moment-unfolding} will naturally be extended toward unfolding the entire distribution (all moments) via a GAN--like approach inspired by the Boltzmann distribution, setting the stage for a full differential cross section measurement.
+    Finally, the \textsc{Moment Unfolding} method introduced in \cref{chap:moment-unfolding} will naturally be extended toward unfolding the entire distribution (all moments) via a GAN--like approach inspired by the Boltzmann distribution, setting the stage for a full differential cross section measurement.
 
     \subsection{Moments and the full probability distribution.}
         Statistical moments provide a powerful, coarse grained description of a probability distribution.
@@ -626,7 +626,7 @@
             ML based methods are moving toward treating unfolding as a fitting problem, using flexible function approximators and powerful statistical distances (e.g. Wasserstein distance) to overcome binning and to handle large dimensional data.
             %
             These methods still must address ill posedness\footnote{E.g. through network architecture choices, training tricks, or implicit regularization like early stopping}, but they offer a way to directly target the entire set of distributional degrees of freedom rather than pre-selecting a fixed set of basis functions.
-    \subsection{Benefits and challenges of moment unfolding.}
+    \subsection{Benefits and challenges of \textsc{Moment Unfolding}.}
         Focusing on moments as the quantities to unfold offers several clear benefits.
         %
         First, moments are often directly related to physics predictions.
@@ -641,11 +641,11 @@
         %
         The variance of estimators is lower since we effectively integrate over many events to get each moment.
         %
-        This was one motivation for the development of the Moment Unfolding method;
+        This was one motivation for the development of the \textsc{Moment Unfolding} method;
         %
         measuring moments directly can be more precise and less sensitive to binning choices.
         %
-        Third, moment unfolding can simplify high dimensional problems.
+        Third, \textsc{Moment Unfolding} can simplify high dimensional problems.
         %
         In multi-differential measurements with many kinematic variables, fully binning the data becomes impractical due to sparsity (``curse of dimensionality'').
         %
@@ -667,7 +667,7 @@
         %
         For instance, if only the first two moments (mean and variance) are unfolded, any differences residing in the non-Gaussian shape like skewness, tails, or multimodal structure will go undetected.
         %
-        Moment unfolding shifts the ill posedness to the choice of moments.
+        \textsc{Moment Unfolding} shifts the ill posedness to the choice of moments.
         %
         One must assume or hope that the chosen moment set is sufficient to capture the physically relevant differences.
         %
@@ -679,7 +679,7 @@
         %
         For example, if unfolding a large number of moments, one might impose a smooth fall off in the moment values, since very high order moments tend to be increasingly sensitive to rare tails.
         %
-        In the adversarial Moment Unfolding approach, the number of moments $n$ chosen to unfold acts as a regularisation knob: a small $n$ strongly regularises, since it ignores any structure beyond the $n$th moment, while a larger $n$ allows more detailed structure at the cost of higher variance and potential instability.
+        In the adversarial \textsc{Moment Unfolding} approach, the number of moments $n$ chosen to unfold acts as a regularisation knob: a small $n$ strongly regularises, since it ignores any structure beyond the $n$th moment, while a larger $n$ allows more detailed structure at the cost of higher variance and potential instability.
         %
         This is analogous to the bias-variance trade-off in classic unfolding: using fewer moments yields a biased but low variance estimate; using more approaches an unbiased full result but with higher variance and higher risk of over fitting data fluctuations.
         
@@ -691,10 +691,10 @@
         %
         One would need to generate new events, a different approach entirely, or rely on extrapolation.
         %
-        Thus, moment unfolding, like other reweighting methods, assumes that the generation's phase space is broad enough to contain the truth or that any deficiencies are corrected by separate procedures.
+        Thus, \textsc{Moment Unfolding}, like other reweighting methods, assumes that the generation's phase space is broad enough to contain the truth or that any deficiencies are corrected by separate procedures.
         %
         It is worth noting that as we increase the number of moments or attempt to unfold the full distribution, the demand on simulation support becomes stricter: essentially all features of the Truth distribution must be present in the Generation to be recovered by reweighting.
-    \subsection{Extending moment unfolding.}
+    \subsection{Extending \textsc{Moment Unfolding}.}
         The Boltzmann ansatz can be viewed as a minimal deformation of the simulation needed to match data.
         %
         $\beta_a = 0$ for all $a$ corresponds to $g(z)=1$.
@@ -742,7 +742,7 @@
         %
         Instead, a machine learning approach evaluates and drives this optimisation.
         
-        The Moment Unfolding method was demonstrated to yield accurate and statistically stable moment estimates in realistic scenarios.
+        The \textsc{Moment Unfolding} method was demonstrated to yield accurate and statistically stable moment estimates in realistic scenarios.
         %
         By avoiding any intermediate binning, it circumvents bin size biases and fully utilizes the fine grained shape information in the data.
         %
@@ -756,11 +756,11 @@
         
         However, ultimately one may wish to unfold the entire distribution without having to pre--select moments.
         %
-        This is where the transition to extending the Moment Unfolding concept to all moments leads to the Reweighting Adversarial Networks (RAN) framework.
+        This is where the transition to extending the \textsc{Moment Unfolding} concept to all moments leads to the Reweighting Adversarial Networks (RAN) framework.
 
         While unfolding a fixed set of moments is valuable, the ultimate goal in many analyses is to recover the complete differential cross section, effectively, to determine the true distribution $p(z)$ itself within resolution limits.
         %
-        The Moment Unfolding framework provides a natural stepping stone to this goal. Conceptually, one can imagine increasing the number of moments $n$ in the weight function \cref{eq:moment-generator} to capture finer and finer detail of the distribution.
+        The \textsc{Moment Unfolding} framework provides a natural stepping stone to this goal. Conceptually, one can imagine increasing the number of moments $n$ in the weight function \cref{eq:moment-generator} to capture finer and finer detail of the distribution.
         %
         In the limit $n \to \infty$, the weight function $g(z, \vb*\beta)$ could represent an arbitrarily complex reweighting, capable of morphing the simulation into the true distribution.
         %
@@ -768,11 +768,11 @@
         
         The normalisation factor $P(\boldsymbol{\beta})$ becomes increasingly complicated to compute or differentiate when $\boldsymbol{\beta}$ is high dimensional, and the adversarial training may become unstable when there are so many degrees of freedom to adjust.
         %
-        In the initial Moment Unfolding studies, keeping $n$ small was important for stable training---it acted as a strong regulariser and simplified the learning problem.
+        In the initial \textsc{Moment Unfolding} studies, keeping $n$ small was important for stable training---it acted as a strong regulariser and simplified the learning problem.
         
         To extend the method toward full distributions, the Reweighting Adversarial Networks (RAN) approach was developed.
         %
-        RAN can be seen as Moment Unfolding taken to the continuum limit, where instead of a few predetermined moments, all aspects of the distribution are learned.
+        RAN can be seen as \textsc{Moment Unfolding} taken to the continuum limit, where instead of a few predetermined moments, all aspects of the distribution are learned.
         %
         Practically, RAN forgoes the explicit regularisation of $g(z, \vb*\beta)$ with a fixed set of $\beta_a$ multiplying known basis functions.
         %
@@ -798,7 +798,7 @@
         %
         In other words, if RAN does not incorporate the normalisation into its architectural design, if if the architecture leads to misestimations of the normalisation, RAN will be have to learn the correct normalisation, at the expense of learning other features. 
         %
-        Although this was also true of Moment Unfolding, there is a quantitive difference.
+        Although this was also true of \textsc{Moment Unfolding}, there is a quantitive difference.
         %
         When $n$ was small, a few $\beta$ primarily tweak shape within a mostly normalised scheme.
         %
@@ -816,11 +816,11 @@
         %
         The success of RAN in toy examples and simulated jet data applications demonstrates that it is indeed possible to go from moments to complete spectra.
 
-In this way, the progression from Moment Unfolding to full distribution unfolding can be seen as a continuum.
+In this way, the progression from \textsc{Moment Unfolding} to full distribution unfolding can be seen as a continuum.
 %
 At one end is a highly stable method focusing on a few moments; at the other end, are methods like RAN that aim to extract the entire distribution, which requires stronger techniques to regularise.
 %
-Moment Unfolding paves the way to the more ambitious goal of unbinned differential cross section measurement via its extension to RAN.
+\textsc{Moment Unfolding} paves the way to the more ambitious goal of unbinned differential cross section measurement via its extension to RAN.
 %
 This connection between moments and spectra ensures that the insights and constraints from one domain like theoretical expectations for certain moments can be seamlessly integrated into the process of obtaining the full spectrum.
 %
@@ -1035,7 +1035,7 @@ The moments are the fingerprints of the distribution, and once one learns to rel
             
             The most straightforward choice is to define $g(z) = \exp[f_\theta(z)]$ where $f_\theta(z)$ is the output of a neural network with no constraints, and the exponential ensures positivity and unboundedness.
             %
-            This choice is, in a sense, very well motivated by the Boltzmann distribution that inspired Moment Unfolding.
+            This choice is, in a sense, very well motivated by the Boltzmann distribution that inspired \textsc{Moment Unfolding}.
             %
             In practice however, one finds that this choice, while mathematically valid, leads to numerical instability.
             %

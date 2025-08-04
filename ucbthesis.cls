@@ -1,289 +1,333 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{ucbthesis}[2019/07/19 v3.6 University of California, Berkeley Thesis Class]
+\ProvidesClass{ucbthesis}[2025/01/01 UC Berkeley PhD Thesis Class]
 
-\newcommand\@masters{}
-\DeclareOption{phd}{\renewcommand\@masters{0}}
-\ExecuteOptions{phd}
+% ============================================================================
+% CLASS OPTIONS AND BASE CLASS
+% ============================================================================
+% Load memoir with your preferred options
 
-\PassOptionsToClass{oneside}{memoir}
-\PassOptionsToClass{12pt}{memoir}
-
-% Other options are passed on to the memoir class.
+% Spacing options
+\DeclareOption{singlespace}{\def\@ucbspacingcmd{\ssp}}
+\DeclareOption{onehalfspace}{\def\@ucbspacingcmd{\hsp}}
+\DeclareOption{doublespace}{\def\@ucbspacingcmd{\dsp}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
-\ProcessOptions\relax
+% Default spacing
+\ExecuteOptions{doublespace}
 
-% Now load the memoir class, and configure it appropriately.
-\LoadClass{memoir}
+% Process options
+\ProcessOptions\relax
+\LoadClass[oneside,12pt]{memoir}
+% ============================================================================
+% REQUIRED PACKAGES
+% ============================================================================
+\RequirePackage[T1]{fontenc}
+\RequirePackage{microtype}
+\RequirePackage{amsthm}
+\RequirePackage{mdframed}  % For framed theorem environments
+
+% ============================================================================
+% PAGE GEOMETRY
+% ============================================================================
 \setstocksize{11in}{8.5in}
 \settrimmedsize{11in}{8.5in}{*}
 \nouppercaseheads
 
-% Explicitly set the text width and margins
-\setlrmargins{1in}{*}{*}
-\@tempdima=1in  \advance\@tempdima 25pt \advance\@tempdima\normalbaselineskip
-\@tempdimb=1in  \advance\@tempdimb 30pt
-\setulmarginsandblock{\@tempdima}{\@tempdimb}{*}
-\AtBeginDocument{\checkandfixthelayout}
+% Set text width to 33em and center it
+\settypeblocksize{*}{33em}{*}
+\setlrmargins{*}{*}{1}  % Equal left and right margins
+\setulmargins{*}{*}{1}  % Equal top and bottom margins
+\checkandfixthelayout
 
+% ============================================================================
+% DOCUMENT FORMATTING
+% ============================================================================
 \pagestyle{simple}
-\aliaspagestyle{book}{simple}
-\aliaspagestyle{part}{simple}
 \aliaspagestyle{chapter}{simple}
 \aliaspagestyle{title}{simple}
 
+% Paragraph indentation
+\setlength{\parindent}{1em}
+\RequirePackage{indentfirst}
+
+% Prevent widows and orphans
+\widowpenalty=10000
+\clubpenalty=10000
+
+% Float placement
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.85}
+
+% Caption formatting
+\addtolength{\abovecaptionskip}{\baselineskip}
+
+% ============================================================================
+% SPACING COMMANDS
+% ============================================================================
 \newcommand\ssp{\SingleSpacing}
-\newcommand\dsp{\setSpacing{1.37}}
+\newcommand\hsp{\OnehalfSpacing}
+\newcommand\dsp{\DoubleSpacing}
 
+% Default to double spacing for the body
+\AtBeginDocument{\dsp}
 
-\let\memoirtableofcontents=\tableofcontents
-\let\memoirlistoffigures=\listoffigures
-\let\memoirlistoftables=\listoftables
+% ============================================================================
+% SECTION NUMBERING
+% ============================================================================
+\setsecnumdepth{subparagraph}
+\maxtocdepth{subparagraph}
 
-% acknowledge environment:
-\newcommand\acknowledgename{Acknowledgments}
+% Custom numbering scheme
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\thechapter.\Alph{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
+\renewcommand{\thesubparagraph}{\theparagraph.\oldstylenums{\arabic{subparagraph}}}
 
-%    ****************************************
-%    *             FRONT MATTER             *
-%    ****************************************
-\def\degreeyear#1{\gdef\@degreeyear{#1}}
+% Clear page before chapters and sections
+\pretocmd{\chapter}{\clearpage}{}{}
+\pretocmd{\section}{\clearpage}{}{}
 
-% The semester (Fall or Spring) the degree will be officially conferred
-\def\degreesemester#1{\gdef\@degreesemester{#1}}
-% Name of degree to be confered
-\def\degree#1{\gdef\@degree{#1}}
+% ============================================================================
+% TABLE OF CONTENTS FORMATTING
+% ============================================================================
+\setlength{\cftchapternumwidth}{2.5em}
+\setlength{\cftsectionnumwidth}{3em}
+\setlength{\cftsubsectionnumwidth}{4em}
+\setlength{\cftsubsubsectionnumwidth}{5em}
+\setlength{\cftparagraphnumwidth}{6em}
+\setlength{\cftsubparagraphnumwidth}{7em}
 
-% The name of your committee's chair
-\def\chair#1{\gdef\@chair{#1}\gdef\@chairtitle{Chair}}
-% The name of your committee's secondary chair (for chair + co-chair)
-\def\cochair#1{\gdef\@cochair{#1}}
-% The names of your committee's co-chairs (for two equal co-chairs)
-\def\cochairs#1#2{\gdef\@chair{#1}\gdef\@cochair{#2}\gdef\@chairtitle{Co-chair}}
+% Add paragraph and subparagraph to TOC
+\cftsetindents{paragraph}{5em}{6em}
+\cftsetindents{subparagraph}{6em}{7em}
 
-% The names of your other committee members, one per line
-\def\othermembers#1{\gdef\@othermembers{#1}}
-% The number of committee members
-\def\@numberofmembers{3}
-\def\numberofmembers#1{\gdef\@numberofmembers{#1}}
+% ============================================================================
+% PARAGRAPH AND SUBPARAGRAPH AS DISPLAY HEADINGS
+% ============================================================================
+\renewcommand\paragraph{%
+  \@startsection{paragraph}{4}{\z@}%
+    {-3.25ex \@plus -1ex \@minus -.2ex}%
+    {0.0001pt \@plus .2ex}%
+    {\normalfont\normalsize\bfseries}%
+}
+\renewcommand\subparagraph{%
+  \@startsection{subparagraph}{5}{\z@}%
+    {-3.25ex \@plus -1ex \@minus -.2ex}%
+    {0.0001pt \@plus .2ex}%
+    {\normalfont\normalsize\bfseries}%
+}
 
-% The name of your degree's field
-\def\field#1{\gdef\@field{#1}}
+% ============================================================================
+% LIST OF FIGURES AND LIST OF TABLES FORMATTING
+% ============================================================================
+% Set number width for figures and tables (format: chapter.number)
+\setlength{\cftfigurenumwidth}{3em}  % Space for figure numbers like "III.12"
+\setlength{\cfttablenumwidth}{3em}   % Space for table numbers like "III.12"
 
-% The name of your UC Campus (e.g. Berkeley, Los Angeles)
+\setlength{\cftfigureindent}{0em}    % Indent before figure entries
+\setlength{\cfttableindent}{0em}     % Indent before table entries
+
+\renewcommand{\cftfigureleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cfttableleader}{\cftdotfill{\cftdotsep}}
+
+% ============================================================================
+% THEOREM ENVIRONMENTS
+% ============================================================================
+% Define theorem style with horizontal lines
+\mdfdefinestyle{theoremstyle}{%
+    topline=true,
+    bottomline=true,
+    leftline=false,
+    rightline=false,
+    linewidth=0.5pt,
+    innertopmargin=0.5\baselineskip,
+    innerbottommargin=0.5\baselineskip,
+    innerleftmargin=0pt,
+    innerrightmargin=0pt
+}
+
+% Main results with rules
+\theoremstyle{definition}
+\newmdtheoremenv[style=theoremstyle]{theorem}{Theorem}[chapter]
+\newmdtheoremenv[style=theoremstyle]{corollary}[theorem]{Corollary}
+
+% Regular theorem environments without rules
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{note}{Note}
+
+% ============================================================================
+% FRONT MATTER VARIABLES
+% ============================================================================
+% Initialize variables with defaults
+\def\@title{Thesis Title}
+\def\@author{Author Name}
+\def\@degreeyear{2025}
+\def\@degreesemester{Spring}
+\def\@degree{Doctor of Philosophy}
+\def\@chair{Chair Name}
+\def\@chairtitle{Chair}
+\def\@othermembers{}
+\def\@field{Field Name}
 \def\@campus{Berkeley}
 
-% The alwayssingle environment ensures that front matter is always
-% single column even in a double-column document.
-\newenvironment{alwayssingle}
-  {\if@twocolumn\@restonecoltrue\onecolumn \else \@restonecolfalse\newpage \fi}
-  {\if@restonecol \twocolumn \else \newpage \fi}
+% User commands to set variables
+\def\degreeyear#1{\gdef\@degreeyear{#1}}
+\def\degreesemester#1{\gdef\@degreesemester{#1}}
+\def\degree#1{\gdef\@degree{#1}}
+\def\chair#1{\gdef\@chair{#1}\gdef\@chairtitle{Chair}}
+\def\cochair#1{\gdef\@cochair{#1}}
+\def\cochairs#1#2{\gdef\@chair{#1}\gdef\@cochair{#2}\gdef\@chairtitle{Co-chair}}
+\def\othermembers#1{\gdef\@othermembers{#1}}
+\def\@numberofmembers{3}
+\def\numberofmembers#1{\gdef\@numberofmembers{#1}}
+\def\field#1{\gdef\@field{#1}}
 
-% Set the font that will be used in the front matter headings
-\def\fmfont{\fontsize\@xiipt{14.5}\selectfont}
-\def\fmsmallfont{\fontsize\@xiipt{14pt}\selectfont}
+% Environment for single-column pages
+\newenvironment{alwayssingle}{%
+  \if@twocolumn\@restonecoltrue\onecolumn\else\@restonecolfalse\newpage\fi
+}{%
+  \if@restonecol\twocolumn\else\newpage\fi
+}
 
-\def\maketitle{
-{\ssp
-  \makeatletter
-    \setlength{\@tempdima}{28pt}\advance\@tempdima-\baselineskip
-    \parskip=\@tempdima minus 4pt
-  \makeatother
-\begin{alwayssingle}
-  \hrule height 0pt
-    \@tempdima=\stockheight
-    \advance\@tempdima-\textheight
-    \advance\@tempdima-2\uppermargin
-    \advance\@tempdima-\topskip
-    \vspace{\@tempdima}
-  \vfill
-  \let\footnotesize\small
-  \let\footnoterule\relax
-  \thispagestyle{empty}
-  \setcounter{page}{1}
+% Font commands
+\def\fmfont{\fontsize{12pt}{14.5pt}\selectfont}
+\def\fmsmallfont{\fontsize{12pt}{14pt}\selectfont}
 
-  \begin{center}
-    \fmfont
-    \@title\par
-    \vspace{14pt minus 4pt}
-    by \par
-    {\@author}\par
-    \vspace{28pt minus 8pt}
-    A dissertation submitted in partial satisfaction of the \par
-    requirements for the degree of \par
-      {\@degree}\par
-    in \par
-    {\@field}\par
-    in the \par
-    Graduate Division \par
-    of the \par
-    University of California, {\expandafter{\@campus}}\par
-    \vspace{34pt minus 8pt}
-    {
-      \fmsmallfont
-      Committee in charge: \par
-      {\@chair}, \@chairtitle \\
-      \ifdefined\@cochair
-        {\@cochair}, Co-chair \\
-      \fi
-      {\@othermembers}\par
-      \vspace{14pt minus 4pt}
-      \@degreesemester \ \@degreeyear\par
-    }
-  \end{center}
-  \vfill
-  \hrule height 0pt
-\end{alwayssingle}
-
-\setcounter{footnote}{0}
-}}
-
-% APPROVALPAGE
-%
-% The \approvalpage macro emits a UC-approved approval page ready for
-% your committee's signature.  It is not an automatic part of the
-% output because it only needs to be printed out once (and should not
-% be present in the electronically submitted part).  It requires that
-% the \year, \author, \title, and \campus macros have been defined.
-
-\def\approvalpage{%
-    \begin{alwayssingle}
+% ============================================================================
+% TITLE PAGE
+% ============================================================================
+\renewcommand{\maketitle}{%
+  \ssp
+  \begin{alwayssingle}
     \thispagestyle{empty}
-
-    \fmfont \noindent
-        The \@dissertation of {\@author}, titled {\@title}, is approved:
+    \setcounter{page}{1}
     
-    \vfil{
-        \baselineskip=36pt
-        \settowidth\@tempdima{
-            \ifdefined\@cochair Co-chair\else\@chairtitle\fi\quad
-        }
-        \hbox to\textwidth{
-            \raise 3pt\hbox to\@tempdima{
-                \@chairtitle\hfil
-            }   
-            %
-            \leaders\hrule\hskip 0pt plus .75fill\qquad
-            \raise 3pt\hbox{Date}\quad \leaders\hrule\hskip 0pt plus .25fill
-        }
-        \hbox to\textwidth{
-            \raise 3pt\hbox to\@tempdima{
-                \ifdefined\@cochair Co-chair
-                \fi
-                \hfil
-            }
-            %
-            \leaders\hrule\hskip 0pt plus .75fill\qquad
-            \raise 3pt\hbox{Date}\quad \leaders\hrule\hskip 0pt plus .25fill
-        }
-        \hbox to\textwidth{
-            \hskip\@tempdima \leaders\hrule\hskip 0pt plus .75fill\qquad
-            \raise 3pt\hbox{Date}\quad \leaders\hrule\hskip 0pt plus .25fill
-        }
-        \ifnum \@numberofmembers > 3
-        \hbox to\textwidth{
-            \hskip\@tempdima \leaders\hrule\hskip 0pt plus .75fill\qquad
-            \raise 3pt\hbox{Date}\quad \leaders\hrule\hskip 0pt plus .25fill
-        }
-        \fi
-        \ifnum \@numberofmembers > 4
-        \hbox to\textwidth{\hskip\@tempdima \leaders\hrule\hskip 0pt plus .75fill\qquad
-        \raise 3pt\hbox{Date}\quad \leaders\hrule\hskip 0pt plus .25fill}
-        \fi
-    }
-    \vfil
+    % Calculate vertical spacing
+    \newdimen\@tempdima
+    \@tempdima=28pt
+    \advance\@tempdima-\baselineskip
+    \parskip=\@tempdima minus 4pt
+    
+    % Add vertical space
+    \vspace*{\fill}
+    
     \begin{center}
-    {
-        \fmfont University of California, {\@campus}
-    }
+      \fmfont
+      \@title\par
+      \vspace{14pt minus 4pt}
+      by \par
+      {\@author}\par
+      \vspace{28pt minus 8pt}
+      A dissertation submitted in partial satisfaction of the \par
+      requirements for the degree of \par
+      {\@degree}\par
+      in \par
+      {\@field}\par
+      in the \par
+      Graduate Division \par
+      of the \par
+      University of California, \@campus\par
+      \vspace{34pt minus 8pt}
+      {%
+        \fmsmallfont
+        Committee in charge: \par
+        \@chair, \@chairtitle \\
+        \ifdefined\@cochair
+          \@cochair, Co-chair \\
+        \fi
+        \@othermembers\par
+        \vspace{14pt minus 4pt}
+        \@degreesemester\ \@degreeyear\par
+      }
     \end{center}
-    \end{alwayssingle}
+    
+    \vfill
+  \end{alwayssingle}
+  \setcounter{footnote}{0}
 }
 
-% COPYRIGHTPAGE
-\def\copyrightpage{
-    \begin{alwayssingle}
-        \thispagestyle{empty}
-        \begin{center}{
-            \fmfont
-            \@title\par
-            \vspace{1in}
-            Copyright \@degreeyear\par
-            by\par
-            \@author
-        }
-        \end{center}
-    \end{alwayssingle}
+% ============================================================================
+% COPYRIGHT PAGE
+% ============================================================================
+\def\copyrightpage{%
+  \begin{alwayssingle}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+      \fmfont
+      \@title\par
+      \vspace{1in}
+      Copyright \@degreeyear\par
+      by\par
+      \@author
+    \end{center}
+    \vfill
+  \end{alwayssingle}
 }
 
-
+% ============================================================================
 % ABSTRACT
-\renewenvironment{abstract}{
-    \begin{alwayssingle}
+% ============================================================================
+\renewenvironment{abstract}{%
     \thispagestyle{simple}
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{\baselineskip}
     \setcounter{page}{1}
     \begin{center}
-      \abstractname \par
+      \textbf{Abstract}\par
       \@title\par
       by\par
       \@author\par
-      {\@degree} in \@field\par
-      University of California, {\@campus}\par
-      {\@chair}, \@chairtitle \par
+      \@degree\ in \@field\par
+      University of California, \@campus\par
+      \@chair, \@chairtitle\par
       \ifdefined\@cochair
-        {\@cochair}, Co-chair\par
+        \@cochair, Co-chair\par
       \fi
     \end{center}
     \setlength{\parskip}{.6\baselineskip}
     \vspace{.4\baselineskip}
-}{
-    \par\end{alwayssingle}
+}{%
 }
 
+% ============================================================================
 % DEDICATION
-\newenvironment{dedication}
-  {\begin{alwayssingle}}
-  {\end{alwayssingle}}
+% ============================================================================
+\newenvironment{dedication}{%
+    \vspace*{\fill}
+    \begin{center}
+}{%
+    \end{center}
+    \vfill
+}
 
+% ============================================================================
 % ACKNOWLEDGEMENTS
-
-\newenvironment{acknowledgements}{
-    \begin{alwayssingle}
-        \begin{center}{
-            \large \bfseries \acknowledgename
-        }
-        \end{center}
-    }{
-    \end{alwayssingle}
+% ============================================================================
+\newcommand\acknowledgename{Acknowledgments}
+\newenvironment{acknowledgements}{%
+    \begin{center}
+      \large\bfseries\acknowledgename
+    \end{center}
+    \vspace{\baselineskip}
+}{%
 }
 
+% ============================================================================
 % FRONTMATTER environment
-
-\renewenvironment{frontmatter}
-  {\setcounter{page}{1}\renewcommand{\thepage}{\roman{page}}}
-  {\newpage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
-
-
-\setlength{\cftchapternumwidth}{2em}
-\setlength{\cftsectionnumwidth}{3em}
-\setlength{\cftsubsectionnumwidth}{4em}
-\setlength{\cftsubsubsectionnumwidth}{5em}
-\setlength{\cftparagraphnumwidth}{5em}
-\makeatletter
-\renewcommand\paragraph{
-  \@startsection{paragraph}{4}{\z@}
-    {-3.25ex \@plus -1ex \@minus -.2ex}
-    {0.0001pt \@plus .2ex}
-    {\normalfont\normalsize\bfseries\@afterheading}
+=======
+% ============================================================================
+\renewenvironment{frontmatter}{%
+  \setcounter{page}{1}
+  \renewcommand{\thepage}{\roman{page}}
+}{%
+  \cleardoublepage
+  \renewcommand{\thepage}{\arabic{page}}
+  \setcounter{page}{1}
 }
-\renewcommand\subparagraph{
-  \@startsection{subparagraph}{5}{\z@}
-    {-3.25ex \@plus -1ex \@minus -.2ex}
-    {0.0001pt \@plus .2ex}
-    {\normalfont\normalsize\bfseries\@afterheading}
-}
-\makeatother
-\usepackage{etoolbox}
-\pretocmd{\section}{\clearpage}{}{}
-\pretocmd{\chapter}{\cleardoublepage}{}{}
+\preto\mainmatter{\@ucbspacingcmd}
 \endinput
