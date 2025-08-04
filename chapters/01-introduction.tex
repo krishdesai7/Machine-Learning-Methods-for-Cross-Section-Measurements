@@ -1,5 +1,5 @@
-\chapter{Introduction and Physics Background}
-\section{Units and Conventions}
+\chapter{Introduction and physics background.}
+\section{Units and conventions.}
 \label{sec:units_and_conventions}
     Even though nature does not establish preferred units, the physics that describes it requires establishing a common language and framework.
     %
@@ -14,26 +14,115 @@
     \end{definition}
     
 \input{tables/1-1.tex}
-The beauty of natural units emerges when considering quantum field theory. The Klein-Gordon equation for a scalar field φ:
-(∂²/∂t² - ∇² + m²)φ = 0
-reveals that mass m has dimensions of inverse length - it sets the characteristic scale over which quantum fields oscillate. A particle with mass 1 GeV has a Compton wavelength of approximately 0.2 femtometers, roughly the size of a proton.
-Coordinate Systems and Relativistic Geometry
-At a hadron collider, the choice of coordinates must respect the underlying symmetries of the physics. The laboratory frame provides a natural Cartesian system:
+    Some common physical quantities, their abbreviated natural units, their full natural units, their approximate SI equivalents and their physical significance are described in \cref{tab:unit-conversions-combined}.
+    
+\subsection{Coordinate systems and relativistic geometry.}
+    At a high energy physics (HEP) experiment, the choice of coordinates must respect the underlying symmetries of the physics and the experimental setup.
+    %
+    The laboratory frame typically provides a natural Cartesian system.
+    %
+    For example, for a circular collider experiment, one can set the  z--axis to be along the beam direction (longitudinal), the x--axis to be horizontal, pointing toward the centre of the accelerator ring and the y--axis to be vertical, completing the right handed system.
 
-z-axis: Along the beam direction (longitudinal)
-x-axis: Horizontal, pointing toward the center of the accelerator ring
-y-axis: Vertical, completing the right-handed system
+    However, the partons that participate in an interaction can carry unknown fractions of the beam momentum, making the centre of mass frame of each interaction unknowable.
+    %
+    This uncertainty motivates a coordinate system that transforms simply under longitudinal Lorentz boosts.
+    \begin{definition}
+        The \emph{pseudorapidity} \(\eta,\) is defined as
+        \[
+            \eta = -\ln \tan\frac\theta2
+            \]
+        where \(\theta\) is the polar angle from the beam axis~\cite{rubbia_phenomenology_2022}.
+        %
+        Under a longitudinal boost with rapidity \(\beta = \operatorname{artanh}\nicefrac{v}{c}\), a massless particle's \(\eta\) transforms as \(\eta\mapsto\eta+\beta\)
+    \end{definition}
+    Expressing \(\theta\) in terms of momentum,
+    \[
+        \eta = -\ln \tan \frac\theta2 = \frac12\ln\frac{|p| + p_z}{|p| - p_z} = \operatorname{artanh}\frac{p_z}{|p|}
+    \]
+    \cref{fig:eta_vs_y} shows the relationship between pseudorapidity $\eta$ and true rapidity $y$ for particles with different mass to $p_T$ ratios.
+    %
+    As expected, the massless case ($m/p_T=0$) lies exactly on the diagonal $y=\eta$, while non-zero $\nicefrac{m}{p_T}$ introduces a systematic deviation that grows at large $|\eta|$.
+    %
+    Even a modest ratio ($m/p_T=0.1$) produces a measurable shift, and by $m/p_T=2.0$ the rapidity is significantly reduced relative to $\eta$.
+    %
+    This behaviour must be accounted for when inferring kinematic distributions of heavy particles from detector measurements expressed in pseudorapidity.
+    
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/chapter-01/rapidity.pdf}
+  \caption[\(\eta\) vs. \(y\) for various $\nicefrac{m}{p_T}$]{%
+    Comparison of pseudorapidity $\eta$ and true rapidity
+    $y=\frac12\ln\frac{E+p_z}{E-p_z}$ for several mass to transverse momentum ratios.
+    %
+    Curves correspond to $\nicefrac{m}{p_T} = 0.0,\;0.1,\;0.5,\;1.0,\;2.0$, illustrating how finite mass distorts away from the massless limit $y=\eta$ at large $|\eta|$.
+  }
+  \label{fig:eta_vs_y}
+\end{figure}
+For massless particles, differences in \(\eta\) remain invariant under longitudinal boosts, motivating the definition of the angular distance as follows.
 
-However, the partons within colliding hadrons carry unknown fractions of the beam momentum, making the center-of-mass frame of each collision unknowable. This fundamental uncertainty motivates a coordinate system that transforms simply under longitudinal Lorentz boosts.
+\begin{definition}
+    The \emph{angular distance metric} is defined as
+    \[
+        \Delta R^2 = \Delta\eta^2 + \Delta\varphi^2,
+    \]
+    where \(\varphi\) is the azimuthal angle around the beam axis.
+    %
+    This metric approximates the geometric angle between particles in the detector while remaining approximately boost invariant.
+\end{definition}
+    \subsection{Statistical frameworks and uncertainty quantification.}
+        In modern particle physics analyses, every measurement emerges from millions of interaction events, each carrying both statistical and systematic uncertainties.
+        %
+        \begin{definition}
+            The \emph{Poisson distribution} is the fundamental distribution governing counting experiments.
+            %
+            For \(n\) observed events with expected value \(\lambda\),
+            \[
+                \P(n\mid\lambda) = \frac{\lambda^n e^{-\lambda}}{n!}
+            \]
+        \end{definition}
 
-Pseudorapidity (η): Defined as η = -ln[tan(θ/2)], where θ is the polar angle from the beam axis. Under a longitudinal boost with velocity β, a massless particle's η transforms as η → η + tanh⁻¹(β).
+    In the high statistics limit, (\(n \to\infty\)), the Poisson distribution approaches a Gaussian.
+    
+    \begin{definition}
+        The \emph{profile likelihood ratio}
+            \[
+                \mathcal L(\mu) = \frac{L(\mu, \hat\theta_\mu)}{ L(\hat\mu, \hat\theta)}
+            \]
+            where \(\hat\theta_\mu\) maximises \(L\) for fixed signal strength \(\mu\) is the optimal test statistics for hypothesis testing under the Neyman--Pearson lemma.
 
-The mathematical elegance of pseudorapidity becomes apparent when we expand its definition:
-η = -ln[tan(θ/2)] = (1/2)ln[(|p| + pz)/(|p| - pz)] = tanh⁻¹(pz/|p|)
-For massless particles, differences in η remain invariant under longitudinal boosts, motivating the ubiquitous angular distance metric:
-ΔR² = Δη² + Δφ²
-where φ is the azimuthal angle around the beam axis. This metric approximates the geometric angle between particles in the detector while remaining approximately boost-invariant.
+    \subsection{Machine learning architectures and notation.}
+        Neural networks can be specified by their architecture vectors, \( [d_0, d_1,\dots, d_\ell]\), which denotes a network with input dimension \(d_0\), hidden layers of dimensions \(d_1\) through \(d_{\ell-1},\) and output dimension \(d_\ell\).
 
+        For a network \(f: \R^{d_0} \to\R^{d_{\ell}}\) with parameters \(\theta = \qty{W_i, b_i}\), the forward pass computes
+        \begin{gather}
+            h_0 = x\\
+            h_i = \sigma(W_i\,h_{i-i} + b_i)\quad i = 1,\dots, \ell-1\\
+            f(x;\theta) = W_\ell\,h_{\ell - 1} + b_\ell
+        \end{gather}
+        where \(\sigma\) denotes the activation function. The universality theorem guarantees that sufficiently wide networks can approximate any continuous function.
+
+        Training proceeds via gradient descent on a loss function \(L(\theta)\), with the gradient computed through automatic differentiation.
+        
+    \subsection{Information theory and optimal observables.}
+        Information theory provides a rigorous framework through the Neyman-Pearson lemma, which implies that the likelihood ratio \(\frac{L(x\mid S)}{L(x\mid B)}\) provides the most powerful test for distinguishing signal \(S\) from background \(B\) at any given significance level.
+
+        In practice, this optimal observable can be approximated using machine learning classifiers.
+        %
+        A well trained classifier computes
+        \[
+            f(x) \approx \P(S|x) = \frac{L(x\mid S)\,\P(S)}{L(x\mid S)\,\P(S) + L(x\mid B)\, \P(B)]}
+        \]
+        The mutual information \(I(Y; f(X))\) between the true labels \(Y\) and classifier output \(f(X)\) quantifies the information captured
+        \[
+            I(Y; f(X)) = \iint p(y, f)\,\log \frac{p(y, f)}{p(y)\,p(f)} \dd y\, \dd f.
+        \]
+        This connects directly to the area under the ROC curve and provides a model-independent measure of classification performance.
+        
+    \subsection{A note on conventions and clarity.}
+         This work strives to maintain a balance between mathematical rigour and physical insight.
+         %
+         Where conventions differ between communities,\footnote{For example, particle physicists and machine learning researchers.} attempts are made to note both conventions.
+         
 \section{The Standard Model: Theoretical framework}
 The Standard Model of particle physics represents one of the most significant intellectual achievements in modern science.
 %
