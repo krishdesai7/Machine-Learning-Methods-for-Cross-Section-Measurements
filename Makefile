@@ -6,7 +6,7 @@ TABLE_DIR = tables
 FIG_DIR = figures
 
 LATEX = pdflatex
-LATEXFLAGS = -interaction=nonstopmode -output-directory=$(BUILDDIR) -file-line-error
+LATEXFLAGS = -interaction=batchmode -output-directory=$(BUILDDIR) -file-line-error
 BIBER = biber
 BIBERFLAGS =
 
@@ -38,7 +38,7 @@ $(MAIN).pdf: $(ALL_FILES) | $(BUILDDIR)
 	@echo "=== First LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Running Biber ==="
-	-cd $(BUILDDIR) && $(BIBER) $(MAIN)
+	-cd $(BUILDDIR) && $(BIBER) $(MAIN) > /dev/null
 	@echo "=== Second LaTeX pass ==="
 	-$(LATEX) $(LATEXFLAGS) $(MAIN)
 	@echo "=== Third LaTeX pass (for references) ==="

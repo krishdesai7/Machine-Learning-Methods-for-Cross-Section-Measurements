@@ -12,7 +12,7 @@
 \DeclareOption{doublespace}{\def\@ucbspacingcmd{\dsp}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
 % Default spacing
-\ExecuteOptions{onehalfspace}
+\ExecuteOptions{doublespace}
 
 % Process options
 \ProcessOptions\relax
@@ -66,6 +66,7 @@
 % SPACING COMMANDS
 % ============================================================================
 \newcommand\ssp{\SingleSpacing}
+\newcommand\hsp{\OnehalfSpacing}
 \newcommand\dsp{\DoubleSpacing}
 
 % Default to double spacing for the body
