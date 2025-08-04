@@ -1,4 +1,4 @@
-\chapter{Neural Posterior Unfolding}
+\chapter{\textsc{Neural Posterior Unfolding}}
 \label{chap:npu}
 \section{Motivation for improved binned unfolding}
     A binned unfolding method is one in which both the particle--level and detector--level distributions are discretised into histograms, transforming the continuous convolution of \cref{eq:forward-folding} into the matrix equation \cref{eq:forward-binned}.
@@ -42,7 +42,7 @@
         \item Reduce dependence on arbitrary regularization parameters, and
         \item Offer computational efficiency for large-scale problems.
     \end{enumerate}
-    \emph{Neural Posterior Unfolding}~\cite{acosta2024npu} addresses these challenges head on, by leveraging normalising flows for neural posterior estimation~\cite{Papamakarios2016FastEstimation}.
+    \emph{\textsc{Neural Posterior Unfolding}}~\cite{acosta2024npu} addresses these challenges head on, by leveraging normalising flows for neural posterior estimation~\cite{Papamakarios2016FastEstimation}.
     %
     Unlike traditional methods that provide point estimates, NPU yields a full posterior distribution over the unfolded parameters, naturally capturing uncertainties in poorly constrained regions. 
     %
@@ -92,8 +92,8 @@
     \end{enumerate}
     
     These advantages make normalising flows particularly attractive for inverse problems where MCMC methods may face mixing and convergence challenges or become computationally prohibitive to use.
-\section{The Neural Posterior Unfolding Algorithm}
-    Neural Posterior Unfolding (NPU) is a novel approach to unfolding that combines the rigour of Bayesian statistics with the flexibility and computational efficiency of modern machine learning.
+\section{The \textsc{Neural Posterior Unfolding} Algorithm}
+    \textsc{Neural Posterior Unfolding} (NPU) is a novel approach to unfolding that combines the rigour of Bayesian statistics with the flexibility and computational efficiency of modern machine learning.
     %
     Rather than focusing solely on point estimates, NPU aims to characterise the full posterior distribution over particle level observables, providing comprehensive uncertainty quantification while addressing the key limitations of traditional unfolding methods.
 \subsection{Statistical foundation}
@@ -199,7 +199,7 @@
 
     The next section will demonstrate the application of NPU to concrete examples, including both controlled Gaussian distributions and realistic jet substructure measurements, to illustrate its performance in practice.
 \section{Numerical results.}
-    This section presents comprehensive empirical validation of Neural Posterior Unfolding (NPU) through a series of increasingly complex examples.
+    This section presents comprehensive empirical validation of \textsc{Neural Posterior Unfolding} (NPU) through a series of increasingly complex examples.
     %
     Let us first consider a simple two--bin degenerate case to illustrate NPU's advantages in handling unconstrained regions of phase space, then move to a Gaussian example to systematically assess statistical performance, and finally study the method's efficacy on realistic jet substructure simulation from the LHC.
     \subsection{2 bin degenerate response example.}
@@ -459,7 +459,7 @@ These correlations provide crucial information for propagating uncertainties in 
     Despite these considerations, NPU represents a significant advancement in unfolding methodology, combining the statistical rigour of Bayesian inference with the flexibility and computational efficiency of modern deep learning approaches making it a promising tool for cross section measurements in high energy physics.
 
 \section{Beyond binning: the path forward}
-    The Neural Posterior Unfolding method presented in this chapter represents a significant advancement in binned unfolding approaches.
+    The \textsc{Neural Posterior Unfolding} method presented in this chapter represents a significant advancement in binned unfolding approaches.
     %
     By incorporating normalising flows for posterior estimation, NPU addresses several limitations of traditional methods while maintaining the established binning paradigm that has served particle physics for decades.
     %

@@ -1483,7 +1483,7 @@ We examine three principal categories, generative models, discriminative models,
         %
         This section seeks to present a framework for method selection based on key experimental considerations.
         %
-        For measurements where full posterior distributions are required, such as when propagating uncertainties through complex analyses or when non--Gaussian error structures are expected, Bayesian approaches like Neural Posterior Unfolding~\cite{acosta2024npu} or conditional normalizing flows~\cite{Bellagente2020InvertibleAgain} provide natural solutions.
+        For measurements where full posterior distributions are required, such as when propagating uncertainties through complex analyses or when non--Gaussian error structures are expected, Bayesian approaches like \textsc{Neural Posterior Unfolding}~\cite{acosta2024npu} or conditional normalizing flows~\cite{Bellagente2020InvertibleAgain} provide natural solutions.
         %
         These methods excel when the measurement goal involves parameter estimation or when correlations with nuisance parameters must be marginalized.
         %
@@ -1630,8 +1630,8 @@ This section examines some new machine learning based unfolding methods and succ
     %
     These advances position \textsc{OmniFold} not merely as an unfolding tool but as a framework for optimal information extraction from complex experimental data.
 
-\subsection{Neural Posterior Unfolding}
-    Neural Posterior Unfolding represents an innovative approach that enhances traditional binned unfolding through the integration of normalizing flows with Bayesian inference frameworks.
+\subsection{\textsc{Neural Posterior Unfolding}}
+    \textsc{Neural Posterior Unfolding} represents an innovative approach that enhances traditional binned unfolding through the integration of normalizing flows with Bayesian inference frameworks.
     %
     While NPU operates within the binned paradigm rather than a unbinned framework, it addresses several fundamental limitations of classical binned approaches that make it particularly valuable for cross section measurements.
 
@@ -1696,24 +1696,24 @@ The familiarity of binned representations also facilitates communication with th
     %
     The computational efficiency of trained flows makes them attractive for applications requiring rapid inference, such as real-time data quality monitoring or iterative analysis optimization.
 
-    \subsection{Moment Unfolding}
-    Moment Unfolding is a recently proposed method, focusing specifically on unfolding statistical moments of distributions rather than entire spectra~\cite{desai2024moment}.
+    \subsection{\textsc{Moment Unfolding}}
+    \textsc{Moment Unfolding} is a recently proposed method, focusing specifically on unfolding statistical moments of distributions rather than entire spectra~\cite{desai2024moment}.
     %
     This method is particularly valuable when theoretical predictions are at the level of moments rather than differential distributions, as is often the case in QCD calculations, such as the energy dependence of the spectra of many quark and gluon jet observables and the strong couplling constant and leading power correction matrix elements~\cite{Abbate:2012jh,pahlStudyMomentsEvent2009,OPAL:2004wof,L3:2004cdh,DELPHI:2004omy,DELPHI:2003yqh,Altarelli:1977zs,gribovDeepInelasticEp1972,dokshitzerCalculationStructureFunctions1977}.
 
-    Moment Unfolding employs a GAN--inspired structure with a generator that implements Boltzmann weighting factors to constrain the moments of the unfolded distribution.
+    \textsc{Moment Unfolding} employs a GAN--inspired structure with a generator that implements Boltzmann weighting factors to constrain the moments of the unfolded distribution.
     %
     By focusing only on a small number of moments, this method provides natural regularization and has demonstrated excellent precision in jet substructure applications where scaling behaviors and moments are of primary interest.
 
-    Moment Unfolding unfolds statistical moments as a function of another observable (e.g., jet transverse momentum), enabling detailed studies of energy--scale dependence without requiring full spectral unfolding.
+    \textsc{Moment Unfolding} unfolds statistical moments as a function of another observable (e.g., jet transverse momentum), enabling detailed studies of energy--scale dependence without requiring full spectral unfolding.
     %
-    Feature specific methods like Moment Unfolding have the potential to offer precision and computation cost improvements over generalized unfolding methods for comparisons focused on individual features rather than the entire density.
+    Feature specific methods like \textsc{Moment Unfolding} have the potential to offer precision and computation cost improvements over generalized unfolding methods for comparisons focused on individual features rather than the entire density.
     %
-    Moment Unfolding is discussed in further detail in \cref{chap:moment-unfolding}.
+    \textsc{Moment Unfolding} is discussed in further detail in \cref{chap:moment-unfolding}.
 
 \subsection{Reweighting Adversarial Networks (RAN)}
 
-    Building on the conceptual framework introduced in Moment Unfolding, Reweighting Adversarial Networks (RAN) extend the methodology to unfold full spectra through an adversarial learning framework.
+    Building on the conceptual framework introduced in \textsc{Moment Unfolding}, Reweighting Adversarial Networks (RAN) extend the methodology to unfold full spectra through an adversarial learning framework.
     %
     RAN implements particle--level reweighting functions guided by detector--level classifiers, enabling non--iterative full spectral unfolding.
 

@@ -1,4 +1,4 @@
-\chapter{Moment Unfolding: direct deconvolution of distribution moments}
+\chapter{\textsc{Moment Unfolding}: direct deconvolution of distribution moments}
 \label{chap:moment-unfolding}
 \section{Why moments: physics context and QCD calculations}
     Statistical moments of probability distributions serve as powerful tools in physics, providing a concise and theoretically meaningful way to characterise complex phenomena.
@@ -108,7 +108,7 @@
         \]
         This approximation introduces a bias relative to the true moment, which grows with the order of the moment computed, and is particularly large in regions where the distribution varies rapidly within bins.
 
-        These limitations motivate the development of unbinned approaches that can directly unfold moments without first discretising the data, which is precisely the focus of the Moment Unfolding method described in this chapter.
+        These limitations motivate the development of unbinned approaches that can directly unfold moments without first discretising the data, which is precisely the focus of the \textsc{Moment Unfolding} method described in this chapter.
     \subsection{Applications in Jet Physics}
         In the context of jet physics specifically---a central arena for testing QCD---moments of jet substructure observables provide particularly powerful probes of QCD dynamics~\cite{CrispimRomao2024JetAnalysis, Dasgupta2013TowardsSubstructure}.
         %
@@ -151,14 +151,14 @@
             %
             Hence, changes in the moment structure of distributions can serve as an early indicator of anomalous physics, even before the full nature of the anomaly is understood~\cite{Li2022MomentsPhysics, Metodiev2024AnomalyObservables, Romao2021FindingColliders}.
 
-    \subsection{The case for direct moment unfolding}
+    \subsection{The case for direct \textsc{Moment Unfolding}}
         Given the theoretical significance of moments in QCD and their experimental advantages, there is a strong motivation for developing methods that can directly unfold moments from detector level data without first unfolding the entire distribution.
         %
         Such methods would eliminate binning biases inherent in traditional approaches, while potentially improving precision and reducing computational cost by focusing directly on the quantities of interest.
         %
         They would enable moment measurements in higher dimensional phase spaces where binned approaches become impractical to provide more direct comparisons with theoretical predictions that are formulated at the level of moments.
 
-        The remainder of this chapter presents the Moment Unfolding method, a novel approach that addresses precisely this need by directly deconvolving moments of distributions using machine learning techniques inspired by the Boltzmann distribution and implemented through a GAN like architecture.
+        The remainder of this chapter presents the \textsc{Moment Unfolding} method, a novel approach that addresses precisely this need by directly deconvolving moments of distributions using machine learning techniques inspired by the Boltzmann distribution and implemented through a GAN like architecture.
         %
         This method offers a significant over extant methods in moment measurements, enabling more stringent tests of QCD predictions and potentially uncovering subtle effects that might be obscured in traditional analyses.
 \section{A GAN like method to unfold moments}
@@ -166,15 +166,15 @@
     %
     Traditional approaches typically reconstruct the full differential cross--section before computing moments, introducing unnecessary computational complexity.
     %
-    The Moment Unfolding technique presented in this chapter takes an entirely different approach by directly targeting the moments themselves.
+    The \textsc{Moment Unfolding} technique presented in this chapter takes an entirely different approach by directly targeting the moments themselves.
 
-    The basic idea underlying Moment Unfolding is the connection between statistical moments and the Boltzmann distribution from statistical mechanics~\cite{Boltzmann1978AbleitungLichttheorie, Sharp2015Translation1909}.
+    The basic idea underlying \textsc{Moment Unfolding} is the connection between statistical moments and the Boltzmann distribution from statistical mechanics~\cite{Boltzmann1978AbleitungLichttheorie, Sharp2015Translation1909}.
     %
     In thermodynamics, the Boltzmann distribution represents the probability distribution that maximizes entropy while satisfying certain constraints on average quantities (internal energy). 
     %
     This principle can be adapted for our unfolding problem, where we seek to find a reweighting of simulated events that accurately reproduces the moments of the true particle level distribution.
     \subsection{Boltzmann inspired reweighting}
-        The central mathematical construction of Moment Unfolding is a reweighting function inspired by the Boltzmann factor,
+        The central mathematical construction of \textsc{Moment Unfolding} is a reweighting function inspired by the Boltzmann factor,
         \[
             \label{eq:moment-generator}
             g(z;\,\vb*\beta) = \frac{1}{P(\vb*{\beta})} \exp\left[-\sum_{a=1}^n \beta_a \; z^a\right]
@@ -201,9 +201,9 @@
         \end{enumerate}
         This task is highly non trivial because the detector response function, which maps particle level to detector level observables, is typically stochastic and known only implicitly through simulation.
     
-        To address this, Moment Unfolding employs an adversarial training architecture inspired by Generative Adversarial Networks (GANs), but with significant modifications tailored to the unfolding problem.
+        To address this, \textsc{Moment Unfolding} employs an adversarial training architecture inspired by Generative Adversarial Networks (GANs), but with significant modifications tailored to the unfolding problem.
         %
-        Unlike traditional GANs that generate new samples, Moment Unfolding's ``generator'' does not generate samples.
+        Unlike traditional GANs that generate new samples, \textsc{Moment Unfolding}'s ``generator'' does not generate samples.
         %
         Instead, $g(z)$ generates weights that reweight existing Generation events according to the Boltzmann form.
         %
@@ -215,7 +215,7 @@
         \begin{figure}
     \centering
     \includegraphics[width=0.90\textwidth]{figures/chapter-05/Schematic_momentunfolding.pdf}
-    \caption{A schematic diagram of the training setup for Moment Unfolding.  Like a GAN, $g$ is the generator and $d$ is the discriminator, but unlike a GAN $g$ does not generate samples, it instead generates reweighting factors given by \cref{eq:moment-generator}.  The reweighted Simulation dataset inherits its weight from the matching Generation dataset.  The detector emulations are only run once, since a new simulated dataset is created via importance weights and not by changing the features themselves.}
+    \caption{A schematic diagram of the training setup for \textsc{Moment Unfolding}.  Like a GAN, $g$ is the generator and $d$ is the discriminator, but unlike a GAN $g$ does not generate samples, it instead generates reweighting factors given by \cref{eq:moment-generator}.  The reweighted Simulation dataset inherits its weight from the matching Generation dataset.  The detector emulations are only run once, since a new simulated dataset is created via importance weights and not by changing the features themselves.}
     \label{fig:schematic}
 \end{figure}
         %
@@ -225,7 +225,7 @@
     
     \subsection{Mathematical formalism.}
     
-        We can formalize the Moment Unfolding approach as follows.
+        We can formalize the \textsc{Moment Unfolding} approach as follows.
         %
         Let $p(x)$ be the probability density function of the Data distribution and $q(z,x)$ be the joint distribution of particle level and detector level variables in the MC, Generation and Simulation.
         %
@@ -255,11 +255,11 @@
         \]
         This approach differs fundamentally from traditional unfolding methods that first reconstruct the full distribution and then compute moments.
         %
-        By directly targeting the moments themselves, Moment Unfolding is able to avoid both the binning artifacts and dimensionality challenges associated with binned methods and the computational complexity associated with unbinned full distribution unfolding.
+        By directly targeting the moments themselves, \textsc{Moment Unfolding} is able to avoid both the binning artifacts and dimensionality challenges associated with binned methods and the computational complexity associated with unbinned full distribution unfolding.
     \subsection{Theoretical properties.}
-        The Moment Unfolding method possesses several important theoretical properties that justify its application to physics problems.
+        The \textsc{Moment Unfolding} method possesses several important theoretical properties that justify its application to physics problems.
         %
-        Under certain conditions, detailed in \cref{app:mathematical-derivations}, the Moment Unfolding method provably converges to the correct moments.
+        Under certain conditions, detailed in \cref{app:mathematical-derivations}, the \textsc{Moment Unfolding} method provably converges to the correct moments.
 
         The parameter $n$ (the number of moments being unfolded) serves as an implicit regularization parameter.
         %
@@ -277,28 +277,28 @@
             This provides a principled physical and informational theoretic basis for the method: among all possible reweighting functions that reproduce the target moments, the Boltzmann form is the one that introduces the least additional information beyond what is required by the moment constraints.
 
     \subsection{Comparison with traditional GAN architectures.}
-        While Moment Unfolding draws inspiration from GANs, it differs from traditional GAN architectures, in that the so called ``generator" does not generate data; it generates weights.
+        While \textsc{Moment Unfolding} draws inspiration from GANs, it differs from traditional GAN architectures, in that the so called ``generator" does not generate data; it generates weights.
         %
         Traditional GANs generate new samples by mapping random noise through a neural network.
         %
-        In contrast, Moment Unfolding reweights existing simulated events, preserving the physics correlations already present in the MC and focusing only on correcting the distribution's moments.
+        In contrast, \textsc{Moment Unfolding} reweights existing simulated events, preserving the physics correlations already present in the MC and focusing only on correcting the distribution's moments.
     
         Furthermore, unlike conventional GANs where the generator network is incredibly flexible with hundreds of millions of trainable parameters~\cite{brock_large_2019, karras_analyzing_2020, Lee2022BigVGAN:Training}, our generator has an extremely specific parametric form constrained by the Boltzmann expression, with at most a handful of trainable parameters.
         %
         The Boltzmann constraint massively reduces the effective degrees of freedom in the optimisation process and encodes our prior knowledge about the problem structure.
         %
-        The parameters $\beta_a$ in the Moment Unfolding approach have clear physical interpretations as Lagrange multipliers enforcing moment constraints.
+        The parameters $\beta_a$ in the \textsc{Moment Unfolding} approach have clear physical interpretations as Lagrange multipliers enforcing moment constraints.
         %
         This interpretability contrasts with the typically opaque nature of neural network weights in traditional GANs.
     
         Finally, traditional GANs operate at a single level, with the generator and discriminator acting on the same ``type'' of data.
         %
-        Moment Unfolding operates across two levels, particle level and detector level, which might not even have the same dimensionality, which is the source of the additional complexity but is essential for the unfolding problem.
+        \textsc{Moment Unfolding} operates across two levels, particle level and detector level, which might not even have the same dimensionality, which is the source of the additional complexity but is essential for the unfolding problem.
         
     \subsection{Practical considerations.}
-        While theoretically elegant, the Moment Unfolding method has practical considerations and limitations that must be understood in order to apply the method correctly and effectively.
+        While theoretically elegant, the \textsc{Moment Unfolding} method has practical considerations and limitations that must be understood in order to apply the method correctly and effectively.
 
-        Like all reweighting based methods, Moment Unfolding requires that the Generation distribution has overlapping support with the Truth distribution.
+        Like all reweighting based methods, \textsc{Moment Unfolding} requires that the Generation distribution has overlapping support with the Truth distribution.
         %
         Regions of phase space not covered by the MC cannot be properly unfolded.
         %
@@ -306,13 +306,13 @@
         %
         Various regularisation techniques must be employed to mitigate these effects if they arise in a given analysis.
         
-        Like other unfolding methods, Moment Unfolding too involves an \textit{ad hoc} choice that must be imposed externally.
+        Like other unfolding methods, \textsc{Moment Unfolding} too involves an \textit{ad hoc} choice that must be imposed externally.
         %
         The optimal number of moments to unfold depends on the physics application, available statistics, and the complexity of the true distribution.
         %
         Too few moments may miss important features of the distribution, while too many may lead to overfitting and numerical instabilities.
     \subsection{Extension to differential measurements.}
-        An extension of the Moment Unfolding approach is to study moments as a function of another observable, such as transverse momentum.
+        An extension of the \textsc{Moment Unfolding} approach is to study moments as a function of another observable, such as transverse momentum.
         %
         This is achieved by making the parameters $\beta_a$ functions of the conditional variable,
         \[
@@ -326,7 +326,7 @@
         This extension significantly enhances the physics applications of the method, enabling studies of how observable moments scale with energy.
 
     \subsection{Theoretical foundations in statistical mechanics.}
-        The mathematical form at the heart of Moment Unfolding has deep connections to statistical mechanics and information theory, providing a solid theoretical foundation for the method.
+        The mathematical form at the heart of \textsc{Moment Unfolding} has deep connections to statistical mechanics and information theory, providing a solid theoretical foundation for the method.
         %
         In statistical mechanics, the Boltzmann distribution arises as the solution to the maximum entropy problem.
         %
@@ -338,13 +338,13 @@
         \]
         where $E(s)$ is the energy of state $s$, $\beta$ is the inverse temperature, and $Z$ is the partition function.
 
-        The Moment Unfolding algorithm borrows this idea to include multiple constraints on different moments, with each $\beta_a$ serving as a Lagrange multiplier for the constraint on the $a^{\text{th}}$ moment.
+        The \textsc{Moment Unfolding} algorithm borrows this idea to include multiple constraints on different moments, with each $\beta_a$ serving as a Lagrange multiplier for the constraint on the $a^{\text{th}}$ moment.
         %
         This connection to maximum entropy principles provides a theoretical justification for the specific form of the reweighting function and suggests that it is, in some sense, the most natural choice for the moment unfolding problem.
         %
         The success of this approach in practical applications, as will be demonstrated in subsequent sections, confirms the value of this theoretical grounding and highlights the power of cross--disciplinary approaches in developing new data analysis techniques for particle physics.
 \section{Machine learning implementation}
-    The theoretical framework introduced in the previous section provides the foundation for Moment Unfolding, but implementing this approach in practice requires careful architectural design and optimization strategies.
+    The theoretical framework introduced in the previous section provides the foundation for \textsc{Moment Unfolding}, but implementing this approach in practice requires careful architectural design and optimization strategies.
     %
     This section details the machine learning implementation that enables robust moment extraction through a GAN like architecture.
 
@@ -386,7 +386,7 @@
     %
     While the BCE loss function could also be used (and indeed gives similar empirical performance), the MLC loss function provides certain theoretical guarantees about the convergence of the method to the correct moments~\cite{desai2024moment}.
     \subsection{Training Procedure}
-        The training procedure for Moment Unfolding follows the standard adversarial approach, but with specific adaptations for the reweighting framework.
+        The training procedure for \textsc{Moment Unfolding} follows the standard adversarial approach, but with specific adaptations for the reweighting framework.
         
         The generator parameters $\beta_a$ are initialised to small random values near zero, corresponding to minimal reweighting.\footnote{I.e., starting close to the original simulation.}
         %
@@ -431,7 +431,7 @@
         %
         \textsc{NumPy}~\cite{Harris2020ArrayNumPy} is used for data manipulation, and \textsc{Matplotlib}~\cite{Hunter2007Matplotlib:Environment} is employed for visualisation.
 
-        The computational requirements of Moment Unfolding are remarkably light compared to many deep learning applications.
+        The computational requirements of \textsc{Moment Unfolding} are remarkably light compared to many deep learning applications.
         %
         Training typically takes less than five minutes per observable on an NVIDIA RTX6000 GPU for the case studies presented in this dissertation.
         %
@@ -444,7 +444,7 @@
 \input{tables/5-1}
 
     \subsection{Extensions to multiple observables.}
-        While the basic formulation of Moment Unfolding applies to moments of a single observable, the method can be extended to handle multiple observables simultaneously.
+        While the basic formulation of \textsc{Moment Unfolding} applies to moments of a single observable, the method can be extended to handle multiple observables simultaneously.
         %
         For multiple observables $z_1, z_2, ..., z_d$, we can define joint moments as \(\langle z_1^{k_1} z_2^{k_2} \cdots z_d^{k_d} \rangle.\)
         %
@@ -463,11 +463,11 @@
     \subsection{Uncertainty estimation.}
         Accurate uncertainty estimation is crucial for meaningful physics measurements.
         %
-        In Moment Unfolding, uncertainties on the extracted moments are obtained through bootstrap resampling.
+        In \textsc{Moment Unfolding}, uncertainties on the extracted moments are obtained through bootstrap resampling.
         %
         Statistical uncertainties are estimated by generating $N$ bootstrap replicas of the data by resampling with replacement,
         %
-        applying Moment Unfolding to each replica, and
+        applying \textsc{Moment Unfolding} to each replica, and
         %
         computing the standard deviation of the resulting moment values across all replicas.
         %
@@ -475,13 +475,13 @@
         
         Systematic uncertainties related to theoretical modelling, detector effects, and other sources can be evaluated by
         %
-        varying the underlying simulation according to systematic uncertainty sources, applying Moment Unfolding to each variation, and
+        varying the underlying simulation according to systematic uncertainty sources, applying \textsc{Moment Unfolding} to each variation, and
         %
         taking the envelope of the resulting moment values as the systematic uncertainty.
 
         Such an approach would allow for comprehensive uncertainty quantification that accounts for all relevant sources of uncertainty in the measurement.
     \subsection{Validation procedures.}
-        Several validation procedures are employed to ensure the reliability of the Moment Unfolding method.
+        Several validation procedures are employed to ensure the reliability of the \textsc{Moment Unfolding} method.
         %
         Closure tests verify that the method can correctly recover known moments from simulated data.
         %
@@ -491,23 +491,23 @@
         %
         that the discriminator is unable to distinguish between Simulation and Data.
         
-        Results from Moment Unfolding are also compared with those from traditional unfolding methods like Iterative Bayesian Unfolding followed by moment calculation.
+        Results from \textsc{Moment Unfolding} are also compared with those from traditional unfolding methods like Iterative Bayesian Unfolding followed by moment calculation.
         %
         Agreement between different methods provides additional confidence in the results, while disagreement may indicate methodological issues that require further investigation.
     \subsection{Code availability and reproducibility}
-        The implementation of Moment Unfolding is available as open--source Python code, facilitating reproducibility and adoption by the scientific community.
+        The implementation of \textsc{Moment Unfolding} is available as open--source Python code, facilitating reproducibility and adoption by the scientific community.
         %
         This open--source approach promotes transparency, enables independent verification of results, and facilitates improvements and extensions to the method by the broader scientific community.
         %
         The full code repository can be found at~\cite{HEP-GAN/MomentUnfolding:Method}, and the specific datasets used for the studies in this dissertation are archived on Zenodo~\cite{AndreassenPythia/HerwigUnfolding}.
 
-    By combining a theoretically motivated approach with practical machine learning implementation details, Moment Unfolding provides a robust and efficient method for extracting moments directly from data.
+    By combining a theoretically motivated approach with practical machine learning implementation details, \textsc{Moment Unfolding} provides a robust and efficient method for extracting moments directly from data.
     %
     The next sections will demonstrate the application of this method to Gaussian data and simulated jet substructure data, showcasing its performance on realistic physics problems.
     
 \section{Case studies}
     \subsection{Gaussian experiments}
-        Before applying Moment Unfolding to jet physics scenarios, it is essential to validate the method in a controlled environment where the ground truth is precisely known.
+        Before applying \textsc{Moment Unfolding} to jet physics scenarios, it is essential to validate the method in a controlled environment where the ground truth is precisely known.
         %
         To this end, the approach is first demonstrated using a one dimensional Gaussian example, providing a clear illustration of the method's capabilities while establishing a benchmark for its performance.
         \subsubsection{Experimental Setup}
@@ -544,23 +544,23 @@
     \label{fig:gaussian-setup}
 \end{figure}
         \subsubsection{Results}
-            \cref{fig:gauss} shows the results of applying Moment Unfolding to the Gaussian example.
+            \cref{fig:gauss} shows the results of applying \textsc{Moment Unfolding} to the Gaussian example.
             %
             The left panel displays the particle level distributions, the Truth distribution (blue), the Generation (orange), and the reweighted Generation (black dashed line). 
             %
-            Even visually, the close overlap between the Truth histogram and the reweighted Generation demonstrates the success of the Moment Unfolding procedure.
+            Even visually, the close overlap between the Truth histogram and the reweighted Generation demonstrates the success of the \textsc{Moment Unfolding} procedure.
 
             The right panel of \cref{fig:gauss} provides a more quantitative perspective by showing the discriminator optimized loss landscape as a function of the Boltzmann parameters $\beta_1$ and $\beta_2$.
             %
             This landscape visualisation allows us to verify that the maximum of the loss function (red star) aligns with the parameter values that produce the correct moments, providing empirical confirmation of the method's theoretical properties.
 
-            These results confirm that Moment Unfolding successfully recovers the true moments of normal distributions.
+            These results confirm that \textsc{Moment Unfolding} successfully recovers the true moments of normal distributions.
             %
             Since normal distributions are fully characterised by their first two moments, the reweighted distribution closely matches the entire truth distribution in this Gaussian case even though the method explicitly targets only the first two moments.
             %
             We should not expect this to be the case for more complex distributions with non--trivial higher moments.
 
-        This controlled study confirms that Moment Unfolding performs as expected in a well understood scenario, providing confidence to extend the method to more complex physics environments.
+        This controlled study confirms that \textsc{Moment Unfolding} performs as expected in a well understood scenario, providing confidence to extend the method to more complex physics environments.
 \begin{figure}
     \centering
     \subfloat[]{\includegraphics[height=0.38\textwidth]{figures/chapter-05/gaussexample.pdf}
@@ -569,21 +569,21 @@
         \label{fig:gaussloss}}
     \caption{
     %
-    (a) Distributions from the Gaussian example of particle level truth, generation, and reweighted generation i.e.~Moment Unfolding.
+    (a) Distributions from the Gaussian example of particle level truth, generation, and reweighted generation i.e.~\textsc{Moment Unfolding}.
     %
-    The agreement between the truth and reweighted samples demonstrates the qualitative performance of Moment Unfolding.
+    The agreement between the truth and reweighted samples demonstrates the qualitative performance of \textsc{Moment Unfolding}.
     %
     (b) The weighted MLC loss from \cref{eq:numericloss} for fixed $g$ but optimized $d$, found by scanning over $\beta_1$ and $\beta_2$.
     %
     The correct value is indicated by a red star.
     %
-    Indicated in shaded blue is the $1\sigma$ bootstrapped interval for Moment Unfolding's prediction of $\beta_a$.The lower panel in each plot shows the ratio to truth.
+    Indicated in shaded blue is the $1\sigma$ bootstrapped interval for \textsc{Moment Unfolding}'s prediction of $\beta_a$.The lower panel in each plot shows the ratio to truth.
     }
         \label{fig:gauss}
 \end{figure}
     \subsection{Jet substructure in collider physics}
     \label{subsec:jet-moments}
-        Having validated Moment Unfolding in a controlled environment, we now apply the method to a realistic high energy physics scenario: measuring moments of jet substructure observables in simulated proton--proton collisions at the Large Hadron Collider (LHC).
+        Having validated \textsc{Moment Unfolding} in a controlled environment, we now apply the method to a realistic high energy physics scenario: measuring moments of jet substructure observables in simulated proton--proton collisions at the Large Hadron Collider (LHC).
         \subsubsection{Datasets}
             The simulated samples used for this study follow the setup from~\cite{andreassen_omnifold_2020}.
             %
@@ -595,7 +595,7 @@
             %
             To reduce acceptance effects, only leading jets in events with a Z boson having transverse momentum $p_T^Z > 200$ GeV are included.
             %
-            This setup allows us to test Moment Unfolding in a realistic environment where the ``Truth'' (\textsc{Herwig} particle level) and ``Generation" (\textsc{Pythia} particle level) are different generators with distinct physics models, and both are observed through an imperfect detector to produce ``Data'', \textsc{Herwig + Delphes} and ``Simulation'', \textsc{Pythia + Delphes}.
+            This setup allows us to test \textsc{Moment Unfolding} in a realistic environment where the ``Truth'' (\textsc{Herwig} particle level) and ``Generation" (\textsc{Pythia} particle level) are different generators with distinct physics models, and both are observed through an imperfect detector to produce ``Data'', \textsc{Herwig + Delphes} and ``Simulation'', \textsc{Pythia + Delphes}.
             \subsubsection{Observables}
                 Four key jet substructure observables are unfolded, each providing different insights into the internal structure of jets.
                 \begin{enumerate}
@@ -627,19 +627,19 @@
             These observables span a diverse range of jet properties, including both infrared and collinear safe observables ($m$ and $w$), a Sudakov safe observable, \(z_g\), and \(q\), which is only infrared safe.
 \subsubsection{Results}
 \input{tables/5-2}
-            \cref{tab:inclusive-moments} presents the first and second moments of each jet observable extracted using Moment Unfolding, compared with the true values (from \textsc{Herwig}) and those from the generation (\textsc{Pythia}) in tabular form.
+            \cref{tab:inclusive-moments} presents the first and second moments of each jet observable extracted using \textsc{Moment Unfolding}, compared with the true values (from \textsc{Herwig}) and those from the generation (\textsc{Pythia}) in tabular form.
             %
             The uncertainties in the Truth and Generation columns are computed by bootstrapping the respective datasets.
             %
-            For the Moment Unfolding column, the uncertainty includes the bootstrap uncertainty from the Generation and the empirical uncertainty from the unfolding process added in quadrature.
+            For the \textsc{Moment Unfolding} column, the uncertainty includes the bootstrap uncertainty from the Generation and the empirical uncertainty from the unfolding process added in quadrature.
             %
-            The empirical uncertainty from the unfolding process is computed by repeating Moment Unfolding on the same data and computing the \(1\sigma\) spread
+            The empirical uncertainty from the unfolding process is computed by repeating \textsc{Moment Unfolding} on the same data and computing the \(1\sigma\) spread
             
-            These results demonstrate that Moment Unfolding successfully recovers the true moments from the data for all observables within statistical uncertainties.
+            These results demonstrate that \textsc{Moment Unfolding} successfully recovers the true moments from the data for all observables within statistical uncertainties.
             %
             The method effectively corrects for both the differences between the \textsc{Pythia} and \textsc{Herwig} physics models and the detector distortions introduced by \textsc{Delphes}.
 
-            \cref{fig:jetexample_dists} shows the particle level distributions for each observable, comparing the truth, generation, and reweighted generation after applying Moment Unfolding
+            \cref{fig:jetexample_dists} shows the particle level distributions for each observable, comparing the truth, generation, and reweighted generation after applying \textsc{Moment Unfolding}
             %
             While the method explicitly targets only the first two moments, it produces reasonable agreement across the entire distribution, particularly for the regions that contribute most significantly to the moments.
 
@@ -648,26 +648,26 @@
 \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/qjetexample.pdf}}\\
 \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/wjetexample.pdf}}
 \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/zgjetexample.pdf}}
-\caption[Jet substructure distributions comparing truth, generation, and Moment Unfolding results]{Distributions of (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction at particle level for leading jets in $Z$+jet events at $\sqrt{s} = 14$ TeV. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation after applying Moment Unfolding weights to correct Generation.
+\caption[Jet substructure distributions comparing truth, generation, and \textsc{Moment Unfolding} results]{Distributions of (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction at particle level for leading jets in $Z$+jet events at $\sqrt{s} = 14$ TeV. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation after applying \textsc{Moment Unfolding} weights to correct Generation.
 %
-The Moment Unfolding method successfully adjusts the generated distributions to match the truth, demonstrating effective correction across all four jet substructure observables. The lower panel in each plot shows the ratio to truth.}
+The \textsc{Moment Unfolding} method successfully adjusts the generated distributions to match the truth, demonstrating effective correction across all four jet substructure observables. The lower panel in each plot shows the ratio to truth.}
 \label{fig:jetexample_dists}
 \end{figure}
             \cref{fig:jetexample_loss} displays the discriminator optimised loss landscapes for each observable, confirming that the maximum of the loss function aligns with the parameter values that produce the correct moments.
             %
-            The blue ellipses represent the \(1\sigma\) confidence intervals for the Moment Unfolding parameters, and they all contain the true parameter values (red dots), indicating proper uncertainty estimation.
+            The blue ellipses represent the \(1\sigma\) confidence intervals for the \textsc{Moment Unfolding} parameters, and they all contain the true parameter values (red dots), indicating proper uncertainty estimation.
 \begin{figure}
     \subfloat[]{ \includegraphics[height=0.4\textwidth]{figures/chapter-05/mjetloss.pdf}\label{fig:mjetloss}}
     \subfloat[]{ \includegraphics[height=0.4\textwidth]{figures/chapter-05/qjetloss.pdf}\label{fig:qjetloss}}\\
     
     \subfloat[]{ \includegraphics[height=0.4\textwidth]{figures/chapter-05/wjetloss.pdf}\label{fig:wjetloss}}
     \subfloat[]{ \includegraphics[height=0.4\textwidth]{figures/chapter-05/zgjetloss.pdf}\label{fig:zgjetloss}}
-\caption[Loss landscapes showing Moment Unfolding parameter estimation accuracy for unfolding jet substructure variable.]{The discriminator-optimized Maximum Likelihood Classifier (MLC) loss landscapes as a function of the Moment Unfolding parameters $\beta_1$ and $\beta_2$ for (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction. The true parameter values that correctly map between the generation and truth distributions are indicated by red dots, while the $1\sigma$ confidence intervals from Moment Unfolding's parameter estimation are shown as blue ellipses. The alignment of the loss function maxima with the true parameter values and the containment of these values within the uncertainty ellipses demonstrates both the accuracy of the method and the reliability of its uncertainty estimation.}
+\caption[Loss landscapes showing \textsc{Moment Unfolding} parameter estimation accuracy for unfolding jet substructure variable.]{The discriminator-optimized Maximum Likelihood Classifier (MLC) loss landscapes as a function of the \textsc{Moment Unfolding} parameters $\beta_1$ and $\beta_2$ for (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction. The true parameter values that correctly map between the generation and truth distributions are indicated by red dots, while the $1\sigma$ confidence intervals from \textsc{Moment Unfolding}'s parameter estimation are shown as blue ellipses. The alignment of the loss function maxima with the true parameter values and the containment of these values within the uncertainty ellipses demonstrates both the accuracy of the method and the reliability of its uncertainty estimation.}
     \label{fig:jetexample_loss}
 \end{figure}
     
     \subsection{Momentum dependent unfolding}
-        One of the most powerful features of Moment Unfolding is its ability to extract moments as a function of another observable, such as jet transverse momentum.
+        One of the most powerful features of \textsc{Moment Unfolding} is its ability to extract moments as a function of another observable, such as jet transverse momentum.
         %
         When implemented with momentum--dependent parameters in the Boltzmann weight function, the generator described in \cref{eq:pt-moment-gen} unfolds moments conditional on the jet \(p_T\).
         
@@ -685,18 +685,18 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
 
         The implementation of momentum dependent parameters, \(\beta_a(p_T)\) introduces additional complexity that must be carefully managed.
         
-        For this data, a linear parametrisation of \(\beta_a(p_T)\) provides a good balance between flexibility and stability for the jet substructure observables studied.\footnote{Moment Unfolding can be run as a binned method by parametrising \(\beta_a(p_T)\) as a piecewise constant function.}
+        For this data, a linear parametrisation of \(\beta_a(p_T)\) provides a good balance between flexibility and stability for the jet substructure observables studied.\footnote{\textsc{Moment Unfolding} can be run as a binned method by parametrising \(\beta_a(p_T)\) as a piecewise constant function.}
         %
         More complex parametrisations might be warranted for observables with a strongly non-linear \(p_T\) dependence.
         %
-        However, increasing the number of parameters in the momentum dependent approach must be approached with caution, since that, in some ways, lifts the regularisation imposed by the Moment Unfolding method.
+        However, increasing the number of parameters in the momentum dependent approach must be approached with caution, since that, in some ways, lifts the regularisation imposed by the \textsc{Moment Unfolding} method.
         %
         If the training remains unstable despite appropriately constraining the functional form of \(\beta_a(p_T)\) regularisation in the neural network training may become necessary.
         %
         Some successful approaches to regularise such neural network trainings can be found in \cref{subsec:regularisation-in-ran}.
         
         \subsubsection{Inclusive distributions.}
-            \cref{fig:pjetexample} presents the inclusive distributions of jet mass, jet charge, jet width, and groomed momentum fraction after applying momentum dependent Moment Unfolding.
+            \cref{fig:pjetexample} presents the inclusive distributions of jet mass, jet charge, jet width, and groomed momentum fraction after applying momentum dependent \textsc{Moment Unfolding}.
             %
             Compared to the non-momentum dependent results shown in \cref{fig:jetexample_dists}, these distributions demonstrate markedly better agreement with the truth.
             %
@@ -714,7 +714,7 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
     \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/qpjetexample.pdf}}\\
     \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/wpjetexample.pdf}}
     \subfloat[]{\includegraphics[height=0.32\textwidth]{figures/chapter-05/zgpjetexample.pdf}}
-    \caption[Momentum dependent unfolding of inclusive jet substructure distributions]{Inclusive distributions of (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction obtained using momentum dependent Moment Unfolding, where the correction parameters $\beta_a(p_T)$ are functions of jet transverse momentum. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation with weights from momentum conditioned Moment Unfolding results. Compared to the momentum independent unfolding shown in Fig.~\ref{fig:jetexample_dists}, the momentum dependent approach achieves notably better agreement with the truth distributions, particularly in regions where jet properties exhibit strong $p_T$ dependence.The lower panel in each plot shows the ratio to truth.}
+    \caption[Momentum dependent unfolding of inclusive jet substructure distributions]{Inclusive distributions of (a) jet mass, (b) jet charge, (c) jet width, and (d) groomed momentum fraction obtained using momentum dependent \textsc{Moment Unfolding}, where the correction parameters $\beta_a(p_T)$ are functions of jet transverse momentum. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation with weights from momentum conditioned \textsc{Moment Unfolding} results. Compared to the momentum independent unfolding shown in Fig.~\ref{fig:jetexample_dists}, the momentum dependent approach achieves notably better agreement with the truth distributions, particularly in regions where jet properties exhibit strong $p_T$ dependence.The lower panel in each plot shows the ratio to truth.}
     \label{fig:pjetexample}
 \end{figure}
         \subsubsection{Differential analysis.}
@@ -745,7 +745,7 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
     \label{fig:pzgjetmean}}
     \subfloat[]{\includegraphics[height=0.4\textwidth]{figures/chapter-05/pzgjet2.pdf}
     \label{fig:pzgjetvar}}
-    \caption[]{(Continued from previous page.) Mean (left column) and variance (right column) of jet substructure observables: (e,f) jet width, and (g,h) groomed momentum fraction. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation, weighted with momentum dependent Moment Unfolding results. For visual clarity, error bars show only statistical uncertainties on the truth distribution. The Moment Unfolding method successfully reproduces both the mean and variance across the full $p_T$ range, with results consistent with truth within uncertainties.}
+    \caption[]{(Continued from previous page.) Mean (left column) and variance (right column) of jet substructure observables: (e,f) jet width, and (g,h) groomed momentum fraction. The plots compare Truth (\textsc{Herwig}), Generation (\textsc{Pythia}), and reweighted Generation, weighted with momentum dependent \textsc{Moment Unfolding} results. For visual clarity, error bars show only statistical uncertainties on the truth distribution. The \textsc{Moment Unfolding} method successfully reproduces both the mean and variance across the full $p_T$ range, with results consistent with truth within uncertainties.}
 \end{figure}
 
             When the momentum dependent unfolding approach is used for a differential analysis of moments as a function of \(p_T\), it provides a comprehensive understanding of scaling behaviours.
@@ -754,7 +754,7 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
             %
             \cref{fig:pjetmoments} shows the first and second moments of each observable as a function of $p_T$.
 
-            The results demonstrate that Moment Unfolding successfully recovers the $p_T$ dependent moments of all the observables, capturing the variations in these quantities with jet \(p_T\).
+            The results demonstrate that \textsc{Moment Unfolding} successfully recovers the $p_T$ dependent moments of all the observables, capturing the variations in these quantities with jet \(p_T\).
             %
             This capability is particularly valuable for testing theoretical predictions of how jet properties scale with energy, a fundamental aspect of QCD phenomenology.
 
@@ -768,12 +768,12 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
             %
             the groomed momentum fraction shows minimal $p_T$ dependence, a feature expected from the scale--invariant nature of the splitting functions in QCD~\cite{ATLAS:2020bbn, CMS:2020poo, ATLASCollaboration2025ElectroweakLHC}.
 
-            These results not only validate the Moment Unfolding method but also demonstrate its utility for extracting physically meaningful insights about jet formation and evolution.
+            These results not only validate the \textsc{Moment Unfolding} method but also demonstrate its utility for extracting physically meaningful insights about jet formation and evolution.
             %
             These scaling behaviours, when applied to real collider data, could serve as stringent tests of perturbative QCD and provide constraints on Monte Carlo tuning parameters.
             
 \section{Comparison with alternative methods.}
-    To assess the performance of Moment Unfolding relative to existing approaches, this section compares the results from Moment Unfolding with those obtained from two alternative methods,
+    To assess the performance of \textsc{Moment Unfolding} relative to existing approaches, this section compares the results from \textsc{Moment Unfolding} with those obtained from two alternative methods,
     \begin{enumerate}
         \item \textbf{\textsc{OmniFold}}: A state of the art unbinned unfolding method that reconstructs the full distribution, from which moments can be computed, and 
         \item \textbf{Iterative Bayesian unfolding (IBU)}: A traditional binned unfolding method followed by moment calculation.
@@ -799,7 +799,7 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
     \subfloat[]{\includegraphics[height=0.45\textwidth]{figures/chapter-05/moment1_zg_v_pT.pdf}}
     \subfloat[]{\includegraphics[height=0.45\textwidth]{figures/chapter-05/moment2_zg_v_pT.pdf}}
     
-    \caption[]{(Continued.) Mean (left column) and variance (right column) for (e,f) jet width and (g,h) groomed momentum fraction. Methods compared include Moment Unfolding, OmniFold, Iterative Bayesian Unfolding (IBU), and IBU with bin-by-bin corrections. The lower panel in each plot shows the ratio to truth, highlighting that Moment Unfolding achieves precision comparable to OmniFold while significantly outperforming IBU, particularly at high $p_T$ where binning effects become more pronounced.}
+    \caption[]{(Continued.) Mean (left column) and variance (right column) for (e,f) jet width and (g,h) groomed momentum fraction. Methods compared include \textsc{Moment Unfolding}, OmniFold, Iterative Bayesian Unfolding (IBU), and IBU with bin-by-bin corrections. The lower panel in each plot shows the ratio to truth, highlighting that \textsc{Moment Unfolding} achieves precision comparable to OmniFold while significantly outperforming IBU, particularly at high $p_T$ where binning effects become more pronounced.}
 \end{figure}
 
     For a comprehensive comparison, we also include a variation on IBU that applies bin by bin corrections to account for binning effects in the moment calculation.
@@ -808,54 +808,54 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
     %
     The lower panels show the ratio to truth, highlighting differences between methods.
 
-    This comparison highlights some of Moment Unfolding's most important properties.
+    This comparison highlights some of \textsc{Moment Unfolding}'s most important properties.
     %
-    The Moment Unfolding algorithm achieves comparable or better precision than \textsc{\textsc{OmniFold}} for most observables, despite, or perhaps due to, its more targeted approach.
+    The \textsc{Moment Unfolding} algorithm achieves comparable or better precision than \textsc{\textsc{OmniFold}} for most observables, despite, or perhaps due to, its more targeted approach.
     %
     This demonstrates the advantage of directly targeting the moments without having to unfold the entire distribution.
     %
-    Both unbinned methods (Moment Unfolding and \textsc{\textsc{OmniFold}}) significantly outperform the binned approaches (IBU and IBU+Correction) in precision, highlighting the benefits of avoiding binning artifacts.
+    Both unbinned methods (\textsc{Moment Unfolding} and \textsc{\textsc{OmniFold}}) significantly outperform the binned approaches (IBU and IBU+Correction) in precision, highlighting the benefits of avoiding binning artifacts.
     %
     The bin--by--bin correction improves the performance of IBU but still does not match the precision of the unbinned methods, indicating that the fundamental limitations of binning cannot be fully mitigated by \textit{post hoc} corrections.
     
-    However, Moment Unfolding requires significantly less computational resources than \textsc{\textsc{OmniFold}} due to its non-iterative nature.
+    However, \textsc{Moment Unfolding} requires significantly less computational resources than \textsc{\textsc{OmniFold}} due to its non-iterative nature.
     %
-    On average, Moment Unfolding can be run in about 1\% of the time required for {\textsc{OmniFold}}, while achieving comparable or better precision.
+    On average, \textsc{Moment Unfolding} can be run in about 1\% of the time required for {\textsc{OmniFold}}, while achieving comparable or better precision.
     %
-    This comparison highlights the practical advantages of Moment Unfolding in scenarios where computational resources are limited or where multiple unfolding tasks need to be performed, such as in systematic uncertainty studies.
+    This comparison highlights the practical advantages of \textsc{Moment Unfolding} in scenarios where computational resources are limited or where multiple unfolding tasks need to be performed, such as in systematic uncertainty studies.
     %
-    That said, IBU is about \(\num{d4}\) times faster than Moment Unfolding, so in analyses where computation is at a high premium, and the binning artifacts introduced by IBU are acceptable, IBU continues to offer a low--tech, light unfolding procedure.
+    That said, IBU is about \(\num{d4}\) times faster than \textsc{Moment Unfolding}, so in analyses where computation is at a high premium, and the binning artifacts introduced by IBU are acceptable, IBU continues to offer a low--tech, light unfolding procedure.
 
-    These results establish Moment Unfolding as a powerful tool for precision measurements of statistical moments in high energy physics, offering advantages in both statistical precision and computational efficiency compared to existing methods.
+    These results establish \textsc{Moment Unfolding} as a powerful tool for precision measurements of statistical moments in high energy physics, offering advantages in both statistical precision and computational efficiency compared to existing methods.
 
 \section{Conclusion.}
-    Moment Unfolding represents a significant advancement in the statistical toolkit for particle physics measurements, providing a novel approach to directly extract moments of distributions without the intermediate step of reconstructing the full spectrum.
+    \textsc{Moment Unfolding} represents a significant advancement in the statistical toolkit for particle physics measurements, providing a novel approach to directly extract moments of distributions without the intermediate step of reconstructing the full spectrum.
     %
     This methodology addresses several challenges in traditional unfolding techniques while offering unique advantages for theoretical comparison and interpretation.
     %
-    An intrinsically unbinned method, Moment Unfolding eliminates binning artifacts and dimensionality limitations that affect traditional methods.
+    An intrinsically unbinned method, \textsc{Moment Unfolding} eliminates binning artifacts and dimensionality limitations that affect traditional methods.
     %
     By using a physically motivated reweighting function based on the Boltzmann distribution, it provides a principled approach to the unfolding problem, with clear connections to the maximum entropy principle from statistical mechanics.
 
     The adversarial training framework effectively addresses the two level nature of the unfolding problem, allowing corrections to particle level simulation to be optimised based on detector level comparisons between measured and simulated distributions.
     %
-    By extending this basic architecture to unfold moments conditional on momentum, Moment Unfolding can be used for detailed studies of how moments scale with energy, providing powerful constraints on theoretical models.
+    By extending this basic architecture to unfold moments conditional on momentum, \textsc{Moment Unfolding} can be used for detailed studies of how moments scale with energy, providing powerful constraints on theoretical models.
     
-    As a non-iterative method that is designed specifically to unfold moments rather than full spectra, Moment Unfolding offers significant computational advantages over iterative approaches, particularly for systematic uncertainty studies that require multiple unfolding runs.
+    As a non-iterative method that is designed specifically to unfold moments rather than full spectra, \textsc{Moment Unfolding} offers significant computational advantages over iterative approaches, particularly for systematic uncertainty studies that require multiple unfolding runs.
     %
-    The application to jet substructure measurements in Sec.~\ref{subsec:jet-moments} demonstrates the practical utility of Moment Unfolding for real physics analyses.
+    The application to jet substructure measurements in Sec.~\ref{subsec:jet-moments} demonstrates the practical utility of \textsc{Moment Unfolding} for real physics analyses.
     %
     The method successfully recovers both inclusive and differential moments of diverse jet observables, providing enhanced precision compared to traditional binned approaches and comparable or better accuracy than full-distribution unbinned methods.
     %
-    These capabilities make Moment Unfolding particularly valuable for precision tests of QCD, where theoretical predictions are often most precise at the level of moments rather than full distributions.
+    These capabilities make \textsc{Moment Unfolding} particularly valuable for precision tests of QCD, where theoretical predictions are often most precise at the level of moments rather than full distributions.
     
-    Although Moment Unfolding excels at extracting moments, it does not guarantee optimal reconstruction of the full distribution, particularly when higher moments are significant.
+    Although \textsc{Moment Unfolding} excels at extracting moments, it does not guarantee optimal reconstruction of the full distribution, particularly when higher moments are significant.
     %
     The choice of how many moments to unfold represents a regularization parameter that must be carefully selected based on the physics application and available statistics.
     %
     The basic formulation discussed above is designed for moments of a single observable, though extensions to joint moments are possible.
     \subsection{Towards unfolding distributions.}
-        While Moment Unfolding offers significant advantages for moment specific measurements, many analyses do require the full unfolded distribution rather than just its moments.
+        While \textsc{\textsc{Moment Unfolding}} offers significant advantages for moment specific measurements, many analyses do require the full unfolded distribution rather than just its moments.
         %
         This raises the question: can the Boltzmann inspired approach be extended to unfold entire distributions?
         %
@@ -871,14 +871,14 @@ The Moment Unfolding method successfully adjusts the generated distributions to 
         %
         So even if it were for some reason it were not possible to unfold infinitely many moments, as long as it were possible to unfold arbitrarily large finite numbers of moments, that would provide us with a solution to this problem as well.
         
-        However, since the degree of the polynomial is precisely the regularising parameter for the inverse problem in the Moment Unfolding approach, by increasing it (to some large number or infinity) this approach lifts the regularisation central to the algorithm.
+        However, since the degree of the polynomial is precisely the regularising parameter for the inverse problem in the \textsc{Moment Unfolding} approach, by increasing it (to some large number or infinity) this approach lifts the regularisation central to the algorithm.
         %
         The resulting ill posed inverse problem requires significant regularisation.
 
         These challenges motivate the development of the Reweighting Adversarial Network (RAN) method, which will be introduced in \cref{chap:ran}.
         %
-        RAN builds upon the foundations laid by Moment Unfolding, extending the approach to full distribution unfolding while maintaining its unbinned, non-iterative, adversarial nature.
+        RAN builds upon the foundations laid by \textsc{Moment Unfolding}, extending the approach to full distribution unfolding while maintaining its unbinned, non-iterative, adversarial nature.
         %
-        By incorporating more flexible neural network parametrisations and Wasserstein metrics for distribution comparison, RAN addresses the limitations of Moment Unfolding while preserving its core strengths.
+        By incorporating more flexible neural network parametrisations and Wasserstein metrics for distribution comparison, RAN addresses the limitations of \textsc{Moment Unfolding} while preserving its core strengths.
         %
         This evolution from moment specific to full distribution unfolding represents a natural progression in developing a comprehensive framework for unbinned cross section measurements in particle physics.

@@ -21,11 +21,11 @@
     %
     This work presents a {progressive evolution} of unfolding methodologies, each building upon the insights of its predecessors while addressing specific limitations.
     
-    \textbf{Neural Posterior Unfolding (NPU)} enhanced traditional binned approaches by replacing point estimates with full posterior distributions, leveraging normalizing flows to capture complex uncertainty structures while maintaining the computational advantages of amortized inference.
+    \textbf{\textsc{Neural Posterior Unfolding} (NPU)} enhanced traditional binned approaches by replacing point estimates with full posterior distributions, leveraging normalizing flows to capture complex uncertainty structures while maintaining the computational advantages of amortized inference.
     %
     NPU as a method embodies the recognition that unfolding is fundamentally about \emph{uncertainty quantification}, not just central value estimation, and highlights the necessity of machine learning based approaches as the future of unfolding.
     
-    \textbf{Moment Unfolding} took a different path, abandoning bins entirely in favor of directly deconvolving distribution moments.
+    \textbf{\textsc{Moment Unfolding}} took a different path, abandoning bins entirely in favor of directly deconvolving distribution moments.
     %
     By reformulating unfolding as a moment--matching problem solved through adversarial training, this approach demonstrated that meaningful physical quantities could be extracted without discretization, through a menthod that was simultaneously light, fast, and precise, opening the door to truly multidimensional analyses.
     %
@@ -68,7 +68,7 @@
     %
     NPU parameterizes the posterior distribution directly using normalizing flows.
     %
-    Moment Unfolding constrains only integral properties while leaving the detailed shape free.
+    \textsc{Moment Unfolding} constrains only integral properties while leaving the detailed shape free.
     %
     RAN learns a reweighting function that transforms simulation to match data.
     %
@@ -89,7 +89,7 @@
         %
         The method learns from data, but within a framework shaped by physical considerations.
         %
-        Moment Unfolding's design is even more explicitly motivated by physics.
+        \textsc{Moment Unfolding}'s design is even more explicitly motivated by physics.
         %
         The decision to unfold moments itself is physics--motivated, in that the ability of lattice QCD calculations to predict the scaling law behavior of various jet observables only at the level of moments sets the quantities of interest.
         %
@@ -99,7 +99,7 @@
         %
         RAN too exemplifies this synthesis in its network architecture.
         %
-        Further, both Moment Unfolding and RAN learn to reweight events from physics simulation, encoding our best understanding of the underlying processes.
+        Further, both \textsc{Moment Unfolding} and RAN learn to reweight events from physics simulation, encoding our best understanding of the underlying processes.
         %
         Physics provides the scaffolding for the machine learning approach.
         %
@@ -116,11 +116,11 @@
         %
         NPU regularizes through the limited capacity of normalizing flows and early stopping.
         %
-        Moment Unfolding has a highly constrained generator that is only able to generate distributions that match the moments of the data, with a small fraction of the capacity of a fully flexible generator.
+        \textsc{Moment Unfolding} has a highly constrained generator that is only able to generate distributions that match the moments of the data, with a small fraction of the capacity of a fully flexible generator.
         %
         RAN uses the Wasserstein distance and gradient penalties to ensure stable training.
         %
-        In addition to this, the unconstrained generator in RAN in comparison to the contstrained generator in Moment Unfolding requires further regularization through methods such as spectral normalization and entropy regularization in order to prevent training instability.
+        In addition to this, the unconstrained generator in RAN in comparison to the contstrained generator in \textsc{Moment Unfolding} requires further regularization through methods such as spectral normalization and entropy regularization in order to prevent training instability.
         %
         Despite their diversity, all of these methodsserve the same purpose---preventing the ill--posed inverse problem from amplifying statistical fluctuations into unphysical features.
 
@@ -128,7 +128,7 @@
         %
         Where traditional methods often provide only point estimates with approximate error bars, modern approaches like NPU naturally and directly model the posterior distribution as an intrinsic feature of the method.
         %
-        Moment Unfolding and RAN preserve event-level information, enabling nuanced uncertainty propagation.
+        \textsc{Moment Unfolding} and RAN preserve event-level information, enabling nuanced uncertainty propagation.
         %
         This shift from binned to unbinned unfolded cross section results poses a fundamental challenge to uncertainty quantification for parameter estimation, and demands a new statistical framework that can appropriately account for the correlations introduced by the unfolding process.
 
@@ -176,7 +176,7 @@
     \subsection{Summary of Contributions}
         The novel contributions developed in this work span the full spectrum of unfolding challenges, from enhancing traditional binned approaches to enabling entirely new measurement paradigms.
         \begin{enumerate}
-            \item \emph{Neural Posterior Unfolding (NPU):} This method revolutionizes binned unfolding by replacing traditional matrix inversion with conditional normalizing flows that directly model the posterior distribution \(p(t|m)\).
+            \item \emph{\textsc{Neural Posterior Unfolding} (NPU):} This method revolutionizes binned unfolding by replacing traditional matrix inversion with conditional normalizing flows that directly model the posterior distribution \(p(t|m)\).
             %
             The key innovation lies in using amortized inference.
             %
@@ -184,13 +184,13 @@
             %
             NPU's normalizing flow architecture naturally handles degenerate response matrices where traditional methods fail catastrophically, providing proper uncertainty quantification in unconstrained regions of phase space.
             %
-            \item \emph{Moment Unfolding:} Rather than reconstructing entire distributions, this approach directly unfolds the first \(n\) statistical moments using a Boltzmann distribution inspired reweighting function.
+            \item \emph{\textsc{Moment Unfolding}:} Rather than reconstructing entire distributions, this approach directly unfolds the first \(n\) statistical moments using a Boltzmann distribution inspired reweighting function.
             %
             The generator architecture \[g(z,\vb*{\beta}) = \frac{\exp(\sum_{a=1}^n \beta_a T_a(z))}{Z(\vb*{\beta})}\] embeds the maximum entropy principle, ensuring that the unfolded distribution is the most conservative distribution consistent with measured moments.
             %
             This targeted approach achieves comparable or better precision than \textsc{OmniFold} for moment extraction while requiring only 1\(\%\) of the computational resources.
             %
-            \item \emph{Reweighting Adversarial Networks (RAN):} Extending Moment Unfolding to the continuum limit, RAN learns a flexible reweighting function that morphs simulation to match data across the entire phase space.
+            \item \emph{Reweighting Adversarial Networks (RAN):} Extending \textsc{Moment Unfolding} to the continuum limit, RAN learns a flexible reweighting function that morphs simulation to match data across the entire phase space.
             %
             The critical innovation is performing reweighting at particle--level while using gradients from the Wasserstein distance between measured data and simulation at detector--level, enabling robust unfolding even when detector--level distributions have minimal overlap.
             %
@@ -223,21 +223,21 @@
         %
         This is crucial for precision measurements where systematic uncertainties dominate and require extensive variation studies.
 
-        Moment Unfolding targets the statistical moments of cross section measurements, which are the quantities that are most often used in physics analyses, enabling direct comparison between collider data and first--principles calculations.
+        \textsc{Moment Unfolding} targets the statistical moments of cross section measurements, which are the quantities that are most often used in physics analyses, enabling direct comparison between collider data and first--principles calculations.
         %
-        By unfolding the moments, Moment Unfolding is able to provide a prediction that is significantly more precise than IBU, while requiring only 1\(\%\) of the computational resources \textsc{OmniFold} requires to achieve the same precision.
+        By unfolding the moments, \textsc{Moment Unfolding} is able to provide a prediction that is significantly more precise than IBU, while requiring only 1\(\%\) of the computational resources \textsc{OmniFold} requires to achieve the same precision.
         %
         It also abandons the arbitrary iteration cut-offs of iterative unfolding methods, and instead uses an adversarial training procedure to unfold the data by training a single pair of networks to convergence.
         %
         As a fast, light, and precise unbinned unfolding method, it is a natural candidate for unfolding substructure observables.
         
-        RAN extends Moment Unfolding to the continuum limit, enabling the unfolding of the full distribution of multidimensional, multi--observable distributions.
+        RAN extends \textsc{Moment Unfolding} to the continuum limit, enabling the unfolding of the full distribution of multidimensional, multi--observable distributions.
         %
         By opening up the multidimensional phase space, eliminating the curse of dimensionality inherent ot binned methods, RAN allows us to study the correlations in the joint density that are lost in projection during binned unfolding.
         %
         RAN is particularly useful for observables where the full distribution of the cross section is necessary to extract the physics of the jet.
         %
-        RAN, like Moment Unfolding, is non--iterative, and learns perturbations to the MCMC, effectively initiating the networks with a huge swathe of physics knowledge ratheer than having them learn to generate the entire distribution from scratch.
+        RAN, like \textsc{Moment Unfolding}, is non--iterative, and learns perturbations to the MCMC, effectively initiating the networks with a huge swathe of physics knowledge ratheer than having them learn to generate the entire distribution from scratch.
         %
         RAN offers a fundamental improvement over existing methods by being able to unfold distributions with poor detector--level overlap as long as they have good particle--level overlap, enabling the exploration of previously inaccessible regions of phase space.
         
@@ -282,7 +282,7 @@
                 \textbf{NPU}
                 & Precision measurements with extensive systematic variations (e.g. differential cross sections at LHC/HL-LHC).
                 & Provides full posterior for uncertainties; amortized inference enables rapid re--unfolding for many systematic scenarios. \\
-                \textbf{Moment Unfolding}
+                \textbf{\textsc{Moment Unfolding}}
                 & Theoretically--targeted observables (e.g. jet substructure moments, EFT parameter fits).
                 & Unfolds only the moments of interest with maximal efficiency; avoids binning and captures essential physics features. \\
                 \textbf{RAN}
@@ -296,7 +296,7 @@
                 & Identifies hidden invariances directly from data; can inform and constrain unfolding or other analyses by incorporating newly found symmetries\\
             \end{tabular}
             \caption[Applications of methods to experimental scenarios]{
-                Potential applications of the methods developed in this thesis to current and future experimental analyses. Each approach addresses specific challenges: NPU for rapid, rigorous uncertainty quantification; Moment Unfolding for fast comparison to theory moments; RAN for full-spectrum unfolding in high dimensions; and \textsc{SymmetryGAN} for uncovering and leveraging symmetries in data.
+                Potential applications of the methods developed in this thesis to current and future experimental analyses. Each approach addresses specific challenges: NPU for rapid, rigorous uncertainty quantification; \textsc{Moment Unfolding} for fast comparison to theory moments; RAN for full-spectrum unfolding in high dimensions; and \textsc{SymmetryGAN} for uncovering and leveraging symmetries in data.
             }
             \label{tab:method_applications}
         \end{table}
@@ -390,7 +390,7 @@
         %
         By doing so, we can transform the wall of experimental challenges---high dimensionality, huge data volume, complex detector effects---into a new vista of opportunities for discovery.
         %
-        The next generation of experiments will not only collect more data, but, if armed with methods like NPU, Moment Unfolding, RAN, and \textsc{SymmetryGAN}, will \emph{learn more} from the data they collect.
+        The next generation of experiments will not only collect more data, but, if armed with methods like NPU, \textsc{Moment Unfolding}, RAN, and \textsc{SymmetryGAN}, will \emph{learn more} from the data they collect.
         %
         The exploration of fundamental physics requires not only cutting edge instruments, but also cutting edge algorithms.
 
