@@ -1,17 +1,17 @@
 \begin{abstract}
-    Precise differential cross section measurements are indispensable for testing Standard Model predictions at the energy frontier and searching for new physics, yet their extraction from collider data is an ill--posed inverse problem.
+    Precise differential cross section measurements are indispensable for tests of Standard Model predictions at the energy frontier and for searches for new physics, yet their extraction from collider data is an ill posed inverse problem.
     %
-    \emph{Unfolding} (also known as deconvolution) is the process of removing detector distortions to reconstruct particle level truth from detector level data.
+    \emph{Unfolding}, also known as deconvolution, is the process of removing detector distortions to reconstruct particle level truth from detector level data.
     %
-    Conventional histogram based, binned unfolding techniques introduce artifacts, impose arbitrary bin edges, and become computationally prohibitive in high dimensional phase spaces, potentially obscuring underlying physics.
+    Conventional, histogram based, binned unfolding techniques introduce artifacts, impose arbitrary bin edges, and become computationally prohibitive in high dimensional phase spaces, potentially obscuring underlying physics.
 
     This dissertation develops a unified framework that leverages modern machine learning techniques to surmount these limitations.
     %
-    First, Neural Posterior Unfolding demonstrates how conditional normalizing flows can serve as differentiable surrogates of detector response, enabling likelihood based unfolding through implicit regularization.
+    First, the \textsc{Neural Posterior Unfolding} (NPU) method demonstrates how conditional normalising flows can serve as differentiable surrogates of detector response, enabling likelihood based unfolding through implicit regularisation.
     %
-    Building on this foundation, Moment Unfolding directly extracts distribution moments without binning, providing precise experimental predictions for effective field theories and phenomenological models.
+    Building on this foundation, the \textsc{Moment Unfolding} algorithm directly extracts distribution moments without binning, providing precise experimental predictions for effective field theories and phenomenological models.
     %
-    The framework is further advanced by Reweighting Adversarial Networks (RANs), which perform full spectral unfolding using adversarial training to implement particle level reweighting steered by detector level classifiers, offering theoretical and computational advantages over iterative methods.
+    The framework is further advanced by development of the \textsc{Reweighting Adversarial Network} (RAN), which perform full spectral unfolding using adversarial training to implement particle level reweighting steered by detector level classifiers, offering theoretical and computational advantages over iterative methods.
     
     A critical statistical analysis of event correlations in unfolded data reveals systematic misestimation of uncertainties when these correlations are ignored, leading to methodological recommendations that ensure correct coverage for all derived observables.
     %
