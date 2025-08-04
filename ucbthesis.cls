@@ -264,9 +264,6 @@
   {\newpage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
 
 
-% Rename environments to allow them to switch back to double spacing
-
-
 \setlength{\cftchapternumwidth}{2em}
 \setlength{\cftsectionnumwidth}{3em}
 \setlength{\cftsubsectionnumwidth}{4em}
