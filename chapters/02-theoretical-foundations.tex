@@ -1,38 +1,37 @@
-\chapter{Theoretical Foundations}
+\chapter{Theoretical foundations.}
 \label{chap:theoretical-foundations}
-\section{Statistical Formulation of the Unfolding Problem}
+\section{Statistical formulation of the unfolding problem.}
 
-Unfolding, also known as deconvolution, is the process of correcting detector distortions in experimental data to recover the true particle--level distributions.
+Unfolding, also known as deconvolution, is the process of correcting detector distortions in experimental data to recover the true particle level distributions.
 %
-This procedure is critical for comparing experimental results with theoretical predictions and for enabling detector--independent analyses.
+This procedure is critical for comparing experimental results with theoretical predictions and for enabling detector independent analyses.
 %
-The unfolding problem is inherently statistical and presents unique challenges due to its ill-posed nature.
+The unfolding problem is inherently statistical and presents unique challenges due to its ill posed nature.
 
-\subsection{The Detector Response and Forward Problem}
+\subsection{The detector response and forward problem.}
 
-The relationship between the particle--level truth distribution \(p(z)\) and the detector--level measured distribution \(p(x)\) is governed by the detector response function \(r(x|z)\), which encapsulates the resolution effects.\footnote{Efficiency and acceptance effects can also be incorporated if ``empty" events are allowed.}
+The relationship between the particle level truth distribution \(p(z)\) and the detector level measured distribution \(p(x)\) is governed by the detector response function \(r(x\mid z)\), which encapsulates the resolution effects.\footnote{Efficiency and acceptance effects can also be incorporated if ``empty'' events are allowed.}
+%
+\cref{eq:forward-folding} describes the \textbf{forward problem}, where the true distribution \(p(z)\) is mapped to the measured distribution \(p(x)\).
+%
+The detector response function \(r(x\mid z)\) can often be estimated through detailed simulations.
+
+\subsection{The inverse problem: Unfolding.}
+
+The goal of unfolding is to invert the forward problem and estimate the Truth, \(p(z)\) from Data \(p(x)\).
+%
+Mathematically, this requires solving
 \begin{equation}
-    p(x) = \int r(x|z)\; p(z) \, \dd z.
-\end{equation}
-This equation describes the \textbf{forward problem}, where the true distribution \(p(z)\) is mapped to the measured distribution \(p(x)\).
-%
-The detector response function \(r(x|z)\) can often be estimated through detailed simulations.
-
-\subsection{The Inverse Problem: Unfolding}
-
-The goal of unfolding is to invert the forward problem and estimate truth, \(p(z)\) from data \(p(x)\).
-%
-Mathematically, this requires solving:
-\begin{equation}
+    \label{eq:inverse-problem}
     p(z) = \int r^{-1}(z|x) \;p_{\text{measured}}(x) \, \dd x,
 \end{equation}
 where \(r^{-1}(z|x)\) represents the inverse response kernel.
 %
-However, this inversion is ill--posed because small fluctuations in \(p(x)\) can lead to large variations in \(p(z)\).
+However, this inversion is ill posed because small fluctuations in \(p(x)\) can lead to large variations in \(p(z)\)~\cite{2005InverseMeasurements}.
 %
-Regularization techniques are therefore essential to stabilize the solution.
+Regularisation techniques are therefore essential to stabilise the solution.
 
-\subsection{Likelihood-Based Formulation}
+\subsection{Likelihood based formulation.}
     In practice, unfolding is performed using statistical inference methods.
     %
     Given a set of measured data \(\mathbf{X}_{i=1}^N\), the likelihood function for a proposed truth distribution \(p(z; \theta)\), parametrised by \(\theta\), is
@@ -41,70 +40,92 @@ Regularization techniques are therefore essential to stabilize the solution.
     \end{equation}
     where
     \begin{equation}
-        p(x; \theta) = \int r(x|z) \;p(x; \theta) \, \dd z.
+        p(x;\, \theta) = \int r(x\mid z) \;p(x;\,\theta) \, \dd z.
     \end{equation}
-    Maximizing this likelihood yields an estimate of the parameters \(\theta\), which define the unfolded truth distribution.
+    Maximising this likelihood yields an estimate of the parameters \(\theta\), which define the unfolded truth distribution.
     %
-    Regularization can be incorporated into this framework by adding penalty terms to the likelihood or by constraining the parameter space.
+    Regularisation can be incorporated into this framework by adding penalty terms to the likelihood or by constraining the parameter space.
 
-    \subsection{Regularization Techniques}
-        Regularization mitigates the instability of unfolding by imposing constraints on the solution.
+    \subsection{Regularisation techniques.}
+        Regularisation mitigates the instability of unfolding by imposing constraints on the solution.
         %
-        Common approaches include Tikhonov Regularization~\cite{Karl2005RegularizationReconstruction}, in which one adds a penalty term proportional to the norm of the second derivative of \(p(z)\), enforcing smoothness, and iterative methods which gradually refine estimates of \(p(z)\), regularizing by stopping before convergence.
+        Common approaches include Tikhonov Regularization~\cite{Karl2005RegularizationReconstruction}, in which one adds a penalty term proportional to the norm of the second derivative of \(p(z)\), enforcing smoothness, and iterative methods which gradually refine estimates of \(p(z)\), regularising by stopping before convergence.
         %
         These techniques balance fidelity to the measured data (prior independence) with stability of the unfolded solution.
 
-    \subsection{Challenges in High Dimensional Phase Spaces}
+    \subsection{Challenges in high dimensional phase spaces.}
     \label{subsec:challenges-in-high-dimensional-phase-spaces}
-        \subsubsection{Binned methods}
+        \subsubsection{Binned methods.}
         \label{subsubsec:binned-methods}
             A significant challenge that traditional unfolding methods face is the \emph{curse of dimensionality}.
             %
             As the number of measured observables increases, the statistical power required to populate discrete bins grows exponentially, quickly overwhelming even the largest datasets collected at modern experiments.
     
-            Consider a measurement involving just four kinematic variables: transverse momentum, pseudorapidity, azimuthal angle, and invariant mass.
+            Consider a measurement involving just four kinematic variables, say, transverse momentum, pseudorapidity, azimuthal angle, and invariant mass.
             %
-            With a modest 20 bins per dimension, the resulting joint histogram requires \(\num{1.6d5}\) bins. Most of these bins will contain zero events, creating a sparse matrix that renders traditional unfolding techniques numerically unstable.
+            With a modest 20 bins per dimension, the resulting joint histogram requires \num{1.6d5} bins.
             %
-            The relative uncertainty can scales as
-            \begin{equation}
-            \label{eq:relative-uncertainty}
-                \text{Relative uncertainty} \propto \frac{1}{\sqrt{N_{\text{events}}} \cdot \prod_{i=1}^d \Delta z_i},
-            \end{equation}
-            where \(\Delta z_i\) are bin widths.
-            %
-            This scaling relationship emerges directly from Poisson counting statistics applied to multi--dimensional histograms.
-            %
-            For any histogram bin containing \(N\) events, the statistical uncertainty follows the standard Poisson scaling \(\sigma\propto\sqrt{N}\), yielding a relative uncertainty of \(\nicefrac{1}{\sqrt{N}}\).
-            %
-            In a \(d-\)dimensional measurement with bin widths \(\Delta z_1, \Delta z_2, \dots, \Delta z_d\), each bin occupies a hyper-volume
-            \[
-                V = \prod_{i=1}^d\Delta z_i
-            \]
-            in the measurement space.
-            %
-            Assuming approximately uniform event density, the expected number of events in any given bin scales as
-            \[
-                N_{\text bin} \propto N_{\text events} \times \prod_{i=1}^d\Delta z_i.
-            \]
-            The relative uncertainty in the measured differential quantity therefore follows the scaling law in \cref{eq:relative-uncertainty}.
-            %
-            This relationship reveals why traditional binned methods become increasingly impractical as dimensionality increases: maintaining fixed statistical precision requires exponentially more data or exponentially coarser binning, both of which severely limit the measurement's resolving power.
+            Most of these bins will contain zero events, creating a sparse matrix that renders traditional unfolding techniques numerically unstable.
             
-            Beyond a point, \textit{response matrix}, \(\mathbf{R}\) becomes not just ill--conditioned but genuinely rank--deficient, as sufficiently many bins have not just few events in them, but rather no events in them at all.
+            \begin{proposition}[Scaling of relative uncertainty]
+                \label{prop:relative-uncertainty}
+                Consider a \(d\)-dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\rm events}\) denote the total number of events uniformly distributed over the full measurement range.
+                %
+                Then the relative uncertainty in the estimated differential event density in any given bin obeys
+                \begin{equation}
+                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\rm events}}\;\prod_{i=1}^d\Delta z_i}
+                \end{equation}
+                where \(Q\) is the differential quantity (events per unit hypervolume).
+            \end{proposition}
+                
+            \begin{proof}
+                A single histogram bin occupies hypervolume
+                \[
+                    V = \prod_{i=1}^d \Delta z_i
+                \]
+                in the measurement space.
+                %
+                Under the uniform--density assumption, the expected number of events in that bin scales as
+                \[
+                    N_{\rm bin} \propto N_{\rm events}\;V.
+                \]
+                %
+                By Poisson statistics the absolute uncertainty on the bin count is
+                \[
+                    \sigma_{N_{\rm bin}} = \sqrt{N_{\rm bin}},
+                \]
+                %
+                and hence the relative uncertainty on \(N_{\rm bin}\) is
+                \[
+                    \frac{\sigma_{N_{\rm bin}}}{N_{\rm bin}} = \frac{1}{\sqrt{N_{\rm bin}}} \propto \frac{1}{\sqrt{N_{\rm events}\,V}}\;.
+                \]
+                
+                Since the differential measurement is \(Q = N_{\rm bin}/V\), its relative uncertainty coincides with that of the bin count.
+                \begin{align}
+                    \frac{\sigma_Q}{Q} &= \frac{(\sigma_{N_{\rm bin}}/V)}{(N_{\rm bin}/V)} \\
+                    &= \frac{\sigma_{N_{\rm bin}}}{N_{\rm bin}} \\
+                    &\propto \frac{1}{\sqrt{N_{\rm events}}\;\prod_{i=1}^d\Delta z_i}\;,
+                \end{align}
+                %
+                which establishes the claimed scaling.
+            \end{proof}
+            
+            This relationship reveals why traditional binned methods become increasingly impractical as dimensionality increases: maintaining fixed statistical precision requires exponentially more data or exponentially coarser binning, both of which severely limit the measurement's resolving power.
+            %
+            Beyond a point, the \textit{response matrix}, \(\mathbf{R}\), becomes not just ill conditioned but genuinely rank deficient, as sufficiently many bins have not just few events in them, but rather no events in them at all.
             %
             Hence, entire swaths of phase space remain unmeasurable regardless of accumulated statistics.
     
             \emph{Binning artifacts} compound these statistical challenges through systematic information loss.
             %
             The process of discretising continuous distributions into finite bins introduces artificial boundaries  onto the underlying physics.
-            
-            This discretization becomes particularly pernicious when dealing with correlation structures that span multiple dimensions.
             %
-            Real particle collisions generate complex kinematic relationships---the angular distribution of decay products correlates with their energies, jet substructure variables depend on the overall jet momentum, and detector response functions couple seemingly independent observables.
+            This discretisation becomes particularly pernicious when dealing with correlation structures that span multiple dimensions.
+            %
+            Real particle interactions generate complex kinematic relationships---the angular distribution of decay products correlates with their energies, jet substructure variables depend on the overall jet momentum, and detector response functions couple seemingly independent observables.
             %
             Binning destroys these correlations by requiring low dimensional projections.
-            %
+            
             For instance, in jet substructure measurements, the relationship between different substructure variables contains valuable information about the underlying physics that can be obscured by independent binning of each variable.
             %
             Moreover, many theoretical predictions in particle physics are at the level of statistical moments or other distribution properties rather than full differential spectra.
@@ -113,25 +134,25 @@ Regularization techniques are therefore essential to stabilize the solution.
     
             The computational burden grows even faster than the statistical requirements.
             %
-            Matrix inversion algorithms scale as \(\mathcal O(N^3)\) with bin number, meaning that the aforementioned four--dimensional histogram with \(\num{1.6d5}\) bins requires approximately \(\mathcal{O}(\num{d16})\) floating point operations to invert.
+            Matrix inversion algorithms scale as \(\mathcal O(N^3)\) with bin number, meaning that the aforementioned four dimensional histogram with \(\num{1.6d5}\) bins requires approximately \(\mathcal{O}(\num{d16})\) floating point operations to invert.
             %
-            More fundamentally, the \emph{null spaces} and \emph{degeneracies} that plague two dimensional unfolding become dramatically worse in higher dimensions, where multiple truth configurations can project to identical detector signatures along numerous measurement axes simultaneously, because high dimensional measurements create complex geometric relationships between true and observed phase spaces.
+            More fundamentally, the \emph{null spaces} and \emph{degeneracies} that plague low dimensional unfolding become dramatically worse in higher dimensions, where multiple truth configurations can project to identical detector signatures along numerous measurement axes simultaneously, because high dimensional measurements create complex geometric relationships between true and observed phase spaces.
 
             In addition to these limitations, traditional binned approaches suffer from an additional systematic weakness;
             %
-            the response matrix \(R\) depends on on numerous variables that are typically marginalized over in order to bin the data.
+            the response matrix \(\mathbf{R}\) depends on numerous variables that are typically marginalised over in order to bin the data.
             %
-            While conventional methods construct \(R\) based on a limited set of binned observables, the true detector response depends on a much richer set of event characteristics.
+            While conventional methods construct \(\mathbf{R}\) based on a limited set of binned observables, the true detector response depends on a much richer set of event characteristics.
             %
             These include additional kinematic variables not captured in the chosen binning scheme, event level properties such as particle multiplicity and missing energy, detector conditions like instantaneous luminosity and pileup activity, and correlations with other particles produced in the same collision.
-            %
-            Traditional unfolding methods are effectively forced to assume that \(R\) remains constant when averaged over these marginalized variables, but this assumption is patently incorrect when the detector response varies systematically across different regions of this extended phase space.
+            
+            Traditional unfolding methods are effectively forced to assume that \(\mathbf{R}\) remains constant when averaged over these marginalised variables, but this assumption is patently incorrect when the detector response varies systematically across different regions of this extended phase space.
             %
             For example, the energy resolution for jets may depend not only on the jet's transverse momentum and pseudorapidity, variables often chosen for binning, but also on the jet's substructure, the presence of nearby particles, and the overall event topology.
             %
             By marginalising over these features, binned methods introduce systematic biases that can propagate through the unfolding procedure and distort the final measurements in ways that are difficult to quantify or correct.
 
-        \subsubsection{Unbinned methods}
+        \subsubsection{Unbinned methods.}
         \emph{Unbinned approaches} emerge as a natural response to these challenges, operating directly on individual events rather than aggregated histogram counts.
         %
         These methods exploit the event level structure that binning destroys, preserving the full kinematic information and correlation patterns within each recorded data point.
