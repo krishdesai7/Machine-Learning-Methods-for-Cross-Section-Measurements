@@ -117,7 +117,63 @@ For massless particles, differences in \(\eta\) remain invariant under longitudi
             I(Y; f(X)) = \iint p(y, f)\,\log \frac{p(y, f)}{p(y)\,p(f)} \dd y\, \dd f.
         \]
         This connects directly to the area under the ROC curve and provides a model-independent measure of classification performance.
-        
+
+\subsection{Datasets.}
+    Meaningful distinctions in particle physics data arise from the transformation between the underlying physical processes one seeks to understand and the experimental observations one can actually record, as well as from the distinction between Monte Carlo simulation and measurement in nature.
+    %
+    Datasets can therefore be classified according to two principal axes that capture the essential distinctions in particle physics data.
+    
+    The first axis distinguishes between events that occur in nature versus those generated through Monte Carlo simulation.
+    %
+    The second axis separates particle level quantities interest from detector level ones.
+
+    This classification yields four distinct dataset categories, each serving a unique role in the measurement process.
+    %
+    Understanding the relationships between these categories plays an important role in the development of the unfolding methods discussed in this dissertation.
+    \begin{figure}
+    \centering
+    \input{figures/chapter-01/dataset-taxonomy.tex}
+    \caption[Taxonomy of datasets used]{The four fundamental dataset categories in particle physics measurements, organized along two orthogonal dimensions. The vertical axis distinguishes between natural phenomena (Nature) and computational models (Monte Carlo), while the horizontal axis separates particle-level quantities from detector-level observations. Arrows indicate the detector transfer function that maps particle-level events to their detector-level manifestations. This taxonomy provides the conceptual framework for all unfolding methods discussed in this dissertation.}
+    \label{fig:dataset-taxonomy}
+    \end{figure}
+    \subsubsection{Nature versus Monte Carlo.}
+        The vertical dimension of our classification distinguishes between natural phenomena and their simulated counterparts. Natural events represent the actual physical processes occurring in particle collisions, while Monte Carlo events are computational reproductions based on our theoretical understanding. This distinction is fundamental because only natural events contain the true physics we seek to measure, yet Monte Carlo simulations provide the controlled environment necessary to understand detector response and develop analysis techniques.
+
+Monte Carlo simulations incorporate our best theoretical knowledge, including matrix element calculations, parton shower models, and hadronization prescriptions. While these simulations can achieve remarkable fidelity to natural processes, they remain approximations subject to theoretical uncertainties and modeling assumptions. The interplay between natural and simulated events enables us to bridge the gap between theoretical predictions and experimental observations.
+
+### Particle Level versus Detector Level
+
+The horizontal dimension captures the transformation from fundamental particles to detected signals. Particle-level quantities represent the four-momenta and quantum numbers of particles immediately after the hard scattering process and subsequent decay chains, before any interaction with detector material. These quantities form the natural language of theoretical predictions and are directly calculable from quantum field theory.
+
+Detector-level quantities, in contrast, represent the actual experimental observables after particles have traversed the detector apparatus. This transformation incorporates numerous physical effects: finite spatial and energy resolution, acceptance limitations, efficiency variations, particle identification ambiguities, and reconstruction algorithms. The detector acts as a complex transfer function that irreversibly transforms the pristine particle-level distributions into the measured quantities.
+
+### The Four Dataset Categories
+
+The intersection of these two dimensions yields four fundamental dataset types:
+
+**Truth** represents nature at the particle level—the actual physical distributions we ultimately seek to measure. These distributions are never directly observable but represent the ground truth against which all measurements must be evaluated. In practice, we can only approximate truth distributions through unfolding procedures or by using high-statistics Monte Carlo samples that have been validated against data.
+
+**Data** consists of natural events after detector effects—the raw experimental observations that form the basis of all measurements. These datasets embody both the physics of interest and all instrumental effects, making them the starting point for any experimental analysis. The challenge lies in disentangling the physics content from the detector artifacts.
+
+**Generation** comprises Monte Carlo events at the particle level, providing a controlled laboratory for understanding theoretical predictions. These datasets allow us to study particle-level distributions with perfect knowledge and unlimited statistics, though they remain subject to theoretical modeling uncertainties. Generated events serve as proxies for truth in developing and validating analysis methods.
+
+**Simulation** represents Monte Carlo events processed through detailed detector modeling, creating artificial detector-level datasets with known particle-level origins. These datasets enable us to study the detector transfer function by providing matched pairs of particle-level and detector-level quantities. The fidelity of detector simulation directly impacts our ability to correct for instrumental effects.
+
+### The Detector Transfer Function
+
+The arrows in our classification diagram represent the action of the detector transfer function, mapping particle-level distributions to their detector-level counterparts. This mapping is inherently stochastic and many-to-one, incorporating both resolution effects that blur distributions and acceptance effects that create blind regions in phase space.
+
+For natural events, this transfer function represents the actual physical processes of particle interaction with detector material—ionization in tracking chambers, showering in calorimeters, and signal processing in readout electronics. For simulated events, we model these processes through programs like GEANT4 that track particles through detailed detector geometries, applying our best understanding of particle-matter interactions.
+
+The critical insight is that while we can study the transfer function through simulation, we can never know it perfectly for natural events. This fundamental limitation drives the need for data-driven validation and systematic uncertainty estimation in all unfolding procedures.
+
+### Operational Framework for Measurements
+
+In practice, these four dataset categories work in concert to enable precision measurements. Simulated samples provide the response matrix linking particle and detector levels, while control regions in data validate the simulation fidelity. Closure tests using independent Monte Carlo samples verify the unfolding procedure, and the final measurement applies these validated corrections to data to infer the underlying truth distributions.
+
+This framework implicitly assumes that the detector response is sufficiently similar between data and simulation, an assumption that must be continuously validated through auxiliary measurements and control samples. The robustness of any measurement depends critically on understanding the limitations of this assumption and properly propagating the associated systematic uncertainties.
+
+The subsequent chapters of this dissertation will repeatedly reference these four dataset categories as we develop increasingly sophisticated methods for extracting particle-level information from detector-level observations. This terminology provides the consistent language necessary for discussing the various approaches to the unfolding problem and their relative merits in different physics contexts.      
     \subsection{A note on conventions and clarity.}
          This work strives to maintain a balance between mathematical rigour and physical insight.
          %
