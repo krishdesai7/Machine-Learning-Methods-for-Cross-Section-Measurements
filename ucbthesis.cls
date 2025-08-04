@@ -93,7 +93,7 @@
 % ============================================================================
 % TABLE OF CONTENTS FORMATTING
 % ============================================================================
-\setlength{\cftchapternumwidth}{2em}
+\setlength{\cftchapternumwidth}{2.5em}
 \setlength{\cftsectionnumwidth}{3em}
 \setlength{\cftsubsectionnumwidth}{4em}
 \setlength{\cftsubsubsectionnumwidth}{5em}
@@ -273,7 +273,6 @@
 % ABSTRACT
 % ============================================================================
 \renewenvironment{abstract}{%
-  \begin{alwayssingle}
     \thispagestyle{simple}
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{\baselineskip}
@@ -293,20 +292,17 @@
     \setlength{\parskip}{.6\baselineskip}
     \vspace{.4\baselineskip}
 }{%
-  \end{alwayssingle}
 }
 
 % ============================================================================
 % DEDICATION
 % ============================================================================
 \newenvironment{dedication}{%
-  \begin{alwayssingle}
     \vspace*{\fill}
     \begin{center}
 }{%
     \end{center}
     \vfill
-  \end{alwayssingle}
 }
 
 % ============================================================================
@@ -314,13 +310,11 @@
 % ============================================================================
 \newcommand\acknowledgename{Acknowledgments}
 \newenvironment{acknowledgements}{%
-  \begin{alwayssingle}
     \begin{center}
       \large\bfseries\acknowledgename
     \end{center}
     \vspace{\baselineskip}
 }{%
-  \end{alwayssingle}
 }
 
 % ============================================================================
