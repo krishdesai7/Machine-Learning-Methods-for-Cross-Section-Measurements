@@ -67,7 +67,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
             %
             Most of these bins will contain zero events, creating a sparse matrix that renders traditional unfolding techniques numerically unstable.
             
-            \begin{proposition}[Scaling of relative uncertainty]
+            \begin{theorem}[Scaling of relative uncertainty]
                 \label{prop:relative-uncertainty}
                 Consider a \(d\)-dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\rm events}\) denote the total number of events uniformly distributed over the full measurement range.
                 %
@@ -76,7 +76,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
                     \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\rm events}}\;\prod_{i=1}^d\Delta z_i}
                 \end{equation}
                 where \(Q\) is the differential quantity (events per unit hypervolume).
-            \end{proposition}
+            \end{theorem}
                 
             \begin{proof}
                 A single histogram bin occupies hypervolume
@@ -157,72 +157,77 @@ Regularisation techniques are therefore essential to stabilise the solution.
         %
         These methods exploit the event level structure that binning destroys, preserving the full kinematic information and correlation patterns within each recorded data point.
         %
-        Instead of discretizing phase space into predetermined categories, unbinned techniques allow the data itself to determine the relevant resolution scales and correlation structures.
+        Instead of discretising phase space into predetermined categories, unbinned techniques allow the data itself to determine the relevant resolution scales and correlation structures.
         
-        Rather than explicitly modelling the response function \(r(x|z)\), modern techniques like \textsc{OmniFold}~\cite{andreassen_omnifold_2020} employ iterative reweighting strategies that learn implicit mappings between truth and detector-level distributions.
+        Rather than explicitly modelling the response function \(r(x\mid z)\), modern techniques like \textsc{OmniFold}~\cite{andreassen_omnifold_2020} employ iterative reweighting strategies that learn implicit mappings between particle level and detector level distributions.
         %
-        These methods sidestep the curse of dimensionality by avoiding explicit probability density estimation, instead focusing on weight optimization that preserves marginal distributions while respecting the detector response.
+        These methods sidestep the curse of dimensionality by avoiding explicit probability density estimation, instead focusing on weight optimisation that preserves marginal distributions while respecting the detector response.
 
-        The computational complexity shifts from matrix algebra to optimization landscapes, that scale more favourably with dimensionality.
+        The computational complexity shifts from matrix algebra to optimisation landscapes, that scale more favourably with dimensionality.
         %
-        While traditional unfolding requires inverting matrices that grow exponentially with dimension, unbinned methods typically employ gradient--based optimization that scales polynomially.
+        While traditional unfolding requires inverting matrices that grow exponentially with dimension, unbinned methods typically employ gradient based optimisation that scales polynomially.
         %
-        This trade-off exchanges the well--understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimization.
+        This trade off exchanges the well understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimization.
 
-        Yet this transition introduces new sensitivities to model and hyperparameter choices that traditional methods avoid.
+        It is important to acknowledge that this transition introduces new sensitivities to model and hyperparameter choices that traditional methods avoid.
         %
-        The implicit effect of the learning dynamics make it crucial to understand how optimization biases influence the final results.
+        The implicit effect of the learning dynamics make it crucial to understand how optimisation biases influence the final results.
         %
         These considerations establish the foundation for exploring how modern machine learning approaches navigate these challenges while preserving the statistical rigour that particle physics demands.
 
-\section{Forward and Inverse Problems in HEP}
-    The measurement process in high-energy physics experiments inherently involves two complementary mathematical challenges: the forward problem of predicting detector responses from particle-level interactions, and the inverse problem of recovering true physics distributions from observed detector measurements. These twin challenges form the conceptual foundation for understanding detector effects and developing unfolding methodologies.
+\section{Forward and inverse problems in HEP.}
+    The measurement process in high energy physics experiments inherently involves two complementary mathematical challenges: the forward problem of predicting detector responses from the theoretical understanding of particle level interactions, and the inverse problem of recovering true physics distributions from observed detector measurements.
+    %
+    These twin challenges form the conceptual foundation for understanding detector effects and developing unfolding methodologies.
 
-\subsection{Mathematical Formulation}
+\subsection{Mathematical formulation.}
 
-The relationship between particle--level truth distributions and detector--level observations is governed by the Fredholm integral equation of the first kind~\cite{fredholm_sur_1903}
+The relationship between particle level truth distributions and detector level observations is governed by the Fredholm integral equation of the first kind~\cite{fredholm_sur_1903},
+%
 \begin{equation}
-    p(x) = \int r(x|z)\,p(z) \, \dd z + \epsilon(x),
+    p(x) = \int r(x\mid z)\,p(z) \, \dd z + \epsilon(x),
 \end{equation}
-where \(p(z)\) represents the true particle--level distribution, \(r(x|z)\) is the detector response kernel encoding resolution effects and acceptance, \(p(x)\) is the observed detector-level distribution, and \(\epsilon(x)\) accounts for measurement noise~\cite{weinberg_elementary_1963}.
+where \(p(z)\) represents the true particle level distribution, \(r(x\mid z)\) is the detector response kernel encoding resolution effects and acceptance, \(p(x)\) is the observed detector level distribution, and \(\epsilon(x)\) accounts for measurement noise~\cite{weinberg_elementary_1963}.
 %
 This equation encapsulates the \emph{forward problem} when predicting \(p(x)\) given \(p(z)\), and the \textit{inverse problem} when estimating \(p(z)\) from data \(p(x)\).
 
-For discrete histogram representations, this becomes a matrix equation:
+For discrete histogram representations, this becomes a matrix equation,
 \begin{equation}
     \label{eq:forward-binned}
     \boldsymbol{\mu} = \mathbf{R}\boldsymbol{\nu} + \boldsymbol{\epsilon},
 \end{equation}
-where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and observed bin counts, respectively, and \(\mathbf{R}\) is the smearing matrix containing conditional probabilities \(R_{ij} = P(\text{observed bin } i | \text{true bin } j)\)~\cite{cms_collaboration_measurement_2011}.
+where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and observed bin counts, respectively, \(\mathbf{R}\) is the smearing matrix containing conditional probabilities, \(R_{ij} = \P(\text{observed bin } i \mid \text{true bin } j)\)~\cite{cms_collaboration_measurement_2011}, and \(\boldsymbol{\epsilon}\) is the vector of measurement noise.
 
-    \subsection{Challenges in Inverse Problems}
-        The inverse problem in HEP is fundamentally and intrinsically ill--posed.
+    \subsection{Challenges in inverse problems.}
+        The inverse problem in HEP is fundamentally and intrinsically ill posed.
         %
-        The response kernel is non--injective, i.e. different true distributions can produce identical observed distributions after detector smearing~\cite{palumbo_convergence_2025, neumaier_solving_1998}.
+        The response kernel is non-injective, i.e. different true distributions can produce identical observed distributions after detector smearing~\cite{palumbo_convergence_2025, neumaier_solving_1998, weinberg_elementary_1963}.
         %
-        Furthermore, the distributions are ill--conditioned; small measurement errors \(\boldsymbol{\epsilon}\) amplify into large fluctuations in unfolded solutions due to small singular values in \(\mathbf{R}\)~\cite{ChungA, fernandez-martinez_effect_2014, carpio_inverse_2008}.
+        and, the distributions are ill conditioned; small measurement errors \(\boldsymbol{\epsilon}\) amplify into large fluctuations in unfolded solutions due to small singular values in \(\mathbf{R}\)~\cite{ChungA, fernandez-martinez_effect_2014, carpio_inverse_2008}.
         %
-        These intrinsic challenges with inverse problems are compounded by the fact that modern analyses involve a large number of observables, making brute-force phase space discretization computationally prohibitive~\cite{arratia_optimizing_2022, gaponenko_practical_2020, chan_unbinned_2023}.
+        These challenges, intrinsic to inverse problems, are compounded by the fact that modern analyses involve a large number of observables, making brute force phase space discretisation computationally prohibitive~\cite{arratia_optimizing_2022, gaponenko_practical_2020, chan_unbinned_2023}.
+        %
+        The curse of dimensionality is particularly pronounced in high energy physics, where the number of observables can be in the tens or hundreds.
+        %
+        Addressing these challenges necessitates regularisation techniques that impose physical constraints on solutions, classic examples of which are Tikhonov regularization or iteration cutoffs before convergence, described in \cref{sec:ill-posed}.
 
-        These challenges necessitate regularization techniques that impose physical constraints on solutions, such as Tikhonov regularization or iteration cutoffs before convergence, described above.
-
-    \subsection{HEP Specific Considerations}
+    \subsection{HEP specific considerations.}
         Three aspects particularly complicate unfolding in particle physics compared to other inverse problem domains.
         %
-        First, the response matrix $\mathbf{R}$ is estimated from from detailed Monte Carlo simulations\footnote{e.g. \textsc{Pythia}~\cite{bierlich_comprehensive_2022} for hadronization, \textsc{Geant4}~\cite{allison_recent_2016} for detector physics} that encode complex, non-Gaussian systematic uncertainties through their modelling assumptions~\cite{bozson_unfolding_2018, schmitt_data_2017, blobel_unfolding_2011, Huang2025MachineTechnique}.
+        First, the response matrix \(\mathbf{R}\) is estimated from from detailed Monte Carlo simulations\footnote{E.g., \textsc{Pythia}~\cite{bierlich_comprehensive_2022} for hadronisation, \textsc{Geant4}~\cite{allison_recent_2016} for detector physics.} that encode complex, non-Gaussian systematic uncertainties through their modelling assumptions~\cite{bozson_unfolding_2018, schmitt_data_2017, blobel_unfolding_2011, Huang2025MachineTechnique}.
 
-        Second, detector response models contain hundreds to thousands of correlated nuisance parameters—including jet energy scale, b--tagging efficiencies, and pile--up effects-—that must be profiled or marginalized alongside the unfolding procedure~\cite{zhu2024multidimensional, Dorigo2020DealingReview, cranmer_histfactory_2012, ke_recent_2023}.
+        Second, detector response models contain hundreds to thousands of correlated nuisance parameters—including jet energy scale, \(b-\)tagging efficiencies, and pile up effects—that must be profiled or marginalised alongside the unfolding procedure~\cite{zhu2024multidimensional, Dorigo2020DealingReview, cranmer_histfactory_2012, ke_recent_2023}.
 
         Finally, the discrete nature of particle counting combined with highly variable event rates across phase space creates a challenging statistical landscape where Poisson uncertainties dominate in tails and signal regions, while Gaussian approximations may be valid elsewhere~\cite{kuusela_shape-constrained_2017, conrad_including_2003, giovanni_multi-dimensional_2010, from_new_2020}.
 
         A representative unfolding example is differential jet substructure measurements, where detector effects smear the true distribution of observables like jet mass or \(N-\)subjettiness.
         %
-        The forward problem involves simulating jets through hadronization models and detector response, producing a migration matrix that relates true and reconstructed substructure observables.
+        The forward problem involves simulating jets through hadronisation models and detector response, producing a migration matrix that relates true and reconstructed substructure observables.
         %
-        The inverse problem requires unfolding these observables from reconstructed jets while accounting for correlated uncertainties in jet energy scale, angular resolution, and pile-up contamination~\cite{zardoshti_investigating_2017}.
+        The inverse problem requires unfolding these observables from reconstructed jets while accounting for correlated uncertainties in jet energy scale, angular resolution, and pile up contamination~\cite{zardoshti_investigating_2017}.
 
         Similar challenges arise in unfolding differential cross sections as functions of transverse momentum, rapidity, or invariant mass, where detector acceptance and resolution vary significantly across the measurement range~\cite{gardi_statistics_2015}.
-\section{Historical development: From matrix inversion to modern approaches}
+\section{Historical development: From matrix inversion to modern approaches.}
 \label{sec:ill-posed}
     The problem of unfolding has a rich history in high energy physics, with methods evolving alongside computational capabilities and statistical sophistication.
     %
@@ -230,43 +235,43 @@ where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and obse
 
     As measurements became more precise, regularised matrix inversion techniques emerged as the standard approach.
     %
-    These methods discretise both the particle--level and detector--level distributions into bins, relating them through a response matrix \(\mathbf{R}_{ij}\) that describes the probability for an event in particle--level bin \(j\) to be observed in detector--level bin \(i\).
+    These methods discretise both the particle level and detector level distributions into bins, relating them through a response matrix \({R}_{ij}\) that describes the probability for an event in particle level bin \(j\) to be observed in detector level bin \(i\).
     %
     In component form, \cref{eq:forward-binned} can be written as
     \begin{equation}
-        \mu_i = \sum_j R_{ij} \nu_{j},
+        \mu_i = \sum_j R_{ij} \nu_{j} + \epsilon_i,
     \end{equation}
 
-    where \(\mu_{i}\) is the expected number of counts in detector--level bin \(i\) and \(\nu_{j}\) is the expected number of events in particle--level bin $j$.
+    where \(\mu_{i}\) is the expected number of counts in detector level bin \(i\), \(\nu_{j}\) is the expected number of events in particle level bin \(j\), and \(\epsilon_i\) is the measurement noise in detector level bin \(i\).
     %
     Naively, one might attempt to solve this system by simply inverting the response matrix:
     \begin{equation}
-        \nu_j = \sum_i (R^{-1})_{ji} \mu_i
+        \nu_j = \sum_i R^{-1}_{ji}\,\mu_i
     \end{equation}
-    However, this direct inversion leads to wildly oscillating solutions with large variances---a manifestation of the ill-posed nature of the unfolding problem.
+    However, this direct inversion leads to wildly oscillating solutions with large variances---a manifestation of the ill posed nature of the unfolding problem.
     %
-    Additionally, \(R\) need not, and often is not, a square matrix.
-    %
+    Additionally, \(\mathbf{R}\) need not, and often is not, a square matrix, and so \emph{the} inverse is not even well defined.
+    
     To address this issue, a series of techniques were developed to invert \cref{eq:forward-binned} by imposing additional constraints.
     \begin{itemize}
-    \item \textbf{Iterative Bayesian unfolding}~\cite{richardson_bayesian-based_1972, lucy_iterative_1974, Schmitt2017DataPhysics}: (also known as Lucy--Richardson deconvolution). Uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularization strength.
+    \item \textbf{Iterative Bayesian unfolding}~\cite{richardson_bayesian-based_1972, lucy_iterative_1974, Schmitt2017DataPhysics}: (also known as Lucy--Richardson deconvolution). Uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularisation strength.
     \item \textbf{SVD unfolding}~\cite{hocker_svd_1996}: Applies singular value decomposition to the response matrix and suppresses contributions from small singular values that amplify statistical fluctuations.
-    \item \textbf{TUnfold}~\cite{schmitt_tunfold_2012}: Formulates unfolding as a least-squares problem with Tikhonov regularization to penalize large second derivatives, preserving smoothness.
+    \item \textbf{TUnfold}~\cite{schmitt_tunfold_2012}: Formulates unfolding as a least squares problem with Tikhonov regularization to penalise large second derivatives, preserving smoothness.
     \end{itemize}
 
-These methods have served the field well for decades, particularly for one--dimensional measurements where binning is manageable.
+These methods, which will be discussed in more detail in \cref{sec:binned-methods}, have served the field well for decades, particularly for one dimensional measurements where binning is manageable.
 %
-However, they all share the common limitation of requiring discretization of the underlying distributions, which becomes increasingly problematic as measurements probe higher--dimensional spaces and more complex observables.
+However, they all share the common limitation of requiring discretisation of the underlying distributions, which becomes increasingly problematic as measurements probe higher dimensional spaces and more complex observables.
 
 
 \section{Traditional unfolding methods in experimental analyses.}
 \label{sec:binned-methods}
-Traditional unfolding methods form the bedrock of detector corrections in high-energy physics (HEP), balancing statistical rigour with computational practicality.
+Traditional unfolding methods form the bedrock of detector corrections in high energy physics, balancing statistical rigour with computational practicality.
 %
 This section provides an overview of established techniques, their mathematical foundations, implementation nuances, and limitations.
 
 \subsection{Bin by bin correction.}  
-The simplest unfolding approach applies multiplicative correction factors to observed bin counts:  
+The simplest unfolding approach applies multiplicative correction factors to observed bin counts.
 \begin{equation}
     \hat{\nu}_j = \frac{\mu_j - b_j}{C_j}, \quad C_j = \frac{\nu^{\text{MC}}_j}{\mu^{\text{MC}}_j},
 \end{equation}  
