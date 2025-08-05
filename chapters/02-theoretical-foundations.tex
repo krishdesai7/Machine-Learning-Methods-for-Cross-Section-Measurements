@@ -23,9 +23,9 @@ The goal of unfolding is to invert the forward problem and estimate the Truth, \
 Mathematically, this requires solving
 \begin{equation}
     \label{eq:inverse-problem}
-    p(z) = \int r^{-1}(z|x) \;p_{\text{measured}}(x) \, \dd x,
+    p(z) = \int r^{-1}(z|x) \;p(x) \, \dd x,
 \end{equation}
-where \(r^{-1}(z|x)\) represents the inverse response kernel.
+where \(r^{-1}(z\mid x)\) represents the inverse response kernel.
 %
 However, this inversion is ill posed because small fluctuations in \(p(x)\) can lead to large variations in \(p(z)\)~\cite{2005InverseMeasurements}.
 %
@@ -167,7 +167,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
         %
         While traditional unfolding requires inverting matrices that grow exponentially with dimension, unbinned methods typically employ gradient based optimisation that scales polynomially.
         %
-        This trade off exchanges the well understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimization.
+        This trade off exchanges the well understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimisation.
 
         It is important to acknowledge that this transition introduces new sensitivities to model and hyperparameter choices that traditional methods avoid.
         %
@@ -209,7 +209,7 @@ where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and obse
         %
         The curse of dimensionality is particularly pronounced in high energy physics, where the number of observables can be in the tens or hundreds.
         %
-        Addressing these challenges necessitates regularisation techniques that impose physical constraints on solutions, classic examples of which are Tikhonov regularization or iteration cutoffs before convergence, described in \cref{sec:ill-posed}.
+        Addressing these challenges necessitates regularisation techniques that impose physical constraints on solutions, classic examples of which are Tikhonov regularisation or iteration cut-offs before convergence, described in \cref{sec:ill-posed}.
 
     \subsection{HEP specific considerations.}
         Three aspects particularly complicate unfolding in particle physics compared to other inverse problem domains.
@@ -253,11 +253,11 @@ where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and obse
     Additionally, \(\mathbf{R}\) need not, and often is not, a square matrix, and so \emph{the} inverse is not even well defined.
     
     To address this issue, a series of techniques were developed to invert \cref{eq:forward-binned} by imposing additional constraints.
-    \begin{itemize}
-    \item \textbf{Iterative Bayesian unfolding}~\cite{richardson_bayesian-based_1972, lucy_iterative_1974, Schmitt2017DataPhysics}: (also known as Lucy--Richardson deconvolution). Uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularisation strength.
-    \item \textbf{SVD unfolding}~\cite{hocker_svd_1996}: Applies singular value decomposition to the response matrix and suppresses contributions from small singular values that amplify statistical fluctuations.
-    \item \textbf{TUnfold}~\cite{schmitt_tunfold_2012}: Formulates unfolding as a least squares problem with Tikhonov regularization to penalise large second derivatives, preserving smoothness.
-    \end{itemize}
+    \begin{description}
+    \item[Iterative Bayesian unfolding~\cite{richardson_bayesian-based_1972, lucy_iterative_1974, Schmitt2017DataPhysics}], also known as Lucy--Richardson deconvolution, uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularisation strength.
+    \item[SVD unfolding~\cite{hocker_svd_1996}] applies singular value decomposition to the response matrix and suppresses contributions from small singular values that amplify statistical fluctuations.
+    \item[TUnfold~\cite{schmitt_tunfold_2012}] formulates unfolding as a least squares problem with Tikhonov regularisation to penalise large second derivatives, preserving smoothness.
+    \end{description}
 
 These methods, which will be discussed in more detail in \cref{sec:binned-methods}, have served the field well for decades, particularly for one dimensional measurements where binning is manageable.
 %
@@ -279,14 +279,14 @@ where \(\mu_j\) is the observed count in bin \(j\), \(b_j\) the estimated backgr
 
 This method has the advantage of being computationally trivial, with no bin--to--bin correlations.
 %
-However, it fails to account for a non--diagonal response matrix (\(\exists i \neq j: \mathbf{R}_{ij} \ne 0)\).
+However, it fails to account for a non--diagonal response matrix (\(\exists i \neq j\;R_{ij} \ne 0)\).
 %
 This is illustrated most dramatically by the observation that biases persist even with \(C_j \rightarrow 1\) due to ignored cross--bin migrations~\cite{cowan_topics_2010}.
 
-Used primarily in early LHC analyses\footnote{e.g., ATLAS~\cite{aad_measurement_2011, noauthor_implications_nodate} jet cross-sections}, bin--by--bin correction remains viable only for coarse binnings with negligible migration (\(<5\%\)~\cite{cms_collaboration_measurement_2011}) between adjacent bins.
+Used primarily in early LHC analyses\footnote{e.g., ATLAS~\cite{aad_measurement_2011, noauthor_implications_nodate} jet cross-sections}, bin--by--bin correction remains viable only for coarse binnings with negligible migration (\(\lesssim 5\%\)~\cite{cms_collaboration_measurement_2011}) between adjacent bins.
 
 \subsection{Matrix Inversion}  
-When \(n_{\text{bins, truth}} = n_{\text{bins, reco}}\), the response matrix $\mathbf{R}$ is square.
+When \(n_{\text{bins, Gen.}} = n_{\text{bins, Sim.}}\), the response matrix $\mathbf{R}$ is square.
 %
 Formally one can write an unfolded solution as  
 \begin{equation}
@@ -294,7 +294,7 @@ Formally one can write an unfolded solution as
 \end{equation}  
 and even propagate the covariance as  
 \begin{equation}
-    V_{\hat{\boldsymbol{\nu}}} = \mathbf{R}^{-1} V_{\vb*{\mu}} (\mathbf{R}^{-1})^T.
+    \Sigma_{\hat{\boldsymbol{\nu}}} = \mathbf{R}^{-1}\Sigma_{\vb*{\mu}} (\mathbf{R}^{-1})^T.
 \end{equation}  
 However, in practice, direct inversion is highly pathological.
 %
@@ -308,195 +308,287 @@ The condition number measures how much a perturbation in the measured counts $\d
 %
 The large condition number amplifies statistical fluctuations~\cite{belsley_regression_2005, pesaran_time_2015}.
 %
-Further, unphysical solutions such as negative bin count values can arise from noise--dominated eigenvectors.
+Further, unphysical solutions such as negative bin count values can arise from noise dominated eigenvectors.
 
-Methods have been suggested to control this variance, such as Truncated SVD~\cite{deng_fast_2024}, involving discard singular values \(\sigma_i < \lambda_{\text{cut}}\)~\cite{TruncatedSVDDocumentation}, and Wiener-SVD~\cite{tang_data_2017}, a frequency--domain filtering method to maximize signal--to--noise ratio~\cite{zaroubi_wiener_1995}.
+Methods have been suggested to control this variance, such as Truncated SVD~\cite{deng_fast_2024}, involving discard singular values \(\sigma_i < \lambda_{\text{cut}}\)~\cite{TruncatedSVDDocumentation}, and Wiener--SVD~\cite{tang_data_2017}, a frequency domain filtering method to maximise signal--to--noise ratio~\cite{zaroubi_wiener_1995}.
 %
-Despite this, matrix inversion's instability limits its utility.
+Despite these proposals, matrix inversion's instability limits its utility.
 
-\subsection{Iterative Bayesian unfolding}
-Bayesian methods regularize through prior distributions \(p(z)\), yielding posterior estimates:  
+\subsection{Iterative Bayesian unfolding.}
+
+Bayesian methods regularise through prior distributions \(p(z)\), yielding posterior estimates.
+
 \begin{equation}
-    p({z}|{x}) \propto \mathcal{L}({x}|{z})p({z})
+    p(z\mid x ) \propto \mathcal{L}(x \mid z )\,p(z)
 \end{equation}  
-Common priors include uniform priors, entropy maximization \(p(z) \propto \exp(-\sum z_j \log z_j)\)~\cite{maeda_new_2013} and Gaussian processes enforcing smoothness~\cite{bozson_unfolding_2018}.
+
+The initial guess \(\boldsymbol{\nu}^{(0)}\) biases the solution.
+%
+Common priors include Generation, \(\boldsymbol{\nu}_{\text{MC}}\), a uniform distribution, and data driven backwards folding \(\mathbf{R}^T \vb*{\mu}\).
+%
+The entropy maximisation prior, \(p(z) \propto \exp(-\sum z_j \ln z_j)\)~\cite{maeda_new_2013} and Gaussian processes for enforcing smoothness~\cite{bozson_unfolding_2018} have also been proposed as suitable priors for IBU.
 %
 These provide natural uncertainty quantification but suffer from high computational cost, scaling poorly with dimensionality~\cite{cowan_bayesian_2007},sensitivity to prior misspecification, especially in low-statistics regions~\cite{cowan_bayesian_2006}, and difficulty interpreting credible intervals as frequentist coverage~\cite{james_statistics_2004}.
 
-IBU, also known as Lucy Richardson deconvolution or D'Agostini iterative unfolding~\cite{dagostini_improved_2010} is an expectation maximization (EM) algorithm iteratively updates truth estimates
-\begin{equation}
-    \nu_j^{(k+1)} = \nu_j^{(k)} \sum_{i=1}^{N_{\text{Data}}} \frac{R_{ij}\; \mu_i}{\sum_{l=1}^{N_{\text{Truth}}} R_{il} \;\nu_l^{(k)}}
-\end{equation}  
+IBU, also known as Lucy--Richardson deconvolution or D'Agostini iterative unfolding~\cite{dagostini_improved_2010} is an expectation maximization (EM) algorithm iteratively updates truth estimates through the procedure described in \cref{alg:ibu}.
 
-This method regularises via early stopping, by terminating at \(k \sim 4-6\) iterations before noise amplification~\cite{fish_blind_1995, shepp_maximum_1982}.
+\begin{algorithm}
+\caption{Iterative Bayesian unfolding (Richardson--Lucy deconvolution/ D'Agostini iteration)}
+\label{alg:ibu}
+\begin{algorithmic}[1]
+\algospacing
+\Require Response matrix $R_{ij}$,\\
+  \hspace*{1em} histogram counts of Data, $\mu_i$,\\
+  \hspace*{1em} initial estimate $\nu_j^{(0)}$,\\
+  \hspace*{1em} \# iterations $K$,\\
+  \hspace*{1em} \# bins $N_{\mathrm{Sim.}}$, $N_{\mathrm{Gen.}}$
+\Ensure Unfolded (Truth) distribution $\nu_j^{(K)}$
+\For{$k \leftarrow 0$ \textbf{to} $K-1$}
+  \For{$j \leftarrow 1$ \textbf{to} $N_{\mathrm{Gen.}}$}
+    \State
+    \[
+      \nu_j^{(k+1)} \leftarrow
+      \nu_j^{(k)} \sum_{i=1}^{N_{\mathrm{Sim.}}}
+        \frac{R_{ij}\,\mu_i}
+             {\displaystyle \sum_{\ell=1}^{N_{\mathrm{Gen.}}}R_{i\ell}\,\nu_{\ell}^{(k)}}
+    \]
+  \EndFor
+  \State \Comment{Normalisation to enforce $\sum_j \nu_j = 1$}
+  \For{$j \leftarrow 1$ \textbf{to} $N_{\mathrm{Gen.}}$}
+    \State $\displaystyle
+      \nu_j^{(k+1)} \leftarrow
+      \frac{\nu_j^{(k+1)}}{\sum_{m=1}^{N_{\mathrm{Gen.}}}\nu_{m}^{(k+1)}}
+    $
+  \EndFor
+\EndFor
+\State \Return{$\qty{\nu_j^{(K)}}_{j=1}^{N_{\mathrm{Gen.}}}$}
+\end{algorithmic}
+\end{algorithm}
+
+This method regularises via early stopping, by terminating at \(K \sim 4-6\) iterations before noise amplification~\cite{fish_blind_1995, shepp_maximum_1982}.
+
+While computationally efficient, this approach lacks objective stopping criteria, requiring heuristic cross--validation~\cite{cowan_survey_2002} and underestimates uncertainties due to ignored iteration dependent covariance~\cite{cowan_statistical_1998}.
 %
-The initial guess \(\boldsymbol{\nu}^{(0)}\) biases the solution.
-%
-Some common choices include Generation \(\boldsymbol{\nu}_{\text{MC}}\), a uniform distribution, and data driven backwards folding \(\mathbf{R}^T \vb*{\mu}\).
+IBU is dominant in LHC analyses\footnote{E.g., differential jet substructure measurements~\cite{atlas_collaboration_measurement_2024}} because it balances simplicity, interpretability and computational efficiency with accuracy.
 
- While computationally efficient, this approach lacks objective stopping criteria, requiring heuristic cross--validation~\cite{cowan_survey_2002} and underestimates uncertainties due to ignored iteration dependent covariance~\cite{cowan_statistical_1998}.
-
-IBU is dominant in LHC analyses\footnote{e.g. differential jet substructure measurements~\cite{atlas_collaboration_measurement_2024}} because it balances simplicity with moderate-dimensional phase spaces (\(N_{\text{Truth}} \leq 20\)).
-
-\subsection{Tikhonov Regularization}  
-Tikhonov regularization is a penalized least--squares minimization method
+\subsection{Tikhonov Regularisation}  
+Tikhonov regularisation is a penalised least--squares minimisation method
 \begin{equation}
     \hat{\boldsymbol{\nu}} =\underset{\boldsymbol{\nu}}{\arg\min} \left[ ||\vb*{\mu} - \mathbf{R}\boldsymbol{\nu}||^2 + \lambda ||\mathbf{L}(\boldsymbol{\nu} - \boldsymbol{\nu}_0)||^2 \right]
 \end{equation}  
-where \(\mathbf{L}\) is typically the discrete curvature operator\footnote{e.g. discrete second derivatives} and \(\boldsymbol{\mu}_0\) a prior estimate~\cite{cowan_topics_2009} that anchors solutions to MC predictions.
+where \(\mathbf{L}\) is typically the discrete curvature operator\footnote{E.g., discrete second derivatives.} and \(\boldsymbol{\mu}_0\) a prior estimate~\cite{cowan_topics_2009} that anchors solutions to MC predictions.
 %
-L-curve optimization balances the residual norm against the solution norm to choose \(\lambda\)~\cite{cowan_highlights_2011}.
+L--curve optimisation balances the residual norm against the solution norm to choose \(\lambda\)~\cite{cowan_highlights_2011}.
 %
-The choice of \(\lambda\) sets the bias variance trade-off.
+The choice of \(\lambda\) sets the bias variance trade off.
 %
 \(\lambda \rightarrow 0\) represents the high variance, low bias limit and \(\lambda \rightarrow \infty (\implies \hat{\boldsymbol{\nu}} \rightarrow \boldsymbol{\nu}_0)\) represents the low variance, high bias limit.
 %
-This method is implemented through the TUnfold package, which also provides automated \(\lambda\) tuning via global correlation minimization~\cite{schmitt_tunfold_2012}.
+This method is implemented through the TUnfold package, which also provides automated \(\lambda\) tuning via global correlation minimisation~\cite{schmitt_tunfold_2012}.
 %
-However this method struggles with non-differentiable features like threshold effects due to biased curvature penalties, and require ad hoc \(\lambda\) selection via L--curve curvature maximization.
+However Tikhonov regularisation struggles with non-differentiable features like threshold effects due to biased curvature penalties, and requires \textit{ad hoc} \(\lambda\) selection via L--curve curvature maximisation.
 
-\begin{note}{The RooUnfold package~\cite{adye_unfolding_2011} provides implemetations of bin--bin--bin corrections, matrix inversion, IBU, SVD, and TUnfold.}
+\begin{note}
+    The RooUnfold package~\cite{adye_unfolding_2011} provides implementations of bin--bin--bin corrections, matrix inversion, IBU, SVD, and TUnfold.
 \end{note}
-\subsection{Template Fitting}  
-Template fitting is a method suitable in cases where \(N_{\text{Data}} \gg N_{\text{Truth}}\).
+\subsection{Template fitting.}  
+Template fitting is a method suitable in cases where \(N_{\text{Sim.}} \gg N_{\text{Gen.}}\).
 %
-In this case, one can construct detector--level templates for each truth bin:  
+In this case, one can construct detector level templates for each particle level bin. 
 \begin{equation}
-    \mu_i = \sum_{j=1}^{N_{\text{Truth}}} R_{ij} \nu_j + b_i
+    \mu_i = \sum_{j=1}^{N_{\text{Gen.}}} R_{ij} \nu_j + b_i
 \end{equation}  
-with \(\chi^2\) minimization:  
+with \(\chi^2\) minimisation:  
 \begin{equation}
-    \chi^2 = \sum_{i=1}^{N_{\text{Data}}} \frac{(\mu_i - \sum_j R_{ij}\nu_j - b_i)^2}{\sigma_i^2}
+    \chi^2 = \sum_{i=1}^{N_{\text{Sim.}}} \frac{(\mu_i - \sum_j R_{ij}\nu_j - b_i)^2}{\sigma_i^2}
 \end{equation}  
 
-The solution then is overconstrained, since we leverage \(N_{\text{Data}}/N_{\text{Truth}} \sim 2-3\) for stability~\cite{britzger_linear_2022}.
+The solution then is over-constrained through the use of \(\nicefrac{N_{\text{Sim.}}}{N_{\text{Gen.}}} \sim 2-3\) for stability~\cite{britzger_linear_2022}.
 %
-Nuisance parameters are systematically modelled via template morphing~\cite{baak_interpolation_2015}.
+Nuisance parameters are systematically modelled in this approach via template morphing~\cite{baak_interpolation_2015}.
+
+Template fitting requires dense detector level binning, which inflates statistical uncertainties.
 %
-Template fitting requires dense detector-level binning, which inflates statistical uncertainties. Template fitting is commonly used in Higgs coupling measurements where broad mass resolutions necessitate wide truth bins.
-\subsection{Regularized Poisson Likelihood}  
-For low-statistics regions, \cite{gaponenko_practical_2020} advocates minimizing
+This method is commonly used in Higgs coupling measurements where broad mass resolutions necessitate wide truth bins.
+
+\subsection{Regularised Poisson likelihood.}  
+For low statistics regions, \cite{gaponenko_practical_2020} advocates minimising
 \begin{equation}
-     -\log \mathcal{L}(x\,|\,z) + \lambda S(z)
+     -\log \mathcal{L}(x\,|\,z) + \lambda S(z).
 \end{equation}  
-\(S(z)\) penalizes non monotonicity in sharply falling spectra.
-%
-Using cubic B--splines with entropy regularization, this method avoids binning artifacts through continuous representations~\cite{gaponenko_practical_2020}.
-%
-However, it requires careful basis function placement to prevent endpoint spikes~\cite{fan_analysis_2022} and demands specialized optimization protocols (e.g., cooling schedules for \(\lambda\)~\cite{jia_sparse_2019}).
 
-    \subsection{Summary}  
-        \input{tables/2-1.tex}
-        Tab.~\ref{tab:binned-comp} summarizes the strengths and limitations of the methods discussed above.
-        %
-        These limitations motivated the use of machine learning in unfolding, a transition explored in subsequent sections.
-        %
-        However, traditional methods remain indispensable for validation and low--dimensional precision measurements where interpretability is crucial.
-        
-        \subsection{Regularization: Need, Approaches, and Limitations}
-        The inherent ill--posedness of unfolding necessitates regularization to stabilize solutions against statistical fluctuations while preserving physical meaning.
-        %
-        This section systematically examines the theoretical justification for regularization, surveys dominant methodologies, and critically evaluates their limitations in high energy physics applications.
-        
-        \subsubsection{The Necessity of Regularization}  
-         As discussed earlier, unfolding inverse problems in HEP exhibit pathological characteristics that demand regularization.
-        %
-        Regularization counteracts these issues by introducing prior knowledge about \(p(z)\), typically favouring smoothness or similarity to Monte Carlo (MC) predictions.
-        %
-        However, as Zech and Bohm emphasise in~\cite{Bohm2025IntroductionPhysicists}, this unavoidably discards information---regularized solutions cannot resolve features finer than the detector resolution or distinguish theories predicting distributions within the regularization bias.
-        
-        Early termination (typically \(k \sim 4-6\)) acts as implicit regularization by preventing overfitting~\cite{multhei_iterative_1987}.
+\(S(z)\) penalises non monotonicity in sharply falling spectra.
+%
+Using cubic B--splines with entropy regularisation, this method avoids binning artifacts through continuous representations~\cite{gaponenko_practical_2020}.
+%
+However, it requires careful basis function placement to prevent endpoint spikes~\cite{fan_analysis_2022} and demands specialised optimization protocols (e.g., cooling schedules for \(\lambda\)~\cite{jia_sparse_2019}).
 
-    \subsubsection{Limitations and practical challenges}  
-        \paragraph{Subjectivity-objectivity trade-off}  
-            All regularization methods inject subjective choices---smoothness scales, prior distributions, stopping criteria and so on—--that bias results.
+    \subsection{Summary.}  
+        \input{tables/2-1}
+        \cref{tab:binned-comp} summarises the properties and limitations of the methods discussed above.
+        %
+        These limitations motivate the use of machine learning in unfolding, a transition explored in subsequent sections.
+        %
+        However, traditional methods remain indispensable for validation and low dimensional precision measurements where interpretability is crucial.
+        
+\section{Regularisation: Need, approaches, and limitations.}
+    The inherent ill posedness of unfolding necessitates regularisation to stabilise solutions against statistical fluctuations while preserving physical meaning.
+    %
+    This section systematically examines the theoretical justification for regularisation, surveys dominant methodologies, and critically evaluates their strengths and limitations in high energy physics applications.
+        
+    \subsection{Necessity.}  
+         As discussed earlier, inverse problems in HEP exhibit pathological characteristics that demand regularisation.
+        %
+        Regularisation counteracts unphysical variance by introducing prior knowledge about \(p(z)\), typically favouring smoothness or similarity to Monte Carlo predictions.
+        %
+        However, this unavoidably discards information---regularised solutions cannot resolve features finer than the detector resolution or distinguish theories predicting distributions within the regularisation bias~\cite{Bohm2025IntroductionPhysicists,multhei_iterative_1987}.
+
+    \subsection{Limitations and practical challenges.}  
+        \subsubsection{Subjectivity--objectivity trade off.}  
+            All regularisation methods inject subjective choices---smoothness scales, prior distributions, stopping criteria and so on—--that bias results.
             %
-            This trade--off reveals a deeper epistemological issue: regularization transforms the question from ``what does the data show?" to ``what does the data show given our assumptions about smoothness?"
-            %
-            While Zech~\cite{zech_regularization_2011} and Kuusela~\cite{kuusela_uncertainty_2016} argue for publishing unregularized results alongside regularized ones, this approach, though transparent, may be insufficient.
-            %
-            The unregularized results often contain artifacts that obscure physical interpretation, and a well chosen regularization scheme can eliminate solutions that are patently unphysical.
+            This trade off reveals a deeper epistemological issue: regularisation transforms the question from ``what does the data show?'' to ``what does the data show given our assumptions about smoothness?''
             
-            A more nuanced approach would involve explicitly testing regularization assumptions against physical models where possible, and developing domain--specific regularization schemes that incorporate known physical constraints rather than generic smoothness priors.
+            While \cite{zech_regularization_2011,kuusela_uncertainty_2016} argue for publishing unregularised results alongside regularised ones, this approach, though transparent, may be insufficient.
             %
-            This would shift the subjectivity from mathematical convenience to physics--informed choices, making the trade--offs more scientifically meaningful rather than purely computational.
+            The unregularised results often contain artifacts that obscure physical interpretation, and a well chosen regularisation scheme can eliminate solutions that are patently unphysical.
+            
+            A more nuanced approach would involve explicitly testing regularisation assumptions against physical models where possible, and developing domain specific regularisation schemes that incorporate known physical constraints rather than generic smoothness priors.
+            %
+            This would shift the subjectivity from mathematical convenience to physics informed choices, making the trade offs more scientifically meaningful rather than purely computational.
 
-        \paragraph{High dimensional regimes}  
-            Traditional methods fail catastrophically in \(d \gtrsim 4\) phase spaces for multiple reasons.
+        \subsubsection{High dimensional regimes.}  
+            Traditional methods fail catastrophically in \(d \gtrsim 4\) phase spaces and struggle even before that for multiple reasons.
             %
             Binned approaches require \(n^d\) histogram bins struggling to effectively sample an increasingly sparse phase space, are shown in \cref{subsubsec:binned-methods}.
             %
-            Global smoothness assumptions become untenable for multi--scale features~\cite{fernandez-martinez_curse_2020, xia_bayesian_2022, hocker_svd_1996} straining regularization methods that rely on them. 
+            Global smoothness assumptions become untenable for multi--scale features~\cite{fernandez-martinez_curse_2020, xia_bayesian_2022, hocker_svd_1996} straining regularisation methods that rely on them. 
 
             As the number of dimensions increases, the binning also increasingly distorts error propagation. 
             %
-            Bayesian credible intervals can exhibit poor frequentist coverage, as shown Fig. 4 of~\cite{Zhang2006AIntervals},~\cite{eberly_estimating_2003, szabo_frequentist_2015}, and correlated systematic uncertainties\footnote{e.g., jet energy scale} introduce non--convex likelihoods~\cite{berger_simplified_2023, Berger2017LectureATLAS}.
+            Bayesian credible intervals can exhibit poor frequentist coverage, as shown Fig. 4 of~\cite{Zhang2006AIntervals} and as argued in~\cite{eberly_estimating_2003, szabo_frequentist_2015}, and correlated systematic uncertainties\footnote{E.g., jet energy scale.} introduce non-convex likelihoods~\cite{berger_simplified_2023, Berger2017LectureATLAS} that strain inference methods.
 
-        \paragraph{Spectrum dependent biases}  
-            Sharply falling spectra\footnote{e.g., proton momentum in~\cite{arnison_transverse_1982}} exacerbate regularization artifacts~\cite{gaponenko_practical_2020}.
+        \paragraph{Spectrum dependent biases.}  
+            Sharply falling spectra\footnote{E.g., proton momentum in~\cite{arnison_transverse_1982}.} exacerbate regularisation artifacts~\cite{gaponenko_practical_2020}.
             %
             Entropic priors overweight high\(-z\) regions, distorting tails~\cite{caticha_entropic_2004, rodriguez_entropic_2002, Handley2019Maximum-EntropyDistribution, brewer_entropic_2009},
             %
-            finite sample sizes truncate measurable phase space, creating cutoff--induced spikes~\cite{finotello_functional_2025, marchand_bayesian_2012},
+            finite sample sizes truncate the measurable phase space, creating cutoff--induced spikes~\cite{finotello_functional_2025, marchand_bayesian_2012},
             %
-            and curvature penalties conflict with natural spectral shapes, requiring physics--informed regularization strategies~\cite{lee_explicit_2023, moosavi-dezfooli_robustness_2018, zech_analysis_2016, Baron2020ExtendingMethod}.  
+            and curvature penalties conflict with natural spectral shapes, requiring physics informed regularisation strategies~\cite{lee_explicit_2023, moosavi-dezfooli_robustness_2018, zech_analysis_2016, Baron2020ExtendingMethod}.  
 
         Recent advances aim to mitigate these limitations in various ways.
         %
-        For example, adversarial regularization involves training discriminators to enforce physical consistency rather than explicit smoothness\~cite{Terjek2019AdversarialRegularization}.
+        For example, adversarial regularisation involves training discriminators to enforce physical consistency rather than explicit smoothness~\cite{Terjek2019AdversarialRegularization}.
         %
-        Differentiable unfolding methods embed detector response in neural networks enabling gradient--based \(\lambda\) optimization~\cite{delaRosa2020DifferentiableAnalysis}.
+        Differentiable unfolding methods embed the detector response in neural networks enabling gradient based \(\lambda\) optimisation~\cite{delaRosa2020DifferentiableAnalysis}.
+        
+        However, no universal solution exists, and the choice of regularisation must align with analysis specific priorities.
         %
-        However, no universal solution exists.
-        %
-        The choice of regularization must align with analysis--specific priorities,
-        %
-        As detector granularity increases, developing dimension--agnostic regularization schemes remains an open challenge requiring collaboration between statisticians and physicists.
-\section{Unbinned Methods: Statistical Considerations}  
-    The evolution from binned to unbinned unfolding methodologies represents a paradigm shift in high--energy physics, driven by the need to preserve fine--grained kinematic information while managing the statistical and computational complexities of high-dimensional phase spaces.
+        As detector granularity increases, developing dimension agnostic regularisation schemes remains an open challenge requiring collaboration between statisticians and physicists to design methods that are statistically sound and suitable for the physics being analysed.
+        
+\section{Unbinned methods: statistical considerations.}  
+    The evolution from binned to unbinned unfolding methodologies represents a paradigm shift in high energy physics, driven by the need to preserve fine grained kinematic information while managing the statistical and computational complexities of high dimensional phase spaces.
     %
     This section systematically analyses the theoretical foundations, practical challenges, and performance trade-offs that this transition entails.
-    \subsection{Principles and Implementations}
-        The unbinned approach to unfolding represents a fundamental shift from traditional histogram--based methods.
+    \subsection{Principles and implementations.}
+        The unbinned approach to unfolding represents a fundamental shift from traditional histogram based methods.
         %
-        Rather than discretising data into bins, unbinned unfolding preserves the complete kinematic information by operating directly on individual event tuples \(\{(z_1, x_1), ..., (z_N, x_N)\}\) where each \(z_i\) represents a particle--level event and \(x_i\) its corresponding detector--level measurement.
+        Rather than discretising data into bins, unbinned unfolding preserves the complete kinematic information in the data by operating directly on individual event tuples \(\{(z_1, x_1), ..., (z_N, x_N)\}\) where each \(z_i\) represents a particle level event and \(x_i\) its corresponding detector level measurement.
         %
-        This approach eliminates information loss from binning and naturally handles high--dimensional phase spaces where binning becomes prohibitive.
+        This approach eliminates information loss from binning and naturally handles high dimensional phase spaces where binning becomes prohibitive.
 
-        The central goal of one class of unbinned unfolding methods is to estimate a reweighting function \(w(z)\) that transforms the particle--level Monte Carlo distribution, referred to as \emph{generation} (Gen.) to match the underlying truth that was forward folded into the data.
-        %
-        Formally, this function satisfies:
-        \begin{equation}
-            p(z) = w(z) \cdot q(z),
-        \end{equation}
-        where \(q(z)\) is the distribution of the generation.
+        
 
         Modern unbinned methods leverage machine learning techniques, particularly those designed for density (ratio) estimation.
         %
         These approaches fall into two main categories: reweighting methods and direct generative modelling.
-        \subsubsection{Reweighting Methods}
-            The most established approach in this category is \textsc{OmniFold}, which employs an iterative procedure inspired by the Iterative Bayesian Unfolding (IBU) algorithm.
+        \subsubsection{Reweighting methods.}
+            The central goal of one class of unbinned unfolding methods is to estimate a reweighting function \(w(z)\) that transforms Generation to match the underlying Truth that was forward folded into the Data.
+            %
+            Formally, this function satisfies
+            \begin{equation}
+                p(z) = w(z) \cdot q(z),
+            \end{equation}
+            where \(q(z)\) is the distribution of Generation.
+        
+            The most established approach in this category is \textsc{OmniFold}~\cite{andreassen_omnifold_2020}, which employs an iterative procedure inspired by the Iterative Bayesian Unfolding (IBU) algorithm.
             %
             \textsc{OmniFold} alternates between two steps that estimate likelihood ratios using binary classifiers.
             
-            In each iteration \(k\), \textsc{OmniFold} first trains a classifier to distinguish between data and simulated detector--level events, referred to as \emph{simulation} (Sim.), yielding the ratio
+            In each iteration \(k\), \textsc{OmniFold} first trains a classifier to distinguish between Data and Simulation yielding the ratio
             \begin{equation}
                 \nu^{(k)}(x) = \frac{p(x)}{q^{(k)}(x)},
             \end{equation}
-            where \(q^{(k)}(x)\) represents the distribution from simulation weighted by the current iteration's particle--level weights.
+            where \(q^{(k)}(x)\) represents the distribution from Simulation weighted by the current iteration's weights.
 
-            This detector--level ratio is then propagated back to particle level through the Monte Carlo pairing.
+            This detector level ratio is then propagated back to particle level through the Monte Carlo pairing.
             %
-            For each generation event \(z_i\) with corresponding simulation event \(x_i\), the weight update follows:
+            For each Generation event \(z_i\) with corresponding Simulation event \(x_i\), the weight update follows:
             \begin{equation}
                 w^{(k+1)}(z_i) = w^{(k)}(z_i) \cdot \nu^{(k)}(x_i).
             \end{equation}
-            The process, in principle, continues until convergence, at which point the final weights \(w(z)\) provide the desired transformation from generation to truth.
-            %
-            This connection to likelihood ratio estimation can be explicitly proven---for a binary cross entropy optimized classifier \(f\), the likelihood ratio between the distributions it classifies is
+            The process, in principle, continues until convergence, at which point the final weights \(w(z)\) provide the desired transformation from Generation to Truth.
+            
+            The connection to likelihood ratio estimation can be explicitly proven---for a binary cross entropy optimised classifier \(f\), the likelihood ratio between the distributions it classifies is
             \[
-                LR = \frac{f}{1-f}
+                LR = \frac{f}{1-f}.
             \]
+            \cref{alg:omnifold} details the \textsc{OmniFold} procedure in pseudocode.
+
+
+\begin{algorithm}
+  \caption{\textsc{OmniFold}}
+  \label{alg:omnifold}
+  \begin{algorithmic}[1]
+    \Require 
+      Data samples $\{x_j^{\mathrm{Data}}\}$,\\
+      Gen.\!--Sim.\ pairs $\{(z_i,x_i)\}$,\\
+      Initial gen–level weights $w^{(0)}(z_i)$,\\
+      \# iterations $K$
+    \Ensure 
+      Unfolded weights $w^{(K)}(z_i)$
+    \For{$k\leftarrow1$ \textbf{to} $K$}
+      \State \textbf{Detector‐level step:}
+      \State Train classifier $C_{\rm det}^{(k)}$ on
+        $\{x_j^{\mathrm{Data}},+1\}\cup\{x_i,-1,w^{(k-1)}(z_i)\}$
+      \State Compute detector ratio
+        \[
+          \nu^{(k)}(x)\;=\;\frac{C_{\rm det}^{(k)}(x)}{1 - C_{\rm det}^{(k)}(x)}
+          \quad\forall x
+        \]
+      \algstore{omnifold}
+    \end{algorithmic}
+\end{algorithm}
+
+% second half
+\begin{algorithm}\ContinuedFloat
+  \caption[]{(continued)} % optional “(continued)” suffix
+  \begin{algorithmic}[1]
+    \algrestore{omnifold}
+    
+    \State \textbf{Pull‐back weights:}
+    \ForAll{pairs $(z_i,x_i)$}
+      \State $\omega_i^{(k)} \leftarrow \nu^{(k)}(x_i)$
+    \EndFor
+    
+    \State \textbf{Particle‐level step:}
+    \State Train classifier $C_{\rm part}^{(k)}$ on
+      $\{z_i,+1,\omega_i^{(k)}\}\cup\{z_i,-1,w^{(k-1)}(z_i)\}$
+    \State Compute particle ratio
+      \[
+        \rho^{(k)}(z)\;=\;\frac{C_{\rm part}^{(k)}(z)}{1 - C_{\rm part}^{(k)}(z)}
+        \quad\forall z
+      \]
+    
+    \State \textbf{Update weights:}
+    \ForAll{generator events $z_i$}
+      \State $w^{(k)}(z_i)\;\leftarrow\;w^{(k-1)}(z_i)\,\rho^{(k)}(z_i)$
+    \EndFor
+  \EndFor
+  \State \Return $\{w^{(K)}(z_i)\}$
+  \end{algorithmic}
+\end{algorithm}
         \subsubsection{Generative Modeling}
             An alternative approach employs generative models to directly learn the conditional distribution \(p(z|x)\).
             %

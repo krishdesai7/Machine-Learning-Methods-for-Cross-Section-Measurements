@@ -49,24 +49,24 @@
       at (3.125, 1) [minimum width=10.2cm, minimum height=7.2cm] {};
 
 \node[bigbox, 
-  label={[titlebox, xshift=0cm, yshift=0cm]above:\textcolor{green!40!black}{Particle Level}},
-  label={[rotate=90, left, yshift=.25cm, xshift=2.25cm]left:{\rmfamily\bfseries\Large Nature\qquad\quad MC}}
+  label={[titlebox, xshift=0cm, yshift=0cm]above:\textcolor{green!40!black}{\rmfamily\bfseries\large Particle level}},
+  label={[rotate=90, left, yshift=.3cm, xshift=2.25cm]left:{\rmfamily\bfseries\large Nature\quad\quad MC}}
 ] (particleBox) at (1,1) [minimum width=4.2cm, minimum height=5.4cm] {};
 
 \node[bigbox, label={[titlebox, xshift=0cm, yshift=0cm]
-       \textcolor{blue!60!black}{Detector Level}}] (detectorBox)
+       \textcolor{blue!60!black}{\rmfamily\bfseries\large Detector level}}] (detectorBox)
       at (5.2,1) [minimum width=4.2cm, minimum height=5.4cm] {};
 \draw[dashed] (-1, 1.3) -- (7.2, 1.3);
 % ------------------------------------------------------------------------
 % PARTICLE LEVEL NODES (within particleBox)
 % ------------------------------------------------------------------------
 % Generation (middle)
-\node[computer={\large\textbf{Generation}\\\,}, computer fill=green!20]
+\node[computer={\textbf{Generation}\\[-1.5ex]\,}, computer fill=green!20]
     (gen) at ([xshift=2cm, yshift=-1.1cm] particleBox.north west){};
 
 \node[align=center, opacity=0.75] (truth) [below=0.75cm of gen, inner sep=0pt, 
     label={[xshift=0.05cm,yshift=0.05cm]center:{\large{\textbf{Truth}}}}]{
-    \includegraphics[width=0.29\linewidth]{figures/chapter-01/Collision.pdf}
+    \includegraphics[width=0.2\linewidth]{figures/chapter-01/Collision.pdf}
 };
 
 
@@ -74,13 +74,13 @@
 % DETECTOR LEVEL NODES (within detectorBox)
 % ------------------------------------------------------------------------
 % Data (top)
-\node[computer={\large\textbf{Simulation}\\\;}]
+\node[computer={\textbf{Simulation}\\[-1.5ex]\;}]
   (sim) at ([xshift=2cm, yshift=-1.1cm]detectorBox.north west)
   {};
 
 \node[align=center, opacity=0.75] (data) [below=0.65cm of sim, xshift=0cm, inner sep=0pt, 
     label={center:{\shortstack{\large\textbf{Data}}}}]{
-    \includegraphics[width=0.29\linewidth]{figures/chapter-01/Collider.pdf}
+    \includegraphics[width=0.2\linewidth]{figures/chapter-01/Collider.pdf}
 };
 
 
@@ -96,7 +96,7 @@
   (sim.west);
 
 \draw[arrowstyle] (truth.east) to
-  node[above, align=center, sloped]{\textbf{\normalsize{Detector}}}
+  node[above, align=center, sloped, font=\footnotesize]{\textbf{\normalsize{Detector}}}
   (data.west);
 
 \end{tikzpicture}
