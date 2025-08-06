@@ -567,12 +567,12 @@ However, it requires careful basis function placement to prevent endpoint spikes
   \begin{algorithmic}[1]
     \algrestore{omnifold}
     
-    \State \textbf{Pull‐back weights:}
+    \State \textbf{Pull-back weights:}
     \ForAll{pairs $(z_i,x_i)$}
       \State $\omega_i^{(k)} \leftarrow \nu^{(k)}(x_i)$
     \EndFor
     
-    \State \textbf{Particle‐level step:}
+    \State \textbf{Particle-level step:}
     \State Train classifier $C_{\rm part}^{(k)}$ on
       $\{z_i,+1,\omega_i^{(k)}\}\cup\{z_i,-1,w^{(k-1)}(z_i)\}$
     \State Compute particle ratio
@@ -589,57 +589,58 @@ However, it requires careful basis function placement to prevent endpoint spikes
   \State \Return $\{w^{(K)}(z_i)\}$
   \end{algorithmic}
 \end{algorithm}
-        \subsubsection{Generative Modeling}
-            An alternative approach employs generative models to directly learn the conditional distribution \(p(z|x)\).
+        \subsubsection{Generative modelling.}
+            An alternative approach employs generative models to directly learn the conditional distribution \(p(z \mid x)\).
             %
             Among these, Conditional Invertible Neural Networks (cINNs)~\cite{AnanthaPadmanabha2021SolvingNetworks} offer a particularly elegant framework.
             
-            cINNs learn a diffeomorphic mapping \[g_\theta: {Z} \to {X}\] between particle and detector levels, parameterized by neural network weights \(\theta\).
+            cINNs learn a diffeomorphic mapping \[g_\theta: {Z} \to {X}\] between particle and detector levels, parameterised by neural network weights \(\theta\).
             %
-            The invertibility constraint ensures that for any detector--level observation \(x\), we can directly sample the corresponding particle--level distribution through the inverse mapping.
+            The invertibility constraint ensures that for any detector level observation \(x\), one can directly sample the corresponding particle level distribution through the inverse mapping.
             %
-            The key advantage lies in the tractable Jacobian computation:
+            The key advantage lies in the tractable Jacobian computation,
             \begin{equation}
-                p(z|x) = p(x|z) \frac{p(z)}{p(x)} = \left|\det \frac{\partial g_\theta}{\partial z}\right|^{-1} p(g_\theta^{-1}(x)|x),
+                p(z\mid x) = p(x\mid z) \,\frac{p(z)}{p(x)} = \left|\det \pdv{g_\theta}{z} \right|^{-1}\, p(g_\theta^{-1}(x) \mid x)\;,
             \end{equation}
-            enabling direct sampling from the posterior \(p(z|x)\) without iterative procedures~\cite{Bellagente2020InvertibleAgain}.
+            enabling direct sampling from the posterior \(p(z \mid x)\) without iterative procedures~\cite{Bellagente2020InvertibleAgain}.
 
-            Generative models, due to the much greater expressiveness that is necessary for them to model the functional representations needed, are succeptible to training challenges such as mode collapse\footnote{Normalizing flows however, due to the structural constraints that invertibility imposes, are resistant to mode collapse.}.
+            Generative models, due to the much greater expressiveness that is necessary for them to model the functional representations needed, are succeptible to training challenges such as mode collapse\footnote{Normalising flows however, due to the structural constraints that invertibility imposes, are resistant to mode collapse.}.
             %
-            Ensuring stable convergence of generative models can get increasingly difficult for high-dimensional problems.
+            Ensuring stable convergence of generative models can get increasingly difficult for high dimensional problems.
             
             More recently, Schrödinger Bridge Unfolding~\cite{Butter2025GenerativeMapping} has emerged as a method that frames unfolding as an optimal transport problem.
             %
-            This approach minimizes the Kullback--Leibler divergence between joint distributions while constraining the marginal to match observed data:
+            This approach minimizes the Kullback--Leibler divergence between joint distributions while constraining the marginal to match observed data.
             \begin{equation}
                 \inf_{p(z,x)} D_{\text{KL}}\Big(p(z,x) \parallel p_{\text{MC}}(z,x)\Big) \text{ subject to } p(x) = p_{\text{Data}}(x).
             \end{equation}
+
             This formulation provides theoretical guarantees on the uniqueness of the solution and offers improved stability compared to purely generative approaches.
-        \subsection{Statistical Considerations in Unbinned Regimes}  
-            Neural networks implicitly regularize via inductive controls. 
+        \subsection{Statistical considerations in unbinned regimes.}  
+            Neural networks implicitly regularise via inductive controls.\footnote{E.g., convolutional layers enforce translational symmetry in jet images~\cite{Kheddar2025ImageSurvey}.}
             %
-            e.g., convolutional layers enforce translational symmetry in jet images~\cite{Kheddar2025ImageSurvey}.
-            %
-            However, this introduces model--dependent smoothing scales requiring careful validation against closure tests~\cite{Cowan2011AsymptoticPhysics}.
+            However, this introduces model dependent smoothing scales requiring careful validation against closure tests~\cite{Cowan2011AsymptoticPhysics}.
 
             Reweighting based methods can propagate one part of the overall uncertainty through event weights.
             \begin{equation}
-                \text{Cov}[O] = \sum_{i=1}^N w_i^2 O(z_i)^2 - \left(\sum_{i=1}^N w_i O(z_i)\right)^2,
+                \Sigma[O] = \sum_{i=1}^N w_i^2 O(z_i)^2 - \left(\sum_{i=1}^N w_i O(z_i)\right)^2,
             \end{equation}
-            for observable \(O(z)\)~\cite{LHCHiggsCrossSectionWorkingGroup2012HandbookDistributions}.
+            where \(\Sigma(O)\) is the covariance of observable \(O(z)\)~\cite{LHCHiggsCrossSectionWorkingGroup2012HandbookDistributions}.
             %
-            While avoiding binning--induced correlations, unbinned inference requires re--conceptualizing what the unbinned equivalent of the covariance matrix would be in order to appropriately account for correlations in the unfolded data.
-    \subsection{Limitations in Complex Phase Spaces}  
-        \subsubsection{Model Misspecification}  
-            Generative models assume that \[q(z) > 0 \implies p(z) > 0,\] meaning that wherever generation (particle--level Monte Carlo) assigns positive probability density, \(q(z) > 0\), the true distribution also has positive probability density, \(p(z) > 0\).
+            While avoiding binning induced correlations, unbinned inference requires reconceptualising what the unbinned equivalent of the covariance matrix would be in order to appropriately account for correlations in the unfolded data.
+
+    \subsection{Limitations in complex phase spaces.}  
+
+        \subsubsection{Model misspecification.}  
+            Generative models assume that \[q(z) > 0 \implies p(z) > 0,\] meaning that wherever Generation assigns positive probability density, \(q(z) > 0\), the Truth distribution also has positive probability density, \(p(z) > 0\).
             %
             This assumption ensures that the generative model does not learn to generate events in regions of phase space where the true physics has zero probability.
             %
             It is fundamental to the validity of generative unfolding approaches such as conditional Invertible Neural Networks (cINNs) and Variational Autoencoders (VAEs)~\cite{Shmakov2025FullDiffusion}.
             %
-            Generative models learn to map from detector--level measurements to particle--level distributions by generating samples from the learned posterior.
+            Generative models learn to map from detector level measurements to particle level distributions by generating samples from the learned posterior.
             %
-            If the generation samples in kinematically forbidden regions or unphysical phase space, the unfolded results will include spurious events that contaminate the measurement.
+            If the Generation were to sample in kinematically forbidden regions or unphysical phase space, the unfolded results would include spurious events that contaminate the measurement.
             %
             The assumption requires that the generative model be properly constrained to respect the physical boundaries of the true distribution.
             
@@ -658,16 +659,18 @@ However, it requires careful basis function placement to prevent endpoint spikes
             The assumption thus places stringent requirements on Monte Carlo coverage and highlights the importance of comprehensive phase space sampling in training data preparation for generative unfolding methods.
             %
             Hybrid approaches combining discriminative and generative components show promise for anomaly detection~\cite{DiMattia2019ADetection, Terjek2019AdversarialRegularization}.
+
 \section{Evaluation metrics for unfolding.}
-    The evaluation of unfolding methods presents unique challenges due to the ill--posed nature of the inverse problem.
+
+    The evaluation of unfolding methods presents unique challenges due to the ill posed nature of the inverse problem.
     %
-    While the goal of unfolding is conceptually straightforward, to recover the true particle--level distribution from detector--level observations, quantifying the success of this recovery requires careful consideration when the downstream use of the data is unknown.
-    %
-    Task--specific evaluation becomes more tractable when clear physics objectives are defined.
+    While the goal of unfolding is conceptually straightforward, to recover the true particle level distribution from detector level observations, quantifying the success of this recovery requires careful consideration when the downstream use of the data is unknown.
+    
+    Task specific evaluation becomes more tractable when clear physics objectives are defined.
     %
     For example, when unfolding is performed to measure a specific parameter such as \(\alpha_S\), evaluation metrics can be designed to directly assess how well the unfolding procedure enables accurate parameter extraction.
     %
-    This section focuses on metrics and approaches for evaluating unfolding performance, considering both traditional binned techniques and modern unbinned methods, for general--purpose unfolding applications where the downstream use is not known.
+    This section focuses on metrics and approaches for evaluating unfolding performance, considering both traditional binned techniques and modern unbinned methods, for general purpose unfolding applications where the downstream use is not known.
     %
     Metrics for assessing accuracy, precision, and uncertainty quantification are assessed and practical considerations for their application in high energy physics analyses are discussed.
 
@@ -676,25 +679,30 @@ However, it requires careful basis function placement to prevent endpoint spikes
         \subsubsection{Residual based metrics.}
             The most intuitive approach to evaluating an unfolding method is to compare the unfolded distribution to the true distribution when it is known\footnote{e.g., in simulation studies}.
             %
-            Simple residual--based metrics quantify the difference between the estimated and true distributions.
+            Simple residual based metrics quantify the difference between the estimated and true distributions.
             %
-            For binned methods, the bin by bin residual is defined as:
+            \begin{definition}
+                For binned methods, the \emph{bin by bin residual} is defined as
             \begin{equation}
                 \delta_i = \hat{t}_i - t_i
             \end{equation}
             where \(\hat{t}_i\) is the unfolded count in bin \(i\) and \(t_i\) is the true count.
+            \end{definition}
+            
             %
             Various summary statistics of these residuals can be computed, including
-            \begin{align}
-                \text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\\
-                \text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\\
-                \text{MAE} &= \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|
-            \end{align}
+            \begin{description}
+                \item[Mean squared error] \[\text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\;,\]
+                \item[Root mean squared error] \[\text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\;,\] 
+                \item[Mean absolute error] \[\text{MAE} &= \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|\;.\]
+                
+            \end{description}
+
             The MSE might be preferred because it is easier to do calculus with, the RMSE preferred because it is expressed in the units of the original data rather than squared units, but they are manifestly functionally equivalent.
             %
             The choice between the MSE and MAE depends on the specific requirements of the analysis.
             %
-            MSE more heavily penalizes large errors due to the squaring operation, making it more sensitive to outliers and extreme residuals.
+            MSE more heavily penalises large errors due to the squaring operation, making it more sensitive to outliers and extreme residuals.
             %
             MAE treats all errors equally regardless of magnitude and proves more robust to outliers, making it preferable when the unfolding procedure should not be dominated by a few problematic bins or events.
             %
@@ -710,14 +718,15 @@ However, it requires careful basis function placement to prevent endpoint spikes
             
             For unbinned methods, where the output is a set of weights or a continuous probability density, these metrics must be adapted.
             %
-            One approach is to bin the unbinned unfolded distributions and then apply the above metrics, though this introduces binning artifacts that the unbinned method was designed to avoid.
+            One approach is to bin the unbinned unfolded distributions and then apply the above metrics, though this introduces the binning artifacts that the unbinned method was designed to avoid.
 
         \subsubsection{Distributional distance metrics.}
         \label{subsubsec:distributional-distance-metrics}
             Given the limitations of simple residual metrics, distributional distance measures provide a more comprehensive assessment of unfolding performance.
             %
             These metrics compare the entire unfolded distribution to the true distribution.
-
+            
+            \paragraph{Kullback--Leibler divergernce.}
             The \emph{Kullback--Leibler (KL) divergence}~\cite{kullback_information_1951} measures the information lost when using the unfolded distribution to approximate the true distribution.
             
             \begin{equation}
