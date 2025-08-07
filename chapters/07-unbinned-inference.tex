@@ -873,21 +873,19 @@ the maximum likelihood estimator is distributed as
             In particle physics, this is synonymous with conducting many pseudo--experiments.
             %
             The procedure is laid out in \cref{alg:parametric-bootstrap}
-\begin{algorithm}
-  \caption{Parametric bootstrap pseudo-‐experiments)}\label{alg:parametric-bootstrap}
-  \SetAlgoLined
-  \SetKwInOut{Input}{Input}
-  \SetKwInOut{Output}{Output}
-  \Input{Observed data $X_{1},\dots,X_{N}$, model $p(x\mid\theta)$, number of replicates $B$}
-  \Output{Bootstrap estimates $\{\hat\theta^{(b)}\}_{b=1}^{B}$ or distribution of a statistic}
-  \DontPrintSemicolon
-  $\hat\theta \leftarrow \displaystyle\arg\max_{\theta}\,\prod_{i=1}^{n}f(X_{i};\theta)$\;
-  \For{$b\leftarrow 1$ \KwTo $B$}{
-    Simulate pseudo‐dataset $X_{1}^{(b)},\dots,X_{n}^{(b)}\;\overset{\text{i.i.d.}}{\sim}\;f(\cdot;\hat\theta)$\;
-    Compute $\hat\theta^{(b)}$ by applying the same estimation procedure to $X_{1:n}^{(b)}$\;
-  }
-  \Return $\{\hat\theta^{(b)}\}_{b=1}^{B}$\;
-\end{algorithm}
+            \begin{algorithm}
+                \caption{Parametric bootstrap pseudo-experiments}
+                \label{alg:parametric-bootstrap}
+                \Require{Observed data $X_{1},\dots,X_{N}$, model $p(x\mid\theta)$, number of replicates $B$}
+                \Ensure{Bootstrap estimates $\{\hat\theta^{(b)}\}_{b=1}^{B}$ or distribution of a statistic}
+                
+                \State $\hat\theta \leftarrow \displaystyle\arg\max_{\theta}\,\prod_{i=1}^{n}f(X_{i};\theta)$
+                \For{$b\leftarrow 1$ \To $B$}
+                  \State Simulate pseudo-dataset $X_{1}^{(b)},\dots,X_{n}^{(b)}\;\overset{\text{i.i.d.}}{\sim}\;f(\cdot;\hat\theta)$
+                  \State Compute $\hat\theta^{(b)}$ by applying the same estimation procedure to $X_{1:n}^{(b)}$
+                \EndFor
+                \State \Return $\{\hat\theta^{(b)}\}_{b=1}^{B}$
+              \end{algorithm}
             This approach is inherently model dependent---it relies on the assumption that our fitted model is a good representation of the underlying truth.
             %
             However, in many cases, especially when the goal is to test consistency with that model or to quote uncertainties assuming the model, this is perfectly acceptable.

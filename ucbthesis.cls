@@ -76,7 +76,7 @@
 % SECTION NUMBERING
 % ============================================================================
 \setsecnumdepth{subparagraph}
-\maxtocdepth{subparagraph}
+\maxtocdepth{section}
 
 % Custom numbering scheme
 \renewcommand{\thechapter}{\Roman{chapter}}
@@ -319,7 +319,6 @@
 
 % ============================================================================
 % FRONTMATTER environment
-=======
 % ============================================================================
 \renewenvironment{frontmatter}{%
   \setcounter{page}{1}

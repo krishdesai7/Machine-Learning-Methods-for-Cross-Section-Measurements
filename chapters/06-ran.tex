@@ -1250,52 +1250,52 @@ The RAN activation balances these extremes, preserving smoothness, positivity, a
         %
         The studies presented below used an update ratio of 3:2 for the critic:generator, meaning the critic is updated slightly more frequently to keep it near optimality as the generator evolves.
         %
-        Pseudocode for one training cycle is outlined in Algorithm~\ref{alg:wgan-gp}.
+        Pseudocode for one training cycle is outlined in \cref{alg:wgan-gp}.
 
         \begin{algorithm}
             \caption{WGAN GP Training Step}
             \label{alg:wgan-gp}
-            \KwIn{
+            \Require{
               Data distribution $p(x)$, 
               Generation, Simulation pairs \(q(z, x)\),
               critic $d_{\theta}$, 
-              generator weights $g(z;\beta)$,\\
+              generator weights $g(z;\beta)$,
               gradient penalty weight $\lambda$, 
               critic steps $n_c$, 
               generator steps $n_g$, 
               batch size $B$
             }
-            \KwOut{Trained parameters $\theta$ and $\beta$}
-        \For{iteration $=1,2,\dots$}{
-          \tcp{Critic updates}
-          \For{\(i\) in \(1\) \KwTo $n_c$}{
-            Sample $\{x_i^{\text data}\}_{i=1}^B\sim p(x)$\;
-            Sample $\{(z_j, x_j\}_{j=1}^B\sim q(z, x)$\;
-            Compute $w_j = g(z_j;\beta)$\;
-            Compute
-            \[
-              L_d
-              = \frac1B\sum_{i=1}^B d_{\theta}(x_i^{\text data})
-                -\frac1B\sum_{j=1}^B w_j\,d_{\theta}\bigl(x^{\text sim}_j\bigr)
-                +\lambda\,L_{\text GP}(\theta)\,;
-            \]
-            $\theta \;\leftarrow\;\theta + \eta_d\,\nabla_{\theta}L_d$\;    
-          }
-        
-          \tcp{Generator updates}
-          \For{\(j\) in \(1\) \KwTo $n_g$}{
-            Sample fresh $\{x_i^{\text{data}}\}_{i=1}^B\sim p(x)$\;
-            Sample $\{(z_j, x_j\}_{j=1}^B\sim q(z, x)$\;
-            Compute $w_j = g(z_j;\beta)$\;
-            Compute
-            \[
-              L_g 
-              = -\frac1B\sum_{j=1}^B w_j\,d_{\theta}\bigl(x_j^{\text{ sim}})\bigr)
-                + \frac1B\sum_{i=1}^B d_{\theta}(x_i^{\text{data}})\,;
-            \]
-            $\beta \;\leftarrow\;\beta - \eta_g\,\nabla_{\beta}L_g$\;
-          }
-        }
+            \Ensure{Trained parameters $\theta$ and $\beta$}
+            \For{iteration $=1,2,\dots$}
+              \Comment{Critic updates}
+              \For{\(i\) in \(1\) \To $n_c$}
+                \State Sample $\{x_i^{\text{data}}\}_{i=1}^B\sim p(x)$
+                \State Sample $\{(z_j, x_j)\}_{j=1}^B\sim q(z, x)$
+                \State Compute $w_j = g(z_j;\beta)$
+                \State Compute
+                \[
+                  L_d
+                  = \frac1B\sum_{i=1}^B d_{\theta}(x_i^{\text{data}})
+                    -\frac1B\sum_{j=1}^B w_j\,d_{\theta}\bigl(x^{\text{sim}}_j\bigr)
+                    +\lambda\,L_{\text{GP}}(\theta)
+                \]
+                \State $\theta \leftarrow\theta + \eta_d\,\nabla_{\theta}L_d$    
+              \EndFor
+            
+              \Comment{Generator updates}
+              \For{\(j\) in \(1\) \To $n_g$}
+                \State Sample fresh $\{x_i^{\text{data}}\}_{i=1}^B\sim p(x)$
+                \State Sample $\{(z_j, x_j)\}_{j=1}^B\sim q(z, x)$
+                \State Compute $w_j = g(z_j;\beta)$
+                \State Compute
+                \[
+                  L_g 
+                  = -\frac1B\sum_{j=1}^B w_j\,d_{\theta}\bigl(x_j^{\text{sim}}\bigr)
+                    + \frac1B\sum_{i=1}^B d_{\theta}(x_i^{\text{data}})
+                \]
+                \State $\beta \leftarrow\beta - \eta_g\,\nabla_{\beta}L_g$
+              \EndFor
+            \EndFor
         \end{algorithm}
         These steps constitute one training iteration, and they are repeated until convergence criteria are met.
         %
