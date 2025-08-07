@@ -1144,15 +1144,16 @@ the maximum likelihood estimator is distributed as
     The smearing particle to detector level is Gaussian with $\sigma^2_{\text{det}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{smearing}}$, demonstrating the convolution of detector resolution effects.}
     \label{fig:detector-level}
   \end{subfigure}
-  \caption[Detector and particle level distributions for the study on correlations during inference.]{Comparison of particle level and detector level distributions. Panel (a) shows the particle level distributions where the Truth (blue histogram and dashed curve) differs from the Generation (orange histogram and dashed curve). The true distribution is characterized by a shifted mean ($\mu_{\text{true}} = 0.2$) and reduced variance ($\sigma^2_{\text{true}} = 0.81$) compared to the Generation ($\mu_{\text{prior}} = 0$, $\sigma^2_{\text{prior}} = 1.00$).
 
-  
+  \caption[Detector and particle level distributions for the study on correlations during inference.]{Comparison of particle level and detector level distributions. Panel (a) shows the particle level distributions where the Truth (blue histogram and dashed curve) differs from the Generation (orange histogram and dashed curve). The true distribution is characterized by a shifted mean ($\mu_{\text{true}} = 0.2$) and reduced variance ($\sigma^2_{\text{true}} = 0.81$) compared to the Generation ($\mu_{\text{prior}} = 0$, $\sigma^2_{\text{prior}} = 1.00$).
+  %
   Panel (b) demonstrates the effect of finite detector resolution through Gaussian smearing with $\sigma_{\text{det}} = 1.0$, which convolves with the underlying distributions to produce broader observed distributions at the detector level.
   %
   The detector-level variances increase according to the quadrature sum $\sigma^2_{\text{detector}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{det}}$, yielding $\sigma^2_{\text{data}} = 1.81$ and $\sigma^2_{\text{sim}} = 2.00$ for the Data and Simulation respectively.
   }
   \label{fig:distributions-1d}
 \end{figure}
+
 \begin{figure}
   \centering
   \begin{subfigure}[t]{0.48\textwidth}

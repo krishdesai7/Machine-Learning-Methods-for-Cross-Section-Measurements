@@ -69,11 +69,11 @@ Regularisation techniques are therefore essential to stabilise the solution.
             
             \begin{theorem}[Scaling of relative uncertainty]
                 \label{prop:relative-uncertainty}
-                Consider a \(d\)-dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\rm events}\) denote the total number of events uniformly distributed over the full measurement range.
+                Consider a \(d\)-dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\text{events}}\) denote the total number of events uniformly distributed over the full measurement range.
                 %
                 Then the relative uncertainty in the estimated differential event density in any given bin obeys
                 \begin{equation}
-                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\rm events}}\;\prod_{i=1}^d\Delta z_i}
+                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i}
                 \end{equation}
                 where \(Q\) is the differential quantity (events per unit hypervolume).
             \end{theorem}
@@ -87,24 +87,24 @@ Regularisation techniques are therefore essential to stabilise the solution.
                 %
                 Under the uniform--density assumption, the expected number of events in that bin scales as
                 \[
-                    N_{\rm bin} \propto N_{\rm events}\;V.
+                    N_{\text{bin}} \propto N_{\text{events}}\;V.
                 \]
                 %
                 By Poisson statistics the absolute uncertainty on the bin count is
                 \[
-                    \sigma_{N_{\rm bin}} = \sqrt{N_{\rm bin}},
+                    \sigma_{N_{\text{bin}}} = \sqrt{N_{\text{bin}}},
                 \]
                 %
-                and hence the relative uncertainty on \(N_{\rm bin}\) is
+                and hence the relative uncertainty on \(N_{\text{bin}}\) is
                 \[
-                    \frac{\sigma_{N_{\rm bin}}}{N_{\rm bin}} = \frac{1}{\sqrt{N_{\rm bin}}} \propto \frac{1}{\sqrt{N_{\rm events}\,V}}\;.
+                    \frac{\sigma_{N_{\text{bin}}}}{N_{\text{bin}}} = \frac{1}{\sqrt{N_{\text{bin}}}} \propto \frac{1}{\sqrt{N_{\text{events}}\,V}}\;.
                 \]
                 
-                Since the differential measurement is \(Q = N_{\rm bin}/V\), its relative uncertainty coincides with that of the bin count.
+                Since the differential measurement is \(Q = N_{\text{bin}}/V\), its relative uncertainty coincides with that of the bin count.
                 \begin{align}
-                    \frac{\sigma_Q}{Q} &= \frac{(\sigma_{N_{\rm bin}}/V)}{(N_{\rm bin}/V)} \\
-                    &= \frac{\sigma_{N_{\rm bin}}}{N_{\rm bin}} \\
-                    &\propto \frac{1}{\sqrt{N_{\rm events}}\;\prod_{i=1}^d\Delta z_i}\;,
+                    \frac{\sigma_Q}{Q} &= \frac{(\sigma_{N_{\text{bin}}}/V)}{(N_{\text{bin}}/V)} \\
+                    &= \frac{\sigma_{N_{\text{bin}}}}{N_{\text{bin}}} \\
+                    &\propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i}\;,
                 \end{align}
                 %
                 which establishes the claimed scaling.
@@ -550,11 +550,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
       Unfolded weights $w^{(K)}(z_i)$
     \For{$k\leftarrow1$ \textbf{to} $K$}
       \State \textbf{Detector‐level step:}
-      \State Train classifier $C_{\rm det}^{(k)}$ on
+      \State Train classifier $C_{\text{det}}^{(k)}$ on
         $\{x_j^{\mathrm{Data}},+1\}\cup\{x_i,-1,w^{(k-1)}(z_i)\}$
       \State Compute detector ratio
         \[
-          \nu^{(k)}(x)\;=\;\frac{C_{\rm det}^{(k)}(x)}{1 - C_{\rm det}^{(k)}(x)}
+          \nu^{(k)}(x)\;=\;\frac{C_{\text{det}}^{(k)}(x)}{1 - C_{\text{det}}^{(k)}(x)}
           \quad\forall x
         \]
       \algstore{omnifold}
@@ -573,11 +573,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
     \EndFor
     
     \State \textbf{Particle-level step:}
-    \State Train classifier $C_{\rm part}^{(k)}$ on
+    \State Train classifier $C_{\text{part}}^{(k)}$ on
       $\{z_i,+1,\omega_i^{(k)}\}\cup\{z_i,-1,w^{(k-1)}(z_i)\}$
     \State Compute particle ratio
       \[
-        \rho^{(k)}(z)\;=\;\frac{C_{\rm part}^{(k)}(z)}{1 - C_{\rm part}^{(k)}(z)}
+        \rho^{(k)}(z)\;=\;\frac{C_{\text{part}}^{(k)}(z)}{1 - C_{\text{part}}^{(k)}(z)}
         \quad\forall z
       \]
     
@@ -692,9 +692,9 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             Various summary statistics of these residuals can be computed, including
             \begin{description}
-                \item[Mean squared error] \[\text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\;,\]
-                \item[Root mean squared error] \[\text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\;,\] 
-                \item[Mean absolute error] \[\text{MAE} &= \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|\;.\]
+                \item[Mean squared error] \[\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\;,\]
+                \item[Root mean squared error] \[\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\;,\] 
+                \item[Mean absolute error] \[\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|\;.\]
                 
             \end{description}
 

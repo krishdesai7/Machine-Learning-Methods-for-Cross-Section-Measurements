@@ -4,7 +4,7 @@
 
 \documentclass[doublespace]{ucbthesis}
 
-%\includeonly{chapters/01-introduction, chapters/02-theoretical-foundations}
+\includeonly{chapters/01-introduction, chapters/02-theoretical-foundations}
 \input{thesis-preamble}
 
 \begin{document}
@@ -46,6 +46,7 @@
 \end{dedication}
 \clearpage
 
+% Table of Contents
 \tableofcontents
 \clearpage
 
