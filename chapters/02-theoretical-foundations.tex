@@ -729,44 +729,57 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \paragraph{Kullback--Leibler divergernce.}
             The \emph{Kullback--Leibler (KL) divergence}~\cite{kullback_information_1951} measures the information lost when using the unfolded distribution to approximate the true distribution.
             
-            \begin{equation}
-            D_{\text{KL}}(p||q) = \int p(x) \log \frac{p(x)}{q(x)} \;\dd x,
-            \end{equation}
-            where \(p\) is the true distribution and
-            \(q\) is the unfolded distribution.
-            %
+            \begin{definition}[KL divergence]
+                \begin{equation}
+                    D_{\text{KL}}(p||q) = \int p(x) \log \frac{p(x)}{q(x)} \;\dd x,
+                \end{equation}
+                where \(p\) is the true distribution and
+                \(q\) is the unfolded distribution.
+            \end{definition}
+            
             While theoretically sound, KL divergence can be numerically unstable when the support of the distributions differs.
             
             The \emph{Vincze--Le Cam (VLC) divergence}~\cite{vincze_concept_1981,Cam1986AsymptoticTheory} is symmetric alternative to KL divergence that is both bounded and highly convex~\cite{melbourne_strongly_2020}.
-            \begin{equation}
-                \Delta(p, q) = \frac{1}{2}\int \frac{(p(\lambda) - q(\lambda))^2}{p(\lambda) + q(\lambda)} \;\dd\lambda.
-            \end{equation}
+
+            \begin{definition}[VLC Divergence]
+                \begin{equation}
+                    \Delta_{VLC}(p, q) = \frac{1}{2}\int \frac{(p(\lambda) - q(\lambda))^2}{p(\lambda) + q(\lambda)} \;\dd\lambda.
+                \end{equation}
+            \end{definition}
+
             This metric is particularly useful for comparing unfolding methods as it provides a balanced assessment of differences across the entire distribution and has been used in comparative analyses of various unfolding approaches~\cite{andreassen_omnifold_2020, komiske_preserving_2021}.
 
-            The \emph{Wasserstein metric}~\cite{L.N.VasersteinIssue3Pagesnobr6472/nobr}, also known as the \emph{Earth mover's distance},"~\cite{rubner_metric_1998} provides a measure of the minimum ``work" required to transform one distribution into another.
-        \begin{equation}
-            W_p(p, q) = \left(\inf_{\gamma \in \Gamma(p, q)} \int\int |x-y|^p d\gamma(x, y)\right)^{1/p},
+            The \emph{Wasserstein metric}~\cite{L.N.VasersteinIssue3Pagesnobr6472/nobr}, also known as the \emph{Earth mover's distance},''~\cite{rubner_metric_1998} provides a measure of the minimum ``work'' required to transform one distribution into another.
+        \begin{definition}[Wasserstein \(\alpha-\)metric]
+            \begin{equation}
+            W_\alpha(p, q) = \qty(\inf_{\gamma \in \Gamma(p, q)} \iint |x-y|^\alpha d\gamma(x, y))^{\frac1\alpha},
         \end{equation}
         where \(\Gamma(p, q)\) is the set of all joint distributions with marginals \(p\) and \(q\).
         %
-        This metric is particularly useful for unfolding evaluations as it accounts for both the magnitude and location of discrepancies between distributions.
-        Table~\ref{tab:dist_metrics} summarizes the various distributional metrics and their relative strengths for unfolding evaluation.
+    \end{definition}
+
+        This metric is accounts for both the magnitude and location of discrepancies between distributions, and is hence helpful for comparing distributions with sharp cutoffs or low statistics regions.
+
+        Table~\ref{tab:dist_metrics} summarises the various distributional metrics and their relative strengths for unfolding evaluation.
         \input{tables/2-2}
-        \subsection{Uncertainty quantification metrics}
+
+        \subsection{Uncertainty quantification metrics.}
         Beyond point estimates, properly evaluating unfolding methods requires assessing the accuracy of their uncertainty estimates. 
         %
         This is particularly important in particle physics, where uncertainties propagate to downstream analyses such as parameter fitting.
-        \subsubsection{Pull distributions}
+
+        \subsubsection{Pull distributions.}
         \label{subsubsec:pull-distributions}
             Pull distributions offer a rigorous way to evaluate the calibration of reported uncertainties.
-            %
-            For a given unfolded bin or parameter \(\theta\), the pull is defined as
+            
+            \begin{definition}[Pull distribution.] For a given unfolded bin or parameter \(\theta\), the \emph{pull} is defined as
             \begin{equation}
                 \text{Pull}\,{\theta} = \frac{\hat{\theta} - \theta_{\text{true}}}{\sigma_{\hat{\theta}}}
             \end{equation}
             where \(\hat{\theta}\) is the unfolded estimate, \(\theta_{\text{true}}\) is the true value, and \(\sigma_{\hat{\theta}}\) is the reported uncertainty.
-            %
-            For a well--calibrated method, the pull distribution across many pseudo--experiments should follow a standard normal distribution, \(\mathcal{N}(0,1)\).
+        \end{definition}
+
+            For a well calibrated method, the pull distribution across many pseudo-experiments should follow a standard normal distribution, \(\mathcal{N}(0,1)\).
             This follows from the definition of random variables.
             %
             Since the pull is defined as the ratio of the bias to the estimated uncertainty, for a properly calibrated unfolding method, two conditions must be satisfied simultaneously.
@@ -775,28 +788,28 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             Second, the reported uncertainties must accurately reflect the actual variability of the estimates, such that the denominator correctly represents the standard deviation of the numerator.
             
-            When both conditions are met, the pull becomes a standardized random variable.
+            When both conditions are met, the pull becomes a standardised random variable.
             %
             For sufficiently large sample sizes, many unfolding estimators approach normality due to the Central Limit Theorem, since they often involve weighted sums or averages of many events.
             %
             When the underlying estimator is approximately normally distributed, if it satisfies the two conditions above that set its mean and standard deviation to \(0\) and \(1\) respectively, the population of sample pulls must be distributed as a standard normal.
             
-            A pull distribution with non-zero mean indicates systematic bias in the unfolding procedure,
+            A pull distribution with non-zero mean indicates systematic bias in the unfolding procedure. 
             %
             Deviations from unit standard deviation indicate either overestimation or underestimation of uncertainties.
             
             In the context of binned unfolding, pull distributions can be computed for each bin, while for unbinned methods, they can be applied to derived quantities or parameters of interest.
             %
             For Bayesian methods, pulls can be calculated using the mean and standard deviation of the posterior distribution~\cite{Knapik2012BayesianPriors}.
-        \subsubsection{Coverage properties}
-            Related to pulls but more direct is the evaluation of coverage properties of confidence or credible intervals.
+        \subsubsection{Coverage properties.}
+            Related to pulls, but more direct, is the evaluation of coverage properties of confidence intervals or credible intervals.
             %
             For a nominal 68\% confidence interval, approximately 68\% of intervals computed across many pseudo-experiments should contain the true value.
             %
             Systematic deviations from nominal coverage indicate issues with the uncertainty estimation.
             %
             Coverage can be assessed through closure tests. These involve generating multiple datasets from a known truth, applying the unfolding procedure, and checking the fraction of times the true value falls within the reported confidence intervals.
-            %
+            
             Coverage plots plot the actual coverage versus the nominal coverage across different confidence levels.
             %
             The example in \cref{fig:coverage} shows expected coverage properties for two different unfolding methods, Tikhonov regularisation and IBU, as a function of the regularisation parameter.
@@ -805,35 +818,39 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 \includegraphics[width=0.5\linewidth]{figures/chapter-02/incJets_lumFactor150nBinsE30nBinsF30JointCoverageSVD.pdf}\includegraphics[width=0.5\linewidth]{figures/chapter-02/incJets_lumFactor150nBinsE30nBinsF30JointCoverageDAgostini.pdf}
                 \caption[Coverage properties of Tikhonov regularisation and IBU]{Coverage of 95\% confidence intervals with Tikhonov regularisation (left) and IBU (right).
                 %
-                The error bars are given by the 95\% Clopper–Pearson intervals and the nominal confidence level is shown by the dotted line.
+                The error bars are given by the 95\% Clopper--Pearson intervals and the nominal confidence level is shown by the dotted line.
                 %
-                When the regularization is strong (fewer iterations in the case of IBU), both methods undercover substantially. IBU~\cite{kuusela_shape-constrained_2017}}
+                When the regularisation is strong (fewer iterations in the case of IBU), both methods undercover substantially. Image credit~\cite{kuusela_shape-constrained_2017}}
                 \label{fig:coverage}
             \end{figure}
-    \subsubsection{Variance and bias decomposition}
+    \subsubsection{Variance and bias decomposition.}
         The total error of an unfolding method can be decomposed into bias and variance components,
         \begin{equation}
         \text{MSE}(\hat{t}) = \text{Bias}^2(\hat{t}) + \text{Var}(\hat{t}),
         \end{equation}
         where \(\text{Bias}(\hat{t}) = \mathbb{E}[\hat{t}] - t\) and \(\text{Var}(\hat{t}) = \mathbb{E}[(\hat{t} - \mathbb{E}[\hat{t}])^2]\). 
         
-        This decomposition is particularly valuable for understanding the trade--offs inherent in regularized unfolding methods, where stronger regularization typically reduces variance at the expense of increased bias.
+        This decomposition is particularly valuable for understanding the trade--offs inherent in regularised unfolding methods, where stronger regularisation typically reduces variance at the expense of increased bias.
         %
-        Different applications might prioritize minimizing one component over the other, making this decomposition essential for method selection.
+        Different applications might prioritise minimising one component over the other, making this decomposition important for method selection and hyperparameter choices.
 
-    \subsection{Evaluation of correlation structure}
+    \subsection{Evaluation of correlation structure.}
         Traditional evaluation metrics often focus on marginal distributions, overlooking an important aspect of unfolding: the correlation structure between different bins or events.
         %
         Properly accounting for these correlations is crucial for downstream analyses.
-        \subsubsection{Covariance Matrix Assessment}
+        \subsubsection{Covariance matrix assessment.}
             For binned methods, the full covariance matrix of the unfolded distribution provides information about bin--to--bin correlations.
             %
-            A useful measure is the correlation matrix, defined as
-            \begin{equation}
-                \text{Corr}_{ij} = \frac{\text{Cov}_{ij}}{\sqrt{\text{Cov}_{ii}\text{Cov}_{jj}}}
-            \end{equation}
-            Comparing the correlation structure of the unfolded distribution to that of the true distribution (when known, e.g. in simulation studies) can reveal systematic distortions introduced by the unfolding procedure.
-        \subsubsection{Event--to--event correlation metrics}
+            A useful, related measure is the correlation matrix.
+            \begin{definition}[Correlation matrix.]
+                \begin{equation}
+                    \rho_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}\Sigma_{jj}}},
+                \end{equation}
+                where \(\Sigma\) is the correlation matrix.
+            \end{definition}
+
+            Comparing the correlation structure of the unfolded distribution to that of the true distribution\footnote{When known, e.g., in simulation studies.} can reveal systematic distortions introduced by the unfolding procedure.
+        \subsubsection{Event--to--event correlation metrics.}
             For unbinned methods event--to--event correlations in the unfolded weights can significantly impact downstream inference.
             %
             These correlations can be quantified by studying the weight correlation as a function of distance.

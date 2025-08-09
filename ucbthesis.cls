@@ -104,6 +104,17 @@
 \cftsetindents{paragraph}{5em}{6em}
 \cftsetindents{subparagraph}{6em}{7em}
 
+\RequirePackage{etoc}
+
+% % optional: kill the "Contents" title on the local ToCs
+% \renewcommand{\localtableofcontentsname}{}
+% \etocsettocstyle{}{} % also remove the default heading/space
+
+% mini-ToC after every chapter, down to subparagraph
+% \AddToHook{cmd/chapter/after}{%
+%   \etocsetnexttocdepth{subparagraph}%
+%   \localtableofcontents
+% }
 % ============================================================================
 % PARAGRAPH AND SUBPARAGRAPH AS DISPLAY HEADINGS
 % ============================================================================
