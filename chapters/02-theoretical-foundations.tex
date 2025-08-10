@@ -928,9 +928,9 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             The first term, \(\sum w_i^2\), captures the variance contribution from individual event weights, similar to the standard effective sample size formula for independent weighted observations.
             %
-            The second term, \(2\sum_{i<j} w_i w_j \operatorname{Corr}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
+            The second term, \(2\sum_{i<j} w_i w_j \vb*{\rho}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
 
-            When weights are uncorrelated, \(\operatorname{Corr}(w_i, w_j) = 0,\) and the formula reduces to the familiar \(N_{\text{eff}}=\nicefrac{\qty(\sum w_i)^2}{\sum w_i^2}.\)
+            When weights are uncorrelated, \(\vb*{\rho}(w_i, w_j) = 0,\) and the formula reduces to the familiar \(N_{\text{eff}}=\nicefrac{\qty(\sum w_i)^2}{\sum w_i^2}.\)
             %
             However, upon unfolding methods, nearby events in phase space often receive similar weight corrections\footnote{as will be discusseed in greater detail in \cref{chap:unbinned_correlations}}, leading to correlations that increase the denominator and reduce the effective sample size.
             %
