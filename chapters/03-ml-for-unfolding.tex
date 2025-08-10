@@ -1,16 +1,20 @@
-\chapter{Machine Learning for Unfolding}
+\chapter{Machine learning for unfolding.}
 \label{chap:ml-for-unfolding}
-\section{The Emergence of Machine Learning in Particle Physics}
-\subsection{A Paradigm Shift in Data Analysis}
+\chapterminitoc
+
+\section{The emergence of machine learning in particle physics.}
+\sectionminitoc
+
+\subsection{A paradigm shift in data analysis.}
 The past decade has witnessed a remarkable transformation in how particle physicists analyse data, driven by the adoption and adaptation of machine learning (ML) techniques.
 %
-This revolution has been catalysed by the confluence of three factors: the growing volume and complexity of data from modern collider experiments, the substantial increase in available computing resources, and the rapid advancement of ML algorithms and frameworks.
+This revolution has been catalysed by the confluence of three factors: the growing volume and complexity of data from modern HEP experiments, the substantial increase in available computing resources, and the rapid advancement of ML algorithms and frameworks.
 %
-The Large Hadron Collider (LHC) alone produces petabytes of data annually, with individual collisions generating thousands of particles across multiple detector subsystems, creating a rich, high dimensional dataset that traditional analysis methods struggle to fully exploit~\cite{EnvironmentalCERN}.
-%
+The LHC alone produces petabytes of data annually, with individual collisions generating thousands of particles across multiple detector subsystems, creating a rich, high dimensional dataset that traditional analysis methods struggle to fully exploit~\cite{EnvironmentalCERN}.
+
 Particle physics presents unique analytical challenges that align particularly well with the strengths of modern machine learning approaches.
 %
-The field routinely deals with high--dimensional feature spaces, complex non--linear correlations between observables, rare signal processes buried within overwhelming backgrounds, and some of the largest scientific datasets in existence~\cite{DiMeglio2017SubmitterResearch}.
+The field routinely deals with high dimensional feature spaces, complex non-linear correlations between observables, rare signal processes buried within overwhelming backgrounds, and some of the largest scientific datasets in existence~\cite{DiMeglio2017SubmitterResearch}.
 %
 These characteristics create an ideal test bed for advanced ML techniques, which excel at discovering patterns in precisely such environments.
 %
@@ -21,93 +25,94 @@ Neural networks were first applied to high energy physics problems in the late 1
 %
 However, these early applications were limited by computational resources and algorithmic capabilities.
 %
-The contemporary renaissance began around 2012--2014, coinciding with the broader deep learning revolution across computer science~\cite{TerrenceJ.Sejnowski2018TheIntelligence}.
+The contemporary renaissance began around \numrange{2012}{2014}, coinciding with the broader deep learning revolution across computer science~\cite{TerrenceJ.Sejnowski2018TheIntelligence}.
 %
-This timing allowed particle physicists to leverage developments in computer vision, reinforcement learning, and generative modelling, adapting these techniques to the unique requirements of high-energy physics.
-\subsection{Evolution of ML Applications in HEP}
-\subsubsection{Classification Tasks}
+This timing allowed particle physicists to leverage developments in computer vision, reinforcement learning, and generative modelling, adapting these techniques to the unique requirements of high energy physics.
+
+\subsection{Evolution of ML applications in HEP.}
+\subsubsection{Classification tasks.}
         \label{subsubsec:classification-tasks}
 The first wave of modern ML applications in particle physics focused predominantly on classification tasks, particularly signal/background discrimination and particle identification.
 %
-These problems are naturally framed as binary or multi--class classification, making them accessible entry points for machine learning techniques.
+These problems are naturally framed as binary or multiclass classification, making them accessible entry points for machine learning techniques.
 %
 Boosted decision trees initially dominated these applications, particularly in the analysis chains that led to the Higgs boson discovery~\cite{Chen2014HiggsTrees}.
 %
-However, deep neural networks quickly demonstrated superior performance by automatically discovering complex patterns in high--dimensional data, often outperforming carefully hand--crafted physics--inspired variables~\cite{Baldi2014SearchingLearning, Baldi2015EnhancedLearning, Baldi2021DeepScience}.
+However, deep neural networks quickly demonstrated superior performance by automatically discovering complex patterns in high dimensional data, often outperforming carefully hand crafted physics inspired variables~\cite{Baldi2014SearchingLearning, Baldi2015EnhancedLearning, Baldi2021DeepScience}.
 %
-For example, neural networks trained on low--level detector information have been shown to match or exceed the performance of approaches using physics--motivated high--level features for tasks like quark--gluon discrimination~\cite{Lee2019Quark-GluonNetworks} and top quark tagging~\cite{Pearkes2017JetTagging}
-%
-The ATLAS and CMS experiments have now incorporated deep learning based taggers for identifying hadronically decaying W/Z bosons~\cite{Chen2020BoostedLearning}, top quarks~\cite{Sirunyan_2020}, and Higgs bosons~\cite{2023TransformerATLAS}, significantly enhancing their sensitivity to new physics.
-%
-While early applications leveraged convolutional neural networks to exploit spatial correlations in calorimeter deposits~\cite{deOliveira2016Jet-imagesEdition, Komiske2018DeepDiscrimination} and recurrent or graph neural networks to handle variable--length, unordered collections of particles~\cite{Shlomi2020GraphPhysics, Qu2020ParticleNet:Clouds}, transformer architectures and foundation models have emerged as the current state of the art for many classification tasks~\cite{Qu2022ParticleTagging, Mikuni2025SolvingModels, VanStroud2024TransformersPhysics}.
-%
-Transformers excel at modelling complex dependencies through self--attention mechanisms, naturally processing sets of particles by capturing relationships between a span of pairs of particles simultaneously~\cite{Vaswani2017AttentionNeed}.
-%
-The Particle Transformer (ParT) architecture~\cite{Qu2022ParticleTagging}, specifically designed for HEP applications, has demonstrated superior performance on jet classification tasks by incorporating physics-motivated constraints while leveraging the power of self-attention to identify relevant particle interactions and correlations~\cite{Wang2024InterpretingTagging}.
+For example, neural networks trained on low level detector information have been shown to match or exceed the performance of approaches using physics motivated high level features for tasks like quark gluon discrimination~\cite{Lee2019Quark-GluonNetworks} and top quark tagging~\cite{Pearkes2017JetTagging}.
 
-\subsubsection{Regression and Anomaly Detection}
+The ATLAS and CMS experiments have now incorporated deep learning based taggers for identifying hadronically decaying W/Z bosons~\cite{Chen2020BoostedLearning}, top quarks~\cite{Sirunyan_2020}, and Higgs bosons~\cite{2023TransformerATLAS}, significantly enhancing their sensitivity to new physics.
+
+While early applications leveraged convolutional neural networks to exploit spatial correlations in calorimeter deposits~\cite{deOliveira2016Jet-imagesEdition, Komiske2018DeepDiscrimination} and recurrent or graph neural networks to handle variable--length, unordered collections of particles~\cite{Shlomi2020GraphPhysics, Qu2020ParticleNet:Clouds}, transformer architectures and foundation models have emerged as strong contenders for many classification tasks~\cite{Qu2022ParticleTagging, Mikuni2025SolvingModels, VanStroud2024TransformersPhysics}.
+%
+Transformers excel at modelling complex dependencies through self attention mechanisms, naturally processing sets of particles by capturing relationships between a span of pairs of particles simultaneously~\cite{Vaswani2017AttentionNeed}.
+%
+The Particle Transformer (ParT) architecture~\cite{Qu2022ParticleTagging}, specifically designed for HEP applications, has demonstrated superior performance on jet classification tasks by incorporating physics motivated constraints while leveraging the power of self-attention to identify relevant particle interactions and correlations~\cite{Wang2024InterpretingTagging}.
+
+\subsubsection{Regression and anomaly detection.}
         \label{subsubsec:regression-and-anomaly-detection}
 As the field matured, ML applications expanded beyond classification to include regression tasks, such as energy calibration~\cite{Holmberg2023JetPipeline}, pileup mitigation~\cite{Komiske2018PileupPUMML}, and particle momentum reconstruction~\cite{Haake2019Machine-learning-basedCollisions}.
 %
 These applications require models to predict continuous quantities rather than discrete classes, introducing additional complexity but extending ML based methods to a larger class of problems.
 %
-Simultaneously, unsupervised and weakly--supervised learning techniques emerged as powerful tools for anomaly detection, identifying potential new physics without explicit models~\cite{Belis2024MachinePhysics}.
+Simultaneously, unsupervised and weakly supervised learning techniques emerged as powerful tools for anomaly detection, identifying potential new physics without explicit models~\cite{Belis2024MachinePhysics}.
 %
-These methods include autoencoders that flag events with high reconstruction loss, density estimation techniques that identify low--probability regions of phase space, and weakly--supervised classifiers that can distinguish data mixtures without event--by--event labels.
+These methods include autoencoders that flag events with high reconstruction loss, density estimation techniques that identify low probability regions of phase space, and weakly supervised classifiers that can distinguish data mixtures without event by event labels.
 
-\subsubsection{Generative Models}
+\subsubsection{Generative models.}
 Perhaps the most significant recent development in ML for HEP has been the adoption of generative models, which learn to produce samples from complex probability distributions.
 %
 This capability is particularly valuable in particle physics, where accurate simulation is crucial but computationally expensive.
 
-Generative adversarial networks (GANs)~\cite{Goodfellow2014GenerativeNetworks}, variational autoencoders (VAEs)~\cite{Kingma2019AnAutoencoders}, and normalizing flows~\cite{Kobyzev2019NormalizingMethods} have all been successfully applied to particle physics problems.
+Generative adversarial networks (GANs)~\cite{Goodfellow2014GenerativeNetworks}, variational autoencoders (VAEs)~\cite{Kingma2019AnAutoencoders}, and normalising flows~\cite{Kobyzev2019NormalizingMethods} have all been successfully applied to particle physics problems.
 %
 These models can generate synthetic collision events\cite{Moodie2022OptimisingNetworks}, simulate detector responses\cite{Darulis2022MachineSimulations, Xu2023GenerativeFlow}, and model complex differential distributions,\cite{Butter2025GenerativeMapping} often accelerating these processes by orders of magnitude compared to traditional Monte Carlo techniques.
 
 The development of these generative models opened new possibilities for addressing inverse problems in particle physics, including the unfolding problem at the centre of this dissertation.
 %
-By learning complex, high--dimensional probability distributions directly from data, these methods offer a natural framework for tackling unfolding without the limitations of binning.
+By learning complex, high dimensional probability distributions directly from data, these methods offer a natural framework for tackling unfolding without the limitations of binning.
 
-\subsection{Machine Learning Approaches to Unfolding}
+\subsection{Machine learning approaches to unfolding.}
 
 The application of machine learning to unfolding represents a particularly promising frontier.
 %
-Traditional unfolding methods face significant challenges when dealing with high--dimensional spaces, correlated variables, and complex detector effects.
+Traditional unfolding methods face significant challenges when dealing with high dimensional spaces, correlated variables, and complex detector effects.
 %
 Machine learning approaches offer several potential advantages compared to traditional statistical methods.
 
-Neural networks excel at capturing patterns in high-dimensional spaces, helping to mitigate the curse of dimensionality that plagues binned methods.
+Neural networks excel at capturing patterns in high dimensional spaces, helping to mitigate the curse of dimensionality that plagues binned methods.
 %
-While traditional approaches become computationally prohibitive beyond a few dimensions, ML-based methods can effectively unfold many variables simultaneously`~\cite{komiske_preserving_2021}.
+While traditional approaches become computationally prohibitive beyond a few dimensions, ML based methods can effectively unfold many variables simultaneously~\cite{komiske_preserving_2021}.
 %
-This capability enables jointly unfolding multi--differential measurements that would be impractical with conventional techniques.
+This capability enables jointly unfolding multidifferential measurements that would be impractical with conventional techniques.
 
-Many ML--based unfolding methods operate directly on continuous distributions, eliminating binning bias and the need to predetermine bin boundaries.
+Many ML based unfolding methods operate directly on continuous distributions, eliminating binning bias and the need to predetermine bin boundaries.
 %
-This approach preserves fine--grained information that might otherwise be lost through discretization, and it enables the extraction of arbitrary derived observables from the unfolded distribution~\cite{Shmakov2025FullDiffusion}.
-%
-Furthermore, the architecture and training procedure of neural networks provide natural regularization without requiring explicit constraints.
-%
-Rather than manually tuning regularization parameters as in traditional methods, ML approaches incorporate regularization through network depth, width, dropout rates, and early stopping~\cite{Girosi1995RegularizationArchitectures}.
-%
-This implicit regularization can adapt more naturally to the varying complexity across different regions of phase space.
+This approach preserves fine grained information that might otherwise be lost through discretisation, and it enables the extraction of arbitrary derived observables from the unfolded distribution~\cite{Shmakov2025FullDiffusion}.
 
-Additionally, some ML methods can learn the complete detector--to--particle transformation in a single training procedure, avoiding the separate steps of response matrix estimation and inversion required by traditional approaches.
+Furthermore, the architecture and training procedure of neural networks can provide natural regularisation without requiring explicit constraints.
 %
-This integrated optimization may reduce the compounding of uncertainties that can occur when errors propagate through multiple discrete stages of conventional unfolding pipelines
+Rather than manually tuning regularisation parameters as in traditional methods, ML approaches incorporate regularisation through network depth, network width, dropout rates and early stopping~\cite{Girosi1995RegularizationArchitectures}.
 %
+This implicit regularisation can adapt more naturally to the varying complexity across different regions of phase space.
+
+Additionally, some ML methods can learn the complete detector to particle transformation in a single training procedure, avoiding the separate steps of response matrix estimation and inversion required by traditional approaches.
+%
+This integrated optimisation may reduce the compounding of uncertainties that can occur when errors propagate through multiple discrete stages of conventional unfolding pipelines.
+
 Once trained, many ML models also enable rapid inference on new data without retraining.
 %
-This amortized approach is particularly valuable for unfolding tasks that need to be repeated with slight variations, such as systematic uncertainty studies or detector condition changes~\cite{Brehmer2020EffectiveLearning}
+This amortised approach is particularly valuable for unfolding tasks that need to be repeated with slight variations, such as systematic uncertainty studies or detector condition changes~\cite{Brehmer2020EffectiveLearning}.
 
-    \subsection{Early successes and current challenges}
+    \subsection{Early successes and current challenges.}
         Machine learning approaches to unfolding, such as \textsc{OmniFold}, have demonstrated promising results on jet substructure measurements, showing improved performance in high dimensional spaces compared to traditional methods.
         %
         \textsc{OmniFold} has been successfully applied in experimental analyses at H1~\cite{collaboration_measurement_2022, collaboration_unbinned_2023, collaboration_machine_2024, Arratia2025TowardsEvents}, STAR~\cite{song_measurement_2023, pani_generalized_2024}, T2K~\cite{Huang2025MachineTechnique}, ATLAS~\cite{collaboration_simultaneous_2024, collaboration_measurement_2025}, CMS~\cite{collaboration_measurement_2025}, and LHCb~\cite{collaboration_multidifferential_2023}, validating its practical utility.
+
+        However, ML based unfolding methods also face significant challenges.
         %
-        However, these methods also face significant challenges.
-        %
-        Unlike traditional techniques with decades of validation, ML--based unfolding is relatively new and requires careful validation to ensure physical consistency.
+        Unlike traditional techniques with decades of validation, ML based unfolding is relatively new and requires careful validation to ensure physical consistency.
         %
         Key concerns include proper uncertainty quantification, interpretability of the results, sensitivity to the training data, and potential biases introduced by the neural network architecture or training process~\cite{mishra_uncertainty_2021}.
         %
@@ -115,55 +120,71 @@ This amortized approach is particularly valuable for unfolding tasks that need t
         %
         The balance between flexibility and stability remains an active area of research, with new approaches continuing to emerge.
 
-        As machine learning continues to evolve, both within particle physics and in the broader scientific community, we can expect further innovations in unfolding techniques.
+        As machine learning continues to evolve, both within particle physics and in the broader scientific community, further innovations in unfolding techniques are expected.
         %
-        Promising directions include physics--informed neural networks that incorporate known conservation laws or symmetries~\cite{raissi_physics-informed_2019}, uncertainty--aware models that provide more reliable error estimates~\cite{brehmer_guide_2018}, and techniques that combine the strengths of traditional and ML based approaches~\cite{willard_integrating_2022}.
-        %
+        Promising directions include physics informed neural networks that incorporate known conservation laws or symmetries~\cite{raissi_physics-informed_2019}, uncertainty aware models that provide more reliable error estimates~\cite{brehmer_guide_2018}, and techniques that combine the strengths of traditional and ML based approaches~\cite{willard_integrating_2022}.
+        
         The rapid progress in this field demonstrates the synergistic relationship between particle physics and machine learning.
         %
         Particle physics provides challenging problems and unique datasets that drive methodological innovations;
         %
         machine learning offers powerful tools that enable new measurements and insights.
         %
-        This dissertation builds upon this foundation, exploring novel machine learning approaches to improve the precision and scope of differential cross--section measurements through novel unfolding techniques.
+        This dissertation builds upon this foundation, exploring novel machine learning approaches to improve the precision and scope of differential cross section measurements through novel unfolding techniques.
 
-\section{Introduction to Neural Networks}
+\section{Introduction to neural networks.}
+\sectionminitoc
+
 Neural networks are the fundamental building blocks of modern machine learning applications.
 %
-This section provides a rigorous mathematical framework for understanding neural networks, from their basic architecture to training methodologies.
+This section provides a rigorous mathematical framework for understanding neural networks.
 
-    \subsection{Essential Concepts}
-        \subsubsection{Neural Network Fundamentals}
+    \subsection{Essential concepts.}
+        \subsubsection{Neural network fundamentals.}
             At its core, a neural network is a parametric function approximator loosely inspired by biological neural systems.
             %
-            The fundamental unit, a neuron or node, computes a weighted sum of its inputs followed by a non-linear transformation:
+            \begin{definition}[Neuron]
+            The fundamental unit of a neural network, a \emph{neuron} or \emph{node}, computes a weighted sum of its inputs followed by a non-linear transformation:
             \begin{equation}
-            y = \sigma(w^T x + b)
+            y = \sigma(w^T x + b),
             \end{equation}
             where \(x \in \mathbb{R}^n\) is the input vector, \(y\in\R^{m}\) is the output vector, \(w \in \mathbb{R}^{n\times m}\) is a weight matrix, \(b \in \mathbb{R}^m\) is a bias term, and \(\sigma(\cdot)\) is a (typically non--linear) activation function.
-            
+            \end{definition}
+
+            \begin{definition}[Depth of a neuron]
             The \emph{depth} of a neuron is defined as the length of the longest path between the input and the neuron.
-            %
-            The set of all neurons at depth \(l\) is called \emph{layer} \(l\) of the network.
-            %
-            The width of a layer is the number of neurons in that layer.
-            %
+            \end{definition}
+
+            \begin{definition}[Layer of a neuron]
+            The set of all neurons at depth \(\ell\) is called \emph{layer} \(\ell\) of the network.
+            \end{definition}
+
+            \begin{definition}[Width of a layer]
+            The \emph{width} of a layer is the number of neurons in that layer.
+            \end{definition}
+
             This organization of neurons into layers, creates a hierarchical structure.
-            %
-            The \emph{depth}, \(d = l_{\max}\), of a neural network is defined as the depth of its deepest layer.
-            %
+            \begin{definition}[Depth of a neural network]
+            The \emph{depth}, \(d = \ell_{\max}\), of a neural network is defined as the depth of its deepest layer.
+            \end{definition}
+
             A graphical overview of these concepts is depicted in \cref{fig:nn-concepts}.
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/chapter-03/CPWLNet_Descriptor.pdf}
-                \caption[Neural network depth and width illustration]{Diagram illustrating the key structural parameters of a neural network: depth (number of layers), width (units per layer), and their relationship to input, hidden, and output layers~\cite{goujon_number_2023}.}
+                \caption[Neural network depth and width.]{Diagram illustrating the key structural parameters of a neural network: depth (number of layers), width (units per layer), and their relationship to input, hidden, and output layers~\cite{goujon_number_2023}.}
                 \label{fig:nn-concepts}
             \end{figure}
-            Any layer of a neural network except the input layer (often labelled layer \(0\)) and the output layer (\(l_{\max})\) is called a hidden layer.
-            %
+
+            \begin{definition}[Hidden layer]
+            Any layer of a neural network except the input layer (often labelled layer \(0\)) and the output layer (\(\ell_{\max}\)) is called a hidden layer.
+            \end{definition}
+
+            \begin{definition}[Deep neural network]
             A \emph{deep neural network} is a neural network with depth, \(d > 2\).
             %
             That is to say standard deep feed forward neural network consists of an input layer, \emph{more than one} hidden layers, and an output layer.%
+            \end{definition}
             
             \cref{fig:shallow-nn} depicts a shallow neural network comprising a single hidden layer, while \cref{fig:deep-nn} shows a deep neural network with multiple hidden layers.
             %
@@ -185,7 +206,7 @@ This section provides a rigorous mathematical framework for understanding neural
                 \caption{Deep network}
                 \label{fig:deep-nn}
               \end{subfigure}
-              \caption[Shallow vs.\ deep NN]{Comparison between a shallow neural network (left) with a single hidden layer and a deep neural network (right) with multiple hidden layers~\cite{nielsen_neural_2015}.}
+              \caption[Shallow vs. deep NN]{Comparison between a shallow neural network (left) with a single hidden layer and a deep neural network (right) with multiple hidden layers~\cite{nielsen_neural_2015}.}
               \label{fig:shallow-deep}
             \end{figure}
 
@@ -198,16 +219,18 @@ This section provides a rigorous mathematical framework for understanding neural
             %
             By convention, \(y^{(0)} = x\) is the input, and \(y^{(d)} = y\) is the output.
 
-            This architecture enables neural networks to approximate arbitrarily complex functions, as formalized in the Universal Approximation Theorem, which states that a deep neural network containing a finite number of neurons can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) given certain mild conditions on the activation function.
+            This architecture enables neural networks to approximate arbitrarily complex functions, as formalised in \cref{thm:universal-approximation-theorem}, which loosely states that a deep neural network of sufficient depth and width comprising a finite number of neurons can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) given certain mild conditions on the activation function.
             %
             Importantly, neural networks achieve superior approximation rates compared to traditional methods like polynomials, particularly in high dimensional settings.
             %
             While polynomial approximation suffers from the curse of dimensionality, requiring $\mathcal{O}(\varepsilon^{-d})$ parameters to achieve accuracy $\varepsilon$ in $d$ dimensions, neural networks can approximate smooth functions with rates of $\mathcal{O}(n^{-r/d})$ where $n$ is the number of parameters and $r$ is a smoothness parameter, often with significantly better constants and the ability to exploit compositional structure in the target function~\cite{petersen_optimal_2018,lu_expressive_2017}.
 
         
-        \subsubsection{Forward propagation}
-            The process of computing the network's output given an input is called forward propagation.
-            %
+        \subsubsection{Forward propagation.}
+            \begin{definition}[Forward propagation]
+                \emph{Forward propagation} is the process of computing the network's output given an input.
+            \end{definition}
+            
             From its input \(y^{(0)} = x\) the network sequentially computes the output of each layer
             \begin{align}
                 z^{(1)} &= W^{(1)}y^{(0)} + b^{(1)} \\
@@ -224,7 +247,7 @@ This section provides a rigorous mathematical framework for understanding neural
             \begin{figure}
                   \centering
                   \includegraphics[width=0.8\textwidth]{figures/chapter-03/forwardpass.png}
-                  \caption[Forward pass]{Illustration of the forward propagation process in a neural network, showing how the input vector is transformed by each layer's weights and biases and then passed through non-linear activation functions to yield the final output~\cite{noauthor_idl_nodate}.}
+                  \caption[Forward pass.]{Illustration of the forward propagation process in a neural network, showing how the input vector is transformed by each layer's weights and biases and then passed through non-linear activation functions to yield the final output~\cite{noauthor_idl_nodate}.}
                   \label{fig:forward-pass}
             \end{figure}
         \subsubsection{Training objectives and loss functions}
@@ -287,6 +310,7 @@ This section provides a rigorous mathematical framework for understanding neural
         %
         This property is formalized in the Universal Approximation Theorem, which has several variations but fundamentally states that feed-forward networks with a single hidden layer can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision, given sufficient depth and width.
         \begin{theorem}[Universal Approximation Theorem]
+            \label{thm:universal-approximation-theorem}
         \begin{align}
             &\forall \sigma\in C^0(\R)\; \forall g\in C^0([0, 1]^n)\;\forall\epsilon > 0\;\exists M\in \R\\
             &\Bigg[\forall x\in\R\;|\sigma(x)| < M\implies \exists N\in\mathbb{N}\;\exists c, b\in \R^N\;\exists W\in \R^{N\times n}\\
