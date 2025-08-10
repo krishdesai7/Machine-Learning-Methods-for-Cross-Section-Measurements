@@ -891,9 +891,15 @@ However, it requires careful basis function placement to prevent endpoint spikes
         \subsubsection{Covariance matrix assessment.}
             For binned methods, the full covariance matrix of the unfolded distribution provides information about bin--to--bin correlations.
             %
-            A useful, related measure is the correlation matrix.
+            \begin{definition}[Covariance matrix.]
+                The \emph{covariance matrix} \(\vb*{\Sigma}\) is defined as
+                \begin{equation}
+                    \Sigma_{ij} := \mathbb{E}[(\hat{t}_i - \mathbb{E}[\hat{t}_i])(\hat{t}_j - \mathbb{E}[\hat{t}_j])].
+                \end{equation}
+            \end{definition}
 
             \begin{definition}[Correlation matrix.]
+                A useful, related measure is the \emph{correlation matrix}, \(\vb*{\rho}\), defined as the normalised covariance matrix,
                 \begin{equation}
                     \rho_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}\Sigma_{jj}}},
                 \end{equation}
@@ -917,7 +923,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             In this equation, \(N_{\text{eff}}\) represents the effective number of independent observations when event weights are correlated, derived from the variance properties of weighted sums.
             %
             The numerator, \(\qty(\sum w_i^2)\) represents the square of the total weighted sample size.
-            %
+            
             The denominator consists of two components, which together account for the increased variance introduced by weight correlations.
             %
             The first term, \(\sum w_i^2\), captures the variance contribution from individual event weights, similar to the standard effective sample size formula for independent weighted observations.
