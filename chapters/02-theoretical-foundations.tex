@@ -914,21 +914,21 @@ However, it requires careful basis function placement to prevent endpoint spikes
             These correlations can be quantified by studying the weight correlation as a function of distance.
             %
             For any pair of events, one can compute the correlation between their weights as a function of their distance in feature space.
-            %
+            
             One can also estimate the reduction in statistical power due to correlated weights
             \begin{equation}
                 \label{eq:n-eff}
-                N_{\text{eff}} = \frac{\left(\sum_{i} w_i\right)^2}{\sum_{i} w_i^2 + 2\sum_{i<j} w_i w_j \text{Corr}(w_i, w_j)}
+                N_{\text{eff}} = \frac{\left(\sum_{i} w_i\right)^2}{\sum_{i,j} w_i\,w_j\,\vb*{\rho}(w_i, w_j)}
             \end{equation}
             In this equation, \(N_{\text{eff}}\) represents the effective number of independent observations when event weights are correlated, derived from the variance properties of weighted sums.
             %
             The numerator, \(\qty(\sum w_i^2)\) represents the square of the total weighted sample size.
             
-            The denominator consists of two components, which together account for the increased variance introduced by weight correlations.
+            The denominator can be decomposed into of two components, which together account for the increased variance introduced by weight correlations.
             %
-            The first term, \(\sum w_i^2\), captures the variance contribution from individual event weights, similar to the standard effective sample size formula for independent weighted observations.
+            The first component, \(\sum w_i^2\), captures the variance contribution from individual event weights, similar to the standard effective sample size formula for independent weighted observations.
             %
-            The second term, \(2\sum_{i<j} w_i w_j \vb*{\rho}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
+            The second component, \(2\sum_{i<j} w_i w_j \vb*{\rho}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
 
             When weights are uncorrelated, \(\vb*{\rho}(w_i, w_j) = 0,\) and the formula reduces to the familiar \(N_{\text{eff}}=\nicefrac{\qty(\sum w_i)^2}{\sum w_i^2}.\)
             %
@@ -940,39 +940,62 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             For a weighted sum, \(S = \sum w_i\,x_i\), the variance is
             \[
-                \operatorname{Var}(S) = \sum_i \sum_j w_i w_j \operatorname{Cov}(x_i, x_j),
+                \sigma_S^2 = \sum_i \sum_j w_i w_j \Sigma_{ij},
             \]
              which is the denominator of the \cref{eq:n-eff}.
              %
-             The effective sample size is then defined as the ratio of the squared expectation to the variance, providing a measure of statistical efficiency that accounts for both weight magnitudes and their correlations.
+             The effective sample size is then defined as the ratio of the squared expectation to the variance, providing a measure of statistical efficiency that accounts for both weight magnitudes and their correlations. Formally,
+
+             \begin{theorem}[Effective sample size with correlated event weights]
+                \label{thm:neff-corr}
+                Let $w_1,\dots,w_N$ be event weights, and let $\rho(w_i,w_j)$ denote the correlation coefficient between the contributions of events $i$ and $j$ to a given observable. The \emph{effective sample size} accounting for correlations defined in \cref{eq:n-eff} computes the ratio of the squared total weight to the variance of the weighted sum of $N$ correlated unit--variance contributions.
+            \end{theorem}
+
+            \begin{proof}
+            Consider the weighted sum $S \coloneqq \sum_{i=1}^N w_i X_i$ with mean $\mu$ and variance \(1\) for all $i$.
+            %
+            The variance of \(S\) is
+            \begin{gather}
+                \sigma^2_S = \sum_{i=1}^N w_i^2\,\sigma^2_i + 2\sum_{1\le i<j\le N} w_i\, w_j\,{\Sigma}_{ij}\\
+                = \sum_{i=1}^N w_i^2 + 2\sum_{1\le i<j\le N} w_i w_j\rho(w_i,w_j).
+            \end{gather}
+            The definition of effective sample size equates $\sigma^2_S$ to the variance of $N_{\mathrm{eff}}$ independent, equally weighted observations of variance $1$.
+            \[
+                \sigma^2_S = \frac{\qty(\sum_{i=1}^N w_i)^2}{ N_{\mathrm{eff}}}.
+            \]
+            Solving for $N_{\mathrm{eff}}$ yields~\eqref{eq:n-eff}.
+            \end{proof}
+
+
+            If $\rho(w_i,w_j)=0$ for all $i\ne j$, the denominator reduces to $\sum_i w_i^2$ and $N_{\mathrm{eff}}$ simplifies to the familiar independent–weights expression $N_{\mathrm{eff}} = (\sum_i w_i)^2/\sum_i w_i^2$. In unfolding applications, nearby events in phase space often have $\rho(w_i,w_j)>0$, modifying the denominator of~\eqref{eq:n-eff} and thus reducing $N_{\mathrm{eff}}$, which quantifies the corresponding change of statistical power.
              
             \cref{fig:corr-decay} illustrates how event correlations typically decay with distance, with the correlation length scale increasing with detector resolution effects.
 
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/chapter-02/weight-correlation-vs-distance-1d-set1.pdf}
-                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using \textsc{OmniFold}~\cite{Desai:2025mpy}.\protect\footnotemark
+                \caption[Weight correlation between event pairs as a function of distance between events.]{Average weight correlation between two events as a function of the absolute distance between the events in the observable for Gaussian data unfolded using \textsc{OmniFold}.\protect\footnotemark
                 }
                 \label{fig:corr-decay}
             \end{figure}
-            \footnotetext{Figure created by Owen Long}
+            \footnotetext{Figure created by Owen Long~\cite{Desai:2025mpy}}
 
     \subsection{Method specific evaluation metrics.}
-        \subsubsection{Iterative methods}
+        \subsubsection{Iterative methods.}
             For iterative methods like Iterative Bayesian Unfolding (IBU) or \textsc{OmniFold}, convergence behaviour provides important diagnostic information.
         %
-        To study the convergence behaviour, we plot metric values (e.g., \(\chi^2\) or NLL) as a function of iteration number.
+        To study the convergence behaviour, one plots metric values (e.g., \(\chi^2\) or NLL) as a function of iteration number.
         %
-        We then compare unfolded distributions at different iterations to assess stability and analyse how the bias--variance trade off evolves with iteration number.
+        One then compares unfolded distributions at different iterations to assess stability and analyse how the bias--variance trade off evolves with iteration number.
 
-        \subsubsection{Bayesian Methods}
+        \subsubsection{Bayesian methods.}
             For Bayesian unfolding methods such as Fully Bayesian Unfolding (FBU)~\cite{choudalakis_fully_2012} or \textsc{Neural Posterior Unfolding} (NPU)~\cite{acosta2024npu}, additional posterior specific metrics are relevant.
             %
-            We can compare detector level data to detector level predictions generated from the posterior.
+            One can compare detector level data to detector level predictions generated from the posterior.
             %
-            We assess convergence using standard MCMC based diagnostics like Gelman--Rubin statistics or effective sample size.
+            One assesses convergence using standard MCMC based diagnostics like the Gelman--Rubin statistic~\cite{Gelman:1992zz} or effective sample size.
             %
-            The width of the posterior allows us to evaluate the posterior uncertainty in relation to the true frequentist variance.
+            The width of the posterior allows one to evaluate the posterior uncertainty in relation to the true frequentist variance.
 
     \subsection{Practical considerations.}
         In general, when comparing different unfolding methods, a structured evaluation framework ensures fair and comprehensive assessment. Such a framework should consider
