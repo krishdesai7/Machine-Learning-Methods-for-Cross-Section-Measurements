@@ -106,25 +106,15 @@
 
 \RequirePackage{etoc}
 
-% Chapter TOCs: show sections and subsections only
-\newcommand{\chapterminitoc}{%
-  \begingroup
-  \etocsetnexttocdepth{subsection}%
-  \etocsettocstyle{\subsection*{Chapter Contents}}{\medskip}%
-  \localtableofcontents
-  \endgroup
-  \clearpage
-}
+% % optional: kill the "Contents" title on the local ToCs
+% \renewcommand{\localtableofcontentsname}{}
+% \etocsettocstyle{}{} % also remove the default heading/space
 
-% Section TOCs: show subsections down to subparagraph
-\newcommand{\sectionminitoc}{%
-  \begingroup
-  \etocsetnexttocdepth{subparagraph}%
-  \etocsettocstyle{\subsubsection*{Section Contents}}{\medskip}%
-  \localtableofcontents
-  \endgroup
-  \clearpage
-}
+% mini-ToC after every chapter, down to subparagraph
+% \AddToHook{cmd/chapter/after}{%
+%   \etocsetnexttocdepth{subparagraph}%
+%   \localtableofcontents
+% }
 % ============================================================================
 % PARAGRAPH AND SUBPARAGRAPH AS DISPLAY HEADINGS
 % ============================================================================

@@ -1,0 +1,113 @@
+% thesis-preamble.tex
+% ============================================================================
+% LANGUAGE SUPPORT
+% ============================================================================
+\usepackage[english]{babel}
+\usepackage{csquotes}
+
+% ============================================================================
+% MATHEMATICS PACKAGES
+% ============================================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+    \renewcommand{\[}{\begin{equation}}
+    \renewcommand{\]}{\end{equation}}
+\usepackage{nicefrac}
+\usepackage{bbm}
+\usepackage{siunitx}    % For units and numbers
+\usepackage{xparse}     % For advanced command definitions
+ % Workaround for siunitx/physics compatibility
+\NewCommandCopy\siqty\qty 
+\usepackage{physics}  % Note: Must be loaded after siunitx if both are used
+
+% ============================================================================
+% GRAPHICS AND FIGURES
+% ============================================================================
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,arrows.meta,fit,shapes,backgrounds,
+                shapes.symbols,decorations.markings}
+
+% ============================================================================
+% TABLES
+% ============================================================================
+\usepackage{multirow}
+\usepackage{longtable}
+
+% Column type for math mode in tables
+\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
+
+% ============================================================================
+% SPECIALIZED PACKAGES
+% ============================================================================
+\usepackage[ruled]{algorithm}
+\usepackage{algpseudocodex}
+\algrenewcommand\algorithmiccomment[1]{\hfill\textit{\textcolor{gray}{// #1}}}
+\algrenewcommand{\alglinenumber}[1]{\small\textcolor{gray}{#1}}
+\setlength{\algomargin}{1em}
+\newcommand{\algospacing}{\setlength{\baselineskip}{2\baselineskip}}
+\usepackage{listings}
+\usepackage{pdflscape}  % For landscape pages
+
+% ============================================================================
+% UTILITIES
+% ============================================================================
+\usepackage{pgffor}     % For loops
+\usepackage{appendix}   % For appendix formatting
+\usepackage{enumitem}   % Better list environments
+\usepackage{comment}    % Block comments
+\usepackage{url}        % URL formatting
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+\usepackage[
+    backend=biber,
+    style=numeric-comp,
+    sorting=none,
+    maxbibnames=99,
+    giveninits=true
+]{biblatex}
+\addbibresource{references.bib}
+
+% ============================================================================
+% CROSS-REFERENCES (load after most other packages)
+% ============================================================================
+\usepackage[
+    hidelinks,
+    pdfusetitle,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=1,
+    breaklinks=true,
+    pdfborder={0 0 0},
+    colorlinks=false
+]{hyperref}
+
+\usepackage[capitalise,noabbrev]{cleveref}
+\crefname{paragraph}{Section}{Sections}
+\crefname{subparagraph}{Section}{Sections}
+
+% ============================================================================
+% CUSTOM MATHEMATICAL NOTATION
+% ============================================================================
+% Common operators
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+% Number sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+% Common shortcuts
+\newcommand{\inv}{^{-1}}
+\newcommand{\qt}{\widetilde{q}}
