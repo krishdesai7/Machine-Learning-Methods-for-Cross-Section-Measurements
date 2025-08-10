@@ -998,41 +998,41 @@ However, it requires careful basis function placement to prevent endpoint spikes
             The width of the posterior allows one to evaluate the posterior uncertainty in relation to the true frequentist variance.
 
     \subsection{Practical considerations.}
-        In general, when comparing different unfolding methods, a structured evaluation framework ensures fair and comprehensive assessment. Such a framework should consider
-        \begin{itemize}
-            \item Computational efficiency: Measure training time, inference time, and memory requirements.
-            \item Dimensionality scaling: Assess how performance metrics change as the dimensionality of the problem increases.
-            \item Prior dependence: Evaluate robustness to different initial simulations.
-            \item Regularisation parameter sensitivity: Compare how performance varies with changes in regularization strength.
-        \end{itemize}
+        In general, when comparing different unfolding methods, a structured evaluation framework ensures fair and comprehensive assessment. Such a framework should consider the following aspects:
+        \begin{description}
+            \item[Computational efficiency:] Measuring training time, inference time, and memory requirements.
+            \item[Dimensionality scaling:] Assessing how performance metrics change as the dimensionality of the problem increases.
+            \item[Prior dependence:] Evaluating robustness to different initial simulations.
+            \item[Regularisation parameter sensitivity:] Comparing how performance varies with changes in regularisation strength.
+        \end{description}
 
         In real experimental settings where the truth is unknown, evaluation presents additional challenges that require alternative pragmatic approaches.
         %
-        For example, when the true distribution is unavailable, data-splitting techniques can provide useful validation.
+        For example, when the true distribution is unavailable, data splitting techniques can provide useful validation.
         %
-        The two most commonly used techniques are cross-validation, where we split the detector--level data, unfold one portion, then refold it, and compare predictions against the held--out portion; and bootstrapping where we generate multiple resampled datasets to assess the stability of the unfolding procedure.
+        The two most commonly used techniques are cross validation, which involves splitting the detector level data, unfolding one portion, then forward folding it, and comparing predictions against the held out portion; and bootstrapping, where one generates multiple resampled datasets to assess the unfolding procedure.
 
         Closure tests involve applying the full analysis chain (forward model followed by unfolding) to a known input distribution.
         %
         While not a direct evaluation of performance on real data, closure tests provide confidence in the methodology.
         %
-        The simplest kinds of closure tests involve apply detector simulation to a known particle--level distribution, then unfolding the resulting detector--level distribution and compare with the original input.
+        The simplest kinds of closure tests involve applying detector simulation to a known particle level distribution, then unfolding the resulting detector level distribution and comparing with the original input.
         %
-        This procedure can then be modified by using a different particle-level input than the one used to train the unfolding method, testing robustness to prior misspecification.
+        This procedure can then be modified by using a different particle level input than the one used to train the unfolding method, testing robustness to prior misspecification.
         
-        Evaluating how unfolding methods propagate systematic uncertainties is crucial for real-world applications.
+        Evaluating how unfolding methods propagate systematic uncertainties is crucial for real world applications.
         %
-        We can test the sensitivity of the method to systematic uncertainties by applying variations to the response matrix based on known systematic uncertainties and assessing the impact on unfolded distributions.
+        One can test the sensitivity of the method to systematic uncertainties by applying variations to the response matrix based on known systematic uncertainties and assessing the impact on unfolded distributions.
         %
-        For methods that support nuisance parameter profiling, evaluating how effectively nuisance parameters are profiled out is a gold standard test for the effectiveness of the method.
-        
-        Rigorous evaluation of unfolding methods requires a multi--faceted approach that considers accuracy, uncertainty quantification, and computational performance.
+        For methods that support nuisance parameter profiling, evaluating how effectively nuisance parameters are profiled out is a valuable test for the effectiveness of the method.
+
+        Rigorous evaluation of unfolding methods requires a multifaceted approach that considers accuracy, uncertainty quantification, and computational performance.
         %
         The metrics and frameworks presented in this section provide a comprehensive foundation for assessing both traditional and machine learning-based unfolding techniques.
         %
         For binned methods, established metrics like \(\chi^2\) and coverage tests remain valuable, while for unbinned approaches, distributional metrics like Wasserstein distance and VLC divergence offer more appropriate evaluation.
-        %
-        Regardless of the method, uncertainty calibration through pull distributions and correlation structure assessment are important to validate any measurement.
+        
+        Regardless of the method used, uncertainty calibration through pull distributions and correlation structure assessment are important to validate any measurement.
         %
         As unfolding methods continue to evolve, particularly with the advent of machine learning approaches, evaluation metrics must adapt accordingly.
         %
