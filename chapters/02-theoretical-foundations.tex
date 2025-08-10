@@ -1,6 +1,8 @@
 \chapter{Theoretical foundations.}
 \label{chap:theoretical-foundations}
+\chapterminitoc
 \section{Statistical formulation of the unfolding problem.}
+\sectionminitoc
 
 Unfolding, also known as deconvolution, is the process of correcting detector distortions in experimental data to recover the true particle level distributions.
 %
@@ -176,6 +178,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
         These considerations establish the foundation for exploring how modern machine learning approaches navigate these challenges while preserving the statistical rigour that particle physics demands.
 
 \section{Forward and inverse problems in HEP.}
+\sectionminitoc
     The measurement process in high energy physics experiments inherently involves two complementary mathematical challenges: the forward problem of predicting detector responses from the theoretical understanding of particle level interactions, and the inverse problem of recovering true physics distributions from observed detector measurements.
     %
     These twin challenges form the conceptual foundation for understanding detector effects and developing unfolding methodologies.
@@ -266,6 +269,7 @@ However, they all share the common limitation of requiring discretisation of the
 
 \section{Traditional unfolding methods in experimental analyses.}
 \label{sec:binned-methods}
+\sectionminitoc
 Traditional unfolding methods form the bedrock of detector corrections in high energy physics, balancing statistical rigour with computational practicality.
 %
 This section provides an overview of established techniques, their mathematical foundations, implementation nuances, and limitations.
@@ -371,7 +375,7 @@ While computationally efficient, this approach lacks objective stopping criteria
 %
 IBU is dominant in LHC analyses\footnote{E.g., differential jet substructure measurements~\cite{atlas_collaboration_measurement_2024}} because it balances simplicity, interpretability and computational efficiency with accuracy.
 
-\subsection{Tikhonov Regularisation}  
+\subsection{Tikhonov regularisation.}  
 Tikhonov regularisation is a penalised least--squares minimisation method
 \begin{equation}
     \hat{\boldsymbol{\nu}} =\underset{\boldsymbol{\nu}}{\arg\min} \left[ ||\vb*{\mu} - \mathbf{R}\boldsymbol{\nu}||^2 + \lambda ||\mathbf{L}(\boldsymbol{\nu} - \boldsymbol{\nu}_0)||^2 \right]
@@ -432,6 +436,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         However, traditional methods remain indispensable for validation and low dimensional precision measurements where interpretability is crucial.
         
 \section{Regularisation: Need, approaches, and limitations.}
+\sectionminitoc
     The inherent ill posedness of unfolding necessitates regularisation to stabilise solutions against statistical fluctuations while preserving physical meaning.
     %
     This section systematically examines the theoretical justification for regularisation, surveys dominant methodologies, and critically evaluates their strengths and limitations in high energy physics applications.
@@ -488,6 +493,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         As detector granularity increases, developing dimension agnostic regularisation schemes remains an open challenge requiring collaboration between statisticians and physicists to design methods that are statistically sound and suitable for the physics being analysed.
         
 \section{Unbinned methods: statistical considerations.}  
+\sectionminitoc
     The evolution from binned to unbinned unfolding methodologies represents a paradigm shift in high energy physics, driven by the need to preserve fine grained kinematic information while managing the statistical and computational complexities of high dimensional phase spaces.
     %
     This section systematically analyses the theoretical foundations, practical challenges, and performance trade-offs that this transition entails.
@@ -503,6 +509,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         Modern unbinned methods leverage machine learning techniques, particularly those designed for density (ratio) estimation.
         %
         These approaches fall into two main categories: reweighting methods and direct generative modelling.
+
         \subsubsection{Reweighting methods.}
             The central goal of one class of unbinned unfolding methods is to estimate a reweighting function \(w(z)\) that transforms Generation to match the underlying Truth that was forward folded into the Data.
             %
@@ -661,7 +668,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             Hybrid approaches combining discriminative and generative components show promise for anomaly detection~\cite{DiMattia2019ADetection, Terjek2019AdversarialRegularization}.
 
 \section{Evaluation metrics for unfolding.}
-
+\sectionminitoc
     The evaluation of unfolding methods presents unique challenges due to the ill posed nature of the inverse problem.
     %
     While the goal of unfolding is conceptually straightforward, to recover the true particle level distribution from detector level observations, quantifying the success of this recovery requires careful consideration when the downstream use of the data is unknown.
@@ -772,7 +779,9 @@ However, it requires careful basis function placement to prevent endpoint spikes
         \label{subsubsec:pull-distributions}
             Pull distributions offer a rigorous way to evaluate the calibration of reported uncertainties.
             
-            \begin{definition}[Pull distribution.] For a given unfolded bin or parameter \(\theta\), the \emph{pull} is defined as
+            \begin{definition}[Pull distribution.]
+            \label{def:pull-distribution}
+                For a given unfolded bin or parameter \(\theta\), the \emph{pull} is defined as
             \begin{equation}
                 \text{Pull}\,{\theta} = \frac{\hat{\theta} - \theta_{\text{true}}}{\sigma_{\hat{\theta}}}
             \end{equation}
@@ -793,14 +802,53 @@ However, it requires careful basis function placement to prevent endpoint spikes
             For sufficiently large sample sizes, many unfolding estimators approach normality due to the Central Limit Theorem, since they often involve weighted sums or averages of many events.
             %
             When the underlying estimator is approximately normally distributed, if it satisfies the two conditions above that set its mean and standard deviation to \(0\) and \(1\) respectively, the population of sample pulls must be distributed as a standard normal.
-            
-            A pull distribution with non-zero mean indicates systematic bias in the unfolding procedure. 
+            %
+            This is formalised in \cref{thm:pull-normality}.
+
+            \begin{theorem}[Asymptotic standard normality of pulls]
+            \label{thm:pull-normality}
+            Let \(\hat\theta_n\) be an estimator of a scalar parameter \(\theta\) based on \(n\) independent events, and let \(\sigma_n\) denote the reported (\(1\sigma\)) uncertainty for \(\hat\theta_n\). Assume:
+            \begin{description}
+                \item[Asymptotic unbiasedness:] \(\mathbb{E}[\hat\theta_n] - \theta \to 0\) as \(n\to\infty\).
+                \item[Variance calibration:] \(\sigma_n^2 / \operatorname{Var}(\hat\theta_n) \xrightarrow{\,p\,} 1\).
+                \item[Asymptotic normality:] \(\sqrt{n}\,(\hat\theta_n-\theta) \Rightarrow \mathcal N(0,\tau^2)\) for some \(\tau^2>0\).
+            \end{description}
+            For the \emph{pull}, \(P_n\) defined according to \cref{def:pull-distribution},
+            \begin{equation}
+                \lim_{n\to\infty} P_n \sim \mathcal N(0,1).
+            \end{equation}
+            That is to say, across pseudo-experiments, the empirical distribution of pulls converges to the standard normal law.
+            \end{theorem}
+
+            \begin{proof}
+            By asymptotic normality,
+            \[
+                \lim_{n\to\infty} \frac{\hat\theta_n-\theta}{\sqrt{\operatorname{Var}(\hat\theta_n)}} \sim \mathcal N(0,1).
+            \]
+            By variance calibration,
+            \[
+                \lim_{n\to\infty} \frac{\sqrt{\operatorname{Var}(\hat\theta_n)}}{\sigma_n} = 1.
+            \]
+            Hence, by Slutsky's theorem~\cite{slutsky_uber_1925},
+            \[
+              \lim_{n\to\infty} P_n 
+              = \lim_{n\to\infty} \frac{\hat\theta_n-\theta}{\sqrt{\operatorname{Var}(\hat\theta_n)}}
+                \cdot \lim_{n\to\infty} \frac{\sqrt{\operatorname{Var}(\hat\theta_n)}}{\sigma_n}
+              \sim \mathcal N(0,1)\cdot 1 
+              = \mathcal N(0,1)
+            \]
+            \end{proof}
+
+            \cref{thm:pull-normality} provides a rigorous theoretical foundation for the intuitive notion that a pull distribution with non-zero mean indicates systematic bias in the unfolding procedure. 
             %
             Deviations from unit standard deviation indicate either overestimation or underestimation of uncertainties.
+            %
+            The theorem also provides a diagnostic for the quality of the uncertainty estimates, as a pull distribution with non-zero mean or non-unit standard deviation indicates that the uncertainty estimates are not accurate.
             
             In the context of binned unfolding, pull distributions can be computed for each bin, while for unbinned methods, they can be applied to derived quantities or parameters of interest.
             %
             For Bayesian methods, pulls can be calculated using the mean and standard deviation of the posterior distribution~\cite{Knapik2012BayesianPriors}.
+        
         \subsubsection{Coverage properties.}
             Related to pulls, but more direct, is the evaluation of coverage properties of confidence intervals or credible intervals.
             %
@@ -823,6 +871,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 When the regularisation is strong (fewer iterations in the case of IBU), both methods undercover substantially. Image credit~\cite{kuusela_shape-constrained_2017}}
                 \label{fig:coverage}
             \end{figure}
+
     \subsubsection{Variance and bias decomposition.}
         The total error of an unfolding method can be decomposed into bias and variance components,
         \begin{equation}
@@ -838,10 +887,12 @@ However, it requires careful basis function placement to prevent endpoint spikes
         Traditional evaluation metrics often focus on marginal distributions, overlooking an important aspect of unfolding: the correlation structure between different bins or events.
         %
         Properly accounting for these correlations is crucial for downstream analyses.
+
         \subsubsection{Covariance matrix assessment.}
             For binned methods, the full covariance matrix of the unfolded distribution provides information about bin--to--bin correlations.
             %
             A useful, related measure is the correlation matrix.
+
             \begin{definition}[Correlation matrix.]
                 \begin{equation}
                     \rho_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}\Sigma_{jj}}},
@@ -850,6 +901,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \end{definition}
 
             Comparing the correlation structure of the unfolded distribution to that of the true distribution\footnote{When known, e.g., in simulation studies.} can reveal systematic distortions introduced by the unfolding procedure.
+
         \subsubsection{Event--to--event correlation metrics.}
             For unbinned methods event--to--event correlations in the unfolded weights can significantly impact downstream inference.
             %
@@ -889,6 +941,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
              The effective sample size is then defined as the ratio of the squared expectation to the variance, providing a measure of statistical efficiency that accounts for both weight magnitudes and their correlations.
              
             \cref{fig:corr-decay} illustrates how event correlations typically decay with distance, with the correlation length scale increasing with detector resolution effects.
+
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/chapter-02/weight-correlation-vs-distance-1d-set1.pdf}
@@ -897,7 +950,8 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 \label{fig:corr-decay}
             \end{figure}
             \footnotetext{Figure created by Owen Long}
-    \subsection{Method specific evaluation metrics}
+
+    \subsection{Method specific evaluation metrics.}
         \subsubsection{Iterative methods}
             For iterative methods like Iterative Bayesian Unfolding (IBU) or \textsc{OmniFold}, convergence behaviour provides important diagnostic information.
         %
