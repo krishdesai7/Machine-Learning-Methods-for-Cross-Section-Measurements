@@ -70,17 +70,17 @@ Regularisation techniques are therefore essential to stabilise the solution.
             Most of these bins will contain zero events, creating a sparse matrix that renders traditional unfolding techniques numerically unstable.
             
             \begin{theorem}[Scaling of relative uncertainty]
-                \label{prop:relative-uncertainty}
-                Consider a \(d\)-dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\text{events}}\) denote the total number of events uniformly distributed over the full measurement range.
+                \label{thm:relative-uncertainty}
+                Consider a \(d\) dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\text{events}}\) denote the total number of events uniformly distributed over the full measurement range.
                 %
                 Then the relative uncertainty in the estimated differential event density in any given bin obeys
                 \begin{equation}
-                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i}
+                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i},
                 \end{equation}
                 where \(Q\) is the differential quantity (events per unit hypervolume).
             \end{theorem}
-                
-            \begin{proof}
+            \begin{proof}[*thm:relative-uncertainty]
+            
                 A single histogram bin occupies hypervolume
                 \[
                     V = \prod_{i=1}^d \Delta z_i
@@ -195,10 +195,12 @@ where \(p(z)\) represents the true particle level distribution, \(r(x\mid z)\) i
 This equation encapsulates the \emph{forward problem} when predicting \(p(x)\) given \(p(z)\), and the \textit{inverse problem} when estimating \(p(z)\) from data \(p(x)\).
 
 For discrete histogram representations, this becomes a matrix equation,
+
 \begin{equation}
     \label{eq:forward-binned}
     \boldsymbol{\mu} = \mathbf{R}\boldsymbol{\nu} + \boldsymbol{\epsilon},
 \end{equation}
+
 where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and observed bin counts, respectively, \(\mathbf{R}\) is the smearing matrix containing conditional probabilities, \(R_{ij} = \P(\text{observed bin } i \mid \text{true bin } j)\)~\cite{cms_collaboration_measurement_2011}, and \(\boldsymbol{\epsilon}\) is the vector of measurement noise.
 
     \subsection{Challenges in inverse problems.}
@@ -259,7 +261,7 @@ where \(\boldsymbol{\nu}\) and \(\boldsymbol{\mu}\) are vectors of true and obse
     \begin{description}
     \item[Iterative Bayesian unfolding~\cite{richardson_bayesian-based_1972, lucy_iterative_1974, Schmitt2017DataPhysics}], also known as Lucy--Richardson deconvolution, uses Bayes' theorem to iteratively update the estimate of the true distribution, with the number of iterations controlling regularisation strength.
     \item[SVD unfolding~\cite{hocker_svd_1996}] applies singular value decomposition to the response matrix and suppresses contributions from small singular values that amplify statistical fluctuations.
-    \item[TUnfold~\cite{schmitt_tunfold_2012}] formulates unfolding as a least squares problem with Tikhonov regularisation to penalise large second derivatives, preserving smoothness.
+    \item[TUnfold~\cite{schmitt_tunfold_2012}] formulates unfolding as a least squares problem with Tikho\-nov regulari\-sation to penalise large second derivatives, preserving smooth\-ness.
     \end{description}
 
 These methods, which will be discussed in more detail in \cref{sec:binned-methods}, have served the field well for decades, particularly for one dimensional measurements where binning is manageable.
@@ -548,6 +550,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
   \caption{\textsc{OmniFold}}
   \label{alg:omnifold}
   \begin{algorithmic}[1]
+  \algospacing
     \Require 
       Data samples $\{x_j^{\mathrm{Data}}\}$,\\
       Gen.--Sim.\ pairs $\{(z_i,x_i)\}$,\\
@@ -572,6 +575,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
 \begin{algorithm}\ContinuedFloat
   \caption[]{(continued)} % optional “(continued)” suffix
   \begin{algorithmic}[1]
+  \algospacing
     \algrestore{omnifold}
     
     \State \textbf{Pull-back weights:}
@@ -688,7 +692,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             Simple residual based metrics quantify the difference between the estimated and true distributions.
             %
-            \begin{definition}
+            \begin{definition}[Residuals]
                 For binned methods, the \emph{bin by bin residual} is defined as
             \begin{equation}
                 \delta_i = \hat{t}_i - t_i
@@ -696,12 +700,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
             where \(\hat{t}_i\) is the unfolded count in bin \(i\) and \(t_i\) is the true count.
             \end{definition}
             
-            %
             Various summary statistics of these residuals can be computed, including
             \begin{description}
-                \item[Mean squared error] \[\text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\;,\]
-                \item[Root mean squared error] \[\text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\;,\] 
-                \item[Mean absolute error] \[\text{MAE} &= \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|\;.\]
+                \item[Mean squared error] \[\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2\;,\]
+                \item[Root mean squared error] \[\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{t}_i - t_i)^2}\;,\] 
+                \item[Mean absolute error] \[\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|\hat{t}_i - t_i|\;.\]
                 
             \end{description}
 
@@ -820,7 +823,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             That is to say, across pseudo-experiments, the empirical distribution of pulls converges to the standard normal law.
             \end{theorem}
 
-            \begin{proof}
+            \begin{proof}[*thm:pull-normality]
             By asymptotic normality,
             \[
                 \lim_{n\to\infty} \frac{\hat\theta_n-\theta}{\sqrt{\operatorname{Var}(\hat\theta_n)}} \sim \mathcal N(0,1).
@@ -868,7 +871,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 %
                 The error bars are given by the 95\% Clopper--Pearson intervals and the nominal confidence level is shown by the dotted line.
                 %
-                When the regularisation is strong (fewer iterations in the case of IBU), both methods undercover substantially. Image credit~\cite{kuusela_shape-constrained_2017}}
+                When the regularisation is strong (fewer iterations in the case of IBU), both methods undercover substantially. Image credit:~\cite{kuusela_shape-constrained_2017}}
                 \label{fig:coverage}
             \end{figure}
 
@@ -918,7 +921,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             One can also estimate the reduction in statistical power due to correlated weights
             \begin{equation}
                 \label{eq:n-eff}
-                N_{\text{eff}} = \frac{\left(\sum_{i} w_i\right)^2}{\sum_{i,j} w_i\,w_j\,\vb*{\rho}(w_i, w_j)}
+                N_{\text{eff}} = \frac{\left(\sum_{i} w_i\right)^2}{\sum_{i,j} w_i\,w_j\,\vb*{\rho}(w_i, w_j)}\;.
             \end{equation}
             In this equation, \(N_{\text{eff}}\) represents the effective number of independent observations when event weights are correlated, derived from the variance properties of weighted sums.
             %
@@ -928,11 +931,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             The first component, \(\sum w_i^2\), captures the variance contribution from individual event weights, similar to the standard effective sample size formula for independent weighted observations.
             %
-            The second component, \(2\sum_{i<j} w_i w_j \vb*{\rho}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
+            The second component, \(2\sum_{i<j} w_i \,w_j\, \vb*{\rho}(w_i, w_j)\), accounts for the covariance contributions between all pairs of events, where the factor of 2 arises because each pair appears only once in the sum over \(i<j\).
 
             When weights are uncorrelated, \(\vb*{\rho}(w_i, w_j) = 0,\) and the formula reduces to the familiar \(N_{\text{eff}}=\nicefrac{\qty(\sum w_i)^2}{\sum w_i^2}.\)
             %
-            However, upon unfolding methods, nearby events in phase space often receive similar weight corrections\footnote{as will be discusseed in greater detail in \cref{chap:unbinned_correlations}}, leading to correlations that increase the denominator and reduce the effective sample size.
+            However, upon unfolding methods, nearby events in phase space often receive similar weight corrections\footnote{As will be discussed in greater detail in \cref{chap:unbinned_correlations}.}, leading to correlations that increase the denominator and reduce the effective sample size.
             %
             This reduction quantifies the loss of statistical power compared to an ideal scenario with independent weights.
 
@@ -940,7 +943,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             %
             For a weighted sum, \(S = \sum w_i\,x_i\), the variance is
             \[
-                \sigma_S^2 = \sum_i \sum_j w_i w_j \Sigma_{ij},
+                \sigma_S^2 = \sum_i \sum_j w_i\, w_j\, \Sigma_{ij},
             \]
              which is the denominator of the \cref{eq:n-eff}.
              %
@@ -951,7 +954,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 Let $w_1,\dots,w_N$ be event weights, and let $\rho(w_i,w_j)$ denote the correlation coefficient between the contributions of events $i$ and $j$ to a given observable. The \emph{effective sample size} accounting for correlations defined in \cref{eq:n-eff} computes the ratio of the squared total weight to the variance of the weighted sum of $N$ correlated unit--variance contributions.
             \end{theorem}
 
-            \begin{proof}
+            \begin{proof}[*thm:neff-corr]
             Consider the weighted sum $S \coloneqq \sum_{i=1}^N w_i X_i$ with mean $\mu$ and variance \(1\) for all $i$.
             %
             The variance of \(S\) is
@@ -978,7 +981,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
                 }
                 \label{fig:corr-decay}
             \end{figure}
-            \footnotetext{Figure created by Owen Long~\cite{Desai:2025mpy}}
+            \footnotetext{Figure created by Owen Long~\cite{Desai:2025mpy}.}
 
     \subsection{Method specific evaluation metrics.}
         \subsubsection{Iterative methods.}
@@ -989,8 +992,9 @@ However, it requires careful basis function placement to prevent endpoint spikes
         One then compares unfolded distributions at different iterations to assess stability and analyse how the bias--variance trade off evolves with iteration number.
 
         \subsubsection{Bayesian methods.}
-            For Bayesian unfolding methods such as Fully Bayesian Unfolding (FBU)~\cite{choudalakis_fully_2012} or \textsc{Neural Posterior Unfolding} (NPU)~\cite{acosta2024npu}, additional posterior specific metrics are relevant.
-            %
+            {\tolerance=1000
+            For Bayesian unfolding methods such as Fully Bayesian Unfolding (FBU)~\cite{choudalakis_fully_2012} or \textsc{Neural Posterior Unfolding} (NPU)~\cite{acosta2024npu}, additional posterior specific metrics are relevant.\par}
+            
             One can compare detector level data to detector level predictions generated from the posterior.
             %
             One assesses convergence using standard MCMC based diagnostics like the Gelman--Rubin statistic~\cite{Gelman:1992zz} or effective sample size.

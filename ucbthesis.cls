@@ -162,33 +162,16 @@
     sepcounters=true,
     proofref={onlyifveryfar,margin},
     theoremstyle=definition,
-    qedsymbolblacksquare=false
+    qedsymbolblacksquare=false,
+    smallproofs=false
 ]{phfthm}
 
-\RequirePackage{mdframed}
-\mdfdefinestyle{theoremstyle}{
-    topline=true,
-    bottomline=true,
-    leftline=false,
-    rightline=false,
-    linewidth=0.5pt,
-    innertopmargin=0.5\baselineskip,
-    innerbottommargin=0.5\baselineskip,
-    innerleftmargin=0pt,
-    innerrightmargin=0pt
-}
-
-\foreach \env in {theorem, proposition, lemma, corollary, conjecture, remark, definition}{
-    \surroundwithmdframed[style=theoremstyle]{\env}
-}
 \phfMakeTheorem[
     thmstyle=definition,
     counter=,
     defstar=true,
     proofref=false
 ]{note}{Note}
-\surroundwithmdframed[style=theoremstyle]{note*}
-
 % ============================================================================
 % FRONT MATTER VARIABLES
 % ============================================================================
