@@ -755,6 +755,7 @@ This section explores the most prominent deep learning architectures employed in
     By incorporating time information, these models could help unfold distributions that are affected by time--varying detector effects.
     
 \subsection{Graph neural networks.}
+\label{subsec:deep-learning-architectures.gnns}
 
     Graph neural networks (GNNs) have emerged as one of the most promising architectural paradigms for HEP applications.
     %
@@ -907,6 +908,7 @@ This section explores sophisticated machine learning frameworks that have demons
 Three principal categories are examined: generative models, discriminative models, and adversarial frameworks, each offering distinct approaches to learning complex distributions and relationships in particle physics data.
 
 \subsection{Generative models.}
+    \label{subsec:modern-ml.generative-models}
     Generative models represent a powerful class of machine learning techniques that aim to learn and characterise the underlying probability distribution of observed data.
     %
     Unlike discriminative models that focus on decision boundaries between classes, generative models capture the full data generation process, enabling them to produce new samples that resemble the training distribution~\cite{Kansal2023EvaluatingPhysics}.
@@ -1277,20 +1279,20 @@ p_X(x)
             \begin{gather}
                 \min_{w,b} \frac{1}{2}\norm{w}^2 \\ \text{subject to } y_i\,(w^T x_i + b) \geq 1\;.
             \end{gather}
-            The dual formulation of this problem leads to the kernel trick, enabling non-linear decision boundaries:
+            The dual formulation of this problem leads to the kernel trick, enabling non-linear decision boundaries,
             \begin{gather}
-                \max_{\alpha} \sum_{i=1}^N \alpha_i - \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\,\alpha_j \,y_i\, y_j \,K(x_i,x_j)\\\text{subject to }\alpha_i\ge0 \text{ and } \sum_{i=1}^N \alpha_i \, y_i = 0
+                \max_{\alpha} \sum_{i=1}^N \alpha_i - \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \;,\alpha_i\,\alpha_j \,y_i\, y_j \,K(x_i,x_j)\\\text{subject to }\alpha_i\ge0 \text{ and } \sum_{i=1}^N \alpha_i \, y_i = 0\;,
             \end{gather}
-            where\(K(x_i,x_j)\) is a kernel function.
+            where \(K(x_i,x_j)\) is a kernel function.
         
             The choice of kernel dramatically affects SVM performance.
             %
             The most common choices in particle physics problems are the
-            \begin{itemize}
-                \item Linear kernel, \(K(x_i,x_j) = x_i^T x_j\), which is efficient for high--dimensional but linearly separable data,
-                \item Radial basis function (RBF), \(K(x_i,x_j) = \exp(-\gamma\,\norm{x_i-x_j}^2)\), which is capable of capturing nonlinear detector responses, and
-                \item Polynomial kernel \(K(x_i,x_j) = (x_i^T x_j + c)^d\), which models polynomial relationships in feature space.
-            \end{itemize}
+            \begin{description}
+                \item[Linear kernel,] \(K(x_i,x_j) = x_i^T x_j\), which is efficient for high--dimensional but linearly separable data,
+                \item[Radial basis functions (RBF),] \(K(x_i,x_j) = \exp(-\gamma\,\norm{x_i-x_j}^2)\), which are capable of capturing nonlinear detector responses, and the
+                \item[Polynomial kernel,] \(K(x_i,x_j) = (x_i^T x_j + c)^d\), which models polynomial relationships in feature space.
+            \end{description}
             
             SVMs have been applied across various particle physics processes.
             %
@@ -1298,7 +1300,7 @@ p_X(x)
             %
             In analyses involving quark--gluon discrimination, SVMs with RBF kernels achieved discrimination power comparable to dedicated physics--inspired variables~\cite{sforza_support_2013, Anguita2004ModelClassifier}.
             %
-            Attempts to construct SVMs for unfolding focus on their potential to estimate the density ratio between detector--level and particle--level distributions
+            Attempts to construct SVMs for unfolding focus on their potential to estimate the density ratio between detector level and particle level distributions
             
             A persistent roadblock to their more widespread adoption has been the fact that traditional SVM implementations scale poorly with dataset size, \(\mathcal O(n^2)\) to \(\mathcal O(n^3)\).
             %
@@ -1307,37 +1309,39 @@ p_X(x)
         \paragraph{Boosted decision trees.}
             Historically one of the most popular models employed in jet physics analyses, boosted decision trees (BDTs) combine weak learners \footnote{i.e. shallow decision trees} into a powerful ensemble.
             \begin{equation}
-                F(x) = \sum_{m=1}^M \beta_m \,h_m(x)
+                F(x) = \sum_{m=1}^M \beta_m \,h_m(x)\;,
             \end{equation}
-            where \(h_m\) is the \(m-\)th tree and \(\beta_m\) is its corresponding weight.
-            %
+            where \(h_m\) is the \(m^{\text{th}}\) tree and \(\beta_m\) is its corresponding weight.
+            
             Each tree recursively partitions the feature space according to information gain criteria,
             \begin{equation}
-                \text{Gain} = \text{Impurity(parent)} - \sum_{j \in \{\text{children}\}} \frac{N_j}{N} \text{Impurity}(j)
+                \text{Gain} = \text{Impurity(parent)} - \sum_{j \in \{\text{children}\}} \frac{N_j}{N} \text{Impurity}(j)\;.
             \end{equation}
+            
             Several boosting algorithms have either been developed specifically for HEP or been employed in HEP analyses.
-            \begin{itemize}
-                \item \textbf{AdaBoost} iteratively reweights misclassified samples.
+            \begin{description}
+                \item[AdaBoost]~\cite{Hastie2009Multi-classAdaBoost,Freund1995ABoosting} iteratively reweights misclassified samples.
                 \begin{equation}
-                    w_i^{(t+1)} = w_i^{(t)} \cdot e^{\alpha_t \cdot \mathbf{1}(y_i \neq h_t(x_i))}
+                    w_i^{(t+1)} = w_i^{(t)} \cdot e^{\alpha_t \cdot \mathbbm{1}(y_i \neq h_t(x_i))}\;,
                 \end{equation}
                 where \(\alpha_t = \frac{1}{2}\ln\left(\frac{1-\epsilon_t}{\epsilon_t}\right)\) and \(\epsilon_t\) is the weighted error rate.
-                \item \textbf{Gradient boosting} fits each tree to the negative gradient of the loss function with respect to the current prediction.
+                
+                \item[Gradient boosting]~\cite{hastie_boosting_2009} fits each tree to the negative gradient of the loss function with respect to the current prediction.
                 \begin{equation}
-                    h_m = \arg\min_h \sum_{i=1}^N L(y_i, F_{m-1}(x_i) + h(x_i))
+                    h_m = \argmin_h \sum_{i=1}^N L(y_i, F_{m-1}(x_i) + h(x_i))\;.
                 \end{equation}
-                \item \textbf{XGBoost} incorporates second--order derivatives and regularization into the above schema.
+                \item[XGBoost]~\cite{Chen:2016btl,noauthor_dmlcxgboost_2025} incorporates second order derivatives and regularisation into the above schema.
                 \begin{equation}
-                    \mathcal{L}^{(t)} \approx \sum_{i=1}^n [g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i)] + \Omega(f_t)
+                    {L}^{(t)} \approx \sum_{i=1}^n \qty[g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i)] + \Omega(f_t)\;,
                 \end{equation}
             where \(g_i\) and \(h_i\) are the first and second derivatives of the loss.
-            \end{itemize}
+            \end{description}
             
             BDTs have been extensively deployed in particle physics analyses.
             %
-            The Toolkit for Multivariate Analysis (TVMA) integrated BDTs into the ROOT framework, cementing their place as a staple in HEP analyses.
+            The Toolkit for Multivariate Analysis (TVMA)~\cite{Voss:2007jxm} integrated BDTs into the ROOT framework, cementing their place as a staple in HEP analyses.
             %
-            BDTs were instrumental in the Higgs boson discovery by improving signal--to--background discrimination.
+            BDTs were instrumental in the Higgs boson discovery by improving signal--to--background discrimination~\cite{glaysher_bdts_nodate}.
             %
             They can also be used in unfolding tasks, since they can model complex response matrices and estimate reweighting functions
             
@@ -1345,8 +1349,10 @@ p_X(x)
             %
             They struggle with highly correlated features common in detector data, and performance typically degrades in very high dimensional spaces.
             %
-            Tree--based models also introduce discontinuities in the mapping function that can complicate uncertainty propagation.
+            Tree based models also introduce discontinuities in the mapping function that can complicate uncertainty propagation.
+            
         \subsubsection{Discriminative models and deep learning.}
+        
             The transition from traditional learning to deep learning in particle physics has been driven by the need to handle increasingly complex data structures and extract more sophisticated feature representations.
             %
             While classical methods excel with engineered features and tabular data, deep learning architectures can automatically learn complex representations from raw or minimally processed data.
@@ -1354,55 +1360,57 @@ p_X(x)
             This capability has proven particularly valuable for particle physics applications involving complex topological relationships, variable length sequences, and high dimensional data.
             %
             Modern deep learning approaches have thus expanded the analytical toolkit available to physicists, enabling new insights that were previously difficult or impossible to obtain.
-            \subsubsection{Graph Neural Networks}
-                GNNs operate on graph--structured data, represented as \(G = (V, E)\)
+            
+            \subsubsection{Graph neural networks.}
+                GNNs, introduced in \cref{subsec:deep-learning-architectures.gnns}, operate on graph--structured data, represented as \(G = (V, E)\)
                 with nodes \(v_i \in V\) and edges \(e_{ij} \in E\).
                 %
-                The message--passing framework updates node representations through the rule
+                The message passing framework updates node representations through the rule
                 \begin{equation}
-                    y_i^{(l+1)} = \phi\left(y_i^{(l)}, \bigoplus_{j \in \mathcal{N}(i)} \psi(y_i^{(l)}, y_j^{(l)}, e_{ij})\right)
+                    y_i^{(l+1)} = \phi\left(y_i^{(l)}, \bigoplus_{j \in \mathfrak{N}(i)} \psi(y_i^{(l)}, y_j^{(l)}, e_{ij})\right)\;,
                 \end{equation}
-                where \(\phi, \psi\) are learnable functions, \(\mathcal{N}(i)\) denotes neighbours of node\(i\), and \(\bigoplus\) is the permutation--invariant aggregation operator.
+                where \(\phi, \psi\) are learnable functions, \(\mathfrak{N}(i)\) denotes neighbours of node\(i\) and \(\bigoplus\) is the permutation invariant aggregation operator.
         
-                A few different specialized GNN variants have been developed with an eye towards specific physics applications.
+                A few different specialized GNN variants have been developed with an eye towards specific applications in HEP and in physics more broadly.
+                %
                 For example,
                 %
                 interaction networks model physical interactions between particles with explicit edge functions.
                 %
-                Dynamic graph CNNs construct graphs dynamically based on spatial proximity in detector space.
-                %
+                Dynamic graph CNNs can be used for an array of applications from construct graphs dynamically based on spatial proximity in detector space to encoding hierarchical quantum circuit representations, to studying the microscopic structure and emergent dynamics in glasses~\cite{Wang:2018nkf, Ting:2025iom, Jung:2023wef, Lourens:2022vpu}.
+                
                 As discussed in \cref{subpar:pfns-gnns-and-transformers}, one possible interpretation of particle flow networks is as a special case of GNNs.
                 %
                 PFNs incorporate physics informed constraints into the message-passing mechanism.
                 
-                Similarly, HEP specific objectives functions have also been developed to train GNNs for HEP applications. 
+                HEP specific objectives functions have also been developed to train GNNs for HEP applications. 
                 %
                 These include node level classification for identifying individual particles,
                 %
-                graph level classification for categorizing entire events,
+                graph level classification for categorising entire events,
                 %
                 edge prediction for reconstructing particle interaction vertices,
                 %
                 and energy regression for estimating particle energies and momenta.
         
-                Through these specialized architectures and objective functions, GNNs have shown remarkable performance across a range physics use cases.
-                \begin{itemize}
-                    \item Jet Tagging: Representing jets as graphs of constituents for improved identification performance
-                    \item Event Reconstruction: Modeling entire collision events as interaction graphs
-                    \item Tracking: Reconstructing particle trajectories from detector hits
-                    \item Unfolding: Learning mappings between detector--level and particle--level observables while preserving physical symmetries
-                \end{itemize}
+                Through these specialised architectures and objective functions, GNNs have shown promising performance across a range HEP use cases.
+                \begin{description}
+                    \item [Jet Tagging:] Representing jets as graphs of constituents for improved identification performance,
+                    \item [Event Reconstruction:] Modelling entire collision events as interaction graphs,
+                    \item [Tracking:] Reconstructing particle trajectories from detector hits,
+                    \item [Unfolding:] Learning mappings between detector level and particle level observables while preserving physical or statistical invariants.
+                \end{description}
                 
                 The most significant constraint on the use of GNNs in HEP is their computational complexity.
                 %
-                Message--passing operations scale with graph size and connectivity.
+                Message passing operations scale with graph size and connectivity.
                 %
-                While their ability to naturally handle variable--sized inputs can be incredibly useful, implementing them requires careful batching strategies to maintain the differentiable structure of the network that backpropagation relies on.
+                While their ability to naturally handle variable sized inputs can be incredibly useful, implementing them requires careful batching strategies to maintain the differentiable structure of the network that backpropagation relies on.
     
-        \paragraph{Transformer Models}
+        \paragraph{Transformer models.}
             Transformers process sequences through self--attention mechanisms,
             \begin{equation}
-                \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q\,K^T}{\sqrt{d_k}}\right)\,V
+                \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q\,K^T}{\sqrt{d_k}}\right)\,V\;,
             \end{equation}
             where \(Q, K, V\) are query, key, and value matrices derived from input embeddings.
             %
@@ -1410,34 +1418,35 @@ p_X(x)
             %
             permutation invariance for the natural handling of varying particle multiplicities,
             %
-            long--range dependencies, for capturing correlations between distant detector regions,
+            long range dependencies, for capturing correlations between distant detector regions,
             %
-            and interpretable attention maps for visualizing learned physical interactions.
+            and interpretable attention maps for visualising learned physical interactions.
     
-            Transformer models, which revolutionized the field of natural language processing, are increasingly being adopted for complex HEP tasks.
+            Transformer models, which revolutionised the field of natural language processing, are increasingly being adopted for complex HEP tasks.
             %
             While transformers were originally designed to process sequential data where order not only matters, but also is expressly important to the learned representation, they can be adapted to be permutation invariant, a necessary property for particle physics applications where the ordering of particles or constituents is typically arbitrary and physically meaningless.
-            %
+            
             In jet classification tasks, transformers process jets as collections of constituents rather than sequences, learning representations that are invariant to the order in which particles are presented.
             %
-            This permutation invariance is achieved through modifications to the standard transformer architecture, such as removing positional encodings or using specialized attention mechanisms that treat input particles symmetrically.
+            This permutation invariance is achieved through modifications to the standard transformer architecture, such as removing positional encodings or using specialised attention mechanisms that treat input particles symmetrically.
             %
-            Transformers have been applied to event-level classification tasks in particle physics, with applications including jet classification and event categorization~\cite{Kheddar2025ImageSurvey, mikuni_point_2021, builtjes_attention_2025}.
+            Transformers have been applied to event level classification tasks in particle physics, with applications including jet classification and event categorisation~\cite{Kheddar2025ImageSurvey, mikuni_point_2021, builtjes_attention_2025}.
             %
             This capability has proven particularly valuable for event level analysis, where the transformer can capture complex relationships between particles throughout the entire collision while respecting the fundamental symmetries of the underlying physics.
     
             However, despite their potential, some of the characteristics of transformer models have hindered their widespread adoption in HEP.
             %
-            Self attention operations scale quadratically with sequence length, constraining the size of attention modules~\cite{Vaswani2017AttentionNeed}.
+            Self--attention operations scale quadratically with sequence length, constraining the size of attention modules~\cite{Vaswani2017AttentionNeed}.
             %
             Transformer models typically require large training datasets~\cite{zhao_large-scale_2024}, as a consequence of which, training runs can rarely exceed one epoch~\cite{miao_locality-sensitive_2024}.
             %
             Hence, while transformers can learn surface level relationships extremely effectively, they are limited in their ability to learn deeper structure that would require multiple passes over each data point to discover~\cite{caron_trackformers_2025, Wang2024InterpretingTagging, stroud_transformers_2024}.
     
     \subsection{Adversarial models.}
-        Adversarial models leverage the competitive dynamics between two neural networks to achieve powerful generative and discriminative capabilities.
+    
+        Adversarial models, which lie at the heart of several of the novel methods presented in this dissertation, leverage the competitive dynamics between two neural networks to achieve powerful generative and discriminative capabilities.
         %
-        These models have revolutionized high energy physics applications by enabling novel approaches to simulation, unfolding, and domain adaptation.
+        These models have revolutionised high energy physics applications by enabling novel approaches to simulation, unfolding, and domain adaptation.
         %
         Fundamentally different from traditional architectures, adversarial models employ a game theoretic framework that can capture complex, high dimensional distributions and transformations relevant to particle physics.
     
@@ -1445,52 +1454,60 @@ p_X(x)
         %
         The generator attempts to produce outputs that the discriminator cannot distinguish from real data, while the discriminator attempts to correctly classify inputs as either real or generated.
         %
-        This minimax game is formalized as
+        This minimax game is formalised as the optimisation problem
         \begin{equation}
-            \max_g \min_d L(d, g) = -\mathbb{E}_{x \sim p(x)}[\log d(x)] - \mathbb{E}_{z \sim q(z)}[\log\qty(1 - d(g(z)))]
+            \max_g \min_d L(d, g) = -\mathbb{E}_{x \sim p(x)}[\ln d(x)] - \mathbb{E}_{z \sim q(z)}[\ln\qty(1 - d(g(z)))]\;,
         \end{equation}
-        where \(p(x)\) is the true data distribution, \(q(z)\) is a latent space distribution\footnote{typically Gaussian noise, though in the variations presented in this thesis, \(q(z)\) will most often be the generation distribution.}, \(g(z)\) maps the latent space to the data space, and \(d(x)\) outputs the probability that
+        where \(p(x)\) is the distribution of real data, \(q(z)\) is a latent space distribution,\footnote{Typically Gaussian noise, though in the variations presented in this thesis, \(q(z)\) will most often be the Generation distribution.}, \(g(z)\) maps the latent space to the data space, and \(d(x)\) outputs the probability that
         \(x\) came from the real data rather than the generator.
     
-        In the context of particle physics, this framework can be extended to incorporate domain specific constraints and physical laws, leading to specialized variants such as
+        In the context of particle physics, this framework can be extended to incorporate domain specific constraints and physical laws, leading to variants such as
         \begin{equation}
             \begin{split}
                 \max_g \min_d L(d, g) &= -\mathbb{E}_{x \sim p_{\text{data}}(x)}[\log d(x)] \\
-                &\quad - \mathbb{E}_{z \sim p_z(z)}[\log(1 - d(g(z)))] + \lambda \mathcal{R}(g)
+                &\quad - \mathbb{E}_{z \sim p_z(z)}[\log(1 - d(g(z)))] + \lambda \mathcal{R}(g)\;,
             \end{split}
         \end{equation}
-        where \(\mathcal{R}(g)\) represents physics--informed regularization terms that enforce conservation laws, symmetries, or other physical constraints, weighted by hyperparameter \(\lambda\).
+        where \(\mathcal{R}(g)\) represents physics informed regularisation terms that enforce conservation laws, symmetries, or other physical constraints, weighted by hyperparameter \(\lambda\).
 
-        The following sections will discuss some of the most common variants of adversarial models, and how they can be applied to the HEP analyses.\footnote{\begin{note}{Not all architectures discussed in the following sections are used in the novel research presented in this thesis. They are included here to provide a more complete picture of the landscape of adversarial models relevant to particle physics. }\end{note}}
-    
-    \subsubsection{Generative Adversarial Networks (GANs)}
-    \label{subsubsec:GANs}
-        Generative Adversarial Networks (GANs) represent a fundamentally different approach to generative modelling, employing an adversarial training framework rather than explicit density estimation~\cite{UCLDeepMind}.
+        The following sections will discuss some of the most common variants of adversarial models, and how they can be applied to the HEP analyses.
+        
+        \begin{note*}
+        While adversarial models are at the heart of multiple novel methods presented in subsequent chapters, not all architectures discussed in the following sections are directly used in the novel research proposed.
         %
-        First introduced by Goodfellow et al. in 2014~\cite{Goodfellow2014GenerativeNetworks}, GANs have revolutionized generative modelling through their ability to produce remarkably realistic samples, particularly for high dimensional data like images~\cite{brock_large_2019, karras_analyzing_2020, karras_progressive_2018, zhang_self-attention_2019, karras_style-based_2019, denton_deep_2015}.
+        The methods proposed in this dissertation instead take inspiration from extant models to invent entirely new algorithms.
+        %
+        It is, however, important to better understand the insights provided by the existing landscape before proceeding to discuss novel contributions. 
+        \end{note*}
+    
+    \subsubsection{Generative adversarial networks (GANs).}
+    \label{subsubsec:GANs}
+        Generative adversarial networks (GANs) represent a fundamentally different approach to generative modelling in comparison to the generative models discussed in \cref{subsec:modern-ml.generative-models}, employing an adversarial training framework rather than direct density estimation~\cite{UCLDeepMind}.
+        %
+        First introduced by Goodfellow et al. in 2014~\cite{Goodfellow2014GenerativeNetworks}, GANs have revolutionised generative modelling through their ability to produce remarkably realistic samples, particularly for high dimensional data like images~\cite{brock_large_2019, karras_analyzing_2020, karras_progressive_2018, zhang_self-attention_2019, karras_style-based_2019, denton_deep_2015}.
         %
         By training the two networks simultaneously in the aforementioned minimax game, the generator learns to produce increasingly realistic samples that can fool the discriminator, while the discriminator improves its ability to distinguish real from generated samples.
     
-        From a theoretical perspective, the GAN objective can be interpreted as minimizing the Jensen--Shannon divergence, or a variant thereof, between the data distribution and the generator distribution~\cite{lin_divergence_1991, nielsen_jensenshannon_2019, manning_foundations_1999, endres_new_2003, Altheimer2012JetBenchmarks, fuglede_jensen-shannon_2004}.
+        From a theoretical perspective, the GAN objective can be interpreted as minimising the Jensen--Shannon divergence, or a variant thereof, between the data distribution and the generator distribution~\cite{lin_divergence_1991, nielsen_jensenshannon_2019, manning_foundations_1999, endres_new_2003, Altheimer2012JetBenchmarks, fuglede_jensen-shannon_2004}.
         %
-        Training proceeds by alternating between optimizing the two networks using opposing gradient information, \textit{viz.} \(d\) is updated using gradient descent,
+        Training proceeds by alternating between optimising the two networks using opposing gradient information, \textit{viz.} \(d\) is updated using gradient descent,
         \begin{equation}
-            \theta_d \leftarrow \theta_d - \eta \nabla_{\theta_d} L(d, g),
+            \theta_d \leftarrow \theta_d \;\vb*{-}\; \eta \;\grad_{\theta_d} L(d, g),
         \end{equation}
         and \(g\) is updated using gradient ascent,
         \begin{equation}
-            \theta_g \leftarrow \theta_g + \eta \nabla_{\theta_g} L(d, g).
+            \theta_g \leftarrow \theta_g \;\vb*{+}\; \eta\; \grad_{\theta_g} L(d, g).
         \end{equation}
         
         In equilibrium, the generator produces samples indistinguishable from the real data distribution, and the discriminator outputs a probability of 0.5 for all inputs.
         %
         Formally the optimal discriminator computes
         \begin{equation}
-            d(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}\quad\text{for all } x
+            d(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}\quad\text{for all } x\;,
         \end{equation}
         and the optimal generator perfectly captures the data distribution
         \begin{equation}
-            p_g(x) = p_{\text{data}}(x)
+            p_g(x) = p_{\text{data}}(x)\;.
         \end{equation}
         
         In practice, reaching this optimum can be challenging due to the min--max nature of the objective, leading to training instabilities like mode collapse and oscillations.
@@ -1498,27 +1515,29 @@ p_X(x)
         For this reason numerous GAN variants have been proposed to address stability issues and enhance performance.
         
         In addition to architectural modifications, there also exist techniques such as spectral normalisation, which can be applied to GAN--like methods across the board to potentially improve stability.
-        %
-        \emph{Spectral normalisation}, whihc controls the Lipschitz constant of the discriminator by normalizing its weights,
+
+        \begin{definition}[Spectral normalisation]
+        \emph{Spectral normalisation} is the process of controlling the Lipschitz constant of a discriminator by normalising its weights,
         \begin{equation}
             W_{\text{SN}} = \frac{W}{\sigma(W)},
         \end{equation}
         where \(\sigma(W)\) is the spectral norm of weight matrix \(W\), provides additional tools to avoid training instabilities in GANs~\cite{Terjek2019AdversarialRegularization, miyato_spectral_2018}.
+        \end{definition}
         %
-        Spectral normalization, which has long been studied for its effectiveness in regularizing inverse problems~\cite{Clason2021RegularizationProblems, Engl2020RegularizationProblems, hansen_6_2006}, therefore is a natural fit for GAN based methods for unfolding.
+        Spectral normalisation, which has long been studied for its effectiveness in regularising inverse problems~\cite{Clason2021RegularizationProblems, Engl2020RegularizationProblems, hansen_6_2006}, therefore is a natural fit for GAN based methods for unfolding.
 
-        \paragraph{Applications}
+        \paragraph{Applications.}
             These advances have made GANs more practical for scientific applications like those in particle physics.
         
-            In high-energy physics, GANs have found diverse applications.
-            \begin{itemize}
-                \item \textbf{Fast detector simulation:} GANs can approximate the mapping from particle-level to detector-level observables, significantly accelerating the simulation process~\cite{maevskiy_generative_2023, rogachev_gan_2023, Paganini2018CaloGANNetworks, bandieramonte_fastcalogan_2023, giannelli_caloshowergan_2024, khattak_fast_2022}
-                \item \textbf{Event generation:} GANs can generate collision events, potentially replacing or augmenting traditional Monte Carlo approaches~\cite{butter_how_2019, di_sipio_dijetgan_2019}
-                \item \textbf{Anomaly detection:} Identifying rare or anomalous collision events that deviate from Standard Model predictions~\cite{vaslin_gan-ae_2023, DiMattia2019ADetection, Belis2024MachinePhysics, Knapp2021AdversariallyQuark}
-            \end{itemize}
+            In high energy physics, GANs have found diverse applications.
+            \begin{description}
+                \item[Fast detector simulation:] GANs can approximate the mapping from particle-level to detector-level observables, significantly accelerating the simulation process~\cite{maevskiy_generative_2023, rogachev_gan_2023, Paganini2018CaloGANNetworks, bandieramonte_fastcalogan_2023, giannelli_caloshowergan_2024, khattak_fast_2022}.
+                \item [Event generation:] GANs can generate collision events, potentially replacing or augmenting traditional Monte Carlo approaches~\cite{butter_how_2019, di_sipio_dijetgan_2019}.
+                \item[Anomaly detection:] Identifying rare or anomalous collision events that deviate from Standard Model predictions~\cite{vaslin_gan-ae_2023, DiMattia2019ADetection, Belis2024MachinePhysics, Knapp2021AdversariallyQuark}.
+            \end{description}
 
             \subparagraph{GANs for unfolding.}
-                The unfolding problem in high energy physics presents a two--level challenge that makes it particularly well suited for GAN based approaches.
+                The unfolding problem in high energy physics presents a two level challenge that makes it particularly well suited for GAN based approaches.
                 %
                 At its core, unfolding seeks to recover the true particle level distribution from the measured detector level observations~\cite{noauthor_statistics_2010, FreiburgHEP, Segura2024APhysics, Berger2017LectureATLAS, blobel_unfolding_2002}. 
                 %
@@ -1526,32 +1545,32 @@ p_X(x)
                 %
                 The mapping from particle level to detector level involves complex non-linear transformations that traditional unfolding methods struggle to capture fully~\cite{hocker_svd_1996, adye_unfolding_2011}.
                 
-                GANs offer several fundamental advantages for addressing this two--level structure.
+                GANs offer several fundamental advantages for addressing this two level structure.
+                \begin{enumerate}
+                    \item The adversarial training framework naturally accommodates the forward and inverse mappings between detector and particle levels without requiring explicit likelihood functions~\cite{datta_unfolding_2018, hashemi_deep_2024, bellagente_how_2020}.
                 %
-                First, the adversarial training framework naturally accommodates the forward and inverse mappings between detector and particle levels without requiring explicit likelihood functions~\cite{datta_unfolding_2018, hashemi_deep_2024, bellagente_how_2020}.
-                %
-                The generator network learns to transform detector--level distributions to particle--level distributions, while the discriminator ensures that the generated particle-level events are indistinguishable from true simulated events~\cite{erdmann_generating_2018}.
-                %
-                This approach circumvents the need for matrix inversion or the kinds of regularization schemes that plague traditional methods~\cite{Girosi1995RegularizationArchitectures, Santos2022AvoidingNetworks}, instead learning the unfolding transformation directly from data.
+                    \item The generator network can learns to transform detector level distributions to particle level distributions, while the discriminator ensures that the generated particle level events are indistinguishable from true simulated events~\cite{erdmann_generating_2018}.
+                    %
+                    This approach circumvents the need for regularised matrix inversion or other the kinds of regularisation schemes that plague traditional methods~\cite{Girosi1995RegularizationArchitectures, Santos2022AvoidingNetworks}, instead learning the unfolding transformation directly from data.
                 
-                Perhaps most importantly, GANs excel at handling the dimensional mismatch between detector and particle levels, a common scenario in experimental physics.
-                %
-                The detector level space often has different dimensionality than the particle level space due to several factors: detector granularity may lead to merged objects at detector level that are resolved at particle level, some particles may escape detection entirely, and detector noise can introduce spurious signals~\cite{komiske_preserving_2021, andreassen_omnifold_2020}.
-                %
-                Traditional unfolding methods might be forced to select unnatural binning strategies or use dimensionality reduction to handle these mismatches~\cite{schmitt_tunfold_2012}.
-                %
-                In contrast, GANs can seamlessly learn mappings between spaces of different dimensions through their neural network architectures~\cite{bellagente_how_2020}.
-                %
-                The generator network can incorporate latent variables to account for missing information when mapping from lower to higher dimensions, while attention mechanisms and pooling operations handle dimension reduction in the opposite direction~\cite{datta_unfolding_2018,Erdmann_2019}. This flexibility allows GANs to preserve more information during the unfolding process and avoid the information loss associated with binning in traditional methods~\cite{andreassen_omnifold_2020}.
-        
+                    \item Perhaps most importantly, GANs excel at handling the dimensional mismatch between detector and particle levels, a common scenario in experimental physics.
+                    %
+                    The detector level space often has different dimensionality than the particle level space due to several factors: detector granularity may lead to merged objects at detector level that are resolved at particle level, some particles may escape detection entirely, and detector noise can introduce spurious signals~\cite{komiske_preserving_2021, andreassen_omnifold_2020}.
+                    %
+                    Traditional unfolding methods might be forced to select unnatural binning strategies or use dimensionality reduction to handle these mismatches~\cite{schmitt_tunfold_2012}.
+                    
+                    In contrast, GANs can seamlessly learn mappings between spaces of different dimensions through their neural network architectures~\cite{bellagente_how_2020}.
+                    %
+                    The generator network can incorporate latent variables to account for missing information when mapping from lower to higher dimensions, while attention mechanisms and pooling operations handle dimension reduction in the opposite direction~\cite{datta_unfolding_2018,Erdmann_2019}. This flexibility allows GANs to preserve more information during the unfolding process and avoid the information loss associated with binning in traditional methods~\cite{andreassen_omnifold_2020}.
+                \end{enumerate}
 
-        \paragraph{Limitations}
+        \paragraph{Limitations.}
             GANs are however infamous for their training instability.
             %
             The adversarial objective can lead to convergence issues, particularly for the sparse, high dimensional distributions common in particle physics.
             %
-            Even when the two networks are well balanced, the minmax optimization can lead to oscillatory behavior rather than convergence.
-            %
+            Even when the two networks are well balanced, the min--max optimisation can lead to oscillatory behaviour rather than convergence.
+            
             Another particularly well studied failure mechanism is mode collapse, in which GANs may fail to capture the full diversity of the target distribution, focusing instead on a limited subset of modes.
             %
             This occurs when the generator network is too powerful, and discriminator is unable to provide receive gradient information from it.
@@ -1563,9 +1582,9 @@ p_X(x)
     \subsubsection{Wasserstein GANs.}
         The Wasserstein GAN (WGAN) represents a significant advancement in generative adversarial network training by addressing one of the fundamental problems that plagued earlier GAN architectures.
         %
-        One critical limitation of the JS divergence, which traditional GANs rely to measure the difference between the real data distribution and the generated data distribution, is that when the two distributions have little or no overlap\footnote{for example, early in training when the generator produces poor samples}, the JS divergence saturates at its maximum value and provides uninformative gradients~\cite{arjovsky_wasserstein_2017, gulrajani_improved_2017, arjovsky_towards_2017}.
+        One critical limitation of the JS divergence, which traditional GANs rely to measure the difference between the real data distribution and the generated data distribution, is that when the two distributions have little or no overlap,\footnote{For example, early in training when the generator produces poor samples.} the JS divergence saturates at its maximum value and provides uninformative gradients~\cite{arjovsky_wasserstein_2017, gulrajani_improved_2017, arjovsky_towards_2017}.
         %
-        This leads to the notorious problem of vanishing gradients, where the discriminator becomes too good and gives the generator no useful signal for improvement, causing training to stall~\cite{goodfellow_nips_2017, salimans_improved_2016}.
+        This leads to the aforementioned problem of vanishing gradients, where the discriminator becomes too good and gives the generator no useful signal for improvement, causing training to stall~\cite{goodfellow_nips_2017, salimans_improved_2016}.
         
         The Wasserstein distance, also known as the Earth Mover's Distance, introduced in \cref{subsubsec:distributional-distance-metrics} offers a more principled solution to this problem.
         %
@@ -1573,18 +1592,18 @@ p_X(x)
         %
         Intuitively, it measures the minimum ``cost'' of transforming one distribution into another, where cost is defined as the amount of ``mass'' that needs to be moved multiplied by the distance it needs to travel~\cite{villani_wasserstein_2009}.
         %
-        This property ensures that the Wasserstein distance always provides meaningful gradients that point in the direction of improvement, regardless of how different the distributions are~\cite{arjovsky_wasserstein_2017}.
+        This property ensures that the Wasserstein distance always provides meaningful gradients that point in the direction of improvement, regardless of the difference in the distributions~\cite{arjovsky_wasserstein_2017}.
         %
         As a result, WGANs exhibit more stable training dynamics, with the loss function actually correlating with sample quality~\cite{stephanovitch_optimal_2023, carrazza_lund_2019, buhmann_hadrons_2021}.\footnote{Unlike traditional GANs where the loss might not, in fact, be a reliable measure of performance.}
         %
-        The improved gradient flow allows for more reliable convergence and reduces common failure modes such as mode collapse, where the generator learns to produce only a limited variety of samples.
+        The improved gradient flow allows for more reliable convergence and reduces the likelihood of the common failure modes of mode collapse, where the generator learns to produce only a limited variety of samples, and vanishing gradients, where the discriminator no longer provides meaningful gradients to the generator, stalling training.
 
-        The optimization for a WGAN is
+        The optimisation for a WGAN can be formulated as
         \begin{equation}
-            \max_g\min_{d\in D}\mathbb{E}_{z\sim p_Z(z)} \qty[d(g(z))] - \mathbb{E}_{x\sim p_{\text{data}}(x)} \qty[d(x)],
+            \max_g\min_{d\in D}\E_{z\sim p(z)} \qty[d(g(z))] - \E_{x\sim p_{\text{data}}(x)} \qty[d(x)],
         \end{equation}
-        where $D$ is the set of \(1-\) Lipschitz functions.
-    \subsubsection{Conditional Adversarial Networks}
+        where $D$ is the set of \(1-\)Lipschitz functions.
+    \subsubsection{Conditional adversarial networks.}
        Conditional GANs (cGANs) extend the standard GAN by incorporating auxiliary conditioning information \(y\) into both generator and discriminator,
         \begin{equation}
             \begin{split}
