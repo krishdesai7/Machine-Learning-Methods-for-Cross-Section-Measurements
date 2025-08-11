@@ -237,7 +237,7 @@ This section provides a rigorous mathematical framework for understanding neural
                 y^{(1)} &= \sigma^{(1)}(z^{(1)}) \\
                 &\nonumber \vdots \\
                 z^{(d)} &= W^{(d)}y^{(d-1)} + b^{(d)} \\
-                y^{(d)} &= \sigma^{(d)}(z^{(d)})
+                y^{(d)} &= \sigma^{(d)}(z^{(d)})\;.
             \end{align}
             where \(z^{(l)}\) represents the pre--activation values at layer \(l\).
             %
@@ -250,113 +250,130 @@ This section provides a rigorous mathematical framework for understanding neural
                   \caption[Forward pass.]{Illustration of the forward propagation process in a neural network, showing how the input vector is transformed by each layer's weights and biases and then passed through non-linear activation functions to yield the final output~\cite{noauthor_idl_nodate}.}
                   \label{fig:forward-pass}
             \end{figure}
-        \subsubsection{Training objectives and loss functions}
-            In order to quantify the accuracy with which a neural network \(f\) models a desired target function \(g\) for any particular input \(x\), a suitable measure of the error between \(f(x)\) and \(g(x)\) is required.
+        \subsubsection{Training objectives and loss functions.}
+            In order to quantify the accuracy with which a neural network \(f\) models a desired target function \(g\) for any particular input \(x\), a suitable measure of the error between \(f(x;\,W)\) and \(g(x)\) is required.
             %
-            The \emph{divergence} \(\operatorname{Div}(x)\) is a continuous valued proxy for this error.
+            \begin{definition}[Divergence]
+                The \emph{divergence} \(\operatorname{Div}(f(x;\,W), g(x))\) is a continuous valued proxy for the error between \(f(x;\,W)\) and \(g(x)\).
+            \end{definition}
             %
-            The goal of training can then be defined to be to learn the values of \(W\) that minimize the expected divergence.
-            %
-            (For notational convenience, from here on out, \(b\) will be collapsed into \(W\) as its \(0^{\textrm{th}}\) column;
-            %
-            the corresponding input, \(x_0 = 1\).)
+            The goal of training can then be defined to be to learn the values of \(W\) that minimise the expected divergence.\footnote{
+                For notational convenience, from here on out, \(b\) will be collapsed into \(W\) as its \(0^{\textrm{th}}\) column.
+            } The optimal value of \(W\) is then given by
+            
             \begin{equation}
-                \widehat{W} = \underset{W}{\arg\min}\int_X \operatorname{Div}\Big(f(x;\,W), g(x)\Big)\;p_X(x)\;\dd x
+                \widehat{W} = \underset{W}{\arg\min}\int_X \operatorname{Div}\Big(f(x;\,W), g(x)\Big)\;p_X(x)\;\dd x\;.
             \end{equation}
 
             In practice however, \(g\) is often not known for all \(x\in X,\) it is only known at some subset \(\qty{x_i}\subseteq X\).
-            %
-            The \emph{Loss function} \(\mathcal{L}\) is defined as the unbiased empirical average divergence between the neural network output and the target output over all training instances.
+            
+            \begin{definition}[Loss function]
+                The \emph{loss function} \(L\) is defined as the unbiased empirical average divergence between the neural network output and the target output over all training instances.
             \begin{equation}
-                \mathcal{L}(W) = \frac{1}{N_X}\sum_{i=1}^{N_X}\operatorname{Div}\Big(f(x_i;\,W), g(x_i)\Big).
+                L(W) = \frac{1}{|X|}\sum_{i=1}^{|X|}\operatorname{Div}\Big(f(x_i;\,W), g(x_i)\Big).
             \end{equation}
-            The expected value of the loss function can be proved to be the expected divergence, which is precisely what it means for the loss function to be an unbiased estimate of the expected divergence.
+            \end{definition}
+
+            This definition entails that the expected value of the loss function is the expected divergence, which is precisely what it means for the loss function to be an unbiased estimate of the expected divergence.
             %
-            However, this does not guarantee that minimizing the loss function will minimize the expected divergence.
-        \subsubsection{Backpropagation and parameter learning}
-            The training of neural networks revolves around finding the optimal values for weights and biases that minimize the loss function \(\mathcal{L}\)
+            However, this does not guarantee that minimising the loss function will minimise the expected divergence.
+        \subsubsection{Backpropagation and parameter learning.}
+            The training of neural networks revolves around finding the optimal values for weights and biases that minimise the loss function \(L\).
             %
             Backpropagation is the algorithm used to efficiently compute gradients of the loss function with respect to each network parameter.
             %
             The core idea of backpropagation relies on the chain rule of calculus.
             %
-            For a loss function \(\mathcal{L}\) and parameters \(\{W^{(l)}\}_{l=1}^d\) the network computes
+            For a loss function \(L\) and parameters \(\{W^{(l)}\}_{l=1}^d\) the network computes
             \begin{equation}
-            \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}} = \delta^{(l)} (y^{(l-1)})^T 
+            \frac{\partial L}{\partial W^{(l)}} = \frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}} = \delta^{(l)} (y^{(l-1)})^T \;,
             \end{equation}
-            
             where \(\delta^{(l)} = \frac{\partial \mathcal{L}}{\partial z^{(l)}}\) is the error term for layer \(l\).
-            %
+            
             These error terms are computed recursively, starting from the output layer.
             \begin{align}
-                \delta^{(L)} &= \frac{\partial \mathcal{L}}{\partial y^{(L)}} \odot \sigma'^{(L)}(z^{(L)}) \\
-                \delta^{(l)} &= ((W^{(l+1)})^T \delta^{(l+1)}) \odot \sigma'^{(l)}(z^{(l)})
+                \delta^{(L)} &= \frac{\partial \mathcal{L}}{\partial y^{(L)}} \odot \sigma'^{(L)}(z^{(L)})\;, \\
+                \delta^{(l)} &= ((W^{(l+1)})^T \delta^{(l+1)}) \odot \sigma'^{(l)}(z^{(l)})\;,
             \end{align}
-            where \(\odot\) denotes the Hadamard (element-wise) product and \(\sigma'\) is the derivative of the activation function.
+            where \(\odot\) denotes the Hadamard (elementwise) product and \(\sigma'\) is the derivative of the activation function.
             %
-            These derivatives are thus propagated backwards through the network, beginning at the output layer, propagated to the input layer.
+            These derivatives are thus propagated backwards through the network; beginning at the output layer, and propagated to the input layer.
 
         
-        \subsubsection{Batching and Training Dynamics}
-            In practice, neural networks are trained using mini--batch gradient descent, where parameter updates are performed using gradients computed on subsets (batches) of the training data. For a batch of size \(B\), the loss is
+        \subsubsection{Batching and training dynamics.}
+            \begin{definition}[Batch]
+                A \emph{mini--batch}, often simply called a \emph{batch}, is a subset of the training data used to compute the gradient of the loss function.
+                %
+                In practice, neural networks are trained using mini--batch gradient descent, where parameter updates are performed using gradients computed on subsets (batches) of the training data.
+            \end{definition}
+            
+            For a batch of size \(B\), the loss is
             \begin{equation}
-                \mathcal{L}_{\text{batch}} = \frac{1}{B}\sum_{i=1}^B\mathcal{L}(x_i, y_i, W)
+                L_{\text{batch}} = \frac{1}{B}\sum_{i=1}^B L(x_i, y_i, W)\;.
             \end{equation}
+
             Training proceeds in \emph{epochs}, where each epoch represents one complete pass through the training dataset.
             %
             To prevent overfitting, a separate validation dataset is typically used to monitor performance, and techniques such as early stopping may be applied when validation performance plateaus or degrades.
-    \subsection{Neural Networks as Universal Approximators}
+    \subsection{Neural networks as universal approximators.}
+
         The power of neural networks in physics applications stems from their ability to approximate arbitrary functions without requiring exponentially many parameters, unlike traditional methods such as polynomial approximation which suffer from the curse of dimensionality.
         %
-        This property is formalized in the Universal Approximation Theorem, which has several variations but fundamentally states that feed-forward networks with a single hidden layer can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision, given sufficient depth and width.
+        This property is formalised in \cref{thm:universal-approximation-theorem}, which has several variations but essentially states that a feed--forward network of sufficient, with a single hidden layer can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision, given sufficient (finite) width.
         \begin{theorem}[Universal Approximation Theorem]
+            \noproofref
             \label{thm:universal-approximation-theorem}
         \begin{align}
-            &\forall \sigma\in C^0(\R)\; \forall g\in C^0([0, 1]^n)\;\forall\epsilon > 0\;\exists M\in \R\\
-            &\Bigg[\forall x\in\R\;|\sigma(x)| < M\implies \exists N\in\mathbb{N}\;\exists c, b\in \R^N\;\exists W\in \R^{N\times n}\\
-            &\Big\{\forall z\in[0, 1]^n |c^T\sigma(Wz + b) - f(z)|<\epsilon\Big\} \lor \exists A\in\R\;\forall x\in\R\;\sigma(x) = A\Bigg].
+            &\forall (\sigma, g, \epsilon)\in C^0(\R)\times C^0([0, 1]^n)\times (0,\infty)\;\exists M\in(0, \infty)\\
+            \nonumber&\quad \Bigg[\forall x\in\R\;|\sigma(x)| < M \implies \exists N\in\mathbb{N}\;\exists (c, b, W)\in \R^N\times \R^N\times \R^{N\times n}\\
+            \nonumber&\qquad\qty{\forall z\in[0, 1]^n\;\norm{c^T\sigma(Wz + b) - g(z)} <\epsilon} \lor \qty{\exists A\in\R\;\forall x\in\R\;\sigma(x) = A}\Bigg]\;.
             \end{align}
         \end{theorem}
-        This theorem was first proved by Cybenko for sigmoid activation functions~\cite{cybenko_approximation_1989} and later extended by Hornik et. al to include a broader class of activation functions~\cite{hornik_multilayer_1989}. Modern versions of the theorem have relaxed various assumptions and expanded the results to deeper networks~\cite{augustine_survey_2024}.
-        \subsubsection{Relevance to physics applications}
+        This theorem was first proved by Cybenko for sigmoid activation functions~\cite{cybenko_approximation_1989} and later extended by Hornik et. al to include a broader class of activation functions~\cite{hornik_multilayer_1989}.
+        %
+        Modern versions of the theorem have relaxed various assumptions and expanded the results to deeper networks~\cite{augustine_survey_2024}.
+        
+        \subsubsection{Relevance to physics applications.}
             The universal approximation property is particularly significant in physics.
             %
-            Many physical systems are governed by complex, non-linear differential equations that lack closed-form solutions.
+            Many physical systems are governed by complex, non-linear differential equations that lack closed form solutions.
             %
             Neural networks can approximate these solutions without explicitly knowing the underlying equations, hence serving as excellent implicit simulators.
             %
-            Additionally, physics problems often involve high dimensional spaces\footnote{e.g., the phase space for jet physics}.
+            Additionally, physics problems often involve high dimensional spaces.\footnote{E.g., the phase space for jet physics.}
             %
             Neural networks excel at learning in such spaces, where traditional numerical methods become computationally intractable.
             %
-            The universal approximation property makes neural networks well--suited for these tasks, where the mappings to be learned are highly complex.
-
-            When theoretical descriptions are incomplete, neural networks can discover patterns in data that suggest new physical models or refinements to existing ones.
+            The universal approximation property makes neural networks well suited for these tasks, where the mappings to be learned are highly complex.
             %
+            When theoretical descriptions are incomplete, neural networks can discover patterns in data that suggest new physical models or refinements to existing ones.
+            
             Neural networks as universal approximators are also helpful for simulation based inference.
             %
             Modern physics often relies on computer simulations rather than closed--form likelihood functions.
             %
-            Neural networks can approximate these implicit models for fast posterior inference.
+            Neural networks are well suited to approximate these implicit models for fast posterior inference.
 
-            While the Universal Approximation Theorem guarantees the existence of a neural network capable of approximating any continuous function, it does not provide guidance on architecture design or training procedures.
+            While the \cref{thm:universal-approximation-theorem} guarantees the existence of a neural network capable of approximating any continuous function, it does not provide guidance on architecture design or training procedures.
             %
             Nor does the theorem provide any guarantees about the rate of convergence of training procedures.
             %
             In practice, deeper networks with multiple hidden layers have provide faster convergence, and greater parameter efficiency as discussed above.
             %
             However, the benefits of increasing depth are bounded, and decay exponentially, and hence the choice of architecture can involve carefully balancing the increased computational cost of a deeper network with the gains it provides.
-            %
+            
             Extensions of the theorem show that depth can exponentially reduce the number of neurons required to approximate certain function classes, explaining the empirical success of deep learning in physics applications.
             %
-            These theoretical insights have motivated the development of specialized architectures tailored to specific physics problems, as will be discussed in subsequent sections.
-    \subsection{Activation Functions, Optimization, and Regularization}
-        \subsubsection{Activation Functions}
-            Activation functions introduce non--linearity into neural networks, enabling them to learn complex patterns.
+            These theoretical insights have motivated the development of specialised architectures tailored to specific physics problems, as will be discussed in subsequent sections.
+    \subsection{Activation functions, optimisation, and regularisation.}
+        \subsubsection{Activation functions.}
+            Activation functions introduce non-linearity into neural networks, enabling them to learn complex patterns.
             %
-            Several activation functions are commonly used in high energy physics applications.
-            \begin{itemize}
-                \item Sigmoid:
+            Since the composition of an arbitrary number of affine functions is itself an affine function, without the non-linearity introduced by the activation function, a neural network would be incapable of modelling any non-linear function irrespective of its number of layers or parameters.
+            
+            Listed below are some of the most commonly used activation functions in high energy physics applications.
+            \begin{description}
+                \item[Sigmoid:]
                     \[\sigma(z) = \frac{1}{1 + e^{-z}}\]
                     An activation function that outputs values between \(0\) and \(1\), it is most often used in problems involving binary classification.
                     %
@@ -366,38 +383,39 @@ This section provides a rigorous mathematical framework for understanding neural
                     %
                     Additionally, when many sigmoid functions are composed in deep networks, the resulting function can become very sharp and step--like, leading to training instabilities and poor gradient flow.
 
-                \item Hyperbolic Tangent (tanh): \[\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\]
+                \item[Hyperbolic Tangent (\(\tanh\)):] \[\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\]
                     The hyperbolic tangent function is very similar to sigmoid, except that it outputs values between \(-1\) and \(1\).
                     %
                     It is preferred in some applications because it is zero--centered, which can help in training dynamics, but it also suffers from the same vanishing gradient problems as the sigmoid.
-                \item Rectified Linear Unit (ReLU): \[\text{ReLU}(z) = \max(0, z)\]
+                \item[Rectified Linear Unit (ReLU):] \[\text{ReLU}(z) = \max(0, z)\]
                     Simple, and incredibly computationally efficient, ReLU has become one of the most frequently used activation functions both within HEP and in the AI/ML space more broadly.
                     %
                     It addresses the vanishing gradient problem for positive inputs.
                     %
                     However, since it is simply zero for half its support, it can suffer from the ``dying ReLU" problem where units can become permanently inactive.
-                \item Leaky ReLU: \[\text{LeakyReLU}(z) = \max(\alpha z, z)\]
+                \item[Leaky ReLU:] \[\text{LeakyReLU}(z) = \max(\alpha z, z)\]
                     \(\alpha\) is a small positive constant.
                     %
                     LeakyReLU is a modification of ReLU to allow small negative valued outputs~\cite{Maas2013RectifierModels}, which helps mitigate the dying ReLU problem.
                     %
                     Just a few of the many other variants that exist include Parametric ReLU (PReLU)~\cite{he_delving_2015} where \(\alpha\) is learnable, Exponential Linear Unit (ELU)~\cite{clevert_fast_2016} which provides smooth transitions for negative inputs, and Gaussian Error Linear Unit (GELU)~\cite{hendrycks_gaussian_2023} which has become popular in modern transformer architectures.
 
-                \item Softmax: \[\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}\]
+                \item[Softmax:] \[\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}\]
                         Softmax is most often used for multi--class classification output layers because it produces a probability distribution over classes.
                         %
                         The softmax reduces to the sigmoid when there only two classes, rendering binary classification simply a special case of multi--class classification.
-            \end{itemize}
-            These a but a few examples of the most common activation functions.
+            \end{description}
+            These are but a few examples of the most common activation functions.
             %
             The choice of activation function significantly impacts network performance, convergence speed, and the occurrence of issues like vanishing or exploding gradients.
-        \subsubsection{Optimization Techniques}
-            As we discussed, neural network training is fundamentally an optimization problem.
+            
+        \subsubsection{Optimisation techniques.}
+            As we discussed, neural network training is fundamentally an optimisation problem.
             %
             Various algorithms have been developed to find optimal parameters efficiently.
             
-            \paragraph{Gradient Descent}is the oldest and simplest approach to optimization.
-            %
+            \paragraph{Gradient descent}is the oldest and simplest approach to optimisation.
+            
             It involves updating parameters in the direction of the negative gradient:
            \begin{equation}
                 W_{t+1} = W_t - \eta \nabla_W \mathcal{L}(W_t)
