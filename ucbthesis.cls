@@ -22,8 +22,7 @@
 % ============================================================================
 \RequirePackage[T1]{fontenc}
 \RequirePackage{microtype}
-\RequirePackage{amsthm}
-\RequirePackage{mdframed}  % For framed theorem environments
+\RequirePackage{pgffor}
 
 % ============================================================================
 % PAGE GEOMETRY
@@ -110,7 +109,7 @@
 \newcommand{\chapterminitoc}{%
   \begingroup
   \etocsetnexttocdepth{subsection}%
-  \etocsettocstyle{\subsection*{Chapter Contents}}{\medskip}%
+  \etocsettocstyle{}{\medskip}%
   \localtableofcontents
   \endgroup
   \clearpage
@@ -120,7 +119,7 @@
 \newcommand{\sectionminitoc}{%
   \begingroup
   \etocsetnexttocdepth{subparagraph}%
-  \etocsettocstyle{\subsubsection*{Section Contents}}{\medskip}%
+  \etocsettocstyle{}{\medskip}%
   \localtableofcontents
   \endgroup
   \clearpage
@@ -158,7 +157,16 @@
 % THEOREM ENVIRONMENTS
 % ============================================================================
 % Define theorem style with horizontal lines
-\mdfdefinestyle{theoremstyle}{%
+\RequirePackage[
+    thmset=default,
+    sepcounters=true,
+    proofref={onlyifveryfar,margin},
+    theoremstyle=definition,
+    qedsymbolblacksquare=false
+]{phfthm}
+
+\RequirePackage{mdframed}
+\mdfdefinestyle{theoremstyle}{
     topline=true,
     bottomline=true,
     leftline=false,
@@ -170,15 +178,16 @@
     innerrightmargin=0pt
 }
 
-% Main results with rules
-\theoremstyle{definition}
-\newmdtheoremenv[style=theoremstyle]{theorem}{Theorem}[chapter]
-\newmdtheoremenv[style=theoremstyle]{corollary}[theorem]{Corollary}
-
-% Regular theorem environments without rules
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem*{note}{Note}
+\foreach \env in {theorem, proposition, lemma, corollary, conjecture, remark, definition}{
+    \surroundwithmdframed[style=theoremstyle]{\env}
+}
+\phfMakeTheorem[
+    thmstyle=definition,
+    counter=,
+    defstar=true,
+    proofref=false
+]{note}{Note}
+\surroundwithmdframed[style=theoremstyle]{note*}
 
 % ============================================================================
 % FRONT MATTER VARIABLES
