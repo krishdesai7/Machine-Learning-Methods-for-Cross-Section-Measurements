@@ -903,6 +903,7 @@ By selecting and adapting architectures based on the specific properties of the 
 The next section will explore advanced machine learning frameworks that build upon these architectures to provide even more powerful approaches to unfolding.
 
 \section{Modern machine learning frameworks.}
+\sectionminitoc
 This section explores sophisticated machine learning frameworks that have demonstrated significant potential for addressing the unfolding problem in high energy physics.
 %
 Three principal categories are examined: generative models, discriminative models, and adversarial frameworks, each offering distinct approaches to learning complex distributions and relationships in particle physics data.
@@ -1600,129 +1601,138 @@ p_X(x)
 
         The optimisation for a WGAN can be formulated as
         \begin{equation}
-            \max_g\min_{d\in D}\E_{z\sim p(z)} \qty[d(g(z))] - \E_{x\sim p_{\text{data}}(x)} \qty[d(x)],
+            \max_g\min_{d\in D}\E_{z\sim q(z)} \qty[d(g(z))] - \E_{x\sim p_{\text{data}}(x)} \qty[d(x)],
         \end{equation}
         where $D$ is the set of \(1-\)Lipschitz functions.
     \subsubsection{Conditional adversarial networks.}
+    
        Conditional GANs (cGANs) extend the standard GAN by incorporating auxiliary conditioning information \(y\) into both generator and discriminator,
         \begin{equation}
             \begin{split}
-                \max_g \min_d L(d, g) &= -\mathbb{E}_{x,\,y \sim p_{\text{data}}(x,y)}[\log d(x\,|\,y)] \\
-                &\quad - \mathbb{E}_{z \sim p_Z(z),\,y \sim p_{\text{data}}(y)}[\log(1 - d(g(z\,|\,y) | Y))]
+                \max_g \min_d L(d, g) &= -\mathbb{E}_{(x,\,y) \sim p_{\text{data}}(x,y)}\qty[\ln d(x\mid y)] \\
+                &\quad - \mathbb{E}_{z \sim q(z),\,y \sim p_{\text{data}}(y)}\qty[\ln(1 - d(g(z\mid y) \mid Y))]\;.
             \end{split}
         \end{equation}
-        This formulation enables the generation of samples conditioned on specific physical parameters, detector configurations, or particle properties.
         
-        Conditioning information can be in GANs in a few different ways.
+        This formulation enables the generation of samples conditioned on specific physical parameters, detector configurations, or particle properties.
+        %
+        Conditioning information can be incorporated into the GAN architecture in a few different ways.
         %
         Most directly, conditioning information can be concatenated as additional input features
         \begin{equation}
-             g(z,y) = g_{\theta}([z, y])\quad d(x,y) = d_{\phi}([x,y])
+             g(z,y) = g_{\theta}([z, y])\quad d(x,y) = d_{\phi}([x,y])\;.
         \end{equation}
+        
         Conditional normalisation is an approach that involves modulating normalisation parameters based on conditioning
         \begin{gather}
             \gamma(y) = \text{NN}_{\gamma}(y),\quad\beta(y) = \text{NN}_{\beta}(y),\\
             \text{CN}(h,y) = \gamma(y) \cdot \frac{h - \mu(h)}{\sigma(h)} + \beta(y).
         \end{gather}
-        A more recent approach is to incorporate conditioning information instead through featurewise linear modulation (FiLM) layers, that scale and shift feature maps.
+        A more recent approach is to incorporate conditioning information instead through feature-wise linear modulation (FiLM) layers~\cite{DBLP:journals/corr/abs-1709-07871,Algren:2025zff,Rodriguez:2025ccs,Chatterjee:2024ddw,Li:2022kxc,turkoglu2022filmensembleprobabilisticdeeplearning}, that scale and shift feature maps.
         \begin{equation}
-            \text{FiLM}(h_i,y) = \gamma_i(y) \cdot h_i + \beta_i(y)
+            \text{FiLM}(h_i,y) = \gamma_i(y) \cdot h_i + \beta_i(y)\;.
         \end{equation}
 
         Conditional GANs provide powerful tools for physics constrained generation.
         %
         In HEP studies, they have been used for
-        \begin{itemize}
-            \item \textbf{Parameterized Simulation:} Generating detector responses across different operating conditions,
-            \item \textbf{Conditional Unfolding:} Correcting detector effects with explicit energy dependence,
-            \item \textbf{Systematic Variation Generation:} Creating samples with varied systematic uncertainties,
-            \item \textbf{Model Parameterization:} Generating samples across theoretical model parameter spaces.
-        \end{itemize}
+        \begin{description}
+            \item[Parametrised simulation:] Generating detector responses across different operating conditions,
+            \item[Conditional unfolding:] Correcting detector effects with explicit energy dependence,
+            \item[Systematic variation generation:] Creating samples with varied systematic uncertainties,
+            \item[Model parametrisation:] Generating samples across theoretical model parameter spaces.       
+        \end{description}
 
-        \subsubsection{Other GAN based methods}
-            Progressive GANs~\cite{karras_progressive_2018} gradually increases model complexity during training, improving stability and quality.
+        \subsubsection{Other GAN based methods.}
+            One innovation designed to improving stability during training is the Progressive GAN~\cite{karras_progressive_2018}.
             %
-            Some methods implement \emph{feature matching,} such as in the McGan~\cite{mroueh_mcgan_2017}, which encourages the generator to match statistics of intermediate discriminator activations,
+            In this approach, one gradually increases model complexity during training, improving stability and quality.
+            
+            Another class of GAN based methods implement \emph{feature matching,} such as in the McGan~\cite{mroueh_mcgan_2017}, which encourages the generator to match statistics of intermediate discriminator activations,
             \begin{equation}
-                \mathcal{L}_{\text{feature}} = \|\mathbb{E}_{x \sim p_{\text{data}}}[f(x)] - \mathbb{E}_{z \sim p_z}[f(G(z))]\|_2^2,
+                \mathcal{L}_{\text{feature}} = \|\E_{x \sim p_{\text{data}}}[f(x)] - \E_{z \sim q}[f(G(z))]\|_2^2,
             \end{equation}
             where \(f(x)\) represents activations from an intermediate layer of the discriminator.
-        \subsubsection{Adversarial Autoencoders}
+        \subsubsection{Adversarial autoencoders.}
         Adversarial Autoencoders (AAEs) combine autoencoder reconstruction with adversarial training.
         \begin{equation}
-            \mathcal{L}_{\text{AAE}} = \mathcal{L}_{\text{recon}} + \lambda \mathcal{L}_{\text{adv}}
+            L_{\text{AAE}} = L_{\text{recon}} + \lambda L_{\text{adv}}
         \end{equation}
-        where \(\mathcal{L}_{\text{recon}} = \|x - \text{Dec}(\text{Enc}(x))\|^2\) measures reconstruction quality, and \(\mathcal{L}_{\text{adv}}\) is the adversarial loss that forces the encoder's latent space distribution to match the sample distribution,
+        where \(L_{\text{recon}} = \|x - \text{Dec}(\text{Enc}(x))\|^2\) measures reconstruction quality, and \(L_{\text{adv}}\) is the adversarial loss that forces the encoder's latent space distribution to match the sample distribution,
         \begin{equation}
-            \mathcal{L}_{\text{adv}} = \mathbb{E}_{z \sim p(z)}[\log d(z)] + \mathbb{E}_{x \sim p_{\text{data}}(x)}[\log(1 - d(\text{Enc}(x)))].
+            L_{\text{adv}} = \E_{z \sim q}[\ln d(z)] + \E_{x \sim p_{\text{data}}}\qty[\ln\qty(1 - d(\text{Enc}(x)))].
         \end{equation}
 
         AAEs are trained in two phases per iteration.
         \begin{enumerate}
-            \item \textbf{Reconstruction Phase:} Update encoder and decoder to minimize reconstruction error,
+            \item \textbf{Reconstruction Phase:} Update encoder and decoder to minimise reconstruction error.
             \item \textbf{Regularization Phase:}
             \begin{itemize}
                 \item Update discriminator to distinguish between samples from the prior and encoded data,
                 \item Update encoder to fool the discriminator.
             \end{itemize}
         \end{enumerate}
-        AAEs have been used especially in applications involving dimensionality deduction, to learn physics--preserving low--dimensional representations;
-        anomaly detection, to identify unusual events through reconstruction errors or latent space deviations; and simulation enhancement, to improving the fidelity of simplified simulations.
-    \subsubsection{Cycle--Consistent Adversarial Networks}
-        Cycle--GANs enable unpaired domain translation through cycle consistency.
+        AAEs have been used especially in applications involving dimensionality reduction, to learn physics preserving low dimensional representations;
+        for anomaly detection, to identify unusual events through reconstruction errors or latent space deviations; and for simulation enhancement, to improving the fidelity of simplified simulations.
+    \subsubsection{Cycle consistent adversarial networks.}
+        CycleGANs enable unpaired domain translation through cycle consistency.
         \begin{gather}
-            \mathcal{L}_{\text{CycleGAN}} = \mathcal{L}_{\text{GAN}}(G, D_Y, X, Y) + \mathcal{L}_{\text{GAN}}(F, D_X, Y, X) + \lambda \mathcal{L}_{\text{cyc}}(G, F)
+            L_{\text{CycleGAN}} = L_{\text{GAN}}(G, D_Y, X, Y) + L_{\text{GAN}}(F, D_X, Y, X) + \lambda\,L_{\text{cyc}}(G, F)\;,
         \end{gather}
         where \(G: X \rightarrow Y, F: Y \rightarrow X\) are mapping functions between domains, and the cycle consistency loss is
         \begin{gather}
-            \mathcal{L}_{\text{cyc}}(G, F) = \mathbb{E}_{x \sim p_{\text{data}}(x)}[\|F(G(x)) - x\|_1] + \mathbb{E}_{y \sim p_{\text{data}}(y)}[\|G(F(y)) - y\|_1]
+            L_{\text{cyc}}(G, F) = \E_{x \sim p_{\text{data}}}\qty[\norm{F(G(x)) - x}_1] + \E_{y \sim p_{\text{data}}}\qty[\norm{G(F(y)) - y}_1] \;.
         \end{gather}
         
-        Cycle--GANs employ two generators and two discriminators.
+        CycleGANs employ two generators and two discriminators.
         %
-        Generator \(G\): Maps domain \(X\) to domain \(Y\), generator \(F\): maps domain \(Y\) back to domain \(X\), discriminator \(D_X\) distinguishes real \(X\) from generated \(F(Y)\), and discriminator \(D_Y\) distinguishes real \(Y\)from generated \(G(X)\).
+        Generator \(G\): maps domain \(X\) to domain \(Y\), generator \(F\): maps domain \(Y\) back to domain \(X\), discriminator \(D_X\) distinguishes real \(X\) from generated \(F(Y)\), and discriminator \(D_Y\) distinguishes real \(Y\)from generated \(G(X)\).
         
 
-        In HEP, Cycle-GANs enable several important applications, such as
-        \begin{itemize}
-            \item \textbf{Sim2Real Translation:} Mapping between simulated and real detector data without paired examples,
-            \item \textbf{Cross-Experiment Translation:} Translating measurements between different experimental setups,
-            \item \textbf{Systematic Variation Generation:} Creating physically plausible variations for systematics studies.
-        \end{itemize}
+        In HEP, CycleGANs can enable applications, such as
+        \begin{description}
+            \item[Detector level mapping:] Mapping between simulated and real detector data without paired examples,
+            \item[Cross experiment translation:] Translating measurements between different experimental setups,
+            \item[Systematic variation generation:] Creating physically plausible variations for systematics studies.
+        \end{description}
+        
     Research addressing the challenges adversarial models pose continues to expand the applicability of adversarial models in particle physics, with recent advances incorporating invariant representations, equivariant architectures, and physics informed losses to enhance both performance and reliability.
     
-\section{Comparative analysis of ML-based unfolding methods.}
-    The preceding sections have introduced a diverse landscape of machine learning approaches to the unfolding problem, from discriminative methods like \textsc{OmniFold} to generative models and adversarial frameworks.
+\section{Comparative analysis of ML based unfolding methods.}
+\sectionminitoc
+    The preceding sections have introduced a diverse landscape of machine learning approaches to the unfolding problem, from discriminative methods to generative models and adversarial frameworks.
     %
-    This section provides a comparative synthesis to guide method selection, analyze performance trade--offs, and identify emerging best practices from experimental implementations.
+    This section provides a comparative synthesis to guide method selection, analyse performance trade offs, and identify emerging best practices from experimental implementations.
     \subsection{Method selection framework.}
-        The choice of unfolding method depends critically on the interplay between measurement requirements, computational constraints, particularities of the data available,and prior knowledge.
+        The choice of unfolding method depends critically on the interplay between measurement requirements, computational constraints, particularities of the data available and prior knowledge.
         %
         This section seeks to present a framework for method selection based on key experimental considerations.
         %
-        For measurements where full posterior distributions are required, such as when propagating uncertainties through complex analyses or when non--Gaussian error structures are expected, Bayesian approaches like \textsc{Neural Posterior Unfolding}~\cite{acosta2024npu} or conditional normalizing flows~\cite{Bellagente2020InvertibleAgain} provide natural solutions.
+        For measurements where full posterior distributions are required, such as when propagating uncertainties through complex analyses or when non-Gaussian error structures are expected, Bayesian approaches like \textsc{Neural Posterior Unfolding}~\cite{acosta2024npu} or conditional normalising flows~\cite{Bellagente2020InvertibleAgain} provide natural solutions.
         %
-        These methods excel when the measurement goal involves parameter estimation or when correlations with nuisance parameters must be marginalized.
+        These methods excel when the measurement goal involves parameter estimation or when correlations with nuisance parameters must be marginalised.
+        
+        Conversely, when computational efficiency is paramount, particularly for measurements that must be repeated with multiple systematic variations, reweighting based methods like \textsc{OmniFold}~\cite{andreassen_omnifold_2020} offer favourable scaling properties.
         %
-        Conversely, when computational efficiency is paramount, particularly for measurements that must be repeated with multiple systematic variations, reweighting based methods like \textsc{OmniFold}~\cite{andreassen_omnifold_2020} offer favorable scaling properties.
-        %
-        The amortized nature of the trained classifiers enables rapid evaluation across different data configurations without retraining, a significant advantage for systematic uncertainty studies.
+        The amortised nature of the trained classifiers enables rapid evaluation across different data configurations without retraining, a significant advantage for systematic uncertainty studies.
 
         The dimensionality of the measurement phase space presents another decision point.
         %
-        While \textsc{OmniFold} has demonstrated robust performance up on high dimensional data~\cite{andreassen_omnifold_2020}, generative models based on normalizing flows can struggle with the exponentially growing complexity of high dimensional transformations~\cite{papamakarios_masked_2018}.
+        While \textsc{OmniFold} has demonstrated robust performance up on high dimensional data~\cite{andreassen_omnifold_2020}, generative models based on normalising flows can struggle with the exponentially growing complexity of high dimensional transformations~\cite{papamakarios_masked_2018}.
         %
         For extreme dimensionality, hybrid approaches that combine dimensionality reduction with subsequent unfolding may be necessary.
 
         The nature of the physics observable itself influences method selection.
         %
         For observables defined through complex, non-linear transformations of detector quantities,\footnote{Such as jet substructure variables computed from constituent particles.} methods that can learn these transformations implicitly, such as graph neural networks combined with adversarial training~\cite{Shlomi2020GraphPhysics}, may outperform approaches requiring explicit feature engineering.
+        
     \subsection{Performance trade offs.}
-        Quantitative comparison of ML based unfolding methods reveals fundamental trade offs that must be balanced against analysis requirements.
+    
+        A quantitative comparison of ML based unfolding methods reveals fundamental trade offs that must be balanced against analysis requirements.
         %
         Computational scaling presents the most immediate practical constraint.
         %
-        Training times for different methods span orders of magnitude: \textsc{OmniFold} typically requires 10-30 minutes for training on typical jet physics datasets~\cite{ML4Jets2020}, while conditional normalizing flows can require 2--10 hours for comparable problems~\cite{Bellagente2020InvertibleAgain}.
+        Training times for different methods span orders of magnitude: \textsc{OmniFold} typically requires \qtyrange{10}{30}{\minute} for training on typical jet physics datasets~\cite{ML4Jets2020}, while conditional normalising flows can require \qtyrange{2}{10}{\hour} for comparable problems~\cite{Bellagente2020InvertibleAgain}.
         %
         However, inference times show the opposite pattern, with flow--based methods providing near instantaneous sampling once trained, while \textsc{OmniFold} requires iteration through multiple classifier evaluations.
 
@@ -1732,13 +1742,13 @@ p_X(x)
         %
         Generative approaches avoid this loss but introduce sampling variance that must be controlled through ensemble methods.
         
-        Prior dependence represents another consideration.
+        Model dependence and bias represents another consideration.
         %
         While \textsc{OmniFold} iteratively reduces dependence on the initial Monte Carlo distribution, it cannot eliminate dependence on the simulated detector response kernel~\cite{andreassen_omnifold_2020}.
         %
-        Normaliing flow approaches embed prior assumptions through their choice of base distribution and architectural constraints~\cite{papamakarios_masked_2018}.
+        Normalising flow approaches embed prior assumptions through their choice of base distribution and architectural constraints~\cite{papamakarios_masked_2018}.
         %
-        Empirical studies suggest that prior sensitivity is most pronounced in phase space regions with limited statistics, where regularization effects dominate.
+        Empirical studies suggest that prior sensitivity is most pronounced in phase space regions with limited statistics, where regularisation effects dominate.
 
         Uncertainty quantification capabilities also vary  across methods.
         %
@@ -1748,7 +1758,7 @@ p_X(x)
         %
         An alternative involves ensemble methods, training multiple networks with different initialisations, which can provide robust uncertainty estimates at moderate computational cost~\cite{mishra_uncertainty_2021}.
         %
-        These approaches though, though, require careful validation to ensure proper uncertainty coverage, and do not provide much interpratibility about the uncertainty sources.
+        These approaches though, require careful validation to ensure proper uncertainty coverage, and do not provide much interpretibility about the uncertainty sources.
 
         \subsubsection{Synthesis of experimental experience.}
         The growing body of experimental applications provides crucial insights into practical implementation challenges and solutions.
@@ -1757,31 +1767,32 @@ p_X(x)
 
         Closure test design has evolved significantly from early implementations.
         %
-        The H1 collaboration's pioneering application of \textsc{OmniFold} established the importance of stress tests using deliberately mismodeled simulations~\cite{collaboration_measurement_2022}.
+        The H1 collaboration's pioneering application of \textsc{OmniFold} established the importance of stress tests using deliberately mismodelled simulations~\cite{collaboration_measurement_2022}.
         %
-        Subsequent analyses have standardized on a three-tier validation hierarchy.
+        Subsequent analyses have standardised on a three tier validation hierarchy.
         \begin{enumerate}
             \item Closure with matched simulation,
             \item Stressed closure with reweighted simulation to mimic common mismodeling patterns, and
-            \item Data-driven validation using control regions.
+            \item Data driven validation using control regions.
         \end{enumerate}
+        
         Systematic uncertainty propagation remains an active area of development.
         %
         The ATLAS collaboration's approach of training separate unfolding models for each systematic variation~\cite{collaboration_measurement_2025} provides an estimate of coverage at substantial computational cost, but is quite \textit{ad hoc} in the choice of models used, and at best gestures towards the coverage.
         %
         Alternative approaches using single models with systematic uncertainties encoded as additional inputs show promise but require careful validation to ensure proper uncertainty coverage.
         
-        The integration of ML-based unfolding into experimental workflows has revealed unexpected challenges.
+        The integration of ML based unfolding into experimental workflows has revealed unexpected challenges.
         %
         Version control for trained models, particularly when dealing with ensemble methods, requires infrastructure beyond traditional analysis frameworks.
         %
-        The CMS collaboration has developed specialized containers that package trained models with their associated preprocessing pipelines, ensuring reproducibility across different computing environments~\cite{CMS:2024onh}.
+        The CMS collaboration has developed specialised containers that package trained models with their associated preprocessing pipelines, ensuring reproducibility across different computing environments~\cite{CMS:2024onh}.
         %
-        Practical experience has also highlighted the importance of physics informed regularization.
+        Practical experience has also highlighted the importance of physics informed regularisation.
         %
         Pure ML approaches can produce unphysical features in regions where training data is sparse.
         %
-        The incorporation of known conservation laws, either through architectural constraints or specialized loss terms, significantly improves the physical plausibility of unfolded results~\cite{Spinner2024Lorentz-EquivariantPhysics}.
+        The incorporation of known conservation laws, either through architectural constraints or specialised loss terms, significantly improves the physical plausibility of unfolded results~\cite{Spinner2024Lorentz-EquivariantPhysics}.
 
     \subsection{Open challenges and research frontiers.}
         Despite substantial progress, several fundamental challenges remain that define the research frontier in ML based unfolding.
@@ -1790,39 +1801,42 @@ p_X(x)
         %
         While binned methods produce well defined covariance matrices, the unbinned output of ML methods\footnote{Typically event weights or generated samples.}, lacks an analogous mathematical framework for correlation quantification.
         %
-        Recent work suggests that the effective sample size reduction due to weight correlations can be substantial~\cite{Desai:2025mpy}, but general methods for propagating these correlations through subsequent analyses remain underdeveloped.
+        The study presented in \cref{chap:unbinned_correlations} suggests that the effective sample size reduction due to weight correlations can be substantial~\cite{Desai:2025mpy}, but general methods for propagating these correlations through subsequent analyses remain underdeveloped.
         
         The development of genuinely model independent unfolding methods remains elusive.
         %
-        All current approaches require some prior knowledge, whether encoded in the training simulation, architectural choices, or regularization schemes.
+        All current approaches require some prior knowledge, whether encoded in the training simulation, architectural choices, or regularisation schemes.
         %
         Work on domain adaptation techniques shows some preliminary promise for reducing model dependence~\cite{Terjek2019AdversarialRegularization}, but fundamental information theoretic limits suggest complete model independence may be impossible for a given acceptable level of variance.\footnote{\textit{vide} The {No Free Lunch Theorem} in machine learning~\cite{wolpertNoFreeLunch1997}.}
         
         Scalability to extreme dimensionality presents both computational and statistical challenges.
         %
-        While ML methods handle moderate dimensionality better than traditional approaches, measurements involving hundreds of observables\footnote{Such as full jet constituent information} remain computationally prohibitive.
+        While ML methods handle moderate dimensionality better than traditional approaches, measurements involving hundreds of observables\footnote{Such as full jet constituent information.} remain computationally prohibitive.
         %
         Hierarchical approaches that unfold in stages, possibly combining different methods at each stage, might represent a possible research direction.
         
-        The standardization of ML based unfolding methods across experiments remains an important practical challenge.
+        The standardisation of ML based unfolding methods across experiments remains an important practical challenge.
         %
-        Unlike traditional methods implemented in common frameworks like RooUnfold~\cite{adye_unfolding_2011}, ML approaches currently lack standardized implementations\footnote{Although the recent implementation in~\cite{OmnifoldOmniFoldLibrary} represents a very meaningful stride in this direction}.
+        Unlike traditional methods implemented in common frameworks like RooUnfold~\cite{adye_unfolding_2011}, most ML approaches currently lack standardised implementations\footnote{Although the recent implementation in~\cite{OmnifoldOmniFoldLibrary} represents a very meaningful stride in this direction.}.
         %
         This fragmentation complicates method comparison and slows adoption of improvements across the field.
 
         Finally, the connection between unfolding and downstream physics inference requires deeper investigation.
         %
-        Most current methods optimize for accurate recovery of particle level distributions, but many analyses ultimately aim to constrain theoretical parameters.
+        Most current methods optimise for accurate recovery of particle level distributions, but many analyses ultimately aim to constrain theoretical parameters.
         %
-        Direct optimization for parameter sensitivity, rather than distribution accuracy, could provide more efficient approaches for specific physics goals~\cite{Brehmer2020EffectiveLearning}.
+        Direct optimisation for parameter sensitivity, rather than distribution accuracy, could provide more efficient approaches for specific physics goals~\cite{Brehmer2020EffectiveLearning}.
         %
         The development of end--to--end differentiable analysis chains, from raw data through unfolding to parameter inference, represents an ambitious but potentially transformative research direction.
 
 \section{Case studies: ML based unfolding in HEP analyses.}
-
+\sectionminitoc
 This section examines some new machine learning based unfolding methods and successful applications of machine learning methods in recent high energy physics analyses, demonstrating their practical utility and impact on physics measurements.
 
-\subsection{\textsc{OmniFold}}  
+\begin{note*}
+    Not all of the methods detailed in this section are directly relevant to or used in the novel research presented in this dissertation. They are included here in order to provide a relatively wide cross section of modern ML based approaches to unfolding.
+\end{note*}
+\subsection{\textsc{OmniFold}.}  
     The \textsc{OmniFold} algorithm represents the first ML based unfolding method to achieve widespread adoption in experimental particle physics, establishing a new paradigm for unbinned measurements across multiple experiments.
     %
     The H1 Collaboration at HERA pioneered its experimental implementation, initially applying \textsc{OmniFold} to measure lepton--jet momentum balance and azimuthal correlations in deep inelastic scattering~\cite{collaboration_measurement_2022}.
@@ -1831,24 +1845,24 @@ This section examines some new machine learning based unfolding methods and succ
     %
     The collaboration subsequently extended the approach to more complex observables, including jet substructure measurements~\cite{collaboration_unbinned_2023,Arratia2025TowardsEvents}, showcasing the method's versatility across different physics applications.
     
-    Building on H1's success, experiments at the LHC have embraced \textsc{OmniFold} for increasingly sophisticated measurements.
+    Building on H1's success, experiments at the LHC have applied \textsc{OmniFold} for increasingly sophisticated measurements.
     %
     The LHCb collaboration applied the technique to study jet fragmentation functions, unfolding the longitudinal momentum fraction of charged particles within jets~\cite{collaboration_multidifferential_2023}.
     %
     This analysis highlighted \textsc{OmniFold}'s capability to handle the complex correlations inherent in fragmentation processes while maintaining model independence across a broad kinematic range.
-    %
-    The CMS~\cite{CMS:2025sws} and ATLAS~\cite{collaboration_measurement_2025,collaboration_simultaneous_2024,panJetSubstructureMeasurements2024} collaborations have similarly adopted \textsc{OmniFold} for jet substructure measurements, contributing to a growing body of cross-experiment validation.
+    
+    The CMS~\cite{CMS:2025sws} and ATLAS~\cite{collaboration_measurement_2025,collaboration_simultaneous_2024,Pan:2909063} collaborations have similarly adopted \textsc{OmniFold} for jet substructure measurements, contributing to a growing body of cross-experiment validation.
     %
     These independent implementations using different detector technologies and analysis frameworks provide crucial confirmation of the method's robustness and general applicability.
     
-    Beyond particle physics experiments, the STAR collaboration at RHIC has successfully applied \textsc{OmniFold} to heavy-ion collision data~\cite{song_measurement_2023}, demonstrating its effectiveness in the challenging environment of ultrarelativistic nuclear collisions.
+    Beyond particle physics experiments, the STAR collaboration at RHIC has successfully applied \textsc{OmniFold} to heavy ion collision data~\cite{song_measurement_2023}, demonstrating its effectiveness in the challenging environment of ultrarelativistic nuclear collisions.
     %
-    The method's ability to handle the large multiplicities and complex backgrounds characteristic of heavy-ion physics represents a significant extension of its capabilities.
+    The method's ability to handle the large multiplicities and complex backgrounds characteristic of heavy ion physics represents a significant extension of its capabilities.
     %
     These advances position \textsc{OmniFold} not merely as an unfolding tool but as a framework for optimal information extraction from complex experimental data.
 
-\subsection{\textsc{Neural Posterior Unfolding}}
-    \textsc{Neural Posterior Unfolding} represents an innovative approach that enhances traditional binned unfolding through the integration of normalizing flows with Bayesian inference frameworks.
+\subsection{\textsc{Neural Posterior Unfolding}.}
+    \textsc{Neural Posterior Unfolding} represents an innovative approach that enhances traditional binned unfolding through the integration of normalising flows with Bayesian inference frameworks.
     %
     While NPU operates within the binned paradigm rather than a unbinned framework, it addresses several fundamental limitations of classical binned approaches that make it particularly valuable for cross section measurements.
 
@@ -1856,17 +1870,17 @@ This section examines some new machine learning based unfolding methods and succ
     %
     Traditional binned methods such as iterative Bayesian unfolding or singular value decomposition produce only point estimates with approximate uncertainty bands.
     %
-    In contrast, NPU leverages normalizing flows to learn the complete posterior distribution over the unfolded bin contents, providing access to the full correlation structure and non--Gaussian features of the solution space~\cite{acosta2024npu}.
+    In contrast, NPU leverages normalising flows to learn the complete posterior distribution over the unfolded bin contents, providing access to the full correlation structure and non-Gaussian features of the solution space~\cite{acosta2024npu}.
     %
     This capability proves especially valuable when propagating uncertainties through complex analysis chains or when the unfolded results feed into likelihood fits for physics parameters.
 
     Preliminary studies applying NPU to jet distributions in simulated LHC data have demonstrated several key advantages over conventional binned methods~\cite{acosta2024npu}.
     %
-    The normalizing flow architecture provides natural regularization through its limited expressivity, avoiding the \textit{ad hoc} regularization parameter tuning required by traditional methods.
+    The normalising flow architecture provides natural regularisation through its limited expressivity, avoiding the \textit{ad hoc} regularisation parameter tuning required by traditional methods.
     %
-    Furthermore, the learned posterior automatically adapts its regularization strength across phase space, applying stronger smoothing where statistics are limited while preserving fine structure in well-populated regions.
-    %
-    The amortized inference capability of NPU addresses a critical computational bottleneck in systematic uncertainty evaluation.
+    Furthermore, the learned posterior automatically adapts its regularisation strength across phase space, applying stronger smoothing where statistics are limited while preserving fine structure in well-populated regions.
+    
+    The amortised inference capability of NPU addresses a critical computational bottleneck in systematic uncertainty evaluation.
     %
     Once trained, the neural posterior estimator can instantly provide posterior distributions for new data without retraining, enabling efficient evaluation of systematic variations that would require complete re-execution of traditional unfolding methods.
     %
@@ -1884,24 +1898,24 @@ This section examines some new machine learning based unfolding methods and succ
     
 The familiarity of binned representations also facilitates communication with the broader physics community and enables straightforward comparison with the vast corpus of existing measurements.
     %
-    The method also serves as a valuable bridge between traditional and modern approaches, allowing experimentalists to gradually adopt machine learning techniques while maintaining familiar binned workflows.
+    The method, in this way, serves as a valuable bridge between traditional and modern approaches, allowing experimentalists to gradually adopt machine learning techniques while maintaining familiar binned workflows.
     %
     This transitional role proves particularly important for analyses where full unbinned methods face adoption challenges.
     %
     \cref{chap:npu} provides a comprehensive treatment of NPU's theoretical foundations and implementation details.
     
-\subsection{Invertible neural networks for unfolding}
-    Invertible Neural Networks and their conditional variants represent a theoretically motivated approach to unfolding that leverages the bijective structure of normalizing flows.
+\subsection{Invertible neural networks for unfolding.}
+    Invertible neural networks and their conditional variants represent a theoretically motivated approach to unfolding that leverages the bijective structure of normalising flows.
     %
     While these models learn deterministic bijective mappings between latent and data spaces, their integration with probabilistic frameworks requires careful interpretation.
-    %
-    The key insight of INN-based unfolding lies in modeling the detector response as an invertible transformation.
+    
+    The key insight of INN based unfolding lies in modelling the detector response as an invertible transformation.
     %
     Bellagente et al. pioneered this approach for high energy physics applications, demonstrating that conditional normalizing flows could learn the mapping between detector level and particle level distributions~\cite{bellagente_how_2020}.
     %
     Their method conditions the flow on detector level observations to generate samples from the particle level distribution, effectively learning the inverse of the detector response function.
     %
-    The probabilistic interpretation of cINNs emerges not from the bijective mapping itself, but from the explicit modeling of the conditional distribution $p(z|x)$ through the change of variables formula~\cite{Backes:2022sph}.
+    The probabilistic interpretation of cINNs emerges not from the bijective mapping itself, but from the explicit modeling of the conditional distribution $p(z\mid x)$ through the change of variables formula laid out in \cref{thm:cov-measure}~\cite{Backes:2022sph}.
     %
     The learned transformation provides samples from this conditional distribution, though the quality of uncertainty estimates depends critically on how well the flow captures the true posterior structure.
     
@@ -1911,51 +1925,52 @@ The familiarity of binned representations also facilitates communication with th
     %
     Experimental applications of cINNs to unfolding remain in the exploratory phase, with studies conducted on simulated data~\cite{Backes:2022sph}.
     %
-    The computational efficiency of trained flows makes them attractive for applications requiring rapid inference, such as real-time data quality monitoring or iterative analysis optimization.
+    The computational efficiency of trained flows makes them attractive for applications requiring rapid inference, such as real-time data quality monitoring or iterative analysis optimisation.
 
     \subsection{\textsc{Moment Unfolding}}
+    
     \textsc{Moment Unfolding} is a recently proposed method, focusing specifically on unfolding statistical moments of distributions rather than entire spectra~\cite{desai2024moment}.
     %
-    This method is particularly valuable when theoretical predictions are at the level of moments rather than differential distributions, as is often the case in QCD calculations, such as the energy dependence of the spectra of many quark and gluon jet observables and the strong couplling constant and leading power correction matrix elements~\cite{Abbate:2012jh,pahlStudyMomentsEvent2009,OPAL:2004wof,L3:2004cdh,DELPHI:2004omy,DELPHI:2003yqh,Altarelli:1977zs,gribovDeepInelasticEp1972,dokshitzerCalculationStructureFunctions1977}.
+    This method is particularly valuable when theoretical predictions are at the level of moments rather than differential distributions, as is often the case in QCD calculations, such as the energy dependence of the spectra of many quark and gluon jet observables, the strong coupling constant and leading power correction matrix elements~\cite{Abbate:2012jh,pahlStudyMomentsEvent2009,OPAL:2004wof,L3:2004cdh,DELPHI:2004omy,DELPHI:2003yqh,Altarelli:1977zs,gribovDeepInelasticEp1972,dokshitzerCalculationStructureFunctions1977}.
 
     \textsc{Moment Unfolding} employs a GAN--inspired structure with a generator that implements Boltzmann weighting factors to constrain the moments of the unfolded distribution.
     %
-    By focusing only on a small number of moments, this method provides natural regularization and has demonstrated excellent precision in jet substructure applications where scaling behaviors and moments are of primary interest.
+    By focusing only on a small number of moments, this method provides natural regularisation and has demonstrated excellent precision in jet substructure applications where scaling behaviours and moments are of primary interest.
 
-    \textsc{Moment Unfolding} unfolds statistical moments as a function of another observable (e.g., jet transverse momentum), enabling detailed studies of energy--scale dependence without requiring full spectral unfolding.
+    \textsc{Moment Unfolding} is also able to unfold statistical moments as a function of another observable (e.g., jet transverse momentum), enabling detailed studies of energy scale dependence without requiring full spectral unfolding.
     %
-    Feature specific methods like \textsc{Moment Unfolding} have the potential to offer precision and computation cost improvements over generalized unfolding methods for comparisons focused on individual features rather than the entire density.
+    Feature specific methods like \textsc{Moment Unfolding} have the potential to offer precision and computation cost improvements over generalised unfolding methods for comparisons focused on individual features rather than the entire density.
     %
     \textsc{Moment Unfolding} is discussed in further detail in \cref{chap:moment-unfolding}.
 
-\subsection{Reweighting Adversarial Networks (RAN)}
+\subsection{Reweighting Adversarial Networks (RANs)}
 
-    Building on the conceptual framework introduced in \textsc{Moment Unfolding}, Reweighting Adversarial Networks (RAN) extend the methodology to unfold full spectra through an adversarial learning framework.
+    Building on the conceptual framework introduced in \textsc{Moment Unfolding}, Reweighting Adversarial Networks (RANs) extend the methodology to unfold full spectra through an adversarial learning framework.
     %
-    RAN implements particle--level reweighting functions guided by detector--level classifiers, enabling non--iterative full spectral unfolding.
+    A RAN implements particle level reweighting functions guided by detector level classifiers, enabling non-iterative full spectral unfolding.
 
-    Unlike \textsc{OmniFold}, which requires multiple iterations and separate classifiers at each step, RAN employs a single adversarial training process to determine optimal weights.
+    Unlike \textsc{OmniFold}, which requires multiple iterations and separate classifiers at each step, a RAN employs a single adversarial training process to determine optimal weights.
     %
     This approach offers computational advantages while maintaining performance comparable to iterative methods.
 
-    RAN has been used to successfully unfolding jet substructure observables in multidimensional spaces, on simulated data where its non-iterative nature provides significant computational advantages.
+    RANs have been used successfully on simulated data to unfold jet substructure observables in multidimensional spaces,  where their non-iterative nature provides significant computational advantages.
     %
-    Implemented specifically as a Wasserstein GAN, RANs are effective in scenarios with limited detector--level overlap between simulation and data, a challenging regime for other reweighting-based methods.
+    Implemented specifically as a Wasserstein GAN, a RAN is effective in scenarios with limited detector level overlap between Simulation and Data, a challenging regime for other reweighting based methods.
     %
     Chapter~\ref{chap:ran} delves into more detail about RANs.
 
-\subsection{Schr\"odinger Bridge Unfolding}
-    The application of Schr\"odinger Bridge processes to unfolding represents a theoretically distinct approach that addresses specific limitations of existing ML methods~\cite{Vargas2021SolvingBridges,Diefenbacher:2023wec}.
+\subsection{Schr\"odinger Bridge Unfolding.}
+    The application of Schr\"odinger bridge processes to unfolding represents a theoretically distinct approach that addresses specific limitations of existing ML methods~\cite{Vargas2021SolvingBridges,Diefenbacher:2023wec}.
     %
     Unlike reweighting methods that can suffer from weight degeneracy or flow--based approaches that may struggle with multi--modal distributions, Schr\"odinger Bridge Unfolding frames the unfolding problem as finding the most likely stochastic evolution between the detector and particle level distributions.
 
     This optimal transport formulation has some unique advantages.
     %
-    First, the entropic regularization inherent in the Schr\"odinger Bridge framework naturally prevents overfitting without requiring \textit{ad hoc} smoothness constraints.
+    First, the entropic regularisation inherent in the Schr\"odinger Bridge framework naturally prevents overfitting without requiring \textit{ad hoc} smoothness constraints.
     %
     Second, the method provides theoretical guarantees on the existence and uniqueness of solutions under mild conditions, offering more robust convergence properties than adversarial training approaches.
     %
-    Third, SBU excels at preserving multi--modal structure in distributions, a critical capability for measurements involving resonances or threshold effects where other regularization approaches might artificially smooth important features~\cite{Butter2025GenerativeMapping}.
+    Third, SBU excels at preserving multi--modal structure in distributions, a critical capability for measurements involving resonances or threshold effects where other regularisation approaches might artificially smooth important features~\cite{Butter2025GenerativeMapping}.
     
     Recent applications have demonstrated SBU's effectiveness in challenging unfolding scenarios where traditional ML methods struggle~\cite{Diefenbacher:2023wec}.
     %
@@ -1965,20 +1980,20 @@ The familiarity of binned representations also facilitates communication with th
 
     While the previously discussed methods approach unfolding through classification, direct generation, or adversarial training, the theoretical foundations of the unfolding problem connect deeply to optimal transport theory.
     %
-    The Schr\"odinger Bridge formulation represents the natural extension of this connection, providing a mathematically principled framework that unifies several desirable properties: entropic regularization, theoretical guarantees, and the ability to interpolate between distributions in a physically meaningful way.
+    The Schr\"odinger Bridge formulation represents the natural extension of this connection, providing a mathematically principled framework that unifies several desirable properties: entropic regularisation, theoretical guarantees, and the ability to interpolate between distributions in a physically meaningful way.
     %
     This class of transport based methods may become increasingly important as the field seeks more theoretically grounded approaches to uncertainty quantification.
 
 \subsection{Unified Neural Folding GAN}
-    The Jefferson Lab collaboration has recently introduced UNF--GAN, a generative adversarial network approach that addresses several limitations of existing ML based unfolding methods~\cite{Alghamdi:2023emm}.
+    The Jefferson Lab collaboration has recently proposed UNF-GAN, a generative adversarial network approach that seeks to address several limitations of existing ML based unfolding methods~\cite{Alghamdi:2023emm}.
     %
     This method distinguishes itself through its unified treatment of both the forward folding and unfolding processes within a single adversarial framework, offering a more self consistent approach to modeling detector effects.
     
-    UNF-GAN employs a unique dual--generator architecture where one generator learns the forward mapping from particle level to detector level (simulating detector response), while a second generator learns the inverse mapping for unfolding.
+    UNF-GAN employs a unique dual--generator architecture where one generator learns the forward mapping from particle level to detector level (approximating the detector response), while a second generator learns the reverse map for unfolding.
     %
-    The discriminator enforces consistency between both transformations, ensuring that the composition of forward and backward mappings approximates the identity transformation.
+    The discriminator enforces consistency between both transformations, ensuring that the composition of forward and reverse mappings approximates the identity transformation.
     %
-    This bidirectional training strategy provides stronger constraints than methods that only model the unfolding direction, potentially reducing the solution space ambiguity inherent in ill--posed inverse problems.
+    This bidirectional training strategy provides stronger constraints than methods that only model the unfolding direction, potentially reducing the solution space ambiguity inherent in ill posed inverse problems.
 
     The method demonstrates particular strength in handling non-Gaussian detector resolutions and asymmetric migration effects.
     %
@@ -1996,49 +2011,51 @@ The familiarity of binned representations also facilitates communication with th
     
     Robust uncertainty quantification remains a central challenge in ML based unfolding, with the field developing multiple complementary approaches to address different sources of uncertainty.
     %
-    Bayesian Neural Networks have been explored as a framework for propagating parameter uncertainty through the unfolding process~\cite{brehmer_guide_2018,Feindt:2004wla,Zhong:2011xm,perryBayesianNeuralNetworks2014,Chua:2019wwt,izmailovWhatAreBayesian2021,hronWideBayesianNeural2022,wenzelHowGoodBayes2020,Huetsch:2024quz,bonnevilleBayesianDeepLearning2022}.
+    Bayesian neural networks have been explored as a framework for propagating parameter uncertainty through the unfolding process~\cite{brehmer_guide_2018,Feindt:2004wla,Zhong:2011xm,perryBayesianNeuralNetworks2014,Chua:2019wwt,izmailovWhatAreBayesian2021,hronWideBayesianNeural2022,wenzelHowGoodBayes2020,Huetsch:2024quz,bonnevilleBayesianDeepLearning2022}.
     %
     These methods place prior distributions over network weights and use variational inference or Monte Carlo sampling to approximate the posterior weight distribution given the training data.
     %
     The resulting ensemble of weight configurations provides a mechanism for quantifying uncertainty arising from finite training data and network parameter estimation.
     %
-    Vanilla BNNs primarily capture epistemic uncertainty~\cite{mehraUncertaintyQuantificationDeep2021} related to the network parameters themselves, rather than the systematic uncertainties arising from physics modeling choices or detector simulation accuracy, which must still be evaluated through traditional approaches such as varying the training samples or response matrices.
+    Vanilla BNNs primarily capture epistemic uncertainty~\cite{mehraUncertaintyQuantificationDeep2021} related to the network parameters themselves, rather than the systematic uncertainties arising from physics modelling choices or detector simulation accuracy, which must still be evaluated through traditional approaches such as varying the training samples or response matrices.
     %
-    However, extensions of BNNs that incorportate aleotoric uncertainties have been proposed in recent years~\cite{munikotiGeneralFrameworkQuantifying2023,Kendall:2017tnb,depewegDecompositionUncertaintyBayesian2018}.\footnote{Though none in physics.}
+    However, extensions of BNNs that incorporate aleatoric uncertainties have been proposed in recent years~\cite{munikotiGeneralFrameworkQuantifying2023,Kendall:2017tnb,depewegDecompositionUncertaintyBayesian2018}.\footnote{Though none in physics.}
 
 
     Ensemble methods have emerged as a practical alternative that balances computational efficiency with uncertainty coverage.
     %
-    Rather than the full Bayesian treatment, these approaches train multiple networks with different random initializations, architectures, or training data subsets.
+    Rather than the full Bayesian treatment, these approaches train multiple networks with different random initialisations, architectures, or training data subsets.
     %
     The spread of predictions across the ensemble provides an empirical estimate of model uncertainty.
     %
-    Ensemble strategies for systematic uncertainty evaluation combinine ensemble predictions with traditional approaches such as varying simulation parameters or detector conditions.
+    Ensemble strategies for systematic uncertainty evaluation combine ensemble predictions with traditional approaches such as varying simulation parameters or detector conditions.
     %
-    The ensemble spread captures the sensitivity of the unfolding procedure to the specific optimization path taken during training, which can be particularly important for methods involving non-convex optimization landscapes.
+    The ensemble spread captures the sensitivity of the unfolding procedure to the specific optimisation path taken during training, which can be particularly important for methods involving non-convex optimisation landscapes.
 
-    For unbinned unfolding results, characterizing uncertainties requires careful consideration of event-level correlations.
+    For unbinned unfolding results, characterising uncertainties requires careful consideration of event level correlations.
     %
     Standard statistical procedures that assume independence between events can significantly misestimate uncertainties when applied to correlated unfolded weights.
     %
-    Recent work has highlighted the importance of accounting for these correlations in downstream analyses~\cite{Desai:2025mpy}, with methods ranging from bootstrap resampling that preserves correlation structure to analytical approximations of the effective sample size.
+     The importance of accounting for these correlations in downstream analyses is highlighted in~\cite{Desai:2025mpy}, with methods ranging from bootstrap resampling that preserves correlation structure to analytical approximations of the effective sample size.
     %
     Chapter~\ref{chap:unbinned_correlations} provides a detailed treatment of these correlation effects and their impact on statistical inference.
 
 \subsection{Hybrid approaches and integration with simulation.}
+
     Hybrid approaches that combine traditional and ML based unfolding have emerged as popular, pragmatic solutions in experimental settings.
     %
     The ATLAS collaboration has explored methods that use ML techniques for response modeling while employing traditional matrix inversion for the actual unfolding step~\cite{GraphNeuralNetwork2022}, leveraging the strengths of both approaches.
-    %
+    
     Integration of differentiable simulation into the unfolding pipeline represents another promising direction.
     %
-    By making detector simulations differentiable, these approaches enable end--to--end optimization of the entire measurement chain~\cite{MODE:2022znx,newburyReviewDifferentiableSimulators2024}.
+    By making detector simulations differentiable, these approaches enable end--to--end optimisation of the entire measurement chain~\cite{MODE:2022znx,newburyReviewDifferentiableSimulators2024}.
     %
-    Recent work has also explored direct integration of theory predictions into ML-based unfolding~\cite{Huetsch:2024quz}, enabling simultaneous unfolding and parameter fitting.
+    Recent work has also explored direct integration of theory predictions into ML based unfolding~\cite{Huetsch:2024quz}, enabling simultaneous unfolding and parameter fitting.
     %
     This unified approach can provide more direct constraints on physical parameters while properly accounting for all experimental effects.
 
-\subsection{Equivariant networks for physics-informed unfolding.}
+\subsection{Equivariant networks for physics informed unfolding.}
+
     Equivariant neural networks, which preserve symmetry transformations by design, have recently been applied to unfolding problems in particle physics.
     %
     These architectures incorporate physical symmetries as inductive biases, naturally handling rotational, translational, or permutation symmetries common in physics applications.
@@ -2064,22 +2081,22 @@ The familiarity of binned representations also facilitates communication with th
     
     Studies using simulated data can provide additional insights through controlled comparisons.
     %
-    \textsc{OmniFold} has compared against commonly used methods implemented in the RooUnfold package, including Iterative Bayesian Unfolding (IBU), SVD, and bin-by-bin correction factors in~\cite{Baron:2021vvl} on simulated top quark pair production data, and on neutrino cross section measurements~\cite{Huang2025MachineTechnique}.
+    \textsc{OmniFold} has been compared against commonly used methods implemented in the RooUnfold package, including Iterative Bayesian Unfolding (IBU), SVD, and bin-by-bin correction factors in~\cite{Baron:2021vvl} on simulated top quark pair production data, and on neutrino cross section measurements~\cite{Huang2025MachineTechnique}.
     %
-    A comprehensive survey by Huetsch et al.~\cite{Huetsch:2024quz} evaluated multiple ML based unfolding methods alongside traditional approaches on standardized simulated datasets.
+    A comprehensive survey by Huetsch et al.~\cite{Huetsch:2024quz} evaluated multiple ML based unfolding methods alongside traditional approaches on standardised simulated datasets.
     %
-    This work emphasized that while traditional methods remain robust for simple, low dimensional problems, ML approaches offer unique advantages for modern analyses requiring unbinned, high dimensional unfolding.
+    This work emphasised that while traditional methods remain robust for simple, low dimensional problems, ML approaches offer unique advantages for modern analyses requiring unbinned, high dimensional unfolding.
 
     These comparative studies consistently demonstrate that ML methods complement rather than replace traditional approaches.
     %
-    Traditional methods such as SVD and IBU remain valuable for their theoretical transparency, well-understood uncertainty quantification, and computational efficiency in low-dimensional problems.
+    Traditional methods such as SVD and IBU remain valuable for their theoretical transparency, well understood uncertainty quantification, and computational efficiency in low dimensional problems.
     %
-    However, ML methods excel in scenarios involving high-dimensional phase spaces, complex detector responses, and the need for simultaneous unfolding of multiple correlated observables.
+    However, ML methods excel in scenarios involving high dimensional phase spaces, complex detector responses, and the need for simultaneous unfolding of multiple correlated observables.
     %
     The choice of method ultimately depends on the specific requirements of the analysis, with many experiments now employing both approaches as cross-checks to ensure robust results.
     
-\subsection{Implementation Considerations from Real Experiments}
-    These case studies have revealed important practical considerations for implementing ML--based unfolding in experimental analyses.
+\subsection{Implementation considerations from real experiments.}
+    These case studies have revealed important practical considerations for implementing ML based unfolding in experimental analyses.
     %
     One key lesson has been the importance of careful validation procedures.
     %
@@ -2087,8 +2104,8 @@ The familiarity of binned representations also facilitates communication with th
 
     Another practical consideration is computational efficiency.
     %
-    While ML methods typically require significant resources for training, optimized implementations that leverage high--performance computing resources can make these methods practical for large--scale analyses~\cite{HEPSoftwareFoundation:2017ggl}.
-    %
+    While ML methods typically require significant resources for training, optimised implementations that leverage high performance computing resources can make these methods practical for large scale analyses~\cite{HEPSoftwareFoundation:2017ggl}.
+    
     Systematic uncertainty evaluation remains a continuing challenge.
     %
     Recent analyses have developed methods for efficiently propagating systematic uncertainties through ML unfolding pipelines, often employing ensemble techniques or incorporating uncertainty sources directly into the training procedure~\cite{Falcao:2025jom,Huang2025MachineTechnique}.

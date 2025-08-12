@@ -16,6 +16,11 @@
 \usepackage{nicefrac}
 \usepackage{bbm}
 \usepackage{siunitx}    % For units and numbers
+\sisetup{
+    table-align-text-post = false,
+    table-format = 3.0,
+    table-number-alignment = center
+}
 \usepackage{xparse}     % For advanced command definitions
  % Workaround for siunitx/physics compatibility
 \NewCommandCopy\siqty\qty 
@@ -36,7 +41,6 @@
 % ============================================================================
 \usepackage{multirow}
 \usepackage{longtable}
-
 % Column type for math mode in tables
 \newcolumntype{M}{>{\(\displaystyle}c<{\)}}
 

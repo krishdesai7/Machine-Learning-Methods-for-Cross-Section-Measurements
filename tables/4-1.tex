@@ -1,16 +1,28 @@
 \begin{table}
 \centering
-\caption[Computational cost comparison between FBU and NPU]{Computational cost comparison between FBU and NPU for repeated unfolding tasks. NPU's amortised inference approach provides significant speed-up despite the initial training overhead.}
-\vspace{3mm}
+\caption[Computational cost comparison between FBU and NPU]{
+Computational cost comparison between Fully Bayesian Unfolding (FBU) and 
+\textsc{Neural Posterior Unfolding} (NPU) for repeated unfolding tasks.  
+NPU's amortised inference approach provides a substantial speed up despite the initial training overhead.
+}
 \label{tab:timing}
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Method} & \textbf{Setup cost} & \textbf{Per run} & \textbf{Total (100 runs)} \\
-\hline
-FBU (10k MCMC draws) & -- & 40 sec & $\sim$67 min \\
-NPU (amortised) & 280 sec & $\sim$2 sec & $\sim$5 min \\
-\hline
-\textbf{Speed-up} & \multicolumn{3}{c|}{\textbf{13$\times$ faster}} \\
-\hline
+\vspace{2mm}
+\begin{tabular}{
+    l
+    S[table-format=3.0]
+    S[table-format=2.0]
+    S[table-format=2.0]
+}
+\toprule
+\textbf{Method} & 
+\textbf{Setup}\textbf{(s)} & 
+\textbf{Per run}\textbf{(s)} & 
+\textbf{Total}\textbf{(min)} \\
+\midrule
+FBU (\num{1e4} MCMC draws) & {--} & 40 & 67 \\
+NPU (amortised)            & 280  & 2  & 5  \\
+\midrule
+\multicolumn{4}{c}{\textit{Speed-up:} $13\times$ faster} \\
+\bottomrule
 \end{tabular}
 \end{table}
