@@ -34,7 +34,7 @@
     %
     Even worse, IBU (with, e.g., bootstraps) will report zero uncertainty on the ratio \(\nicefrac{\nu_\alpha}{\nu_\alpha+\nu_\beta}\) when in reality this ratio should have maximal uncertainty since the detector cannot distinguish between these contributions.
 \subsection{Regularisation limitations.}
-    To address the ill posedness detailed in Sec.~\ref{sec:ill-posed}, traditional methods employ various forms of regularisation, examples of which are provided in Sec.~\ref{sec:binned-methods}.
+    To address the ill posedness detailed in \cref{sec:ill-posed}, traditional methods employ various forms of regularisation, examples of which are provided in \cref{sec:binned-methods}.
     %
     However, all these approaches require a careful balance between fidelity to the data and conformity to the regularisation constraints.
     %
@@ -265,11 +265,10 @@ The NPU approach thus provides a more honest and statistically sound treatment o
     %
     \textbf{(b)} Degenerate response $(R_{i\alpha} = R_{i\beta})$: 
     IBU relies solely on the prior, while NPU produces a full posterior with credible intervals that properly account for uncertainty in unconstrained regions.
-    The NPU maximum likelihood estimate closely aligns with the true distribution, and the NPU posterior is compatible with the statistical uncertainty evaluated by IBU using bootstraps.\protect{\footnotemark}
+    The NPU maximum likelihood estimate closely aligns with the true distribution, and the NPU posterior is compatible with the statistical uncertainty evaluated by IBU using bootstraps.Figure created by Jingjing Pan~\cite{acosta2024npu}.
     }
     \label{fig:2bin}
 \end{figure}
-\footnotetext{Figure created by Jingjing Pan~\cite{acosta2024npu}.}
 
         This example highlights a fundamental advantage of NPU and other Bayesian methods;
         %
@@ -299,11 +298,10 @@ The experimental setup and resulting response matrix are shown in \cref{fig:gaus
     The goal of unfolding is to recover the Truth distribution from the observed Data.
     \textbf{(b)} The response matrix $\mathbf{R}$ constructed from Gen./Sim. pairs, which encodes the detector smearing transformation and serves as an input for the unfolding algorithms.
     %
-    The matrix shows how probability mass spreads from each particle level bin (horizontal axis) to detector level bins (vertical axis).\footnotemark
+    The matrix shows how probability mass spreads from each particle level bin (horizontal axis) to detector level bins (vertical axis).Figure created by Jingjing Pan~\cite{acosta2024npu}.
     }
     \label{fig:gaus_init}
 \end{figure}
-\footnotetext{Figure created by Jingjing Pan~\cite{acosta2024npu}.}
 \subsubsection{Results and comparison.}
     The unfolded distributions from NPU (maximum likelihood estimate), IBU, and FBU all accurately recover the truth distribution, as shown in \cref{fig:gaus:a}.
     %
@@ -322,11 +320,10 @@ All methods successfully recover the true distribution.
 \textbf{(b)} Corner plot showing pairwise posterior correlations between the four central bins from NPU (orange contours) and FBU (green contours, averaged over MCMC samples), with truth values marked in blue. 
 Both methods show consistent posterior distributions that properly encompass the true values.
 %
-The green for FBU is averaged over many draws.\footnotemark
+The green for FBU is averaged over many draws. Figure created by Jingjing Pan~\cite{acosta2024npu}.
 }
 \label{fig:gaus}
 \end{figure}
-\footnotetext{Figure created by Jingjing Pan~\cite{acosta2024npu}.}
 
     \paragraph{Calibration and coverage.}
     To rigorously assess the statistical calibration of NPU, evaluate pull distributions across 100 pseudo-experiments.
@@ -354,11 +351,10 @@ The green for FBU is averaged over many draws.\footnotemark
 \textbf{(a)} Pull distributions for NPU (orange) and FBU (green) with moderate smearing ($\epsilon = 0.5$), compared against the ideal $\mathcal{N}(0,1)$ reference (black line). 
 Both methods show proper calibration with pulls centred at zero and unit variance.
 \textbf{(b)} Pull distribution statistics as functions of smearing parameter $\epsilon \in [0.3, 0.6]$. 
-The mean and standard deviation remain consistent with the ideal values ($\mu = 0$, $\sigma = 1$) across the range, confirming robust uncertainty quantification for both methods.\footnotemark
+The mean and standard deviation remain consistent with the ideal values ($\mu = 0$, $\sigma = 1$) across the range, confirming robust uncertainty quantification for both methods. Figure created by Jingjing Pan~\cite{acosta2024npu}.
 }
 \label{fig:pulls}
 \end{figure}
-\footnotetext{Figure created by Jingjing Pan.}
 
 This highlights an important practical advantage of NPU is its computational efficiency for repeated unfolding tasks.
 %
@@ -372,23 +368,56 @@ This \(\numproduct{13x\,}\) speed-up stems from NPU's amortised inference approa
 
 \subsection{Particle physics example.}
 \begin{figure}
-\centering
-\subfloat[Jet width $\omega$]{\includegraphics[width=0.46\textwidth]{figures/chapter-04/npu_width_logy.pdf}\label{fig:phys_width}} 
-\subfloat[Groomed momentum fraction $z_g$]{\includegraphics[width=0.46\textwidth]{figures/chapter-04/npu_zgs.pdf}\label{fig:phys_zg}} \\
-\subfloat[$N$-subjettiness ratio $\tau_{21}^{\beta=1}$]{\includegraphics[width=0.46\textwidth]{figures/chapter-04/npu_tau2s_logy.pdf}\label{fig:phys_tau21}} 
-\subfloat[Constituent multiplicity $M$]{\includegraphics[width=0.46\textwidth]{figures/chapter-04/npu_mult_logy.pdf}\label{fig:phys_mult}} 
-\caption[Jet substructure unfolding results using NPU, FBU, and IBU]{Unfolding results for jet substructure observables comparing NPU, FBU, and IBU methods.
-The response matrix is constructed using \textsc{Pythia} 8.243 (Tune 21) simulation, while \textsc{Herwig} 7.1.5 provides both the observed data and particle level truth for validation.
-%
-Truth distributions are shown as blue shaded regions, with unfolded results from NPU (MLE as orange points), FBU (green points), and IBU (red points).
-%
-Error bars represent posterior standard deviations from the respective methods.
-%
-NPU successfully recovers the particle level truth distributions across all observables.\footnotemark
-}
-\label{fig:substructure}
+    \ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/npu_width_logy.pdf}
+        \caption{Jet width $\omega$}
+        \label{fig:phys_width}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/npu_zgs.pdf}
+        \caption{Groomed momentum fraction $z_g$}
+        \label{fig:phys_zg}
+    \end{subfigure}
+    \caption[]{(continued on next page)}
 \end{figure}
-\footnotetext{Figure created by Jingjing Pan~\cite{acosta2024npu}.}
+
+\begin{figure}
+    \ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/npu_tau2s_logy.pdf}
+        \caption{$N$-subjettiness ratio $\tau_{21}^{\beta=1}$}
+        \label{fig:phys_tau21}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/npu_mult_logy.pdf}
+        \caption{Constituent multiplicity $M$}
+        \label{fig:phys_mult}
+    \end{subfigure}
+    
+    \caption[Jet substructure unfolding results using NPU, FBU, and IBU]{
+        (Continued from previous page)
+        %
+        Unfolding results for jet substructure observables comparing Neural Posterior Unfolding (NPU), 
+        Forward Bayesian Unfolding (FBU), and Iterative Bayesian Unfolding (IBU) methods. 
+        The response matrix is constructed using \textsc{Pythia} 8.243 (Tune 21) MC distributions, 
+        while \textsc{Herwig} 7.1.5 provides both the Data to unfolding and Truth
+        for validation. Truth distributions are shown as blue shaded regions, with unfolded 
+        results from NPU (maximum likelihood estimate as orange points), FBU (green points), 
+        and IBU (red points). Error bars represent posterior standard deviations from the 
+        respective methods. NPU successfully recovers the particle-level truth distributions 
+        across all observables. Figure created by Jingjing Pan~\cite{acosta2024npu}.%
+    }
+    \label{fig:substructure}
+\end{figure}
 
     This experiment demonstrates NPU's application to a realistic high energy physics scenario, focusing on jet substructure measurements at the Large Hadron Collider (LHC).
     
@@ -409,18 +438,18 @@ NPU successfully recovers the particle level truth distributions across all obse
         %
         After selection, approximately \(\num{1.6d6}\) events from each simulation are retained.
 
-        We focus on four key jet substructure observables that are widely used in LHC analyses.
-        \begin{enumerate}
-            \item Jet width (\(w\)): the transverse momentum weighted first radial moment of radiation within a jet,
-            \item Jet constituent multiplicity ($M$): the number of constituents in a jet,
-            \item \(N-\)subjettiness ratio ($\tau_{21} = \tau_2^{\beta=1}/\tau_1^{\beta=1}$): a measure of the compatibility of a jet with a two--prong substructure hypothesis relative to a one--prong hypothesis~\cite{Thaler2011IdentifyingN-subjettiness, Thaler2012MaximizingN-subjettiness, DevNairDevelopmentData}
-            \item Groomed momentum fraction ($z_g$): the momentum sharing between sub--jets after soft drop grooming~\cite{Larkoski2014SoftDrop, Dasgupta2013TowardsSubstructure}
-        \end{enumerate}
+        This analysis focus on four key jet substructure observables that are widely used in LHC analyses.
+        \begin{description}
+            \item [Jet width (\(w\)):] the transverse momentum weighted first radial moment of radiation within a jet,
+            \item [Jet constituent multiplicity ($M$):] the number of constituents in a jet,
+            \item [\(N-\)subjettiness ratio ($\tau_{21} = \tau_2^{\beta=1}/\tau_1^{\beta=1}$):] a measure of the compatibility of a jet with a two--prong substructure hypothesis relative to a one--prong hypothesis~\cite{Thaler2011IdentifyingN-subjettiness, Thaler2012MaximizingN-subjettiness, DevNairDevelopmentData}
+            \item [Groomed momentum fraction ($z_g$):] the momentum shared between subjets after soft drop grooming~\cite{Larkoski2014SoftDrop, Dasgupta2013TowardsSubstructure}
+        \end{description}
         These observables span a diverse range of physical characteristics and detector sensitivities, providing a comprehensive test of NPU's capabilities.
     \subsubsection{Results}
         \cref{fig:substructure} presents the unfolded distributions for each observable, comparing results from NPU, FBU, and IBU against the known truth.
         %
-        For the FBU implementation in this more complex scenario, one needs to increase the number of MCMC steps ten fold compared to the Gaussian example, using \(\num{100000}\) tuning steps and \(\num{500000}\) draws.
+        For the FBU implementation in this more complex scenario, one needs to increase the number of MCMC steps ten fold compared to the Gaussian example, using \num{100000} tuning steps and \num{500000} draws.
         
         For all the observables, NPU accurately recovers the truth, with uncertainty bands that properly account for statistical uncertainties.
         %
@@ -428,7 +457,7 @@ NPU successfully recovers the particle level truth distributions across all obse
         %
         First, NPU effectively handles the complex detector effects present in realistic LHC simulations.
         %
-        Second, the method exhibits robustness against simulation modeling differences: the response matrix is constructed using \textsc{Pythia} events, while the ``nature'' distribution NPU was expected to unfold was derived from \textsc{Herwig}, representing different underlying physics models and parton shower algorithms.
+        Second, the method exhibits robustness against simulation modelling differences: the response matrix is constructed using \textsc{Pythia} events, while the ``nature'' distribution NPU was expected to unfold was derived from \textsc{Herwig}, representing different underlying physics models and parton shower algorithms.
         %
         Finally, full posterior information enables rigorous uncertainty quantification across the entire distribution.
         %
@@ -439,30 +468,67 @@ NPU successfully recovers the particle level truth distributions across all obse
         In a complete experimental analysis, uncertainties in the response matrix itself could be incorporated either by repeating the unfolding procedure with systematically varied response matrices or by including these systematic uncertainties directly in the likelihood formulation.
 
 \begin{figure}
-\centering
-\subfloat[Jet width $\omega$]{\includegraphics[width=0.45\textwidth]{figures/chapter-04/corner_both_width.pdf}\label{fig:corner_width}} 
-\subfloat[Groomed momentum fraction $z_g$]{\includegraphics[width=0.45\textwidth]{figures/chapter-04/corner_both_zgs.pdf}\label{fig:corner_zg}}\\
-\subfloat[Constituent multiplicity $M$]{\includegraphics[width=0.45\textwidth]{figures/chapter-04/corner_both_mult.pdf}\label{fig:corner_mult}}
-\subfloat[$N$-subjettiness ratio $\tau_{21}^{\beta=1}$]{\includegraphics[width=0.45\textwidth]{figures/chapter-04/corner_both_tau2s.pdf}\label{fig:corner_tau21}}
-\caption[Corner plots for jet substructure observables]{Corner plots showing posterior correlations for jet substructure observables.
-Each panel displays pairwise correlations between bins for one observable, comparing NPU (orange contours) and FBU (green contours, averaged over MCMC samples) posteriors, with truth values marked in blue.
-The plots reveal complex bin to bin correlation structures that are typically unavailable from traditional unfolding methods.
-Strong agreement between NPU and FBU posteriors confirms the reliability of both approaches, while the encompassing of truth values validates proper uncertainty quantification.
-These correlations provide crucial information for propagating uncertainties in downstream physics analyses.\footnotemark
-}
-\label{fig:phys-corner}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/corner_both_width.pdf}
+        \caption{Jet width $\omega$}
+        \label{fig:corner_width}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/corner_both_zgs.pdf}
+        \caption{Groomed momentum fraction $z_g$}
+        \label{fig:corner_zg}
+    \end{subfigure}
+    \caption[]{(continued on next page)}
+\end{figure}
+
+\begin{figure}
+    \ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/corner_both_mult.pdf}
+        \caption{Constituent multiplicity $M$}
+        \label{fig:corner_mult}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/chapter-04/corner_both_tau2s.pdf}
+        \caption{$N$-subjettiness ratio $\tau_{21}^{\beta=1}$}
+        \label{fig:corner_tau21}
+    \end{subfigure}
+    
+    \caption[Corner plots for jet substructure observables]{%
+        (Continued from previous page)
+        %
+        Corner plots showing posterior correlations for jet substructure observables. 
+        Each panel displays pairwise correlations between bins for one observable, 
+        comparing Neural Posterior Unfolding (NPU, orange contours) and Forward Bayesian 
+        Unfolding (FBU, green contours, averaged over Markov Chain Monte Carlo samples) 
+        posteriors, with truth values marked in blue. The plots reveal complex bin-to-bin 
+        correlation structures that are typically unavailable from traditional unfolding 
+        methods. Strong agreement between NPU and FBU posteriors confirms the reliability 
+        of both approaches, while the encompassing of truth values validates proper 
+        uncertainty quantification. These correlations provide crucial information for 
+        propagating uncertainties in downstream physics analyses. Figure created by 
+        Jingjing Pan~\cite{acosta2024npu}.%
+    }
+    \label{fig:phys-corner}
 \end{figure}        
-\footnotetext{Figure created by Jingjing Pan.}
-\subsection{Summary of Numerical Results}
+\subsection{Summary of numerical results.}
     These numerical studies demonstrate that NPU provides appropriate uncertainty quantification in degenerate scenarios where traditional methods fail, while maintaining proper statistical coverage across varying degrees of detector smearing.
     %
-    NPU efficiently processes multiple datasets through amortized inference, and accurately recovers truth distributions in both targeted degenerate toy examples and realistic high energy physics scenarios.
+    NPU efficiently processes multiple datasets through amortised inference, and accurately recovers truth distributions in both targeted degenerate toy examples and realistic high energy physics scenarios.
     %
     The method combines the Bayesian foundations of FBU with several architectural and computational advantages.
-    %
+    
     The normalising flow architecture can represent a wide range of posterior distributions, including multimodal, asymmetric, and strongly correlated distributions that may be challenging for traditional MCMC methods.
     %
-    By providing differentiable access to the posterior density, NPU enables gradient--based optimization for finding maximum likelihood estimates or other derived quantities.
+    By providing differentiable access to the posterior density, NPU enables gradient based optimisation for finding maximum likelihood estimates or other derived quantities.
 
     While FBU requires MCMC sampling for each new measurement, NPU's amortised inference approach front loads computational cost into the training phase.
     %
@@ -480,7 +546,7 @@ These correlations provide crucial information for propagating uncertainties in 
     
     Despite these considerations, NPU represents a significant advancement in unfolding methodology, combining the statistical rigour of Bayesian inference with the flexibility and computational efficiency of modern deep learning approaches making it a promising tool for cross section measurements in high energy physics.
 
-\section{Beyond binning: the path forward}
+\section{Beyond binning: the path forward.}
     The \textsc{Neural Posterior Unfolding} method presented in this chapter represents a significant advancement in binned unfolding approaches.
     %
     By incorporating normalising flows for posterior estimation, NPU addresses several limitations of traditional methods while maintaining the established binning paradigm that has served particle physics for decades.
@@ -489,11 +555,11 @@ These correlations provide crucial information for propagating uncertainties in 
 
     Binning inherently discards information about the precise location of events within each bin, reducing statistical precision.
     %
-    The mantra ``The choice of binning is subjective and can introduce biases in the unfolded results'' is oft expressed in statistical treatments of the unfolding problem~\cite{cowan_survey_2002, cowan_statistics_2021, CowanStatisticalRehovot, Cowan2011AsymptoticPhysics,Tang2017DataMethod, hocker_svd_1996, Gagunashvili2024DataOptimization, CranmerPracticalLHC, StatisticalPhysics, Bohm2025IntroductionPhysicists, gardi_statistics_2015, Adam-Bourdarios2015TheChallenge, cowan_topics_2010}.
+    The idea that the choice of binning is subjective and can introduce biases in the unfolded results is oft expressed in statistical treatments of the unfolding problem~\cite{cowan_survey_2002, cowan_statistics_2021, CowanStatisticalRehovot, Cowan2011AsymptoticPhysics,Tang2017DataMethod, hocker_svd_1996, Gagunashvili2024DataOptimization, CranmerPracticalLHC, StatisticalPhysics, Bohm2025IntroductionPhysicists, gardi_statistics_2015, Adam-Bourdarios2015TheChallenge, cowan_topics_2010}.
     %
     This discretisation is particularly problematic for observables with sharp features or resonances that may be obscured by bin boundaries.
     %
-    The restrictions the curse of dimensionality imposes on binned methods' applicability to multivariate problems has already been discussed, 
+    The restrictions the curse of dimensionality imposes on binned methods' applicability to multivariate problems has already been discussed in \cref{subsubsec:binned-methods}.
 
     Binned methods require separate unfolding procedures for each differential distribution of interest.
     %
@@ -503,7 +569,7 @@ These correlations provide crucial information for propagating uncertainties in 
     %
     These innovations have enabled significant progress towards solving the challenges posed by binned methods.
     %
-    Although machine learning methods are typically a few orders of magnitude slower than traditional methods like IBU, modern ML techniques can leverage efficient data representations and parallelised computation for faster inference, reducing the gap particularly for high dimensional problems.
+    Although machine learning methods are typically a few orders of magnitude slower to train than traditional methods like IBU, modern ML techniques can leverage efficient data representations and parallelised computation for faster inference, reducing the gap particularly for high dimensional problems.
 
     The next chapters will explore some unbinned methods in detail, examining their theoretical foundations, practical implementations and performance characteristics on realistic physics examples.
     %
@@ -511,4 +577,4 @@ These correlations provide crucial information for propagating uncertainties in 
     %
     As experimental datasets grow larger and theoretical predictions become more precise, unbinned methods will play an increasingly important role in extracting the full physics potential from experiments.
     %
-    The transition from binned to unbinned unfolding represents not just a technical evolution but a paradigm shift in how we approach the measurement and interpretation of cross section measurements.
+    The transition from binned to unbinned unfolding represents not just a technical evolution but a paradigm shift in how the field approaches the measurement and interpretation of cross section measurements.

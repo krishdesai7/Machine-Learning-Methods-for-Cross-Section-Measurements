@@ -393,8 +393,8 @@ This section provides a rigorous mathematical framework for understanding neural
                     It addresses the vanishing gradient problem for positive inputs.
                     %
                     However, since it is simply zero for half its support, it can suffer from the ``dying ReLU" problem where units can become permanently inactive.
-                \item[Leaky ReLU:] \[\text{LeakyReLU}(z) = \max(\alpha z, z)\]
-                    \(\alpha\) is a small positive constant.
+                \item[Leaky ReLU:] \[\label{eq:leaky-relu}\text{LeakyReLU}(z) = \max(\alpha z, z)\]
+                    \(\alpha < 1\) is a small positive constant.
                     %
                     LeakyReLU is a modification of ReLU to allow small negative valued outputs~\cite{Maas2013RectifierModels}, which helps mitigate the dying ReLU problem.
                     
@@ -1830,6 +1830,7 @@ p_X(x)
         The development of end--to--end differentiable analysis chains, from raw data through unfolding to parameter inference, represents an ambitious but potentially transformative research direction.
 
 \section{Case studies: ML based unfolding in HEP analyses.}
+\label{sec:ml-for-unfolding.case-studies}
 \sectionminitoc
 This section examines some new machine learning based unfolding methods and successful applications of machine learning methods in recent high energy physics analyses, demonstrating their practical utility and impact on physics measurements.
 

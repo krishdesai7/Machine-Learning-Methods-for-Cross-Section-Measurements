@@ -1,12 +1,14 @@
 \chapter{Symmetries in data: connections to unfolding challenges.}
 \label{chap:symmetrygan}
-
+\chapterminitoc
 \section{Symmetries and unfolding.}
     \subsection{The complementary nature of symmetry discovery and unfolding.}
+        \begin{definition}
+            [Symmetry discovery]         \emph{Symmetry discovery} is the process of identifying invariant transformations of a dataset, that is to say, operations under which the probability distribution of the dataset remains unchanged in a statistical sense~\cite{shaw_lie_2025, shaw_symmetry_2024, hagemeyer_learning_2022}.
+        \end{definition}
+        
         Unfolding, as discussed, refers to the inverse problem of inferring underlying truth level distributions from observed detector level data, accounting for distortions due to limited resolution and acceptance.
         %
-        Symmetry discovery, aims to identify invariant transformations of the data, that is to say, operations under which the probability distribution of the dataset remains unchanged in a statistical sense~\cite{shaw_lie_2025, shaw_symmetry_2024, hagemeyer_learning_2022}.
-        
         At first glance, these two tasks appear distinct;
         %
         one concerns recovering numerical distributions, while the other uncovers structural invariances.
@@ -15,7 +17,7 @@
     
         From a conceptual standpoint, both tasks share the common goal of revealing hidden truth from observed data.
         %
-        Unfolding endeavours to remove the ``detector mask'' and recover the true differential cross section or underlying distribution that generated the measurements.
+        Unfolding endeavours to undo the convolution with the detector response and recover the true differential cross section or underlying distribution that generated the measurements.
         %
         Symmetry discovery seeks to reveal underlying structures or invariances in the data---patterns that persist under transformations, reflecting fundamental symmetries of the physical process or the measurement apparatus.
     
@@ -31,7 +33,7 @@
     
         Imposing a symmetry as a prior constraint in unfolding can be seen as a form of physically motivated regularisation.
         %
-        For example, architectures that conserve four--momentum or enforce Lorentz invariance by design, as discussed in \cref{chap:ml-for-unfolding}, effectively impose such constraints, narrowing the set of viable solutions.
+        For example, architectures that conserve the 4--momentum or enforce Lorentz invariance by design, as discussed in \cref{chap:ml-for-unfolding}, effectively impose such constraints, narrowing the set of viable solutions.
         %
         By restricting solutions to those that respect a discovered or expected invariance, one reduces the space of admissible unfolded distributions to those that are physically plausible, which leads to improved stability and fidelity of the results~\cite{Brehmer:2024yqw}.
     
@@ -60,8 +62,9 @@
         Knowledge of invariant structure can guide numerical inference, and conversely, obtaining a more accurate numerical distribution makes it easier to discern subtle invariant patterns.
         %
         In essence, symmetry discovery and unfolding can form a feedback loop in the broader endeavour of measurement and inference, where each can improve the other.
-\input{tables/9-1}
-    \subsection{Symmetry aware cross sections.}
+        
+        \subsection{Symmetry aware cross sections.}
+        
         Since differential cross section measurements lie at the core of particle physics,
         %
         achieving high precision in these measurements is essential, as even subtle deviations between the measured spectra and theory predictions can signal new physics or the need for refined models.
@@ -73,16 +76,18 @@
         For instance, in proton--proton collisions producing particle jets, one expects azimuthal symmetry about the beam axis, i.e. the physics is invariant under rotations in the plane perpendicular to the beam.
         %
         Consequently, the differential cross section should, after correcting for detector non-uniformities, be independent of the absolute azimuthal angle $\phi$ of a jet or dijet system~\cite{Chen:2025rjc, Spinner:2025prg, Pedersen:2023fgr, Froidevaux2009ExperimentalCollider}.
-        
+
         Likewise, for processes initiated by identical colliding particles, one often anticipates a symmetry between forward and backward directions.
         %
         In a symmetric proton--proton collider, this implies that the rapidity distribution of a centrally produced system \footnote{E.g., dijet pair.} should be symmetric about zero rapidity~\cite{Cheung:2017loo, CMS:2011xqa, Cotogno:2020iio}.
-        %
+                %
         Such symmetry means that the cross section for producing a system at rapidity $+y$ is the same as at $-y$, all else being equal.
         %
         If a measured differential cross section exhibits a significant asymmetry in these variables after unfolding and acceptance corrections, it would either indicate a previously unaccounted detector bias or hint at a physical effect, both of which are of interest to investigate.
+                
+\input{tables/9-1}
 
-        Being symmetry aware in a measurement can mean two things.
+         Being symmetry aware in a measurement can mean two things.
         %
         First, verifying that expected symmetries are indeed present, within uncertainties, in the data, and second, leveraging those symmetries to improve the measurement.
         %
@@ -118,7 +123,7 @@
         %
         Thus symmetry aware differential cross section measurements can harness known, or discovered invariances to enhance precision and reliability, while simultaneously providing a framework to detect symmetry violations that could point to new phenomena.
     
-    The research presented in this chapter builds upon the foundations laid in earlier chapters of this thesis, extending the paradigm of symmetry utilization in the context of measurement and unfolding.
+    The research presented in this chapter builds upon the foundations laid in earlier chapters of this thesis, extending the paradigm of symmetry utilisation in the context of measurement and unfolding.
     %
     \cref{chap:theoretical-foundations}, in its survey of existing techniques, provides a statistical foundation for incorporating known symmetries into data analyses.
     %
@@ -126,7 +131,7 @@
     %
     \cref{chap:ml-for-unfolding} includes references to how \textit{a priori} known symmetries can be hard coded into machine learning models, introducing Lorentz group equivariant networks that guarantee Lorentz invariance in the unfolding of particle physics data~\cite{Bogatskiy:2020tje}.
     %
-    The inclusion of symmetry constraints in unfolding models described in \cref{chap:npu,chap:moment-unfolding,chap:ran} through preserving physical invariants like momentum or charge conservation in the generative model would reduce the solution space and lead to more physically plausible unfolded results.
+    The inclusion of symmetry constraints in unfolding models described in \cref{chap:npu,chap:moment-unfolding,chap:ran} through preserving physical invariants like momentum or charge conservation in the generative model could help reduce the solution space and lead to more physically plausible unfolded results.
     
     All of these strategies rely on prior knowledge of the symmetry.
     %
@@ -136,9 +141,9 @@
 
     The remainder of this chapter is organised as follows.
     %
-    \cref{sec:formalism-and-role, sec:statistical-def-of-symmetries} introduce the formal statistical definition of a dataset symmetry, addressing subtleties like Jacobian volume effects via the concept of an inertial reference density.
+    \cref{sec:formalism-and-role,sec:statistical-def-of-symmetries} introduce the formal statistical definition of a dataset symmetry, addressing subtleties like Jacobian volume effects via the concept of an inertial reference density.
     %
-    THey also provides a brief overview of the symmetries most relevant to HEP.
+    They also provides a brief overview of the symmetries most relevant to HEP.
     %
     \cref{sec:symmetry-gan-main} presents the \textsc{SymmetryGAN} framework, which employs a generative adversarial network to automatically learn symmetry transformations from data.
     %
@@ -146,40 +151,67 @@
     %
     \cref{sec:symmetry-informed-unfolding} discusses how the discovered symmetry information can be used to constrain unfolding problems: we outline methods to incorporate symmetry constraints into the unfolding procedure to reduce uncertainties and bias.
     %
-    In \cref{sec:improved-measurement-prediction}, the chapter introduces a symmetry aware unfolding methodology and discusses how enforcing the symmetries identified by \textsc{SymmetryGAN} can improve the precision of differential cross section measurements.
+    In \cref{sec:improved-measurement-prediction} is a discussion of potential symmetry aware unfolding methodologies and how enforcing the symmetries identified by \textsc{SymmetryGAN} can improve the precision of differential cross section measurements.
     %
     Finally, the chapter concludes by highlighting how the insights gained here connect back to the broader narrative of the thesis, reinforcing the benefits of combining machine learning driven discovery with principled measurement techniques.
-\section{Formalism and Importance}
+\section{Formalism and importance.}
 \label{sec:formalism-and-role}
+\sectionminitoc
     In physics and statistics, a symmetry refers to an invariance of a system or dataset under a well-defined transformation.
     %
-    Formally, let $G$ be a group of transformations (continuous or discrete) acting on a space of states or observations $X$.
+    \begin{definition}[Symmetry under a group.]
+    \label{def:symmetry-under-a-group}
+    Let $G$ be a group of transformations (continuous or discrete) acting on a space of states or observations $X$.
     %
-    A physical system or probability distribution is symmetric under $G$ if applying any transformation $g \in G$ leaves the relevant observables unchanged.
-    %
-    In group theoretic terms, there exists an action $g: x \mapsto g(x)$ such that for all $x \in X$ and $g \in G$, the value of an function $f(x)$ remains equal to $f(g(x))$.
-    %
-    However, if $p(x)$ denotes a probability density on $X$, a group $G$ is a symmetry of \(p\) if
+    A physical system or probability distribution is \emph{symmetric under $G$} if applying any transformation $g \in G$ leaves the relevant observables unchanged.
+    \end{definition}
+    \begin{definition}[Symmetry of a function]
+    \label{def:symmetry-of-a-function}
+        In group theoretic terms, a \emph{function \(f: X\to Y\) is symmetric} under a group \(G\) there exists a group action of \(G\) on \(X\) 
+        \[
+        \begin{split}
+            \Phi: G\times X\to X\\
+                (g, x) \mapsto g(x)
+        \end{split}\]
+       such that for every $x \in X$ and every $g \in G$, the value of the function \(f(x) = f(g(x))\).
+    \end{definition}
+
+    \begin{definition}[Symmetry of a probability density function]
+    \label{def:symmetry-of a pdf}
+    If $p(x)$ denotes a probability density on $X$, a group $G$ is a \emph{symmetry of \(p\)} if
     \[
         \forall g \in G \; p(x) \; \dd x = p(g(x)) \; \dd(g(x)).
     \]
-    In measure theoretic language, a symmetry corresponds to an invariant measure.
-    %
-    For any measurable subset $A \subseteq X$ and any transformation $g\in F$, \(g\) is a symmetry of \(A\) if $\mu(A) = \mu(g\cdot A)$, meaning the measure assigned to outcomes in $A$ is the same as that for the transformed set $g\cdot A$.
-    %
-    This definition encompasses both continuous symmetries\footnote{Lie groups, such as rotations depending on a continuous angle parameter.} and discrete symmetries \footnote{groups constructed as Jordan--H\"older extensions~\cite{solomon_brief_2001, HolderDieOrdnungszahlen, jordan_traite_nodate} e.g. a mirror reflection or a permutation of identical objects}.
-    %
-    Symmetry principles lie at the heart of modern particle physics and also strongly influence experimental measurements.
+    
+    In measure theoretic language, a symmetry corresponds to the existence of an invariant measure.
+
+    \begin{definition}[Invariant measure]
+    \label{def:mu-symmetry}
+    For every measure space $(X,\Sigma,\mu)$ and for every group $G$ acting on $X$ through a $\Sigma$-measurable action \(\Phi, \mu\) is called an \emph{invariant measure under \(G\)} if \(\forall (g, A) \in G\times \Sigma\)
+    \begin{enumerate}
+        \item \(g(A)\in\Sigma\;.\)
+        \item     \(
+    \mu(g(A))=\mu(A)
+    \)
+    \end{enumerate}
+    Equivalently, using the pushforward \(g_\#(\mu(A))\coloneqq \mu(g\inv(A)), \mu\) is defined to be invariant under \(G\) if
+    \[
+    \forall (A, g) \in\Sigma\times G\; g_\#(\mu(A)) = \mu(A).
+    \]
+
+    These definitions encompass both continuous symmetries\footnote{Lie groups, such as rotations depending on a continuous angle parameter.} and discrete symmetries.\footnote{Groups constructed as Jordan--H\"older extensions~\cite{solomon_brief_2001, HolderDieOrdnungszahlen, jordan_traite_nodate} e.g. a mirror reflection or a permutation of identical objects.}
+    
+    Symmetry principles lie at the heart of modern particle physics and strongly influence every aspect of the field.
     %
     At the theoretical level, fundamental symmetries constrain the form of physical laws and often correspond to conserved quantities or selection rules.
     %
     At the data level, symmetries, and their breaking, shape the distributions of observed events and can be leveraged for more efficient data analysis.
     %
-    In the context of colliders, many observables are governed by symmetries of the underlying theory as well as symmetries introduced by the detector and measurement process.
+    In the context of HEP experiments, many observables are governed by symmetries of the underlying theory as well as symmetries introduced by the detector and measurement process.
     %
     It is therefore crucial to articulate how these symmetries operate both in ideal physics scenarios and in real observations.
-    %
-    This section provides a rigorous overview of symmetries relevant to collider physics and measurements.
+    
+    This section provides a rigorous overview of symmetries relevant to particle physics and measurements.
     %
     It begins with the fundamental symmetries in particle physics that underlie observable phenomena in \cref{subsec:hep-symmetries}.
     %
@@ -202,14 +234,14 @@
         Lorentz invariance implies that the laws of physics take the same form in any inertial reference frame.
         %
         Equivalently, physical observables can be expressed in terms of Lorentz invariant quantities\footnote{E.g., invariant masses, angles, and dimensionless ratios.} that remain unchanged under boosts or rotations.
-        %
+        
         For example, the Mandelstam variables $s$, $t$, $u$ in a scattering process or the decay angle distribution in a particle's rest frame are formulated to respect Lorentz symmetry.
         %
         In practice, exact Lorentz invariance means there is no preferred direction or absolute velocity in the underlying theory.
         %
-        A given interaction process should yield identical outcomes whether the laboratory frame is, say, Earth bound or boosted to a constant velocity.
+        A given interaction process should yield identical outcomes whether the laboratory frame is, say, Earth bound or boosted to a constant velocity with respect to the Earth.
         %
-        As a consequence of Lorentz symmetry and spatial isotropy, angular momentum and linear momentum are conserved in isolated systems\footnote{Noether’s theorem associates these conservations with rotational and translational symmetry, respectively~\cite{noauthor_nachrichten_nodate}}.
+        As a consequence of Lorentz symmetry and spatial isotropy, angular momentum and linear momentum are conserved in isolated systems\footnote{Noether’s theorem associates these conservations with rotational and translational symmetry, respectively~\cite{noauthor_nachrichten_nodate}.}.
         %
         Time translation symmetry leads to energy conservation, ensuring that system's total energy and the collision centre of mass energy are fixed constants of motion.
         %
@@ -219,11 +251,11 @@
         %
         Chief among these is the gauge symmetry group $SU(3)_C \times SU(2)_L \times U(1)_Y$, which defines quantum chromodynamics and electroweak theory.
         %
-        Gauge symmetries are local symmetries that require the introduction of gauge bosons;
+        Gauge symmetries are local symmetries that entail the introduction of gauge bosons.
         %
-        although these are internal symmetries rather than symmetries of observable spacetime, they have observable consequences such as electric charge conservation, associated with $U(1)_Y$ hypercharge symmetry, and the existence of multiple particle generations.
+        Although these are internal symmetries rather than symmetries of observable spacetime, they have observable consequences such as electric charge conservation, associated with $U(1)_Y$ hypercharge symmetry, and the existence of multiple particle generations.
         %
-        The gauge symmetries of the Standard Model are spontaneously broken in certain cases.\footnote{One of the most notable examples is the electroweak $SU(2)_L \times U(1)Y$ breaking to $U(1)_{\text{EM}}$ via the Higgs mechanism, which introduces masses for the $W^\pm$ and $Z$ bosons and differentiates the electromagnetic and weak interactions.}
+        The gauge symmetries of the Standard Model are spontaneously broken in certain cases.\footnote{One of the most notable examples is the electroweak $SU(2)_L \times U(1)_Y$ breaking to $U(1)_{\text{EM}}$ via the Higgs mechanism, which introduces masses for the $W^\pm$ and $Z$ bosons and differentiates the electromagnetic and weak interactions.}
         %
         However, even broken symmetries leave remnant effects, such as the custodial symmetry in the Higgs sector or approximate conservation of isospin in QCD.
         %
@@ -236,18 +268,20 @@
         The most prominent are C (charge conjugation, exchanging particles with their antiparticles), P (parity, spatial inversion or mirror reflection), and T (time reversal).
         %
         Each of these can be considered a transformation that might leave the fundamental laws invariant.
-        %
+        
         In the Standard Model, CP symmetry is approximately a symmetry of electromagnetic and strong interactions, but notably broken in weak interactions.
         %
         This manifests as differences in the behaviour of matter and antimatter.
         %
-        Like most notable instance of this is the well known CP violation in neutral kaon and $B$-meson decays means those processes occur at different rates or with different phase relationships than their CP-mirrored counterparts~\cite{Neubert:1996qg}.
+        The most notable instance of this is the well known CP violation in neutral kaon and $B$-meson decays.
         %
-        If CP were an exact symmetry of the dynamics, one would expect, for example, the angular distribution of decay products in a mirror--reflected process, swapping particles for antiparticles, to be identical to the original.
+        Violation of CP means those processes occur at different rates or with different phase relationships than their CP-mirrored counterparts~\cite{Neubert:1996qg}.
         %
-        The observed deviations are vital clues to physics beyond simple symmetries.
+        If CP were an exact symmetry of the dynamics, one would expect, for example, the angular distribution of decay products in a mirror reflected process, swapping particles for antiparticles, to be identical to the original.
         %
-        Parity by itself is also violated maximally in the weak interaction.\footnote{ classic examples are the left handed nature of neutrinos and the parity asymmetric angular distribution of electrons in polarized $^{60}$Co beta decay~\cite{Wu:1957my}}
+        The observed deviations are vital clues about the underlying physics.
+        
+        Parity by itself is also violated maximally in the weak interaction.\footnote{Classic examples are the left handed nature of neutrinos and the parity asymmetric angular distribution of electrons in polarised $^{60}$Co beta decay~\cite{Wu:1957my}.}
         %
         On the other hand, the strong and electromagnetic interactions conserve parity, so for many processes, especially at high energies where electroweak effects are subdominant, it is a good symmetry.
         %
@@ -272,7 +306,7 @@
         %
         If two particles of the same type appear in a final state, the probability distribution is invariant under exchanging them.
         %
-        In quantum theories this is enforced by (anti)symmetrization of identical particle states.
+        In quantum theories this is enforced by (anti)symmetrisation of identical particle states.
             %
             In HEP observables, permutation symmetry means that one cannot physically distinguish, say, which of two identical jets in an event is `jet 1' or `jet 2'---any labelling is arbitrary and the underlying physics treats the two jets on equal footing.
             %
@@ -434,7 +468,7 @@ In such cases, even an underlying physical symmetry may not yield equal measured
             %
             As a result, the joint distribution of the two particle system in the measured data might not be symmetric under exchange, even though it was at truth level.
             
-            As a another simple example, consider two jets in an event for which, at the particle level, the probability $P(E_1, \eta_1; E_2, \eta_2)$ is symmetric under $(1\leftrightarrow 2)$.
+            As a another simple example, consider two jets in an event for which, at the particle level, the probability $\P(E_1, \eta_1; E_2, \eta_2)$ is symmetric under $(1\leftrightarrow 2)$.
             %
             After detection, suppose that jet 1 falls in the central barrel, with excellent energy resolution and jet 2 falls in the forward region, with poorer resolution and lower efficiency.
             %
@@ -594,7 +628,7 @@ In such cases, even an underlying physical symmetry may not yield equal measured
         %
         This typically demands high-precision calibration.
         %
-        For instance, to confirm CP symmetry in production of particle vs antiparticle to the $10^{-3}$ level, one needs detector efficiencies known to better than 0.1\% between positively and negatively charged particle detection~\cite{Gordon:2013eha}
+        For instance, to confirm CP symmetry in production of particle vs antiparticle to the \num{e-3} level, one needs detector efficiencies known to better than \num{e-3} between positively and negatively charged particle detection~\cite{Gordon:2013eha}.
 
         \subsubsection{Dimensionality challenges.}
             HEP interaction events are often high dimensional, consisting of many particles with various kinematic attributes.
@@ -611,13 +645,13 @@ In such cases, even an underlying physical symmetry may not yield equal measured
             %
             The space of possible transformations is huge, and hence searching it naively for invariances is intractable.
             %
-            Hence traditional methods often restrict attention to physically motivated symmetry transformations (rotations, reflections, boosts, particle exchanges, etc.).
+            Hence traditional methods often restrict attention to physically motivated symmetry transformations.\footnote{Rotations, reflections, boosts, particle exchanges, etc.}
 
             Since scanning for symmetries by comparing all possible pairs of transformed distributions is computationally impossible, as data volumes grow and analysis spaces become more complex, more automated symmetry discovery mechanisms are needed.
             %
             The \textsc{SymmetryGAN} approach discussed in this chapter is one attempt to automate the discovery of symmetries by leveraging generative adversarial networks.
             %
-            Conceptually, \textsc{SymmetryGAN} trains a generator (applying candidate transformations) against a discriminator to test if the transformed data is statistically indistinguishable from the original data.
+            Conceptually, a \textsc{SymmetryGAN} trains a generator (applying candidate transformations) against a discriminator to test if the transformed data is statistically indistinguishable from the original data.
             %
             If the generator generates a transformation under which the discriminator is maximally confounded, that transformation corresponds to a symmetry of the data distribution.
             %
@@ -638,10 +672,11 @@ In such cases, even an underlying physical symmetry may not yield equal measured
             %
             \textsc{SymmetryGAN} and similar approaches offer a promising path to unveil symmetries that are latent in complex data.
             %
-            The rigorous understanding of symmetry and symmetry--breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered ``symmetry'' is physically meaningful and relevant to the challenges of unfolding and analysing collider data.
+            The rigorous understanding of symmetry and symmetry--breaking provided in this section will form the foundation on which those computational methods build, ensuring that any discovered `symmetry' is physically meaningful and relevant to the challenges of unfolding and analysing HEP data.
 
 \section{Statistical definition of dataset symmetries.}
     \label{sec:statistical-def-of-symmetries}
+    \sectionminitoc
     The concept of symmetry in physics typically evokes images of rotational invariance in crystals, parity conservation in weak interactions, or gauge transformations in field theory.
     %
     Yet when one turns one's attention to experimental data, especially the high dimensional datasets emerging from modern HEP experiments, the notion of symmetry becomes surprisingly subtle.
@@ -655,84 +690,65 @@ In such cases, even an underlying physical symmetry may not yield equal measured
         %
         This section explores the mathematical foundations, practical applications and machine learning approaches to understanding and leveraging dataset symmetries.
         %
-        The distinction between symmetries of individual data elements and entire datasets lies at the heart of statistical theory of symmetries.
+        The distinction between symmetries of individual data elements and entire datasets, formalised in \cref{def:symmetry-under-a-group,def:symmetry-of-a-function,def:symmetry-of a pdf,def:mu-symmetry} lies at the heart of statistical theory of symmetries.
         
-        For individual data points, symmetry is characterised by simple invariance: a transformation \(g\) preserves element \(x\) if \(g(x) = x\).
-        %
-        This represents a straightforward geometric notion where specific points remain fixed under transformation.
-        %
-        Distribution level symmetries, however, operate on probability measures rather than individual points.
-        %
-        A measure space \(X\) with probability measure \(\mu\) exhibits symmetry under group \(G\) when the measure remains invariant~\cite{hudson_symmetry_1986}.
-        \[
-            \forall A\subseteq X \, \forall g\in G\, \mu(A) = \mu(g(A))
-        \]
-        This measure theoretic definition captures the statistical properties of entire distributions rather than individual elements.
-        
-        The critical insight, as formalised in the \textsc{SymmetryGAN} framework, is that dataset symmetries are ambiguous due to Jacobian factors introduced during coordinate transformations~\cite{jacobi_determinantibus_1841}.
-        %
         Unlike point symmetries, where transformations either preserve or don't preserve specific locations, dataset symmetries must account for how probability densities transform under coordinate changes.
         %
         This fundamental difference necessitates the introduction of inertial reference densities to properly define statistical symmetries.
         
-    \subsection{Inertial reference densities and their theoretical role}
+    \subsection{Inertial reference densities and their theoretical role.}
         The concept of inertial reference densities emerges as a necessary theoretical construct, analogous to inertial frames in classical mechanics~\cite{noauthor_classical_1980, noauthor_philosophiae_1687, Einstein:1916vd}.
         %
         These reference densities provide a baseline against which statistical symmetries can be meaningfully defined, resolving the ambiguity inherent in coordinate transformations of probability measures.
 
-        In the formal framework, a reference density \(\rho(x)\) establishes a canonical measure for comparing probability distributions, enabling the definition of relative entropy
+        \begin{definition}[Reference density]
+        A \emph{reference density \(\rho(x)\)} is a probability density function that establishes a canonical measure for comparing probability distributions by enabling the definition of relative entropy
         \[
-            H_\rho[X] = -\mathbb{E}_\mu\qty[\log\frac{\dd\mu}{\dd\rho}].
+            H_\rho[X] = -\mathbb{E}_\mu\qty[\ln\frac{\dd\mu}{\dd\rho}].
         \]
+        \end{definition}
+        
         Additionally, it provides a coordinate independent way to specify symmetry transformations, ensuring that symmetry definitions remain consistent across different parametrisations of the same statistical manifold.
         %    
-        This can be analogized to phase space shifting operations that leave the Gibbs integration measure invariant can be understood as gauge transformations, with the reference density playing the role of a gauge fixing condition~\cite{Muller:2024rlq}.
+        This can be analogised to the way in which phase space shifting operations that leave the Gibbs integration measure invariant can be understood as gauge transformations, with the reference density playing the role of a gauge fixing condition~\cite{Muller:2024rlq}.
         
         The mathematical machinery for statistical symmetries centres on how probability densities transform under coordinate changes.
         %
-        Under a transformation \(X = g(Y)\), probability densities transform as
+        Under a transformation \(g: Y \to X\), probability densities transform as
             \[
-                p_Y(y) = p_X(g(y))\,|\det g'(y) |
+                p_Y(y) = p_X(g(y))\,|\det g'(y) |\;.
             \]
-        This transformation law, involving the absolute value of the Jacobian determinant \(J = \det g'(y),\) ensures probability conservation.
+            
+        This transformation law, involving the absolute value of the Jacobian determinant \(J = \det g'(y),\)~\cite{jacobi_determinantibus_1841} ensures probability conservation.
         %
         The Jacobian factor measures how volumes scale under transformation.
         %
         \(|\det(J)| = 1\) characterises volume preserving transformations like rotations and reflections.
 
-        \begin{definition}
-        Let $X\subset\mathbb{R}^n$ be an open set and let 
-        \[
-            G \times X \;\to\; X,\qquad (g,x)\;\mapsto\;g\cdot x
-        \]
-        be a $C^1$ action of a group $G$ on $X$. 
+        \begin{definition}[Diffeomorphism invariant probability densities.]
+        Let $X\subseteq\R^n$ be an open set and \(\Phi_G\) be a $C^1$ action of a group $G$ on $X$. 
         %
-        Let $\mathrm{d}x$ denote the Lebesgue measure on $X$.
+        Let $\dd x$ denote the Lebesgue measure on $X$.
         %
-        A probability density 
-        \[
-            p : X \;\to\; [0,\infty)
-        \]
+        A probability density \(p : X \;\to\; [0,\infty)\) is diffeomorphism invariant under the action of \(\Phi_G\) if
 
 \[
-    \forall \;\text{measureable} \;A \subseteq X,\quad \forall g\in G,\quad
-    \mu_p\bigl(g\cdot A\bigr)\;=\;\mu_p(A)
+    \forall \;\text{measureable} \;A \subseteq X,\; \forall g\in G,\;
+    \mu_p\bigl(g\cdot A\bigr)\;=\;\mu_p(A)\;,
 \]
 where \[
-    \mu_p(A)\;=\;\int_A p(x)\,\mathrm{d}x
+    \mu_p(A)\;=\;\int_A p(x)\,\dd x.
     \]
-This definition implies that, for almost every $x\in X$ and every $g\in G$,
+This definition implies that, for almost every $x\in X$ and for every $g\in G$,
 \[
-    p\bigl(g\cdot x\bigr)\,\bigl|\det Dg(x)\bigr|
-    \;=\;p(x),
+    p\bigl(g(x)\bigr)\,\bigl|\det Dg(x)\bigr| = p(x),
 \]
-where $Dg(x)$ is the Jacobian of the diffeomorphism $x\mapsto g\cdot x$.
+where $Dg(x)$ is the Jacobian of the diffeomorphism $x\mapsto g(x)$.
 \end{definition}
 
-\noindent
-This invariance is strictly stronger than mere `point symmetry,' since it requires that the \emph{entire} probability measure be preserved under \emph{all} elements of $G$, compensating exactly for any local volume distortion. More formally,
+This invariance is strictly stronger than mere `point symmetry,' since it requires that the \emph{entire} probability measure be preserved under \emph{all} elements of $G$, compensating exactly for any local volume distortion. Furthermore,
 
-\begin{definition}
+\begin{definition}[Symmetric action of a group~\cite{luzzatto_chapter_2006}.]
 Let $(\Omega,\mathcal{F},\mu)$ be a probability space and $G$ a group.  \(G\) is defined to have a \emph{symmetric action} on the measure space $(\Omega,\mathcal{F})$ if there exists a function
 \[
     \phi: G \times \Omega \to\Omega,\quad (g,\omega)\mapsto g\cdot\omega
@@ -746,11 +762,12 @@ such that
     \forall g\in G\quad\forall\,A\in\mathcal{F}\quad\mu\bigl(g\cdot A\bigr)=\mu(A),
 \]
 \end{enumerate}
-\end{definition}~\cite{luzzatto_chapter_2006}.
-        %
-        Such a group can be decomposed using the orbit--stabiliser theorem, decomposing the action into orbits and stabilisers.
+\end{definition}
+        
+        Using the orbit--stabiliser theorem, one can decompose the action of such a group into orbits and stabilisers.
         %
         Representation theory then enables the systematic construction of invariant functions and the decomposition of function spaces into irreducible components.
+        
 \subsection{Inertial densities and relative symmetry.}
 \label{subsec:inertial_densities}
     In the preceding discussion, we demonstrated that any candidate symmetry transformation $g : \R^n \to \R^n$ preserve a target probability density $p$.  However, preservation of $p$ alone is too weak to capture the notion of symmetry familiar from physics.  In particular, in one dimension every continuous distribution admits a `quantile flip' map that preserves its density, yet such maps do not correspond to genuine physical symmetries.
@@ -790,7 +807,7 @@ Yet these transformations depend explicitly on $p$ and do not reflect any model 
 \subsubsection{Relative symmetry.}
     To eliminate such spurious symmetries, one must introduce a \emph{reference} or \emph{inertial} density $p_I : \R^n \to \R_{\ge0}$. 
     %
-    \begin{definition}
+    \begin{definition}[Relative symmetry.]
         A diffeomorphism $g$ is defined to be a symmetry of a density $p$ \emph{relative} to $p_I$ if both $p$ and $p_I$ are preserved.
     \begin{equation}\label{eq:relative_symmetry}
         p\bigl(g(x)\bigr)\,\bigl|\det Dg(x)\bigr|
@@ -802,7 +819,7 @@ Yet these transformations depend explicitly on $p$ and do not reflect any model 
     \end{definition}
 In this formulation, $g$ must belong to the intersection of the symmetry groups of $p$ and $p_I$.
 %
-Quantile based maps like \cref{eq:quantile_symmetry} will generally fail to preserve any fixed $p_I$ across different target densities.
+Quantile based maps like the one described in \cref{eq:quantile_symmetry} will generally fail to preserve any fixed $p_I$ across different target densities.
 
 \subsubsection{Choice of the inertial density.}
 
@@ -822,7 +839,11 @@ Under this choice, the relative symmetry condition \cref{eq:relative_symmetry} r
 \]
 so that genuine symmetries must be volume preserving transformations under which $p$ is invariant.
 %
-In particular, the affine group $\operatorname{Aff}_{p,q}(\R)$ acts by linear maps with unit Jacobian determinant, independently of signature.  This choice of $p_I$ recovers the standard symmetry groups employed in particle physics and continuum mechanics.
+The unimodular subgroup of the affine group $\operatorname{Aff}(p, q)$ that acts by linear maps with unit Jacobian determinant is the special affine group \(\ASL(p, q)\).
+%
+In fact, there is a canonical isomorphism between all such groups of the same dimension \(d = p+q\), and so these groups can be referred to simply as \(\ASL(d)\) independent of signature.
+%
+This choice of $p_I$ recovers the standard symmetry groups employed in particle physics and continuum mechanics.
 
 Requiring joint preservation of $p$ and a fixed inertial density $p_I$ provides a rigorous definition of symmetry that excludes trivial, density dependent involutions and aligns with the model independent invariances central to physics.    
     \subsection{Applications to particle physics.}
@@ -862,20 +883,21 @@ Requiring joint preservation of $p$ and a fixed inertial density $p_I$ provides 
         %
         This unified framework offers concrete advantages for computational statistics and machine learning while opening new directions for both theoretical development and practical applications.
 
-\section{\textsc{SymmetryGAN}: Discovering Symmetries with Adversarial Learning}
+\section{\textsc{SymmetryGAN}: Discovering symmetries with adversarial learning.}
 \label{sec:symmetry-gan-main}
+\sectionminitoc
 The challenge of automatically discovering symmetries in high dimensional data represents a fundamental problem at the intersection of physics and machine learning.
 %
 While physicists have long relied on theoretical insight to identify symmetries, the explosion of complex data from modern experiments demands automated approaches.
 %
 \textsc{SymmetryGAN} emerges as an elegant solution, leveraging the power of adversarial learning to discover hidden invariances without prior knowledge of their existence.
 
-The core insight driving \textsc{SymmetryGAN} is deceptively simple.
+The core insight driving a \textsc{SymmetryGAN} is deceptively simple.
 %
 If a transformation truly represents a symmetry of a dataset, then a well trained discriminator should not be able to distinguish between the original data and its transformed counterpart.
 %
 This principle, when combined with a framework of inertial reference densities, yields a powerful methodology for symmetry discovery that is both theoretically sound and practically effective.
-    \subsection{The \textsc{SymmetryGAN} Architecture}
+    \subsection{The \textsc{SymmetryGAN} architecture.}
     The \textsc{SymmetryGAN} framework modifies the traditional generative adversarial network architecture in a fundamental way.
     %
     Rather than mapping from random noise to structured data, \textsc{SymmetryGAN} maps from data to data, learning transformations that preserve the underlying probability distribution.
@@ -895,21 +917,23 @@ This principle, when combined with a framework of inertial reference densities, 
     %
     The loss function is
     \[
-        L[g,d] = -\frac{1}{N}\sum_{i=1}^{N} \log d(x_i) + \log\big(1-d(g(x_i))\big)
+        L[g,d] = -\frac{1}{N}\sum_{i=1}^{N} \ln d(x_i) + \ln\bigl(1-d(g(x_i))\bigr)\;.
     \]
+    
     This formulation differs from the usual binary cross entropy in that the same data samples appear in both terms, creating a self--adversarial structure.
     %
     The generator is trained to produce transformations that maximally confound the discriminator, while the discriminator learns to detect deviations from the true data distribution.
 
     By varying the loss with respect to the neural networks, one can show that at the theoretical optimum, the optimal discriminator is
     \[
-        d_*(x) = \frac{p(x)}{p(x) + p(g_*(x))|g_*'(x)|} = \frac{1}{2}
+        d_*(x) = \frac{p(x)}{p(x) + p(g_*(x))|g_*'(x)|} = \frac{1}{2}\;,
     \]
     and the optimal generator obeys
     \[
-        p(x) = p(g_*(x))|g_*'(x)|.
+        p(x) = p(g_*(x))|g_*'(x)|\;.
     \]
-    i.e. the discriminator is maximally confounded with equal probability of classifying any sample as original or transformed, and the generator obeys precisely the definition of a statistical symmetry.
+    
+    Hence in equilibrium, the discriminator is maximally confounded with equal probability of classifying any sample as original or transformed, and the generator obeys precisely \cref{def:symmetry-of a pdf}.
 
     The architecture naturally handles both discrete and continuous symmetries.
     %
@@ -917,7 +941,7 @@ This principle, when combined with a framework of inertial reference densities, 
     %
     For continuous symmetries like rotations, it learns individual Lie group elements, parametrised by continuous parameters.
     %
-    This flexibility makes \textsc{SymmetryGAN} applicable across diverse physical systems.
+    This flexibility makes \textsc{SymmetryGAN}s applicable across diverse physical systems.
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{figures/chapter-09/SchematicSymmetry2.pdf}
@@ -930,14 +954,14 @@ This principle, when combined with a framework of inertial reference densities, 
     The inertial reference dataset, while not explicitly shown in this diagram, is incorporated directly into the generator architecture in \cref{sec:empirical-experiments}}
     \label{fig:symmetrygan-schematic}
 \end{figure}
-    \cref{fig:symmetrygan-schematic} shows the modified GAN architecture of \textsc{SymmetryGAN}.
+    \cref{fig:symmetrygan-schematic} shows the modified GAN architecture of  a \textsc{SymmetryGAN}.
     
-    \subsection{Machine Learning with Inertial Restrictions}
+    \subsection{Machine learning with inertial restrictions.}
     The incorporation of inertial reference densities, as established in \cref{subsec:inertial_densities}, presents both theoretical necessity and practical challenges.
     %
     These restrictions can be implemented through three distinct approaches.
-    \begin{enumerate}
-        \item \textbf{Simultaneous discrimination}:
+    \begin{description}
+        \item[Simultaneous discrimination:]
             %
             In this approach, discriminators evaluate transformations on both the target dataset and samples from the inertial density.
             %
@@ -949,24 +973,24 @@ This principle, when combined with a framework of inertial reference densities, 
             %
             This method offers maximal flexibility, allowing discovery of symmetries even when the inertial distribution's symmetries are not known analytically.
             %
-            However, it requires the ability to sample from \(p_I\) which becomes problematic for improper priors like uniform distributions on \(\mathbb{R}^n\).
-        \item \textbf{Two stage selection}:
+            However, it requires the ability to sample from \(p_I\) which becomes problematic for improper priors like uniform distributions on \(\R^n\).
+        \item[Two stage selection:]
             %
             This approach involves first identifying all PDF preserving maps, then filtering for those preserving the inertial density.
             %
             The two stage approach decouples the symmetry discovery problem into training multiple generators to find PDF preserving transformations of the target data and \textit{post hoc} verifying which transformations also preserve \(p_I\)
             %
             While conceptually clean, this method proves computationally wasteful, as the space of PDF preserving maps vastly exceeds the space of true symmetries.
-        \item \textbf{Upfront restriction}:
+        \item[Upfront restriction:]
             %
             Here one constrains the generator architecture to only produce transformations that preserve the inertial density by construction in the first place, using prior knowledge about \(p_I\).
-    \end{enumerate}
+    \end{description}
     
     It is this third approach that is adopted in the \textsc{SymmetryGAN} implementation.
     %
-    When the inertial distribution is uniform on \(\mathbb{R}^n\) the generator should be restricted to equiareal maps---transformations with unit Jacobian determinant, as shown in \cref{eq:equiareal-maps}.
+    When the inertial distribution is uniform on \(\R^n\) the generator should be restricted to equiareal maps---transformations with unit Jacobian determinant, as shown in \cref{eq:equiareal-maps}.
     %
-    The intersection of the equiareal group and affine group \(\operatorname{Aff}_n(\R)\) corresponds to the affine special linear group \(\mathbb{A}SL^\pm_n(\mathbb{R})\) and its extensions.
+    The intersection of the equiareal group and affine group \(\operatorname{Aff}(n)\) is the affine special linear group \(\ASL(n)\) and its extensions.
 
     The upfront restriction method offers computational efficiency gains by searching only among valid symmetries in addition to theoretical guarantees that discovered transformations are true symmetries.
     %
@@ -975,10 +999,11 @@ This principle, when combined with a framework of inertial reference densities, 
     The restriction to affine equiareal maps, while limiting, captures a rich class of symmetries including rotations, reflections, shears, and all their compositions.
     %
 \begin{theorem}[Iwasawa Decomposition of the Affine Group~\cite{iwasawa_types_1949}]
+\noproofref
 \label{thm:iwasawa_affine}
 Let 
 \[
-    \operatorname{Aff}_n(\R)= GL_n(\R)\ltimes\R^n
+    \operatorname{Aff}(n)= GL(n, \R)\ltimes\R^n
 \]
 be the real affine group.  Define the subgroups
 \[
@@ -1010,13 +1035,14 @@ D(r)=\begin{bmatrix}r & 0\\0 & r^{-1}\end{bmatrix},\\
 S(u)=\begin{bmatrix}1 & u\\0 & 1\end{bmatrix},\\
 v=\begin{bmatrix}v_1\\v_2\end{bmatrix}.
 \end{gather}
-Hence every $g\in\operatorname{Aff}_2(\R)$ admits the six parameter representation
+Hence every $g\in\operatorname{Aff}(2)$ admits the six parameter representation
 \[
 g(x)=\sqrt{|d|}\,\bigl(I_2\bigr)^{\frac{1-\text{sgn}(d)}{2}}
 R(\theta)\,D(r)\,S(u)\,x \;+\;v,
 \qquad d=\det g,
 \]
-which is well suited to gradient based optimization over the space of affine symmetries.
+
+The Iwasawa parametrisation very well suited to gradient based optimisation over the space of affine symmetries.
 
 \subsection{Deep learning implementation details.}
 
@@ -1054,14 +1080,14 @@ which is well suited to gradient based optimization over the space of affine sym
     %
     Across experiments with Gaussian mixtures and particle physics data, a range of hyperparameter settings achieve consistent symmetry discovery.
 
-    \subsection{Verification.}
-    A few different checks can be applied to verify that the discovered transformation represents a true symmetry.
-    \begin{itemize}
-        \item \textbf{Visual inspection}: Visually inspecting low dimensional slices of the original and transformed data serves as a simple sniff test.
-        \item \textbf{Loss value}: True symmetries always achieve a loss of \(2\log2\) at convergence. Hence measuring the loss function at discovered transformations can validate whether the transformation is a symmetry or not.
-        \item \textbf{Distribution matching}: Statistical divergences between \(X\) and \(g(X)\) such as the KL divergence measure whether the two datasets have the same probability density or not.
-        \item Invariant verification: known invariants, such as moments, should be identical between the distributions.
-    \end{itemize}
+\subsection{Verification}
+Several complementary checks can be employed to determine whether the discovered transformation constitutes a true symmetry.
+\begin{description}
+    \item[Visual inspection:] Examination of low dimensional slices of the original and transformed data provides a preliminary, coarse grained, qualitative assessment of whether the transformation plausibly preserves the structure of the data.
+    \item[Loss value:] For true symmetries, the binary cross entropy loss function converges to \( 2 \ln 2 \). Measuring the loss value for a discovered transformation therefore offers a quantitative criterion for symmetry verification.
+    \item[Distribution matching:] Statistical divergences between \( X \) and \( g(X) \), such as the Kullback--Leibler divergence, quantify whether the two datasets share the same probability density.
+    \item[Invariant verification:] Quantities known to be invariant under the symmetry, such as statistical moments, should be identical for both distributions.
+\end{description}
     
     \subsection{Other symmetry discovery methods.}
         The landscape of symmetry discovery in machine learning has evolved considerably, with approaches ranging from classical statistical methods to modern deep learning architectures.
@@ -1074,17 +1100,17 @@ which is well suited to gradient based optimization over the space of affine sym
         %
         They struggle with high dimensional data or complex symmetry groups and require extensive domain knowledge to formulate appropriate tests.
 
-        The Cramer-von Mises~\cite{von_mises_wahrscheinlichkeit_1928, cramer_composition_1928} and Anderson-Darling tests~\cite{anderson_asymptotic_1952} exemplify this approach to check whether transformed data follows the same distribution as the original.
+        The Cramer--von Mises~\cite{von_mises_wahrscheinlichkeit_1928, cramer_composition_1928} and Anderson--Darling tests~\cite{anderson_asymptotic_1952} exemplify this approach to examine whether transformed data follows the same distribution as the original.
         %
         While rigorous, these methods scale poorly and cannot discover unexpected symmetries, they can only validate known symmetries.
 
         Machine learning methods introduced automation to the symmetry discovery process.
         %
-        Methods like Group-Invariant Autoencoders~\cite{Hao2023LorentzAutoencoders} learn representations invariant to known symmetry groups but cannot discover unknown symmetries
+        Methods like Group-Invariant Autoencoders~\cite{Hao2023LorentzAutoencoders} learn representations invariant to known symmetry groups but cannot discover unknown symmetries.
         %
-        Spatial Transformer Networks~\cite{Jaderberg2015SpatialNetworks} learn task-specific transformations but don't explicitly identify symmetries \textit{per se}.
+        Spatial Transformer Networks~\cite{Jaderberg2015SpatialNetworks} learn task specific transformations but don't explicitly identify symmetries \textit{per se}.
         %
-        Maximum Mean Discrepancy approaches~\cite{tolstikhin_minimax_2016} and other kernel methods can test symmetry but struggle with continuous groups.
+        Maximum Mean Discrepancy approaches~\cite{tolstikhin_minimax_2016} and other kernel methods can test for the existence of symmetry but struggle with continuous groups.
 
         Contemporary deep learning methods have introduced a range of innovations to the field.
         %
@@ -1094,42 +1120,43 @@ which is well suited to gradient based optimization over the space of affine sym
         %
         They are, however, restricted to continuous symmetries, and require complex optimisation for convergence.
         %
-        Latent LieGAN (LaLiGAN) enables the discovery nonlinear symmetries via latent space linearization~\cite{yang_latent_2024}.
+        Latent LieGAN (LaLiGAN) enables the discovery nonlinear symmetries via latent space linearisation~\cite{yang_latent_2024}.
         %
         It made strides in handling non-linear group actions, but the additional complexity leads to potential latent space artifacts
 
-        \textsc{SymmetryGAN} exemplifies several important trends in modern machine learning for HEP.
+        A \textsc{SymmetryGAN} both draws on and innovates on several important trends in modern machine learning for HEP.
         %
         Methods have broadly benefited from incorporating domain knowledge through architectural constraints and loss terms.
         %
         In general the rise of equivariant learning has driven the move beyond invariance to discover the underlying symmetry structure.
-        
-        \textsc{SymmetryGAN} also exemplies the trend towards interpretability by producing human understandable symmetry parameters rather than opaque features.
+        %
+        \textsc{SymmetryGAN}s also exemplify the trend towards interpretability by producing human understandable symmetry parameters rather than opaque features.
         %
         The method is however limited in its restriction to parametrisable symmetry classes.
         %
-        It also exclusively enables symmetry discovery, the task of identifying elements of the symmetry group of a dataset.
+        It also exclusively enables symmetry discovery, i.e. the task of identifying elements of the symmetry group of a dataset.
         %
         Although the work does provide some steps towards symmetry inference, the task of identifying and classifying the symmetry group as a whole, it remains challenging to infer complete symmetry group structure from discovered elements.
         
-        The field continues to evolve rapidly, with \textsc{SymmetryGAN} representing a significant step toward automated, theoretically grounded symmetry discovery.
+        The field continues to evolve rapidly, with \textsc{SymmetryGAN}s representing a significant step toward automated, theoretically grounded symmetry discovery.
         %
         Its success in particle physics applications, detailed in the following section, demonstrates the practical value of this principled approach to uncovering hidden invariances in complex data.
 
 \section{Empirical experiments.}
 \label{sec:empirical-experiments}
-        The theoretical machinery of \textsc{SymmetryGAN}, with its rigorous statistical framework and inertial reference densities, proves its worth through empirical validation.
+\sectionminitoc
+        The theoretical machinery of a \textsc{SymmetryGAN}, with its rigorous statistical framework and inertial reference densities, proves its worth through empirical validation.
         %
         Moving from abstract formulations to concrete applications reveals both the method's effectiveness and challenges that might drive future research.
         %
-        This section details the application of this method on carefully controlled Gaussian experiments to complex collider data, demonstrating how \textsc{SymmetryGAN} bridges the gap between mathematical elegance and practical discovery.
+        This section details the application of this method on carefully controlled Gaussian experiments to complex collider data, demonstrating how \textsc{SymmetryGAN}s bridge the gap between mathematical elegance and practical discovery.
 
         \subsection{Gaussian experiments.}
             The choice to begin with Gaussian distributions reflects more than mere mathematical convenience; it represents a strategic approach to validating a novel methodology.
             %
             Gaussians offer analytically tractable loss landscapes that allow direct comparison between theoretical predictions and empirical results, serving as a crucial proof of concept before tackling high dimensional HEP data.
 
-            \subsubsection{One-dimensional Gaussian.}
+            \subsubsection{One dimensional Gaussian.}
                 The simplest non-trivial test case consists of a Gaussian distribution \(\mathcal{N}(0.5,1.0)\) with a reflection symmetry about \(x=0.5\).
                 %
                 This apparently simple example harbours surprising richness.
@@ -1143,8 +1170,8 @@ which is well suited to gradient based optimization over the space of affine sym
                 The two maxima corresponding to these symmetries are separated by a deep valley at \(c=0\), creating a disconnected solution space.
  \begin{figure}
      \centering
-     \includegraphics[width=0.6\linewidth]{figures/chapter-09/Z2analytic.pdf}
-     \caption{Analytic loss landscape for the one-dimensional uniform distribution $\mathcal{N}((0.5,1))$ under affine transformations $g(x) = b + cx$. The landscape exhibits two distinct maxima (indicated by stars) corresponding to the identity transformation $(b,c) = (0,1)$ and reflection $(b,c) = (1,-1)$, separated by a deep valley at $c = 0$.
+     \includegraphics[width=0.75\linewidth]{figures/chapter-09/Z2analytic.pdf}
+     \caption[\textsc{SymmetryGAN}: Analytic loss landscape for $\mathcal{N}((0.5,1))$]{Analytic loss landscape for the one dimensional normal distribution $\mathcal{N}((0.5,1))$ under affine transformations $g(x) = b + cx$. The landscape exhibits two distinct maxima (indicated by stars) corresponding to the identity transformation $(b,c) = (0,1)$ and reflection $(b,c) = (1,-1)$, separated by a deep valley at $c = 0$.
      %
      This topological barrier creates a disconnected solution space that deterministically routes optimisation trajectories based on initial parameter values.
      }
@@ -1159,21 +1186,21 @@ which is well suited to gradient based optimization over the space of affine sym
                 This behaviour illuminates that the loss landscape topology directly determines the discoverable symmetry structure.
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/b_fc_f.pdf}
         \caption{}
         \label{fig:Z2numeric_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/c_ic_f.pdf}
         \caption{}
         \label{fig:Z2numeric_ii}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/b_ib_f.pdf}
         \caption{}
@@ -1181,7 +1208,7 @@ which is well suited to gradient based optimization over the space of affine sym
     \end{subfigure}
     \caption[Empirical validation of \textsc{SymmetryGAN} on 1 dimensional Gaussian data showing convergence to discrete symmetries based on initial conditions.]{Empirical validation of \textsc{SymmetryGAN} on 1 dimensional Gaussian data showing convergence to discrete symmetries based on initial conditions.
     %
-    Random initialisation with $(b_i, c_i) \sim \mathcal{U}([-5, 5]^2)$ leads to convergence at two distinct fixed points. (a) Distribution of final parameters $(b_f, c_f)$ reveals two clusters at $(0,1)$ and $(1,-1)$, corresponding to the identity and reflection symmetries respectively. (b) Deterministic routing based on initial slope: $c_i > 0$ converges to identity $(c_f = 1)$ while $c_i < 0$ converges to reflection $(c_f = -1)$, with a sharp phase transition at $c_i = 0$. (c) Final intercept $b_f$ shows no correlation with initial value $b_i$, demonstrating that the loss landscape has no barrier in intercept space.}
+    Random initialisation with $(b_i, c_i) \sim \mathcal{U}([-5, 5]^2)$ leads to convergence at two distinct fixed points. \textbf{(a)} Distribution of final parameters $(b_f, c_f)$ reveals two clusters at $(0,1)$ and $(1,-1)$, corresponding to the identity and reflection symmetries respectively. \textbf{(b)} Deterministic routing based on initial slope: $c_i > 0$ converges to identity $(c_f = 1)$ while $c_i < 0$ converges to reflection $(c_f = -1)$, with a sharp phase transition at $c_i = 0$. \textbf{(c)} Final intercept $b_f$ shows no correlation with initial value $b_i$, demonstrating that the loss landscape has no barrier in intercept space.}
     \label{fig:Z2numeric}
 \end{figure}
             \subsubsection{Two dimensional Gaussians.}
@@ -1208,20 +1235,20 @@ which is well suited to gradient based optimization over the space of affine sym
                 This represents a significant achievement: the neural network learns the algebraic constraint defining \(SO(2)\) purely from data.
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/SO2symmAnalytic.pdf}
         \caption{}
         \label{fig:SO2-i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/4O2asymmAnalytic.pdf}
         \caption{}
         \label{fig:SO2-iii}
     \end{subfigure}
-    \caption[Loss landscapes demonstrating \textsc{SymmetryGAN's} ability to discover continuous $SO(2)$ and discrete $V_4$ symmetries in isotropic and anisotropic 2D Gaussians.]{Analytic loss landscapes for two dimensional Gaussian distributions under rotation like transformations $g(\mathbf{x}) = \begin{pmatrix} c & -s \\ s & c \end{pmatrix}\mathbf{x}$, with empirically discovered symmetries overlaid as scatter points. (a) Isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$ exhibits continuous $SO(2)$ symmetry, with loss maxima forming a circle at $c^2 + s^2 = 1$. The discovered symmetries densely populate this manifold, confirming the theoretical prediction. (b) Anisotropic Gaussian $\mathcal{N}(\mathbf{0}, \text{diag}(1,2))$ possesses only discrete Klein four--group symmetries $V_4$, with isolated maxima at $(c,s) \in \{(\pm 1, 0), (0, \pm 1)\}$. The symmetry breaking from continuous to discrete group structure is induced by the non-uniform covariance. Darker regions indicate higher loss values; stars mark theoretical optima.}
+    \caption[Loss landscapes demonstrating \textsc{SymmetryGAN's} ability to discover continuous $SO(2)$ and discrete $V_4$ symmetries in isotropic and anisotropic 2D Gaussians.]{Analytic loss landscapes for two dimensional Gaussian distributions under rotation like transformations $g(\mathbf{x}) = \begin{pmatrix} c & -s \\ s & c \end{pmatrix}\mathbf{x}$, with empirically discovered symmetries overlaid as scatter points. \textbf{(a)} Isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$ exhibits continuous $SO(2)$ symmetry, with loss maxima forming a circle at $c^2 + s^2 = 1$. The discovered symmetries densely populate this manifold, confirming the theoretical prediction. \textbf{(b)} Anisotropic Gaussian $\mathcal{N}(\mathbf{0}, \text{diag}(1,2))$ possesses only discrete Klein four--group symmetries $V_4$, with isolated maxima at $(c,s) \in \{(\pm 1, 0), (0, \pm 1)\}$. The symmetry breaking from continuous to discrete group structure is induced by the non-uniform covariance. Darker regions indicate higher loss values; stars mark theoretical optima.}
     \label{fig:SO2}
 \end{figure}
 \begin{figure}
@@ -1246,13 +1273,13 @@ which is well suited to gradient based optimization over the space of affine sym
         \caption{}
         \label{fig:MSE_iii}
     \end{subfigure}
-    \caption[Controlled discretization of continuous $SO(2)$ symmetry into cyclic subgroups $\mathbb{Z}_q$ via constraint enforcement.]{Controlled symmetry breaking in the isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$ through cyclic constraint enforcement. The loss function is augmented with a mean squared error term $\alpha \|g^q(\mathbf{x}) - \mathbf{x}\|^2$ that enforces $q-$fold cyclic symmetry. The continuous $SO(2)$ symmetry observed in \cref{fig:SO2-i} is discretised into cyclic subgroups: (a) $\mathbb{Z}_2$ symmetry with $q=2$, showing two antipodal maxima at $(c,s) = (\pm 1, 0)$; (b) $\mathbb{Z}_3$ symmetry with $q=3$, displaying three maxima at the cube roots of unity; (c) $\mathbb{Z}_7$ symmetry with $q=7$, exhibiting seven equally spaced maxima on the unit circle. The discovered symmetries (scatter points) precisely align with the $q^{\text{th}}$ roots of unity, validating the theoretical prediction that the cyclic constraint induces symmetry discovery of discrete components. Darker regions indicate higher loss values, stars indicate analytic maxima.}
+    \caption[Controlled discretization of continuous $SO(2)$ symmetry into cyclic subgroups $\mathbb{Z}_q$ via constraint enforcement.]{Controlled symmetry breaking in the isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$ through cyclic constraint enforcement. The loss function is augmented with a mean squared error term $\alpha \|g^q(\mathbf{x}) - \mathbf{x}\|^2$ that enforces $q-$fold cyclic symmetry. The continuous $SO(2)$ symmetry observed in \cref{fig:SO2-i} is discretised into cyclic subgroups: \textbf{(a)} $\mathbb{Z}_2$ symmetry with $q=2$, showing two antipodal maxima at $(c,s) = (\pm 1, 0)$; \textbf{(b)} $\mathbb{Z}_3$ symmetry with $q=3$, displaying three maxima at the cube roots of unity; \textbf{(c)} $\mathbb{Z}_7$ symmetry with $q=7$, exhibiting seven equally spaced maxima on the unit circle. The discovered symmetries (scatter points) precisely align with the $q^{\text{th}}$ roots of unity, validating the theoretical prediction that the cyclic constraint induces symmetry discovery of discrete components. Darker regions indicate higher loss values, stars indicate analytic maxima.}
     \label{fig:MSE}
 \end{figure}               
 
                 The two dimensional Gaussian example also allows us to test the approach described in \cref{eq:cyclic-loss}.
                 %
-                \cref{fig:MSE} shows the discovered symmetries for the \(N_{1, 1}\) distribution when the loss function is augmented with the constraint \cref{eq:cyclic-loss}, for \(q = 2, 3,\) and \(7\), with \(\alpha = 0.1\).
+                \cref{fig:MSE} shows the discovered symmetries for the \(N_{1, 1}\) distribution when the loss function is augmented with the constraint \cref{eq:cyclic-loss}, for \(q = \numlist{2;3;7}\), with \(\alpha = 0.1\).
                 %
                 Both the analytic loss landscape and \textsc{SymmetryGAN}'s output confirm that the continuous \(SO(2)\) symmetry is split into discrete symmetries at the \(q^{th}\) roots of unity upon the inclusion of the mean squared error term.
 
@@ -1262,32 +1289,32 @@ which is well suited to gradient based optimization over the space of affine sym
                 %
                 When \textsc{SymmetryGAN} is limited to transformations of the form \cref{eq:SO2_generator}, it discovers the Klein \(4-\)group \(V_4\) as demonstrated in \cref{fig:SO2-iii}.
                 %
-                When the generator is allowed to search for general linear transformations inside \(\operatorname{Aff}_2(\mathbb{R})\), it discovers the full symmetry group that comprises the aforementioned Klein \(4-\)group as well as transformations involving dilatations.
+                When the generator is allowed to search for general linear transformations inside \(\operatorname{Aff}(2)\), it discovers the full symmetry group that comprises the aforementioned Klein \(4-\)group as well as transformations involving the dilatation matrix \(D(r)\) described in \cref{thm:iwasawa_affine}.
 
-                \cref{fig:AGL2symm} shows the discovered symmetries for the \(N_{1, 1}\) distribution and \cref{fig:AGL2asymm} shows the discovered symmetries for \(N_{1, 2}\) when the generator is able to discover general affine transformations in \(\operatorname{Aff}_2(\R).\)
+                \cref{fig:AGL2symm} shows the discovered symmetries for the \(N_{1, 1}\) distribution and \cref{fig:AGL2asymm} shows the discovered symmetries for \(N_{1, 2}\) when the generator is parametrised to discover general affine transformations in \(\operatorname{Aff}(2).\)
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/6O2d-tsymm.pdf}
         \caption{}
         \label{fig:AGL2symm_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/6GL2symmRU.pdf}
         \caption{}
         \label{fig:AGL2symm_ii}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.31\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/6GL2symmAB.pdf}
         \caption{}
         \label{fig:AGL2symm_iii}
     \end{subfigure}
-    \caption[Orthogonal slices of $\operatorname{Aff}_2(\mathbb{R})$ symmetries for isotropic Gaussian.]{Symmetry discovery in the full affine group $\operatorname{Aff}_2(\mathbb{R})$ for the isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$, decomposed via Iwasawa parametrization $g = \sqrt{|d|} I^{\frac{1-\text{sgn}(d)}{2}} \cdot R(\theta) \cdot D(r) \cdot S(u) + \mathbf{v}$. Three orthogonal slices through the 6 dimensional loss landscape reveal the symmetry structure: (a) Determinant-rotation space $(d, \theta)$ shows continuous maxima along $d = \pm 1$ (vertical red lines) for all rotation angles. (b) Dilation-shear space $(r, u)$ exhibits a unique maximum at $(r, u) = (1, 0)$ (red star), indicating that only uniform scaling preserves the isotropic structure. (c) Translation space $(v_1, v_2)$ peaks at the origin (red star), verifying that the centred Gaussian admits no translational symmetries. Empirically discovered transformations (yellow points) cluster precisely at the theoretical optima, validating the analytic predictions.}
+    \caption[Orthogonal slices of $\operatorname{Aff}(2)$ symmetries for isotropic Gaussian.]{Symmetry discovery in the full affine group $\operatorname{Aff}(2)$ for the isotropic Gaussian $\mathcal{N}(\mathbf{0}, \mathbbm{1})$, decomposed via Iwasawa parametrization $g = \sqrt{|d|} I^{\frac{1-\text{sgn}(d)}{2}} \cdot R(\theta) \cdot D(r) \cdot S(u) + \mathbf{v}$. Three orthogonal slices through the 6 dimensional loss landscape reveal the symmetry structure: \textbf{(a)} Determinant-rotation space $(d, \theta)$ shows continuous maxima along $d = \pm 1$ (vertical red lines) for all rotation angles. \textbf{(b)} Dilation-shear space $(r, u)$ exhibits a unique maximum at $(r, u) = (1, 0)$ (red star), indicating that only uniform scaling preserves the isotropic structure. \textbf{(c)} Translation space $(v_1, v_2)$ peaks at the origin (red star), verifying that the centred Gaussian admits no translational symmetries. Empirically discovered transformations (yellow points) cluster precisely at the theoretical optima, validating the analytic predictions.}
     \label{fig:AGL2symm}
 \end{figure}
 \begin{figure}
@@ -1312,17 +1339,17 @@ which is well suited to gradient based optimization over the space of affine sym
         \caption{}
         \label{fig:AGL2asymm_iii}
     \end{subfigure}
-    \caption[Discrete symmetry structure of anisotropic Gaussian in $\text{Aff}_2(\mathbb{R})$ discovered by \textsc{SymmetryGAN}.]{Symmetry discovery in $\text{Aff}_2(\mathbb{R})$ for the anisotropic Gaussian $\mathcal{N}(\mathbf{0}, \text{diag}(1,2))$, revealing discrete symmetry breaking compared to the isotropic case (\cref{fig:AGL2symm}). The anisotropic covariance structure constrains the symmetry group to a supergroup of the Klein four-group $V_4$: (a) Determinant-shear space $(d, u)$ exhibits two isolated maxima (red stars) at $(d, u) \in \{(1, 0), (-1, 0)\}$, corresponding to orientation-preserving and orientation-reversing transformations with no shear. (b) Dilation-rotation space $(r, \theta)$ shows four discrete maxima (red stars) at $(r, \theta) \in \{(1, 0), (1, \pi), (\sqrt{2}, \pi/2), (\sqrt{2}, 3\pi/2)\}$, representing identity, $\pi$-rotation, and the two coordinate flips scaled by $\sqrt{2}$ to account for the eigenvalue ratio. (c) Translation space $(v_1, v_2)$ remains peaked at the origin (red star), confirming no translational symmetries. The discovered transformations (yellow points) cluster at these discrete locations, demonstrating how anisotropy breaks continuous symmetries into a discrete group.}
+    \caption[Discrete symmetry structure of anisotropic Gaussian in $\operatorname{Aff}(2)$ discovered by a \textsc{SymmetryGAN}.]{Symmetry discovery in $\operatorname{Aff}(2)$ for the anisotropic Gaussian $\mathcal{N}(\mathbf{0}, \text{diag}(1,2))$, revealing discrete symmetry breaking compared to the isotropic case (\cref{fig:AGL2symm}). The anisotropic covariance structure constrains the symmetry group to a supergroup of the Klein \(4-\)group $V_4$: \textbf{(a)} Determinant--shear space $(d, u)$ exhibits two isolated maxima (red stars) at $(d, u) \in \{(1, 0), (-1, 0)\}$, corresponding to orientation preserving and orientation reversing transformations with no shear. \textbf{(b)} Dilation--rotation space $(r, \theta)$ shows four discrete maxima (red stars) at $(r, \theta) \in \{(1, 0), (1, \pi), (\sqrt{2}, \pi/2), (\sqrt{2}, 3\pi/2)\}$, representing identity, $\pi$-rotation, and the two coordinate involutions scaled by $\sqrt{2}$ to account for the eigenvalue ratio. \textbf{(c)} Translation space $(v_1, v_2)$ remains peaked at the origin (red star), confirming no translational symmetries. The discovered transformations (yellow points) cluster at these discrete locations, demonstrating how anisotropy breaks continuous symmetries into a discrete group.}
     \label{fig:AGL2asymm}
 \end{figure}
             \subsubsection{Gaussian Mixture Models}
-                The power of \textsc{SymmetryGAN} becomes more apparent when applied to Gaussian mixture models with complex symmetry groups.
+                The power of a \textsc{SymmetryGAN} becomes more apparent when applied to Gaussian mixture models with complex symmetry groups.
                 %
                 Three such examples are considered, inspired by the the examples in~\cite{fisher_boltzmann_2018}.
                 %
                 The first is a one dimensional bimodal distribution,
                 \[
-                    p(x) = \frac{1}{2} \mathcal{N}(-1, 1) + \frac{1}{2} \mathcal{N}(1, 1)
+                    B(x) = \frac{1}{2} \mathcal{N}(-1, 1) + \frac{1}{2} \mathcal{N}(1, 1)
                 \]
                 which possesses the cyclic group \(\mathbb{Z}_2 = \qty{x \mapsto \pm x}\) as its symmetry group.
                 %
@@ -1341,26 +1368,24 @@ which is well suited to gradient based optimization over the space of affine sym
         \caption{}
         \label{fig:otherdistributions_1Dii}
     \end{subfigure}
-    \caption[\textsc{SymmetryGAN}'s predictions for a bimodal Gaussian mixture with $\mathbb{Z}_2$ reflection symmetry and corresponding loss landscape validation.]{Symmetry discovery for a one dimensional bimodal Gaussian mixture $p(x) = \frac{1}{2}\mathcal{N}(-1, 1) + \frac{1}{2}\mathcal{N}(1, 1)$ possessing $\mathbb{Z}_2$ symmetry. (a) Probability density function showing two symmetric modes at $x = \pm 1$ with equal weights and variances, creating a distribution invariant under reflection about the origin. (b) Analytic loss landscape in the $(b, c)$ parameter space for linear transformations $g(x) = b + cx$, with empirically discovered symmetries overlaid (blue points). The landscape exhibits two distinct maxima at $(b, c) = (0, 1)$ and $(0, -1)$, corresponding to the identity and reflection transformations respectively. The discovered symmetries cluster precisely at these theoretical optima, confirming that \textsc{SymmetryGAN} correctly identifies the cyclic group $\mathbb{Z}_2 = \{x \mapsto \pm x\}$ as the complete symmetry group of the distribution.}
+    \caption[\textsc{SymmetryGAN}'s predictions for a bimodal Gaussian mixture with $\mathbb{Z}_2$ reflection symmetry and corresponding loss landscape validation.]{Symmetry discovery for a one dimensional bimodal Gaussian mixture $p(x) = \frac{1}{2}\mathcal{N}(-1, 1) + \frac{1}{2}\mathcal{N}(1, 1)$ possessing $\mathbb{Z}_2$ symmetry. \textbf{(a)} Probability density function showing two symmetric modes at $x = \pm 1$ with equal weights and variances, creating a distribution invariant under reflection about the origin. \textbf{(b)} Analytic loss landscape in the $(b, c)$ parameter space for linear transformations $g(x) = b + cx$, with empirically discovered symmetries overlaid (blue points). The landscape exhibits two distinct maxima at $(b, c) = (0, 1)$ and $(0, -1)$, corresponding to the identity and reflection transformations respectively. The discovered symmetries cluster precisely at these theoretical optima, confirming that the \textsc{SymmetryGAN} correctly identifies the cyclic group $\mathbb{Z}_2 = \{x \mapsto \pm x\}$ as the complete symmetry group of the distribution.}
     \label{fig:otherdistributions-1D}
 \end{figure}
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.27\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2d_circularplot.pdf}
         \caption{}
         \label{fig:otherdistributions_2D_i}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.28\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2doctagonalrotations.pdf}
         \caption{}
         \label{fig:otherdistributions_2D_ii}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.27\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2doctagonalreflections.pdf}
         \caption{}
@@ -1369,41 +1394,39 @@ which is well suited to gradient based optimization over the space of affine sym
     
     \vspace{0.3cm}
     
-    \begin{subfigure}[b]{0.27\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2d_squareplot.pdf}
         \caption{}
         \label{fig:otherdistributions_2D_iv}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.28\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2dsquarerotations.pdf}
         \caption{}
         \label{fig:otherdistributions_2D_v}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.27\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/2dsquarereflections.pdf}
         \caption{}
         \label{fig:otherdistributions_2D_vi}
     \end{subfigure}
     
-    \caption[Discovery of dihedral symmetries $D_8$ and $D_4$ in octagonal and square lattice Gaussian mixtures.]{Symmetry discovery for two dimensional Gaussian mixture models with non-commutative discrete symmetry groups. Top row: Octagonal distribution $p(\mathbf{x}) = \frac{1}{8}\sum_{k=0}^{7} \mathcal{N}(\mathbf{\mu}_k, 0.1\mathbbm{1})$ where $\mathbf{\mu}_k = (\cos\frac{2\pi k}{8}, \sin\frac{2\pi k}{8})$, possessing dihedral symmetry $D_8$. (a) Probability density showing eight equally-spaced modes on the unit circle. (b) Discovered rotations cluster at multiples of $\frac{\pi}{4}$, corresponding to the eight rotational symmetries. (c) Discovered reflections appear at eight angles, with antipodal points representing the same reflection axis. Bottom row: Square lattice distribution $p(\mathbf{x}) = \frac{1}{25}\sum_{i,j=-2}^{2} \mathcal{N}((i,j), 0.1\mathbbm{1})$ with dihedral symmetry $D_4$. (d) Probability density showing a $5 \times 5$ grid of Gaussian modes. (e) Discovered rotations concentrate at $0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}$, identifying the four rotational symmetries. (f) Discovered reflections cluster at four angles corresponding to horizontal, vertical, and diagonal reflection axes. The precise alignment of discovered symmetries with theoretical predictions demonstrates \textsc{SymmetryGAN}'s ability to identify complex non-commutative groups.}
+    \caption[Discovery of dihedral symmetries $D_8$ and $D_4$ in octagonal and square lattice Gaussian mixtures.]{Symmetry discovery for two dimensional Gaussian mixture models with non-commutative discrete symmetry groups. \textbf{Top row:} Octagonal distribution $p(\mathbf{x}) = \frac{1}{8}\sum_{k=0}^{7} \mathcal{N}(\mathbf{\mu}_k, 0.1\mathbbm{1})$ where $\mathbf{\mu}_k = (\cos\frac{2\pi k}{8}, \sin\frac{2\pi k}{8})$, possessing dihedral symmetry $D_8$. \textbf{(a)} Probability density showing eight equally-spaced modes on the unit circle. \textbf{(b)} Discovered rotations cluster at multiples of $\frac{\pi}{4}$, corresponding to the eight rotational symmetries. \textbf{(c)} Discovered reflections appear at eight angles, with antipodal points representing the same reflection axis. \textbf{Bottom row:} Square lattice distribution $p(\mathbf{x}) = \frac{1}{25}\sum_{i,j=-2}^{2} \mathcal{N}((i,j), 0.1\mathbbm{1})$ with dihedral symmetry $D_4$. \textbf{(d)} Probability density showing a $5 \times 5$ grid of Gaussian modes. \textbf{(e)} Discovered rotations concentrate at $0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}$, identifying the four rotational symmetries. \textbf{(f)} Discovered reflections cluster at four angles corresponding to horizontal, vertical, and diagonal reflection axes. The precise alignment of discovered symmetries with theoretical predictions demonstrates \textsc{SymmetryGAN}'s ability to identify complex non-commutative groups.}
     \label{fig:otherdistributions-2D}
 \end{figure}
                 The second is a two dimensional octagonal distribution,
                 \[
-                    p(x) = \frac{1}{8}\sum_{i=1}^{8} \mathcal{N}(\cos\frac{2\pi i}{8}, 0.1)\times \mathcal{N}(\sin\frac{2\pi i}{8}, 0.1)
+                    O(x) = \frac{1}{8}\sum_{i=1}^{8} \mathcal{N}(\cos\frac{2\pi i}{8}, 0.1)\times \mathcal{N}(\sin\frac{2\pi i}{8}, 0.1)
                 \]
-                which has the dihedral group \(D_8\) as its symmetry group, a non-commutative discrete group containing both rotations and reflections.
+                which has the dihedral group of order 16, \(D_8\), as its symmetry group, a non-commutative discrete group containing both rotations and reflections.
                 %
                 The third is a \(5\times 5\) square distribution,
                 \[
-                    p(x) = \frac{1}{25}\sum_{i=0}^{4}\sum_{j=0}^{4} \mathcal{N}(i-2, 0.1)\times \mathcal{N}(j-2, 0.1)
+                    S(x) = \frac{1}{25}\sum_{i=0}^{4}\sum_{j=0}^{4} \mathcal{N}(i-2, 0.1)\times \mathcal{N}(j-2, 0.1)
                 \]
-                which has the dihedral group \(D_4\) as its symmetry group, also a non-commutative discrete group containing both rotations and reflections.
+                which has the dihedral group of order 8, \(D_4\), as its symmetry group, also a non-commutative discrete group containing both rotations and reflections.
                 %
                 The left column of \cref{fig:otherdistributions-2D} shows data from each of these distributions, the middle column shows the discovered rotations, and the right column shows the discovered reflections.
                 %
@@ -1416,12 +1439,12 @@ which is well suited to gradient based optimization over the space of affine sym
             This study focuses on dijet data.
             %
             Jets are the collimated streams of hadrons that emerge when high energy quarks or gluons undergo fragmentation, and two jet final states constitute one of the dominant signatures recorded at the LHC.
-            
-            Given an infrared- and collinear-safe clustering algorithm, every jet is assigned a unique 4--momentum;
+            %
+            Given an infrared- and collinear-safe clustering algorithm, every jet is assigned a unique 4--momentum.
             %
             The ensuing kinematic ensemble permits a systematic search for symmetries in the momentum distributions.
 
-            This analysis employs the background dijet sample released for the LHC Olympics anomaly-detection challenge \cite{Kasieczka:2021xcg,kasieczka_rd_2019}.
+            This analysis employs the background dijet sample released for the LHC Olympics anomaly detection challenge \cite{Kasieczka:2021xcg,kasieczka_rd_2019}.
             %
             Parton showering and hadronisation are simulated with \textsc{Pythia} 8.219 \cite{Sjostrand:2007gs}, while detector effects are modelled using \textsc{Delphes} 3.4.1 \cite{DeFavereau2014DELPHESExperiment,Mertens:2015kba}.
             %
@@ -1432,32 +1455,32 @@ which is well suited to gradient based optimization over the space of affine sym
             the subsequent analysis is restricted to the two highest$-p_T$ jets in each event, where transverse momentum is defined by $p_T=\sqrt{p_x^{2}+p_y^{2}}$.
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/LHCO.pdf}
         \caption{}
         \label{fig:LHCO_i}
     \end{subfigure}
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[height=\textwidth]{figures/chapter-09/LHCO_avg.pdf}
         \caption{}
         \label{fig:LHCO_ii}
     \end{subfigure}
-    \caption{Symmetry discovery on transverse momenta of dijet events using \textsc{SymmetryGAN} with a $SO(2) \times SO(2)$ search space, where each jet undergoes independent azimuthal rotation $g_{\theta_1,\theta_2}(\mathbf{p}) = (R(\theta_1)\mathbf{p}_1, R(\theta_2)\mathbf{p}_2)$. (a) Distribution of converged parameters $(\theta_1^f, \theta_2^f)$ from independent training runs initialised uniformly in $[0, 2\pi)^2$. The discovered symmetries cluster along the diagonal $\theta_1 = \theta_2$ (blue line), confirming that only simultaneous rotations preserve the dijet distribution, a direct consequence of transverse momentum conservation. (b) Symmetry discovery map $\Omega: (\theta_1^i, \theta_2^i) \mapsto \theta^f$ revealing the loss landscape dynamics. The final rotation angle follows $\theta^f = \frac{\theta_1^i + \theta_2^i}{2}$ when $|\theta_1^i - \theta_2^i| < \pi$ (shown in green), and $\theta^f = \frac{\theta_1^i + \theta_2^i}{2} - \pi$ when $|\theta_1^i - \theta_2^i| > \pi$ (shown in blue). This bisection rule represents the path of steepest ascent in the loss landscape, demonstrating how gradient dynamics naturally discover the physical constraint without prior knowledge.}
+    \caption[Symmetries discovered by a \textsc{SymmetrGAN} in transverse momentum data of dijet events in a \(SO(2)\times SO(2)\) search space, and the symmetry discovery map for the training dynamics.\)]{Symmetry discovery on transverse momenta of dijet events using a \textsc{SymmetryGAN} with a $SO(2) \times SO(2)$ search space, where each jet undergoes independent azimuthal rotation $g_{\theta_1,\theta_2}(\mathbf{p}) = (R(\theta_1)\mathbf{p}_1, R(\theta_2)\mathbf{p}_2)$. \textbf{(a)} Distribution of converged parameters $(\theta_1^f, \theta_2^f)$ from independent training runs initialised uniformly in $[0, 2\pi)^2$. The discovered symmetries cluster along the diagonal $\theta_1 = \theta_2$ (blue line), confirming that only simultaneous rotations preserve the dijet distribution, a direct consequence of transverse momentum conservation. \textbf{(b)} Symmetry discovery map $\Omega: (\theta_1^i, \theta_2^i) \mapsto \theta^f$ revealing the loss landscape dynamics. The final rotation angle follows $\theta^f = \frac{\theta_1^i + \theta_2^i}{2}$ when $|\theta_1^i - \theta_2^i| < \pi$ (shown in green), and $\theta^f = \frac{\theta_1^i + \theta_2^i}{2} - \pi$ when $|\theta_1^i - \theta_2^i| > \pi$ (shown in blue). This bisection rule represents the path of steepest ascent in the loss landscape, demonstrating how gradient dynamics naturally discover the physical constraint without prior knowledge.}
     \label{fig:LHCO}
 \end{figure}
            This experiment was also repeated on the transverse momenta of dijet events from CMS Open Data~\cite{komiske_cms_2019}.
            %
-           \textsc{SymmetryGAN} produced similar results on both datasets.
+           \textsc{SymmetryGAN}s produced similar results on both datasets.
             
             Each event is characterised by the transverse momentum components
             \[
-                \mathbf{x} = (p_{1x}, p_{1y}, p_{2x}, p_{2y})
+                \mathbf{x} = \mqty[p_{1x} \\ p_{1y} \\ p_{2x} \\ p_{2y}]
             \]
-            The initial exploration considers transformations from \(SO(2) \times SO(2)\), independently rotating each jet in the transverse plane.
+            The initial exploration considers transformations from \(SO(2) \times SO(2)\), independently rotating each jet in the transverse plane,
             %
-            The generator is restricted to the block diagonal form
+            i.e., the generator is restricted to the block diagonal form
             \[
                 g_{\theta_1,\theta_2}(\mathbf{x}) = \begin{bmatrix}
                     R(\theta_1) & 0 \\
@@ -1484,60 +1507,59 @@ which is well suited to gradient based optimization over the space of affine sym
             This bisection of the angular difference represents the path of steepest ascent in the loss landscape, demonstrating how gradient dynamics naturally discover the constraint imposed by momentum conservation, illustrated in \cref{fig:LHCO_ii}.
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/LHCO_Comparison1.pdf}
         \caption{}
         \label{fig:LHCOComparison_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/LHCO_Comparison2.pdf}
         \caption{}
         \label{fig:LHCOComparison_ii}
     \end{subfigure}
     \caption[Visual validation of discovered dijet symmetry through transverse momentum preservation.
-]{Visual validation of discovered symmetry in dijet events through transverse momentum distributions. (a) Original LHC Olympics showing the two leading jets' momenta $(p_x, p_y)$ in the transverse plane. The circular structure reflects the detector's azimuthal symmetry. (b) Same events transformed by a discovered generator from \textsc{SymmetryGAN}, showing identical statistical properties. The preservation of the ring structure and angular distribution confirms that the discovered transformation represents a genuine symmetry of the dijet system. Each point represents one event.}
+]{Visual validation of discovered symmetry in dijet events through transverse momentum distributions.\textbf{ (a)} Original LHC Olympics showing the two leading jets' momenta $(p_x, p_y)$ in the transverse plane. The circular structure reflects the detector's azimuthal symmetry. \textbf{(b)} Same events transformed by a discovered generator from \textsc{SymmetryGAN}, showing identical statistical properties. The preservation of the ring structure and angular distribution confirms that the discovered transformation represents a genuine symmetry of the dijet system. Each point represents one event.}
     \label{fig:LHCO_Comparison}
 \end{figure}
 
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_rand1.pdf}
         \caption{}
         \label{fig:KLrand_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_rand2.pdf}
         \caption{}
         \label{fig:KLrand_ii}
     \end{subfigure}
 \\
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_symm1.pdf}
         \caption{}
         \label{fig:KLsymm_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_symm2.pdf}
         \caption{}
         \label{fig:KLsymm_ii}
     \end{subfigure}
     \caption[Non-uniform azimuthal distributions from random $SO(4)$ rotations demonstrating symmetry violation, and uniform azimuthal distributions from discovered symmetry confirming invariance of dijet system.]
-    {(a) and (b) Azimuthal angle distributions after applying a random $SO(4)$ rotation to dijet events, demonstrating violation of symmetry. Transformed azimuthal angles $\tilde{\phi}_1, \tilde{\phi}_2$ exhibits clear non-uniformity. The Kullback-Leibler divergence $D_{KL}(p||\mathcal{U}) \approx 0.15$ quantifies this deviation from uniformity, confirming that arbitrary $SO(4)$ rotations do not preserve the dijet distribution. This serves as a negative control for the symmetry discovery algorithm.
-    (c) and (d) Azimuthal angle distributions after applying a discovered symmetry transformation, validating the symmetry discovery. Transformed azimuthal angle $\tilde{\phi}_1, \tilde{\phi}_2$ exhibit uniformity within statistical fluctuations. $D_{KL}(p||\mathcal{U}) < 10^{-2}$ confirms near-perfect agreement with the uniform distribution.}
+    {\footnotesize \textbf{(a)} and\textbf{ (b)} Azimuthal angle distributions after applying a random $SO(4)$ rotation to dijet events, demonstrating violation of symmetry. Transformed angles $\tilde{\phi}_1, \tilde{\phi}_2$ exhibit clear non-uniformity. $D_{KL}(p\|\mathcal{U}) \approx 0.15$ quantifies this deviation from uniformity, confirming that arbitrary $SO(4)$ rotations do not preserve the dijet distribution.
+    \textbf{(c)} and \textbf{(d)} Azimuthal angle distributions after applying a discovered symmetry. Transformed azimuthal angles $\tilde{\phi}_1, \tilde{\phi}_2$ exhibit uniformity within statistical fluctuations. $D_{KL}(p\|\mathcal{U}) < 10^{-2}$ confirms agreement with the uniform distribution.}
     \label{fig:KL_rand_and_sym}
 \end{figure}
 
-             
             Expanding to the full \(SO(4)\) search space introduces greater complexity.
             %
             An arbitrary element of \(SO(4)\) is the composition of six independent rotations, in the six possible orthogonal \(2-\)planes.
@@ -1546,7 +1568,7 @@ which is well suited to gradient based optimization over the space of affine sym
             %
             Validation requires more sophisticated statistical tests.
             
-            Visual inspection can, however, serve as a smell test.
+            Visual inspection can, however, provide a preliminary qualitative plausibility check.
             %
             Projections of the original and transformed distributions onto physically meaningful observables (jet \(p_T\), azimuthal angles) show excellent agreement \cref{fig:LHCO_Comparison}.
             %
@@ -1557,44 +1579,45 @@ which is well suited to gradient based optimization over the space of affine sym
                 \mqty[\tilde{\phi}_1\\\tilde{\phi}_2] = \mqty[
                     \arctan \frac{g(\theta_1, \theta_2)(p_{1y})}{g(\theta_1, \theta_2)(p_{1x})} \\
                     \arctan \frac{g(\theta_1, \theta_2)(p_{2y})}{g(\theta_1, \theta_2)(p_{2x})}
-                ]
+                    ]
             \]
             %
-            are uniformly distributed only for true symmetries, and not for any other transformation, as shown in \cref{fig:KL_rand_and_sym}.
+            should remain uniformly distributed only for true symmetries, and not for any other transformation. This is indeed the case as is shown in \cref{fig:KL_rand_and_sym}.
+            
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_Div1.pdf}
         \caption{}
         \label{fig:KLdiv_i}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-09/KL_Div2.pdf}
         \caption{}
         \label{fig:KLdiv_ii}
     \end{subfigure}
-    \caption[Kullback-Leibler divergence analysis showing discovered symmetries approach statistical noise floor.]{Quantitative validation of discovered symmetries via Kullback-Leibler divergence analysis. Histograms show $D_{KL}(\phi || \tilde{\phi})$ between original and transformed azimuthal angle distributions for (a) leading jet and (b) subleading jet. Three distinct populations emerge: discovered symmetries (red) with means of 0.0058 and 0.0090 respectively, approaching the irreducible statistical noise floor (green) at $D_{KL} \approx 10^{-3}$ arising from finite sample size. Random $SO(4)$ rotations (blue) exhibit significantly higher divergences with means of 0.37 and 0.34, confirming they violate the symmetry. Note the logarithmic scale emphasises the low divergence region.}
+    \caption[Kullback-Leibler divergence analysis showing the transformations identified by the \textsc{SymmetryGAN} approach statistical noise floor.]{Quantitative validation of discovered symmetries via Kullback--Leibler divergence analysis. Histograms show $D_{KL}(\phi \| \tilde{\phi})$ between original and transformed azimuthal angle distributions for \textbf{(a)} the leading jet and \textbf{(b)} the subleading jet. Two distinct populations emerge: discovered symmetries (red) with means of 0.0058 and 0.0090 respectively, approaching the irreducible statistical noise floor (green) at $D_{KL} \approx 10^{-3}$ arising from finite sample size. Random $SO(4)$ rotations (blue) exhibit significantly higher divergences with means of 0.37 and 0.34, confirming that they violate the symmetry. Note the logarithmic scale emphasises the low divergence region, and so the red and green clusers are closer than they may appear.}
     \label{fig:KL-symm}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/chapter-09/LHCOLosses.pdf}
-    \caption{Discriminator loss distributions validating discovered symmetries against theoretical optimum. The histogram shows \textit{ post hoc} discriminator losses when trained to distinguish original from transformed dijet events. Discovered symmetries (blue) achieve losses tightly clustered around $2\log 2 \approx 1.386$ (dashed line), the theoretical minimum for perfect symmetries where transformed and original distributions are indistinguishable.
+    \includegraphics[width=0.75\textwidth]{figures/chapter-09/LHCOLosses.pdf}
+    \caption[Loss values computed by training \textit{post hoc} discriminators to validate the transformations discovered by the \textsc{SymmetryGAN}.]{Discriminator loss distributions validating discovered symmetries against theoretical optimum. The histogram shows \textit{ post hoc} discriminator losses when trained to distinguish original from transformed dijet events. Discovered symmetries (blue) achieve losses tightly clustered around $2\log 2 \approx 1.386$ (dashed line), the theoretical minimum for perfect symmetries where transformed and original distributions are indistinguishable.
     %
-    Random $SO(4)$ rotations (black) yield significantly lower losses, indicating the discriminator easily identifies these as non-symmetries. The discovered transformations achieve losses within 1\% of the theoretical optimum, providing independent confirmation that \textsc{SymmetryGAN} identifies genuine invariances of the dijet system without prior physics knowledge.}
+    Random $SO(4)$ rotations (black) yield significantly lower losses, indicating the discriminator easily identifies these as non-symmetries. The discovered transformations achieve losses within 1\% of the theoretical optimum, providing independent confirmation that the \textsc{SymmetryGAN} identifies genuine invariances of the dijet system without prior physics knowledge.}
     \label{fig:LHCOLosses}
 \end{figure}            
             Computing the KL divergence between the transformed and original distributions is another way to test for symmetry.
             %
             The KL divergence should be zero for true symmetries, and non-zero for any other transformation.
             %
-            While this is never exactly true, \cref{fig:KL-symm} shows the KL divergence for true symmetries approach the irreducible statistical noise floor.
+            While this is never exactly true, \cref{fig:KL-symm} shows the KL divergence for the transformations identified by the \textsc{SymmetryGAN} approach the irreducible statistical noise floor, while arbitrary transformations from \(SO(4)\) clearly do not.
             
-            Finally, \textit{post hoc} discriminators trained on discovered transformations achieve losses within 1\% of the theoretical optimum \(2\log 2\) confirming these represent genuine symmetries, illustrated in \cref{fig:LHCOLosses}.
+            Finally, \textit{post hoc} discriminators trained on discovered transformations achieve losses within 1\% of the theoretical optimum \(2\ln 2\) confirming these represent genuine symmetries, illustrated in \cref{fig:LHCOLosses}.
             %
             The discovered subgroup of \(SO(4)\) includes the expected \(SO(2)\) rotations reflecting cylindrical detector geometry, but also unexpected combinations that would be difficult to identify through physical intuition alone.
             
@@ -1602,7 +1625,7 @@ which is well suited to gradient based optimization over the space of affine sym
             The interpretation of discovered symmetries requires bridging the gap between abstract mathematical transformations and physical understanding.
             %
             This translation process reveals both the power and limitations of automated symmetry discovery.
-            
+            %
             Each discovered symmetry transformation corresponds to a conservation law or invariance principle in the underlying physics.
             %
             For the dijet system, the discovered azimuthal rotations connect directly to angular momentum conservation about the beam axis.
@@ -1613,11 +1636,11 @@ which is well suited to gradient based optimization over the space of affine sym
             %
             The non-\(SO(2)\) transformations found combine specific overall rotations with jet exchanges.
             %
-            For example,
+            One such example is
             \[
-                g_{Z_2}(p_{1x}, p_{1y}, p_{2x}, p_{2y}) = (-p_{2x}, -p_{2y}, -p_{1x}, -p_{1y})
+                g_{\mathbb{Z}_2}\mqty[p_{1x}\\ p_{1y}\\ p_{2x}\\ p_{2y}] = \mqty[-p_{2x} \\ -p_{2y} \\ -p_{1x} \\ -p_{1y}]\;,
             \]
-            is a transformation that simultaneously rotates by \(\pi\) and exchanges the two jets---a symmetry that follows from the identical nature of QCD jets but may not be obvious without a systematic search.        
+            a transformation that simultaneously rotates by \(\pi\) and exchanges the two jets---a symmetry that follows from the identical nature of QCD jets but may not be obvious without a systematic search.        
             %
             The relationship between discovered symmetries and known physics provides crucial validation.
             %
@@ -1630,7 +1653,7 @@ which is well suited to gradient based optimization over the space of affine sym
             %
             No spurious symmetries appear, demonstrating the method's reliability.
             
-            The next challenge in this space is: how does one move from discovering individual symmetry transformations to understanding the complete symmetry group structure?
+            The next challenge in this space is how to move from discovering individual symmetry transformations to understanding the complete symmetry group structure?
 
 \section{Towards symmetry inference.}
             The distinction between symmetry discovery and symmetry inference represents a fundamental challenge in the \textsc{SymmetryGAN} framework.
@@ -1640,38 +1663,39 @@ which is well suited to gradient based optimization over the space of affine sym
             The task of symmetry inference can be formulated as ``Given a set of discovered symmetry transformations \(\{g_1, g_2, ..., g_n\}\), determine the minimal group \(G\) containing all these elements.''
             %
             Three complementary approaches emerge for tackling this challenge.
-            \begin{enumerate}
-                \item \textbf{Discrete subgroup analysis}: By modifying the loss function to enforce specific algebraic relations, \textsc{SymmetryGAN} can systematically probe for discrete subgroups.
+            \begin{description}
+                \item[Discrete subgroup analysis:] By modifying the loss function to enforce specific algebraic relations, a \textsc{SymmetryGAN} can systematically probe for discrete subgroups.
                 %
-                \textsc{SymmetryGAN} trained with the cyclic group constraint, \cref{eq:cyclic-loss}, successfully identifies \(Z_q\) subgroups within larger symmetry groups, as seen in \cref{fig:MSE}.
+                A \textsc{SymmetryGAN} trained with the cyclic group constraint, \cref{eq:cyclic-loss}, successfully identifies \(Z_q\) subgroups within larger symmetry groups, as seen in \cref{fig:MSE}.
                 %
                 This approach extends naturally to other discrete groups through appropriate constraint terms, though non-Abelian groups require more sophisticated loss modifications.
-                \item \textbf{Group composition methods}: The closure property of groups suggests an iterative approach: given discovered symmetries \(\{g_i\}\), compute all possible compositions \(g_i \circ g_j\) to expand the known group elements.
+                \item[{Group composition methods}:] The closure property of groups suggests an iterative approach. Given discovered symmetries \(\{g_i\}\), one can attempt to compute all possible compositions \(g_i \circ g_j\) to expand the known group elements.
                 %
                 For continuous groups like \(SO(2)\), a single irrational rotation angle generates a dense subgroup, effectively recovering the entire group through composition~\cite{hall_matrix_2015}.
-                %
+                
                 However, numerical precision limits this approach.
                 %
                 Each composition compounds errors, leading to degradation after multiple iterations.
                 %
                 The practical limit appears to be \numrange{10}{20} compositions before accumulated errors overwhelm the signal.
-                \item \textbf{The Symmetry Discovery Map}: Perhaps the most promising direction involves learning the complete mapping from initialisation space to symmetry space:
+                \item[The Symmetry Discovery Map:] Perhaps the most promising direction involves learning the complete mapping from initialisation space to symmetry space:
                 \[
                     \Omega: \mathbb{R}^k \rightarrow \mathcal{G}
                 \]
                 where \(\mathcal{G}\) represents the symmetry group manifold.
                 %
                 This map encodes the complete symmetry structure implicitly, as its image is precisely the symmetry group.
-                %
-                Preliminary attempts to learn \(\Omega\) had limit success.
+                
+                Preliminary attempts to learn \(\Omega\) have had limited success.
                 %
                 The main challenges are that the map must begin near the identity to preserve the connection between initial and final parameters, and the min--max nature of GAN training becomes more complex when optimising over maps on the space of transformations rather than transformations themselves.
                 %
                 Despite these challenges, successful learning of even approximate symmetry discovery maps would provide a powerful tool to characterise symmetry groups.
-            \end{enumerate}
+            \end{description}
 
 \section{Symmetry informed unfolding}
 \label{sec:symmetry-informed-unfolding}
+\sectionminitoc
     The fundamental challenge of unfolding, recovering truth level distributions from detector smeared observations, stems from its ill posed nature.
     %
     Multiple truth distributions can yield identical observations after detector effects, creating an underdetermined system primed for additional constraints.
@@ -1682,18 +1706,18 @@ which is well suited to gradient based optimization over the space of affine sym
     %
     Consider the standard unfolding problem formulated as an optimisation,
     \[
-        \min_{p(z)} \left[ \chi^2\qty{p(x), \int r(x\mid z) \, p(z)\,\dd z} + \lambda \cdot \mathcal{R}(p(z)) \right]
+        \min_{p(z)} \left[ \chi^2\qty{p(x), \int r(x\mid z) \, p(z)\,\dd z} + \lambda \cdot \mathcal{R}(p(z)) \right]\;,
     \]
     where \(r\) represents is detector response and \(\mathcal{R}\) is a regularisation term.
-    %
+    
     Traditional approaches use generic smoothness penalties, but symmetries provide physically motivated constraints.
     %
     For a symmetry group \(G\) discovered through \textsc{SymmetryGAN}, one could construct the symmetry preserving regularisation,
     \[
-        \mathcal{R}_\text{sym}(p) = \sum_{g \in G} \left\| p - g \cdot p \right\|^2
+        \mathcal{R}_\text{sym}(p) = \sum_{g \in G} \left\| p - g \cdot p \right\|^2\;.
     \]
-    %
-    This penalty vanishes for distributions respecting the symmetry while penalizing asymmetric solutions.
+    
+    This penalty vanishes for distributions respecting the symmetry while penalising asymmetric solutions.
     %   
     Such a regularisation term would enforce invariances that the underlying physics demands rather than imposing arbitrary smoothness constraints.
     
@@ -1715,17 +1739,17 @@ which is well suited to gradient based optimization over the space of affine sym
     %
     Each symmetry represents a constraint reducing the effective dimensionality of the solution space.
     %
-    For a distribution over \(N\) bins with a \(\mathbb{Z}_k\) cyclic symmetry, the degrees of freedom reduce from \(N\) to \(N/k\), improving the effective statistics by a factor of \(k\).
+    For a distribution over \(N\) bins with a \(\mathbb{Z}_k\) cyclic symmetry, the degrees of freedom reduce from \(N\) to \(\nicefrac Nk\), improving the effective statistics by a factor of \(k\).
     %
     This dimensionality reduction should translate directly to improved unfolding stability.
 
     \subsection{Symmetry preserving neural network architectures.}
         The architectural encoding of symmetries represents a paradigm shift from \textit{post hoc} constraints to intrinsic guarantees.
         %
-        \begin{definition}
+        \begin{definition}[Equivariant neural network.]
         A neural network \(f_\theta\) is said to be \textit{equivariant} under the action group \(G\) on its input space \(X\) if
         \[
-            \forall g\in G\quad\forall x\in X\quad\,f_\theta(g \cdot x) = g \cdot f_\theta(x)
+            \forall g\in G\quad\forall x\in X\quad\,f_\theta(g \cdot x) = g \cdot f_\theta(x)\;.
         \]
         \end{definition}
         For unfolding applications, one could seek architectures where the mapping from observed to truth level distributions preserves known symmetries.
@@ -1734,17 +1758,17 @@ which is well suited to gradient based optimization over the space of affine sym
         %
         For a symmetry group \(G\) acting on the input space, G-CNN layers take the form
         \[
-            f * \psi = \int_H f(h)\psi(g^{-1}h) dh
+            f * \psi = \int_H f(h)\psi(g^{-1}h) \dd h\;,
         \]
-        where \(*\) denotes group convolution and \(h\in H\) is the stabilizer subgroup.
-        %
+        where \(*\) denotes group convolution and \(h\in H\) is the stabiliser subgroup.
+        
         This formulation guarantees equivariance by construction, not training.
 
         The LGN (Lorentz Group Network) architecture~\cite{Bogatskiy:2020tje} constructs features from Lorentz scalars and 4--vectors in order to preserve Lorentz invariance.
         %
         For identical particle handling, Deep Sets~\cite{Zaheer:2017wmg} and Set2Graph~\cite{Serviansky:2020qwa} provide principled approaches in which
         \[
-            f(\{x_1, ..., x_n\}) = \rho\left(\sum_i \phi(x_i)\right)
+            f(\{x_1, ..., x_n\}) = \rho\left(\sum_i \phi(x_i)\right)\;,
         \]
         where \(\phi\) and \(\rho\) are learned functions, guaranteeing invariance to particle ordering.
         
@@ -1766,22 +1790,22 @@ which is well suited to gradient based optimization over the space of affine sym
         
         For a distribution with symmetry group \(G\), the effective dimensionality of the distribution can be reduced from the ambient space dimension to the dimension of the quotient space \(X/G\).
 
-        \begin{definition}
-        A function \(f: X \rightarrow \mathbb{R}\) is \(G\)-\textbf{invariant} if and only if there exists a function \(\tilde{f}: X/G \rightarrow \mathbb{R}\) with \(f = \tilde{f} \circ \pi\) where \(\pi: X \rightarrow X/G\) is the canonical projection.
+        \begin{definition}[Group invariant function]
+        A function \(f: X \rightarrow \mathbb{R}\) is \(G-\)\emph{invariant} if there exists a function \(\tilde{f}: X/G \rightarrow \R\) with \(f = \tilde{f} \circ \pi\) where \(\pi: X \rightarrow X/G\) is the canonical projection.
         \end{definition}
         
         This factorisation is the key to dimensionality reduction.
         %
         One needs only unfold \(\tilde{f}\) on the lower--dimensional quotient space.
-        
+        %
         The statistical gain from this procedure scales dramatically with dimensionality.
         %
         For a \(d\)-dimensional space with a \(k\)-parameter continuous symmetry group, the effective dimensionality reduces to \(d-k\), yielding an effective statistics increase of
         \[
-            N_{\text{eff}} = \frac{N}{C_d}
+            N_{\text{eff}} \sim \frac{N}{C_d}\;,
         \]
         where \(C_d\) is a complexity measure (e.g. covering number~\cite{shalev-shwartz_understanding_2014}, VC dimension~\cite{vapnik_uniform_1971}, local intrinsic dimensionality~\cite{tempczyk_lidl_2022}, or metric entropy~\cite{20166.1Uses}).
-        %
+        
         Dimensionality reduction reduces \(C_d\), which increases \(N_{\text{eff}}\).
         %
         Any such process of symmetry based projection, however, requires careful treatment of statistical uncertainties.
@@ -1815,38 +1839,39 @@ which is well suited to gradient based optimization over the space of affine sym
                 \(\mathcal I_G(\theta)=P_G\,\mathcal I(\theta)\,P_G^{T}\) where \(P_G\) is the orthogonal projection operator onto the \(G\)-invariant subspace~\cite{nielsen_elementary_2020}.
 \end{definition}
 \begin{theorem}[Symmetry-Adapted Cramér–Rao Bound~\cite{Cramer1946MathematicalStatistics, RadhakrishnaRao1945InformationParameters, rao_selected_1994, darmois_sur_1945, aitken_xvestimation_1942, deming_letters_1970}]
-    Let \(\hat\theta\) be any unbiased estimator of \(\theta\in\mathbb R^d\) based on \(N\) i.i.d.\ samples, and assume the statistical model \(p(x\mid\theta\) is \(G\)-equivariant.
+\label{thm:symmetry-adapted-cramer}
+    Let \(\hat\theta\) be any unbiased estimator of \(\theta\in\mathbb R^d\) based on \(N\) i.i.d.\ samples, and assume the statistical model \(p(x\mid\theta)\) is \(G\)-equivariant.
 Then the covariance matrix obeys the lower bound
 \[
-  \operatorname{Cov}(\hat\theta)
+  \Sigma(\hat\theta)
   \;\succeq\;
   \frac{1}{N}\,\mathcal I_G^{-1}(\theta),
 \]
 where \(\succeq\) denotes the Loewner partial order.  The lower bound is saturated if and only if the score vectors projected onto the invariant subspace are linear in \((\hat\theta-\theta)\).
 \end{theorem}
 
-\begin{proof}[Proof sketch.]
-The classical information inequality states that
-\(\operatorname{Cov}(\hat\theta)\succeq N^{-1}\mathcal I^{-1}(\theta)\).
+\begin{proof}[*thm:symmetry-adapted-cramer]
+(Sketch) The classical information inequality states that
+\(\Sigma(\hat\theta)\succeq N^{-1}\mathcal I^{-1}(\theta)\).
 Because the model and the estimator respect the group action, both sides commute with \(P_G\).  
 Projecting the score function onto the invariant subspace and using \(P_G^2=P_G\) yields  
 \(\operatorname{Cov}(\hat\theta)\succeq N^{-1}(P_G\mathcal I P_G)^{-1}=N^{-1}\mathcal I_G^{-1}\,\).
 \end{proof}
 
-\begin{corollary}[Variance Reduction for Finite Symmetries]
-For a discrete group \(G\) of order \(|G|\) and a scalar parameter, if  
-\[\rho=\frac{\mathbb{E}\qty[\pdv{\log \mathcal L}{\theta}\pdv{\log \mathcal L\circ g}{\theta}]}
-          {\mathbb{E}\qty[\qty(\pdv{\log L}{\theta})^2]}
+\begin{theorem}[Variance Reduction for Finite Symmetries]
+\noproofref
+For a discrete group \(G\) of order \(|G|\) if  
+\[\rho=\frac{\E\qty[\pdv{\log \mathcal L}{\theta}\pdv{\log \mathcal L\circ g}{\theta}]}{\E\qty[\qty(\pdv{\log L}{\theta})^2]};
 \] for the average pairwise correlation of score functions across group orbits,  
 then
 \[
   \frac{\operatorname{Var}(\hat\theta_{\text{sym}})}
-       {\operatorname{Var}(\hat\theta_{\text{unconstrained}})}
+       {\operatorname{Var}(\hat\theta_{\text{unconstrained}})}\;,
   \;=\;
   \frac{1}{|G|}+\frac{|G|-1}{|G|}\,\rho.
 \]
 This means that symmetry is maximally beneficial (\(\rho \to 0\)) when orbit scores are uncorrelated, recovering the \(1/|G|\) ideal reduction factor.
-\end{corollary}
+\end{theorem}
 
 When \(G\) is continuous, replacing the group sum with Haar integration yields an integral projector and analogous results.
 %
@@ -1924,10 +1949,10 @@ The practical implication is that enforcing equivariance in unfolding algorithms
 
         The corrected distribution would be given by
         \[
-            n_{\text{corrected}}(\phi = \pi/2) = \frac{1}{|G|} \sum_{g \in G} \epsilon(g^{-1} \cdot \phi) \cdot n_{\text{observed}}(g^{-1} \cdot \phi)
+            n_{\text{corrected}}(\phi = \pi/2) = \frac{1}{|G|} \sum_{g \in G} \epsilon(g^{-1} \cdot \phi) \cdot n_{\text{observed}}(g^{-1} \cdot \phi)\;,
         \]
         where \(\epsilon(\phi)\) represents the \(\phi-\)dependent efficiency.
-        %
+        
         This is more than mere interpolation.
         %
         It is the use of physical symmetry to transport information across phase space.
@@ -1935,11 +1960,11 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         The interplay with machine learning architectures reveals another dimension.
         %
         Neural networks trained on symmetry augmented data should exhibit
-        \begin{itemize}
-            \item \textbf{Faster convergence}: The effective sample size increase should translate directly to fewer training epochs.
-            \item \textbf{Better generalisation}: The network `sees' the full symmetry orbit during training, preventing overfitting to specific configurations.
-            \item \textbf{Automatic equivariance}: Even non-equivariant architectures should learn equivariant information from augmented data.
-        \end{itemize}
+        \begin{description}
+            \item[Faster convergence:] The effective sample size increase should translate directly to fewer training epochs.
+            \item[Better generalisation:] The network `sees' the full symmetry orbit during training, preventing overfitting to specific configurations.
+            \item[Automatic equivariance:] Even non-equivariant architectures should learn equivariant information from augmented data.
+        \end{description}
         
         For all the benefits that symmetry aware augmentation might provide, not all symmetries admit straightforward augmentation.
         %
@@ -1976,17 +2001,19 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         
         Symmetry constraints modify the bias-variance tradeoff,
         \[
-            \text{Bias}_{\text{sym}} = \frac{\text{Var}_0}{n \cdot S(\mathcal{G})}
+            \text{Bias}_{\text{sym}} = \frac{\text{Var}_0}{n \cdot S(\mathcal{G})}\;,
         \]
         where \(S(\mathcal{G})\) is the `symmetry factor' quantifying variance reduction, so that the total error becomes
         \[
             \text{MSE}_{\text{total}} = \text{Bias}_{\text{sym}}^2 + \frac{\text{Var}_0}{n \cdot S(\mathcal{G})}.
         \]
+        
         In this sense, symmetry aware unfolding is not only about improved statistics, but also about extracting the maximum physical information from finite data.
 
 \section{Conclusion}
 \label{sec:symmetrygan-conclusion}
-    This chapter began with the seemingly simple question of what it means for a dataset to possess symmetry, only to wade layers of mathematical formalism involving Jacobian factors, inertial reference densities, and the interplay between statistical and physical invariances.
+\chapterminitoc
+    This chapter began with the seemingly simple question of what it means for a dataset to possess symmetry, only to wade through layers of mathematical formalism involving Jacobian factors, inertial reference densities, and the interplay between statistical and physical invariances.
     %
     This final section looks forward to new territory ready for exploration.
 
@@ -1997,9 +2024,10 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         %
         Consider the H\'enon map~\cite{ibanez_simple_1976}, a deceptively simple area preserving transformation,
         \[
-            g(x,y) = (x, y - x^2)
+            g(x,y) = (x, y - x^2)\;.
         \]
-        It is but one of a vast and relatively uncharted space of the full (nonlinear) \emph{equiareal group}.
+        
+         The H\'enon map is but one of a vast and relatively uncharted space of the full (nonlinear) \emph{equiareal group}.
         %
         The structure of the equiareal group is complex enough to allow for a rich theory of symmetries and their associated invariances with the right computational tools.
         
@@ -2014,13 +2042,15 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         Non-linear symplectic maps form an infinite dimensional space that lacks a known parametrisation or classification.
         %
         Recent work on Hamiltonian neural networks~\cite{greydanus_hamiltonian_2019} suggests one possible path to describe transformations through generating functions that automatically preserve symplectic structure.
-        
+
+        \subsubsection{HEP applications.}
         A few examples of particle physics applications of non-linear symmetries are
-        \begin{itemize}
-            \item \textbf{Jet substructure}: The Lund plane reveals approximate scale invariant symmetries best expressed through logarithmic transformations~\cite{Dreyer:2018nbf}.
-            \item \textbf{Heavy flavor physics}: Dalitz plot analyses exhibit non-linear symmetries from resonance dynamics~\cite{Asner:2003gh}.
-            \item \textbf{Multiparticle correlations}: Collective flow in heavy ion collisions follows non-linear hydrodynamic symmetries~\cite{Yan:2015lwn}.
-        \end{itemize}
+        \begin{description}
+            \item [Jet substructure:] The Lund plane reveals approximate scale invariant symmetries best expressed through logarithmic transformations~\cite{Dreyer:2018nbf}.
+            \item [Heavy flavor physics:] Dalitz plot analyses exhibit non-linear symmetries from resonance dynamics~\cite{Asner:2003gh}.
+            \item [Multiparticle correlations:] Collective flow in heavy ion collisions follows non-linear hydrodynamic symmetries~\cite{Yan:2015lwn}.
+        \end{description}
+        
         The path forward requires synergy between differential geometry, machine learning, and physics intuition, a synthesis that will push the boundaries of all three fields.
     
     \subsection{Approximate symmetries and symmetry breaking.}
@@ -2034,11 +2064,12 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         %
         The mathematical framework for approximate symmetries builds on perturbation theory.
         %
-        For a transformation \(g_\epsilon\) depending on breaking parameter \(\epsilon\),
+        A transformation \(g_\epsilon\) depending on breaking parameter \(\epsilon\) is an approximate symmetry if
         \[
-            p(g_\epsilon(x)) |g'_\epsilon(x)| = p(x) + \epsilon \Delta p(x) + O(\epsilon^2)
+            p(g_\epsilon(x)) |g'_\epsilon(x)| = p(x) + \epsilon \Delta p(x) + O(\epsilon^2)\;.
         \]
-        The first--order breaking term \(\Delta p(x)\) encodes how symmetry violation depends on phase space location, crucial information for precision measurements.
+        
+        The firstorder breaking term \(\Delta p(x)\) encodes how symmetry violation depends on phase space location, crucial information for precision measurements.
     
         Consider isospin symmetry in nuclear physics---preserved at low energies and progressively violated as electroweak effects become important.
         %
@@ -2050,10 +2081,11 @@ The practical implication is that enforcing equivariance in unfolding algorithms
     
         A soft symmetry breaking framework could be promising.
         %
-        Instead of binary classification (symmetric or not symmetric), one could attempt to quantify the degree of symmetry through continuous measures,
+        Instead of binary classification (symmetric or not symmetric), one could attempt to quantify the degree of symmetry through continuous measures, such as 
         \[
-            S(p, g) = 1 - \frac{D_{KL}(p || g \cdot p)}{\log 2}.
+            S(p, g) = 1 - \frac{D_{KL}(p \| g \cdot p)}{\log 2}\;.
         \]
+        
         Such a symmetry score \(S \in [0,1]\) could enable gradient based optimisation while naturally handling approximate invariances.
     
     \subsection{A unified framework.}
@@ -2061,14 +2093,12 @@ The practical implication is that enforcing equivariance in unfolding algorithms
         %
         Symmetries discovered from data improve unfolding precision, and better unfolding reveals cleaner symmetry patterns.
         %
-        Additionally, every symmetry provides a consistency check.
+        Every symmetry provides a consistency check, where violations of expected symmetries signal systematic uncertainties, methodological gaps, or perhaps, new physics.
         %
-        Violations of expected symmetries signal systematic uncertainties.
-        
-        Finally, the discovered symmetries themselves are physics outputs.
+        The discovered symmetries are also themselves physics outputs.
         %
-        The questions of which symmetries hold and where they break are not only of applied interest, but also of fundamental theoretical interest to our of the laws of physics.
+        An understanding of which symmetries hold and which ones are broken in any given situation are not only of applied interest, but also of fundamental theoretical interest in the study of the laws of physics.
     
         Looking ahead, several concrete developments seem within reach including automated analysis pipelines that start with raw detector data, automatically discover relevant symmetries, perform symmetry aware unfolding, quantify uncertainties, all in a self--consistent unbinned chain of inference.
         %
-        The marriage of machine learning's pattern discovery with physics' principled reasoning promises new paradigms of analysis, where every symmetry discovered is both a practical tool and a theoretical insight.
+        The marriage of machine learning's ability to detect and learn patterns with physics' principled reasoning promises new paradigms of analysis, where every symmetry discovered is both a practical tool and a theoretical insight.

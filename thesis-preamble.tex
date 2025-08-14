@@ -29,20 +29,29 @@
 % ============================================================================
 % GRAPHICS AND FIGURES
 % ============================================================================
+\usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{adjustbox}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc,arrows.meta,fit,shapes,backgrounds,
                 shapes.symbols,decorations.markings}
-
+\usepackage{tikzscale}
+\makeatletter
+\newcommand{\vast}{\bBigg@{3}}
+\newcommand{\Vast}{\bBigg@{5}}
+\makeatother
 % ============================================================================
 % TABLES
 % ============================================================================
 \usepackage{multirow}
 \usepackage{longtable}
 % Column type for math mode in tables
-\newcolumntype{M}{>{\(\displaystyle}c<{\)}}
+\newcolumntype{M}{>{\(\displaystyle}l<{\)}}
+\newcolumntype{C}{>{\(\displaystyle}c<{\)}}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
 
 % ============================================================================
 % SPECIALIZED PACKAGES
@@ -54,7 +63,7 @@
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
 \setlength{\algomargin}{1em}
-\newcommand{\algospacing}{\setlength{\baselineskip}{2\baselineskip}}
+\renewcommand{\algospacing}{\setlength{\baselineskip}{2\baselineskip}}
 \usepackage{listings}
 \usepackage{pdflscape}  % For landscape pages
 
@@ -118,3 +127,4 @@
 % Common shortcuts
 \newcommand{\inv}{^{-1}}
 \newcommand{\qt}{\widetilde{q}}
+\newcommand{\ASL}{\operatorname{ASL}^{\pm}}

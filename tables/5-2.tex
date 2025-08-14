@@ -1,29 +1,26 @@
-            \begin{table}
-              \centering
-              \label{tab:inclusive-moments}
-              \caption{
-                  Moments of jet observables at particle level.
-                  %
-                  First and second moments of \(m, q, w\) and \(z_g\) are shown for truth (\textsc{Herwig}), generation (\textsc{Pythia}) and \textsc{Moment Unfolding}.
-                  %
-                  Uncertainties in the truth and generation columns are estimated via bootstrap resampling; uncertainties in the unfolding column combine in quadrature the generation bootstrap uncertainty with the empirical \(1\sigma\) spread from repeated unfolding on the same dataset.
-              }
-              \begin{tabular}{|c|c|c|c|}
-                \hline
-                              & Truth (\textsc{Herwig})                   & Generation (\textsc{Pythia})               & \textsc{Moment Unfolding}                  \\
-                \hline
-                \hline
-                $\langle m \rangle$   & $(2.182 \pm 0.030)\times10^{1}$   & $(2.064 \pm 0.043)\times10^{1}$   & $(2.173 \pm 0.047)\times10^{1}$   \\
-                $\langle m^2 \rangle$ & $(6.049 \pm 0.222)\times10^{2}$   & $(5.360 \pm 0.350)\times10^{2}$   & $(6.115 \pm 0.364)\times10^{2}$   \\
-                \hline
-                $\langle q \rangle$   & $(1.006 \pm 0.037)\times10^{-2}$  & $(1.582 \pm 0.038)\times10^{-2}$  & $(1.090 \pm 0.040)\times10^{-2}$  \\
-                $\langle q^2 \rangle$ & $(1.216 \pm 0.082)\times10^{-2}$  & $(1.508 \pm 0.074)\times10^{-2}$  & $(1.207 \pm 0.074)\times10^{-2}$  \\
-                \hline
-                $\langle w \rangle$   & $(1.498 \pm 0.025)\times10^{-1}$  & $(1.231 \pm 0.029)\times10^{-1}$  & $(1.499 \pm 0.029)\times10^{-1}$  \\
-                $\langle w^2 \rangle$ & $(3.370 \pm 0.113)\times10^{-2}$  & $(2.421 \pm 0.128)\times10^{-2}$  & $(3.374 \pm 0.128)\times10^{-2}$  \\
-                \hline
-                $\langle z_g \rangle$ & $(2.334 \pm 0.029)\times10^{-1}$  & $(2.457 \pm 0.030)\times10^{-1}$  & $(2.353 \pm 0.059)\times10^{-1}$  \\
-                $\langle z_g^2 \rangle$ & $(6.789 \pm 0.166)\times10^{-2}$ & $(7.425 \pm 0.165)\times10^{-2}$  & $(6.767 \pm 0.330)\times10^{-2}$  \\
-                \hline
-              \end{tabular}
-            \end{table}
+\begin{table}
+\sisetup{uncertainty-mode=separate}
+\centering
+\caption[Moments of jet observables at particle level for Truth, Generation, and \textsc{Moment Unfolding}.]{Moments of jet observables at particle level. First and second moments of \(m\), \(q\), \(w\) and \(z_g\) are shown for truth (\textsc{Herwig}), generation (\textsc{Pythia}) and \textsc{Moment Unfolding}. Uncertainties in the truth and generation columns are estimated via bootstrap resampling; uncertainties in the unfolding column combine in quadrature the generation bootstrap uncertainty with the empirical \(1\sigma\) spread from repeated unfolding on the same dataset.}
+\label{tab:inclusive-moments}
+\begin{tabular}{@{}M M
+  S[table-format=1.3(3)]
+  S[table-format=1.3(3)]
+  S[table-format=1.3(3)]@{}}
+\toprule
+&& {\textbf{Truth}} & {\textbf{Generation}} & {\textbf{\textsc{Moment Unfolding}}} \\
+\midrule
+\E[M]& (\times 10^1)     & 2.182(30)  & 2.064(43)  & 2.173(47)  \\
+\E[M^2] &(\times 10^2)   & 6.049(222) & 5.360(350) & 6.115(364) \\
+\midrule
+\E[Q] &(\times 10^{-2})      & 1.006(37) & 1.582(38) & 1.090(40) \\
+\E[Q^2]&(\times 10^{-2})   & 1.216(82) & 1.508(74) & 1.207(74) \\
+\midrule
+\E[W] &(\times 10^{-1})     & 1.498(25) & 1.231(29) & 1.499(29) \\
+\E[W^2] &(\times 10^{-2})  & 3.370(113) & 2.421(128) & 3.374(128) \\
+\midrule
+\E[Z_g] &(\times 10^{-1})    & 2.334(29) & 2.457(30) & 2.353(59) \\
+\E[Z_g^2]& (\times 10^{-2}) & 6.789(166) & 7.425(165) & 6.767(330) \\
+\bottomrule
+\end{tabular}
+\end{table}

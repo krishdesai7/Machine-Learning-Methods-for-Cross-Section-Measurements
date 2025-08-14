@@ -1,0 +1,29 @@
+\begin{landscape}
+        \begin{table}
+            \centering
+            \caption[Applications of presented methods to experimental scenarios.]{
+                Potential applications of the methods developed in this dissertation to current and future experimental analyses. Each approach addresses specific challenges: NPU for rapid, rigorous uncertainty quantification; \textsc{Moment Unfolding} for fast comparison to theory moments; RAN for full spectrum unfolding in high dimensions; and \textsc{SymmetryGAN} for uncovering and leveraging symmetries in data.
+            }
+            \label{tab:method_applications}
+            \begin{tabular}{p{0.30\textwidth} p{0.36\textwidth} p{.56\textwidth}}
+                \textbf{Method} & \textbf{Potential use} & \textbf{Key features} \\
+                \hline
+                \textbf{NPU}
+                & Precision measurements with extensive systematic variations (e.g. differential cross sections at LHC/HL-LHC).
+                & Provides full posterior for uncertainties; amortized inference enables rapid re--unfolding for many systematic scenarios. \\
+                \textbf{\textsc{Moment Unfolding}}
+                & Theoretically--targeted observables (e.g. jet substructure moments, EFT parameter fits).
+                & Unfolds only the moments of interest with maximal efficiency; avoids binning and captures essential physics features. \\
+                \textbf{RAN}
+                & High--dimensional distributions and complex final states (e.g. multi--jet kinematics, full jet substructure shapes).
+                & Preserves complete event information, enabling truly unbinned, multi--variable unfolding; opens previously intractable phase--space regions to measurement \\
+                \textbf{Unbinned Correlation Analysis}
+                & All unbinned parameter estimation tasks (fits to unfolded distributions, differential cross section measurements, etc.)
+                & Provides a framework for understanding and quantifying the correlations introduced by the unfolding process, and for developing methods to account for them. \\
+                \textbf{\textsc{SymmetryGAN}}
+                & Data--driven symmetry discovery in collider data
+                & Identifies hidden invariances directly from data; can inform and constrain unfolding or other analyses by incorporating newly found symmetries\\
+            \end{tabular}
+
+        \end{table}
+    \end{landscape}

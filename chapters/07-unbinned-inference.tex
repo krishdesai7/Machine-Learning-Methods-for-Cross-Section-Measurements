@@ -1,5 +1,6 @@
 \chapter{Unbinned Inference on Correlated Data}
 \label{chap:unbinned_correlations}
+\chapterminitoc
 \section{Introduction.}
     The preceding chapters developed a hierarchy of unfolding techniques, from classical binned approaches in \cref{sec:binned-methods} through \textsc{Neural Posterior Unfolding} in \cref{chap:npu} and \textsc{Moment Unfolding} in \cref{chap:moment-unfolding} to RAN, a fully unbinned unfolding algorithm that operates directly on event level information in \cref{chap:ran}.
     %
@@ -16,18 +17,23 @@
     Ignoring those correlations can bias parameter estimates and/or lead to misestimation of confidence intervals.
 \section{Statistical independence in HEP.}
 \label{sec:independence-assumptions}
-    In high energy physics cross section measurements, standard statistical treatments for unbinned inference rely on a set of core assumptions of \emph{event independence}. 
+\sectionminitoc
+\begin{definition}[Event independence in HEP]
+    In high energy physics cross section measurements, standard statistical treatments for unbinned inference rely on a set of core assumptions collectively referred to as \emph{event independence}. 
     %
-    These assumptions posit that collision events are generated and observed as independent trials of a stochastic process, which greatly simplifies the construction of likelihood functions and inference procedures.
+    These assumptions posit that interaction events are generated and observed as independent trials of a stochastic process, which greatly simplifies the construction of likelihood functions and inference procedures.
+\end{definition}
+    
     %
     This section will outline the key independence assumptions commonly made in unbinned analyses, and subsequently examine their applicability or limitations in experimental contexts.
     \subsection{Poisson point processes for event counts.}
         A fundamental premise is that the total number of events $N$ observed in an experiment follows a Poisson distribution.
         %
-        If $\mu(\theta)$ denotes the expected event yield for parameters $\theta$,\footnote{E.g., proportional to the integrated luminosity times the cross section} the probability of observing $N$ events is
+        If $\mu(\theta)$ denotes the expected event yield for parameters $\theta$,\footnote{E.g., proportional to the integrated luminosity times the cross section.} the probability of observing $N$ events is
         \[
-            P( N\,|\,\theta) = \frac{e^{-\mu(\theta)}\,\mu(\theta)^N}{N!}.\]
-        This reflects the physical picture of collisions occurring as a Poisson point process in time, with each event occurrence independent of the last~\cite{cowan_statistical_1998, Kuusela2015StatisticalQuantification}.
+            \P( N\mid\theta) = \frac{e^{-\mu(\theta)}\,\mu(\theta)^N}{N!}.\]
+            
+        This reflects the physical picture of interaction events occurring as Poisson point processes in time, with each event occurrence independent of the last~\cite{cowan_statistical_1998, Kuusela2015StatisticalQuantification}.
         %
         The Poisson assumption is built into the extended likelihood formalism, ensuring that normalisation (total event count) is appropriately handled in parameter inference for cross sections~\cite{Frate:2017mai, ParticleDataGroup:2018ovx}.
         %
@@ -36,19 +42,21 @@
         In practice, this means that in repeated identical experiments one would expect the observed $N$ to fluctuate about $\mu(\theta)$ according to Poisson statistics, and it justifies including a factor \(\nicefrac{\exp(-\mu)\,\mu^N}{N!}\) in the likelihood function of a single dataset.
     
     \subsection{Independent and identically distributed (i.i.d.) events.}
-        It is assumed that each event can be treated as an independent draw from the same underlying probability density function $p(x\,|\,\theta)$, where $x$ denotes the measured observables (kinematic variables, detector signals, etc.) for that event.
-        %
-        In other words, conditional on the physics model parameters $\theta$, all events are statistically independent and governed by an identical distribution~\cite{Nachman2021EOnce, ParticleDataGroup:2022pth, cowan_statistical_1998, Stakia:2021pvp}.
-        %
-        This implies that one event’s occurrence or properties do not influence any other event or equivalently, there are no intrinsic correlations or memory between events.
+        \begin{definition}[i.i.d.]
+            \emph{Independence and identical distribution} (i.i.d) is the assumption that each event can be treated as an independent draw from the same underlying probability density function $p(x\mid\theta)$, where $x$ denotes the measured observables (kinematic variables, detector signals, etc.) for that event.
+            %
+            In other words, conditional on the physics model parameters $\theta$, all events are statistically independent and governed by an identical distribution~\cite{Nachman2021EOnce, ParticleDataGroup:2022pth, cowan_statistical_1998, Stakia:2021pvp}.
+        \end{definition}
         
-        The identical distribution assumption further requires that the experimental conditions remain stable so that each collision is sampled from the same pdf $p(x\,|\,\theta)$.
+        This implies that one event’s occurrence or properties do not influence any other event or equivalently, there are no intrinsic correlations or memory between events.
+        %
+        The identical distribution assumption further requires that the experimental conditions remain stable so that each interaction is sampled from the same probability density function $p(x\mid \theta)$.
         %
         This condition typically enforced by construction, by dividing data--taking into consistent periods with fixed detector configuration and calibrations.
-        %
+        
         Combined with the Poisson law for $N$, the i.i.d. assumption forms the basis of the usual HEP data generation model, \textit{viz.}
         %
-        the data are viewed as a Poisson sample of independent events from $p(x\,|\,\theta)$.
+        that the data are viewed as a Poisson sample of independent events from $p(x\mid\theta)$.
         %
         This assumption underlies virtually all unbinned analysis techniques in HEP, from simple maximum likelihood fits to modern machine learning based inference methods~\cite{Langenbruch:2025tvd, Weisser:2016cnc, Schofbeck:2024zjo, Brehmer:2020cvb, Stakia:2021pvp}.
         
@@ -57,29 +65,29 @@
         %
         For a given dataset $\{x_1, x_2, \dots, x_N\}$, one can write 
         \[
-             P(x_1,\ldots,x_N \,|\, \theta) \;=\; \prod_{i=1}^{N} p(x_i \,|\, \theta)\,,
+             p(x_1,\ldots,x_N \,|\, \theta) \;=\; \prod_{i=1}^{N} p(x_i \,|\, \theta)\,,
         \] 
-        which in turn leads to a factorized likelihood function.
-        %
+        which in turn leads to a factorised likelihood function.
+        
         In the common case where $N$ itself is treated as Poisson distributed, the full extended likelihood is 
         \begin{equation}
-            \mathcal{L}(\theta) \;=\; e^{-\mu(\theta)} \frac{\mu(\theta)^N}{N!}\;\prod_{i=1}^{N} p(x_i \,|\, \theta)\,,
+            \mathcal{L}(\theta) \;=\; e^{-\mu(\theta)} \frac{\mu(\theta)^N}{N!}\;\prod_{i=1}^{N} p(x_i\mid \theta)\,,
             \label{eq:extended-likelihood}
         \end{equation}
         assuming all events are independent of each other~\cite{ParticleDataGroup:2018ovx, cowan_topics_2009, Back2001AFitting, Verkerke2008RooFit2.91, Singh2024MakingRooFit, Segura2024APhysics, scheirich_pleskot_2019}.
         %
         The independence assumption allows the log--likelihood to be written as a sum over events,
         \begin{equation}
-            \ln \mathcal{L}(\theta) \;=\; -\mu(\theta) + \sum_{i=1}^{N} \ln p(x_i|\theta)\,,
+            \ln \mathcal{L}(\theta) = -\mu(\theta) + \sum_{i=1}^{N} \ln p(x_i\mid\theta)\,,
             \label{eq:loglik-sum}
         \end{equation}
-        up to the constant term $\ln(N!)$.\footnote{In cases where $N$ is fixed and not of interest, the $-\mu + \frac{\mu^N}{N!}$ portion is often dropped, yielding the simplified unbinned likelihood $\prod_{i}p(x_i|\theta)$.}
-        %
+        up to the constant term $\ln(N!)$.\footnote{In cases where $N$ is fixed and not of interest, the $-\mu + \frac{\mu^N}{N!}$ portion is often dropped, yielding the simplified unbinned likelihood $\prod_{i}p(x_i\mid\theta)$.}
+        
         Crucially, the factorisation in \cref{eq:loglik-sum} holds only under the assumption that events are statistically independent.
         %
         This property of likelihood factorisability enormously simplifies inference: it enables the use of well known asymptotic statistical results like Wilks’ theorem on the sum of per event log--likelihood contributions, and it permits analytical derivations of estimators and uncertainties~\cite{Cowan2011AsymptoticPhysics}.
         %
-        Indeed, widely--used formulae for the variance of estimators and for test statistics\footnote{Traditionally used examples can be found in~\cite{ParticleDataGroup:2022pth, ly_tutorial_2017}. More recent proposals can be found in \cite{Canonero:2023sua, Horoshko:2025yqj}} presume an underlying model where $\ln\mathcal{L}$ sums over independent events.
+        Indeed, widely used formulae for the variance of estimators and for test statistics\footnote{Traditionally used examples can be found in~\cite{ParticleDataGroup:2022pth, ly_tutorial_2017}. More recent proposals can be found in \cite{Canonero:2023sua, Horoshko:2025yqj}} presume an underlying model where $\ln\mathcal{L}$ sums over independent events.
         
         Note that independence is typically understood as \emph{conditional} independence given the model parameters $\theta$ and any nuisance parameters.
         %
@@ -101,10 +109,10 @@
     In particle physics experiments, each fundamental interaction (for example, a \(p-p\) collision) is localised in spacetime and causally independent from other interaction.
     %
     Detectors are typically designed and operated to measure each interaction event in isolation.
-    %
-    Moreover, by treating events as independent, analysts can take full advantage of powerful likelihood--based inference techniques and modern machine learning methods that operate on event--by--event data~\cite{GomezAmbrosio:2022mpm, mishra-sharma_smsharmaawesome-neural-sbi_2025, noauthor_simulation-based-inferencesimulation-based-inferencegithubio_2025}.
     
-    Unbinned machine learning approaches to parameter estimation, for instance, explicitly rely on the factorized likelihood in \cref{eq:loglik-sum} to avoid information loss from binning~\cite{GomezAmbrosio:2022mpm, Arratia:2021otl, du_unifying_2024}.
+    By treating events as independent, analyses can take full advantage of powerful likelihood--based inference techniques and modern machine learning methods that operate on event--by--event data~\cite{GomezAmbrosio:2022mpm, mishra-sharma_smsharmaawesome-neural-sbi_2025, noauthor_simulation-based-inferencesimulation-based-inferencegithubio_2025}.
+    %
+    Unbinned machine learning approaches to parameter estimation, for instance, explicitly rely on the factorised likelihood in \cref{eq:loglik-sum} to avoid information loss from binning~\cite{GomezAmbrosio:2022mpm, Arratia:2021otl, du_unifying_2024}.
     %
     The independence assumption is also what allows one to rigorously define an asymptotic $\chi^2$ or log--likelihood ratio statistic that sums over events and, in the large$-N$ limit, follows known distributions for hypothesis testing~\cite{Canonero:2023sua, Letizia:2022xbe, du_unifying_2024}.
     %
@@ -113,15 +121,16 @@
     However, these assumptions are \emph{idealisations} that can be violated in a variety of scenarios, thereby challenging the simplistic i.i.d. picture.
     %
     It is essential to recognise and mitigate these violations because applying independent--event methods in their on correlated data can lead to biased estimates or misestimated uncertainties.
-    %
+    
     \subsection{Detector effects.}
+    
         While the i.i.d. assumption requires a stable underlying distribution $p(x\,|\,\theta)$ for all events, in reality the detector and experimental conditions can evolve or fluctuate, effectively making events drawn from slightly different distributions.
         %
         For example, changes in detector response due to calibration drifts, aging of instrumentation, or varying operational settings can cause the probability distribution of observables to shift over time.
         %
         If unaccounted for, this means an event recorded early in the run is not identically distributed to an event recorded later.
         %
-        In addition, the finite resolution and inefficiencies of the detector are typically incorporated into $p(x\,|\,\theta)$ via a detector--response model;
+        In addition, the finite resolution and inefficiencies of the detector are typically incorporated into $p(x\,|\,\theta)$ via a detector response model;
         %
         the residuals due to imperfections in the modelling can introduce correlations.
         
@@ -136,25 +145,31 @@
         but if such variations are neglected, the assumption of identically distributed independent events breaks down.
         %
         In essence, the detector can introduce a slight correlation structure or at least a heterogeneity among events, violating the ideal independence assumption, but experiments are typically cognisant of these effects and process them appropriately to restore near i.i.d conditions.
-        %
-        These effects are often manifested as systematic uncertainties in the analysis.
+        
+        These effects often manifest as systematic uncertainties in the analysis.
         %
         For example, although a calibration uncertainty correlates the predicted rates of all events, it can be handled by propagating those uncertainties appropriately rather than by treating events as correlated.
         %
         Still, it is a reminder that truly independent, identical event samples exist only in the limit of a perfectly stable detector and complete modelling of its response.
     
-    \subsection{Pileup}.
-        At particle physics experiments, especially at hadron colliders, multiple events can occur in the same same detector read-out window and be recorded together.
+    \subsection{Pileup.}
+        \begin{definition}[Pileup]
+        At particle physics experiments multiple events can occur in the same same detector read-out window and be recorded together.
         %
-        This phenomenon, known as \emph{pileup}, means that what is recorded as a single ``event'' may actually be a composite of several independent collisions superimposed in the detector readout.
+        This phenomenon is known as \emph{pileup}.
         %
+        Pileup entails that what is recorded as a single `event' may in fact be a composite of several independent interactions superimposed in the detector readout.
+        \end{definition}
+        
         High luminosity running conditions can lead to dozens of overlapping interactions per event.
         %
         In an ideal scenario, these would be uncorrelated collisions, and indeed they are physically independent interactions; however, the merging of their signals confounds the independence at the level of reconstructed events.\footnote{
-        In nucleus--nucleus (heavy ion) experiments the main contaminant is not separate overlapping collisions but the extremely high multiplicity
+        In nucleus--nucleus (heavy ion) experiments the main contaminant is not separate overlapping interactions but the extremely high multiplicity
         \emph{underlying event} produced in the \emph{same} ion--ion interaction.
+        %
         Typical central Pb--Pb collisions at the LHC yield $\mathcal{O}(10^{3})$ charged
-        particles within $|\eta|<1$, orders of magnitude above $p-p$ pileup levels~\cite{CMS:2006myw, ALICE:2012nbx}.}
+        particles within $|\eta|<1$, orders of magnitude above $p-p$ pileup levels~\cite{CMS:2006myw, ALICE:2012nbx}.
+        }
         
         Sophisticated event reconstruction algorithms attempt to separate pileup interactions.
         %
@@ -168,8 +183,8 @@
         %
         Pileup therefore violates the assumption that each event is an independent trial of the same distribution.
         %
-        Instead one is truly measuring have conglomerate events with extra particles, and the probability of certain features (e.g. multiple soft jets, high detector occupancy) is higher than what a single interaction $p(x\,|\,\theta)$ would predict.
-        %
+        Instead one is truly measuring conglomerate events with extra particles, and the probability of certain features (e.g. multiple soft jets, high detector occupancy) is higher than what a single interaction $p(x\,|\,\theta)$ would predict.
+        
         To mitigate pileup, experiments apply corrections or weights to event observables such as subtracting average energy from soft interactions~\cite{CMS:2016lmd, CMS:2020cmk, Cacciari:2014gra}, or they incorporate pileup explicitly into the modelling by extending $p(x\,|\,\theta)$ to include pileup contributions.
         %
         When pileup is included in the Monte Carlo model and properly tuned, the effective independence can be partially restored by enlarging the event description (i.e. treat the hard collision and pileup as parts of one compound event).
@@ -189,17 +204,17 @@
         %
         However, the unfolding procedure itself induces statistical correlations among the resulting events.
         
-        In an unbinned unfolding, the output ``events'', often weighted MC, are no longer independent: they are coupled by the global constraints of the unfolding such as conserving overall normalisation and matching distributions.
+        In an unbinned unfolding, the output events, often weighted MC, are no longer independent: they are coupled by the global constraints of the unfolding such as conserving overall normalisation and matching distributions.
         %
         For example, if one unfolded event’s weight fluctuates upward, typically some other event’s weight must fluctuate downward to compensate and preserve the total yield or certain distribution constraints.
         %
-        Thus, the set of unfolded events has an empirical global covariance structure i.e. knowledge of one event's outcome gives information about others.
+        Thus, the set of unfolded events has an empirical global covariance structure because knowledge of one event's outcome gives information about others.
         
-        If one were to naïvely apply an unbinned likelihood analysis assuming those unfolded events are independent, the likelihood factorisation would be incorrect, and one might misestimate uncertainties or bias the fit.
+        If one were to na\"ively apply an unbinned likelihood analysis assuming those unfolded events are independent, the likelihood factorisation would be incorrect, and one might misestimate uncertainties or bias the fit.
         %
         This situation has been explicitly observed.
         %
-        The work presented in this chapter~\cite{Desai:2025mpy} shows that treating unfolded events as independent can misestimate the confidence intervals, with asymptotic error formulae significantly underestimating the true uncertainty.
+        The work presented in this chapter~\cite{Desai:2025mpy} shows that treating unfolded events as independent can misestimate the confidence intervals, with asymptotic error formulae significantly misestimating the true uncertainty.
         
         This is a prominent example where the conditional independence assumption of events (conditional on $\theta$) does not hold because the unfolded events carry correlations from the statistical inversion procedure.
         %
@@ -208,17 +223,17 @@
         For instance, if an unfolded spectrum is used to extract a physics parameter, data is provided in set bins alongside a covariance matrix $\Sigma$ such that a binned $\chi^2$ fit can be performed,
           \[
             \label{eq:chi2cov}
-            \chi^2_{\text{full}}(\theta) = (D - P(\theta))^T \Sigma^{-1} (D - P(\theta))\,,
+            \chi^2_{\text{full}}(\theta) = (D - \P(\theta))^T \Sigma^{-1} (D - \P(\theta))\,,
           \] 
-        where $D$ is the vector of bin counts of the unfolded data and $P(\theta)$ the corresponding prediction~\cite{D0:2020ujb, CMS:2024onh, Gribanov:2022gri, Canonero:2024kzk}.
+        where $D$ is a vector of normalised bin counts of the unfolded data and $\P(\theta)$ the corresponding model prediction~\cite{D0:2020ujb, CMS:2024onh, Gribanov:2022gri, Canonero:2024kzk}.
         
         This $\chi^2$, or the equivalent binned likelihood, correctly accounts for correlations via $\Sigma$.
         %
         By contrast, a fully unbinned likelihood $\prod_i p(x_i|\theta)$ on the unfolded events $x_i$ would ignore the $\Sigma$ information and treat events as independent, which is formally unjustified.
         %
-        The advent of machine learning has enabled high--dimensional unbinned unfolding, increasing the urgency to address these correlations~\cite{Andreassen:2021zzk, Canelli:2025ybb, Favaro:2025psi}.
+        The advent of machine learning has enabled high dimensional unbinned unfolding, increasing the urgency to address these correlations~\cite{Andreassen:2021zzk, Canelli:2025ybb, Favaro:2025psi}.
         
-        It would therefore be prudent to avoid analytic uncertainty formulas in such cases and rely on bootstraps to evaluate uncertainties.
+        It would therefore be prudent to avoid analytic uncertainty formulae in such cases and rely on bootstraps to evaluate uncertainties.
         %
         Future research efforts could attempt to incorporate event level correlations into the unbinned likelihood formalism, for example, by parametrising weight fluctuations or using augmented likelihoods that include correlation terms.
         %
@@ -226,7 +241,7 @@
 
     \subsection{Global constraints.}
     
-        Even when individual collisions are truly independent, certain \emph{global} aspects of an analysis can couple what were otherwise independent events.
+        Even when individual interactions are truly independent, certain \emph{global} aspects of an analysis can couple what were otherwise independent events.
         %
         A prime example is the presence of common normalisation factors or theoretical parameters that influence all events.
         %
@@ -246,13 +261,13 @@
         %
         nonetheless, such effects highlight that true data generating processes have an interdependence mediated through shared parameters.
         %
-        Reformulated inn Bayesian terms, if one marginalises over an uncertain global parameter, the remaining distribution of events is no longer a simple product of independent probability density functions.
+        Reformulated in Bayesian terms, if one marginalises over an uncertain global parameter, the remaining distribution of events is no longer a simple product of independent probability density functions.
         
         Beyond nuisance parameters, there are also physics scenarios that produce genuine correlations between events: for instance, certain new physics might produce clustered events.
         %
         For example, the decay of a heavy state might yield two separate collision--like signals in the detector, or cosmic ray air shower might produce multiple spatially separated detector hits treated as separate events.
         %
-        These are exotic cases but illustrate that nature can produce data that do not align with the one--event--at--a--time paradigm.
+        These are exotic cases but illustrate the broader point that nature can produce data that do not align with the one--event--at--a--time paradigm.
         
         The high level takeaway is that, in general, whenever a theoretical or methodological constraint ties the outcomes of different events, the independence assumption is violated.
         %
@@ -336,7 +351,7 @@
 
 \section{Formalism.}
 \label{sec:formalism}
-    Let $\qty{\nu_j}_{j=1}^M$ be the unfolded, particle level yield in bin $j$ and $P_j(\theta)$ be the theory prediction or fit template for that bin given parameters $\theta$.
+    Let $\qty{\nu_j}_{j=1}^M$ be the unfolded, normalised particle level yield in bin $j$ and $\P_j(\theta)$ be the theory prediction or fit template for that bin given parameters $\theta$.
     %
     The standard measure of agreement is the correlated $\chi^2$ statistic described in \cref{eq:chi2cov},
     %
@@ -399,14 +414,58 @@
     \begin{gather}
         \label{eq:effective-N}
         \mathrm{Err}(\bar{X}) \;=\; \sigma\,\sqrt{\frac1N + \qty(1 - \frac1N)\rho}\quad\rho\in\left(-\frac1{N-1}, 1\right],\\
-       \eval{\mathrm{Err}(\bar{X})}_{\rho=-\frac{1}{N-1}} = 0,\\
-       \eval{\mathrm{Err}(\bar{X})}_{\rho=0} = \frac{\sigma}{\sqrt{N}}, \\ \eval{\mathrm{Err}(\bar{X})}_{\rho = 1} = \sigma.
+       \eval{\mathrm{Err}(\bar{X})}_{\rho=-\frac{1}{N-1}} = 0,\quad
+       \eval{\mathrm{Err}(\bar{X})}_{\rho=0} = \frac{\sigma}{\sqrt{N}}, \quad \eval{\mathrm{Err}(\bar{X})}_{\rho = 1} = \sigma.
     \end{gather}
     where $\sigma$ is the standard deviation of each individual point.
     %
     The factor $1+(N-1)\rho$ quantifies the change in variance due to correlation.
-    %
-    One can define an effective number of independent points $N_{\text{eff}} = N/[1+(N-1)\rho]$~\cite{thompson_power_2021, wang_power_2022, baumann_tutorial_2025, Yang2011EffectiveAnalyses}.
+
+\begin{theorem}[Equicorrelated sampling error and effective sample size]
+\label{thm:equicorr-mean}
+For every $N\in\N_{\ge2}$, and for every set of real valued random variables $\qty{X_i}_{i=1}^N$, if:
+\[
+\begin{split}
+\exists(\mu,\sigma,\rho)\in\R\times(0,\infty)\times\qty[-\frac1{N-1},1]\;\forall i\in \N_{\le N}\;\E(X_i) = \mu \\\land\; \forall i, j\in \N_{\le N}^2\;\Sigma_{ij} = \sigma^2\qty[(1 - \rho)\delta_{ij} + \rho]
+\end{split}
+\]
+i.e.
+\[
+\Sigma_{ij}=
+\begin{cases}
+\sigma^2,& i=j,\\[2pt]
+\rho\,\sigma^2,& i\ne j.
+\end{cases}
+\]
+Then:
+\begin{enumerate}
+\item $\Sigma\succeq 0$ iff $\Sigma\in\big[-\tfrac{1}{N-1},\,1\big]$ and $R(\rho)\succ 0$ iff $\rho\in\big(-\tfrac{1}{N-1},\,1\big)$.
+\item For the sample mean $\bar X \equiv \frac{1}{N}\sum_{i=1}^N X_i$,
+\begin{equation}\label{eq:equicorr-variance}
+\mathrm{Err}(\bar X)\equiv\sqrt{\operatorname{Var}(\bar X)}=\sigma\,\sqrt{\frac{1}{N}+\Big(1-\frac{1}{N}\Big)\rho}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[*thm:equicorr-mean]
+(1) The matrix \(\Sigma\) has eigenvalue $\sigma^2(1+(N-1)\rho)$ with eigenvector $\mqty[1&1&\dots&1]^T$ and eigenvalue $\sigma^2(1-\rho)$ with multiplicity $N-1$.
+%
+Hence $\Sigma\succeq 0$ iff $\sigma^2(1-\rho\ge 0)$ and $\sigma^2(1+(N-1)\rho\ge 0)$, i.e. $\rho\in[-1/(N-1),1]$, and $R(\rho)\succ 0$ iff both inequalities are strict.
+
+(2) Using $\bar X= N^{-1}\sum_i X_i$,
+\[
+\operatorname{Var}(\bar X)
+=\frac{1}{N^2}\sum_{i,j=1}^N \Sigma_{ij}
+    =\frac{N\sigma^2}{N^2}\qty(1+(N-1)\rho)
+=\sigma^2\qty(\frac{1}{N}+\qty(1-\frac{1}{N})\rho),
+\]
+which yields the stated $\mathrm{Err}(\bar X)$.
+\end{proof}
+
+    
+    \begin{definition}[Effective sample size]
+    The \emph{effective size} of a sample is the effective number of independent points, $N_{\text{eff}} = N/[1+(N-1)\rho]$~\cite{thompson_power_2021, wang_power_2022, baumann_tutorial_2025, Yang2011EffectiveAnalyses} in that sample accounting for correlations.
+    \end{definition}
     %
     For $\rho>0$, $N_{\text{eff}}<N$; in the extreme case of $\rho\to 1$ where all points completely correlated, $N_{\text{eff}}\to 1$ no matter how large $N$ is.
     %
@@ -489,7 +548,7 @@
     %
     If, instead of relying on asymptotic error formulas or nominal $\chi^2$ distributions, one employs numerical methods such as bootstrapping or pseudo-experiments to directly compute the distribution of estimators or test statistics, then it is possible to obtain correct uncertainties when event level correlations are present.
     %
-    In the Gaussian toy study, when the unfolding + fit process is performed many many bootstrap replicas, the empirical spread of the fitted parameters (``numerical uncertainty'') matches well with the full--covariance analytic result.
+    In the Gaussian toy study, when the unfolding + fit process is performed many many bootstrap replicas, the empirical spread of the fitted parameters (`numerical uncertainty') matches well with the full--covariance analytic result.
     %
     In this way one can still use unbinned unfolded data for parameter extraction, but one must forgo simplistic formulas and instead rely on computationally intensive resampling to get trustworthy error bars.
     
@@ -532,20 +591,22 @@
     Ensuring statistical procedures remain robust in the face of these correlations is a key task for the interplay of machine learning techniques and rigorous uncertainty quantification in high energy physics.
     
 \section{Uncertainty quantification.}
+\label{sec:uncertainty-quant}
+\sectionminitoc
     In high energy physics analyses, quantifying uncertainties in measurements is as important as the central values themselves.
     %
     As outlined in \cref{sec:independence-assumptions,sec:violation-of-statistical-independence,sec:impact}, real world measurements often violate these independence assumptions.
     %
-    This section will establish a rigorous framework for uncertainty quantification in the presence of such correlations, discussing both analytic asymptotic techniques and numerical resampling approaches, followed by a discussion of concrete guidance on implementing these methods, including the choice of replicas, computational cost tradeoffs, and diagnostics to ensure correct coverage.
+    This section will establish a rigorous framework for uncertainty quantification in the presence of such correlations, discussing both analytic asymptotic techniques and numerical resampling approaches, followed by a discussion of concrete guidance on implementing these methods, including the choice of replicas, computational cost trade-offs, and diagnostics to ensure correct coverage.
     
     \subsection{Analytic approaches: asymptotic theory and its limitations.}
         Traditional uncertainty estimates in HEP rely heavily on analytic results from classical asymptotic theory.
         %
         Under the independent, identically distributed (i.i.d.) data assumption (\textit{vide} \cref{sec:independence-assumptions}), the maximum likelihood estimator (MLE) of a parameter $\theta$ is consistent and asymptotically normal.
-\begin{theorem}[Asymptotic Normality of the MLE%
-  \cite{tseng_inverse_2025,chong_likelihood_2025,ly_tutorial_2017,%
+\begin{theorem}[Asymptotic Normality of the MLE~\cite{tseng_inverse_2025,chong_likelihood_2025,ly_tutorial_2017,%
            mccormack_information_2023,xie_local_2025,%
            cowan_statistics_2021,Cowan2011AsymptoticPhysics}]
+\noproofref
     Consider a set of i.i.d. observations \(\qty{X_j}_{j = 1}^N\) and a model parametrised by parameter \(\theta\in\Omega\subseteq\mathbb{R}^{d}\). The likelihood is
     \[
         \mathcal L(\theta) =\prod_{i=1}^{N} p(X_{j}\, | \,\theta),
@@ -563,6 +624,7 @@ the maximum likelihood estimator is distributed as
         In practical terms, one often obtains the covariance matrix of estimators by inverting the Hessian of the log--likelihood at the optimum or via the observed information matrix.
         
 \begin{theorem}[Wilks~\cite{Wilks1938TheHypotheses}]
+\noproofref
     Let \(\qty{X_j}_{j=1}^N\) be a set of i.i.d measurements with likelihood
     \[
         L(\theta)=\prod_{i=1}^{N}p(X_{i}\mid\theta), \quad \theta\in\Omega\subseteq\mathbb{R}^{d}.
@@ -592,7 +654,7 @@ the maximum likelihood estimator is distributed as
         %
         If events are correlated, or effectively so, due to shared systematic effects, the simple $\chi^2$ approximations may no longer hold.
         %
-        For example, a composite likelihood or misspecified likelihood, where correlations among data points are ignored in the model, can yield a test statistic whose distribution deviates from $\chi^2,$ often requiring a mixture of $\chi^2$ distributions or an effective scale factor\cite{li_optimal_2024, jamil_pairwise_2024, tang_is_2025, Fowlie:2021ldv, Ansarifard:2025hec}.
+        For example, a composite likelihood or misspecified likelihood, where correlations among data points are ignored in the model, can yield a test statistic whose distribution deviates from $\chi^2,$ often requiring a mixture of $\chi^2$ distributions or an effective scale factor~\cite{li_optimal_2024, jamil_pairwise_2024, tang_is_2025, Fowlie:2021ldv, Ansarifard:2025hec}.
         %
         In such cases, naive use of $\Delta\chi^2=1$ for $1\sigma$ intervals can significantly misestimate the true coverage.
 
@@ -600,6 +662,8 @@ the maximum likelihood estimator is distributed as
             When the model used for inference does not perfectly describe the data's correlation structure, one can apply the sandwich covariance estimator to obtain valid uncertainties.
 
             \begin{theorem}[Godambe Information~\cite{godambe_estimating_1991}]
+            \noproofref
+            \label{thm:godambe-information}
                 Let \(\qty{X_j}_{j=1}^N\) be i.i.d.\ observations modelled by \(p(x\mid\theta)\), \(\theta\in\Omega\subseteq\mathbb{R}^{d}\).  Consider an estimating function
                 \[
                     U(\theta) =\sum_{j=1}^{N}u(X_{j}\mid\theta),
@@ -625,7 +689,8 @@ the maximum likelihood estimator is distributed as
                 \]
                 That is to say, the asymptotic covariance of \(\hat\theta\) is \(N^{-1}G(\theta)^{-1}\).
             \end{theorem}
-            \begin{corollary}[\cite{varin_overview_2011, Mulzer2019Five, chernoff_measure_1952, lin_past_2014}]
+            \begin{theorem}[Extension of \cref{thm:godambe-information}~\cite{varin_overview_2011, Mulzer2019Five, chernoff_measure_1952, lin_past_2014}]
+            \noproofref
             If the estimating function is the score of a correctly specified likelihood,
             \[
                 u(X_j\mid\theta)\;=\;-\grad_{\theta}\log p(X_j\mid\theta),
@@ -641,17 +706,17 @@ the maximum likelihood estimator is distributed as
             \[
                 G(\hat{\theta}) \;=\; H(\hat{\theta})\, J(\hat{\theta})^{-1}\, H(\hat{\theta}) \,,
             \]
-            \end{corollary}
+            \end{theorem}
             
             Intuitively, $H^{-1}$ is the optimistic covariance estimate assuming the model is correct, while $J$ captures the actual observed fluctuations of the score, which increase if data are correlated or the model is incorrect~\cite{Geyer20135601Estimator, Geyer2020StatEquations}.
             %
-            The ``sandwich'' $ J^{-1} = H^{-1} G H^{-1}$ then provides a robust covariance for $\hat{\theta}$ that remains consistent even if the likelihood is misspecified~\cite{eicker_limit_1967, huber_behavior_1967, white_heteroskedasticity-consistent_1980}.
+            The `sandwich' $ J^{-1} = H^{-1} G H^{-1}$ then provides a robust covariance for $\hat{\theta}$ that remains consistent even if the likelihood is misspecified~\cite{eicker_limit_1967, huber_behavior_1967, white_heteroskedasticity-consistent_1980}.
             %
             In the limit of i.i.d. data with correct model, $H=J$ and the sandwich reduces to $H^{-1}$ as expected.
             %
             In the presence of event--to--event correlations, $J > H$ (in a matrix sense), meaning the sandwich variance $H^{-1}JH^{-1}$ is larger than the naive $H^{-1}$, reflecting the loss of information from the unmodelled dependencies.
             %
-            This approach rigorously generalizes the notion of ``effective degrees of freedom'' due to correlations.
+            This approach rigorously generalises the notion of `effective degrees of freedom' due to correlations.
             
             While the Godambe information is rarely computed explicitly in everyday HEP analyses, it underlies the validity of techniques employed in composite likelihood fits~\cite{ZhouInformationSelection, Huang2022FastLikelihoods} and provides a formal path to include correlations analytically.
             %
@@ -667,7 +732,8 @@ the maximum likelihood estimator is distributed as
             %
             A classic remedy in statistical theory is the Bartlett correction, which rescales the test statistic to better match the $\chi^2$ distribution.
             
-\begin{theorem}[Bartlett Correction~\cite{bartlett_properties_1997, lawley_general_1956}]
+\begin{theorem}[Bartlett correction~\cite{bartlett_properties_1997, lawley_general_1956}]
+\noproofref
     Let \(\qty{X_j}_{j=1}^N\) be i.i.d. according a model \(p(x\mid\theta)\) and let the hypotheses be
     \[
         H_{0}:\theta\in\Theta_{0} \quad H_{1}:\theta\in\Theta_{1}\quad \Omega = \Theta_0\cup\Theta_1,
@@ -682,7 +748,8 @@ the maximum likelihood estimator is distributed as
     \]
     with \(B\) determined by lower order cumulants of the log‐-likelihood.\footnote{B can be worked out via the third and fourth derivatives of the log‐-likelihood~\cite{lawley_tests_1956}}
 \end{theorem}
-\begin{corollary}
+\begin{theorem}[Asymptotics of the Bartlett correction]
+\noproofref
     The Bartlett corrected statistic
     \[
         \widetilde{\mathcal L} = c\cdot \mathcal L
@@ -693,7 +760,7 @@ the maximum likelihood estimator is distributed as
         \quad\text{and}\quad
         \lim_{N\to\infty}\widetilde{\mathcal L}\;\sim\;\chi^{2}_{\,d-r}.
     \]
-\end{corollary}
+\end{theorem}
 
             In essence, one multiplies $-2\Delta\ln\mathcal{L}$ by a factor $c < 1$ determined from lower--order asymptotic expansions or auxiliary simulation~\cite{Chen2020AVariables, battey_non-standard_2024}\footnote{In practice, \(c\) is typically computed using bootstraps when analytic expressions are not available.} such that $c \cdot (-2\Delta\ln\mathcal{L})$ has expectation equal to the nominal $\chi^2$ degrees of freedom under $H_0$.\footnote{This correction ensures nominal \(\chi^2\) coverage up to second order, mitigating the finite sample bias discussed.}
             
@@ -707,7 +774,7 @@ the maximum likelihood estimator is distributed as
 
             Another scenario of interest is the profile likelihood under model misspecification.
             %
-            If the true data generating process lies outside the assumed model family, the MLE will converge to the ``closest'' point in parameter space, \emph{the pseudo--true value}~\cite{white_maximum_1982, Guardiani:2025lpm} but the usual confidence intervals might be misleading~\cite{tang_is_2025, bortolato_approximate_2022}. 
+            If the true data generating process lies outside the assumed model family, the MLE will converge to the `closest' point in parameter space, \emph{the pseudo--true value}~\cite{white_maximum_1982, Guardiani:2025lpm} but the usual confidence intervals might be misleading~\cite{tang_is_2025, bortolato_approximate_2022}. 
             %
             The profile likelihood curve may be too steep or too shallow relative to the actual sampling distribution of $\hat{\theta}$.
             %
@@ -739,7 +806,7 @@ the maximum likelihood estimator is distributed as
         The take--home message is that one must either incorporate the correlation structure into the analytic calculation through approaches like the sandwich estimator or fall back on numerical methods to assess uncertainties.
 
     \subsection{Numerical resampling approaches: bootstrapping and toy Monte Carlo.}
-        Numerical uncertainty estimation techniques generate many ``fake'' realisations of the experiment to directly empirically measure the spread of an estimator or unfolded distribution.
+        Numerical uncertainty estimation techniques generate many `fake' realisations of the experiment to directly empirically measure the spread of an estimator or unfolded distribution.
         %
         These methods do not rely on an explicit formula for the variance; instead, they approximate the sampling distribution by Monte Carlo simulation or resampling. 
         %
@@ -757,7 +824,7 @@ the maximum likelihood estimator is distributed as
             %
             By repeating this $B$ times, one can simulate the variability of any statistic: the distribution of the statistic across the $B$ replicas serves as an approximation for its true sampling distribution.
             
-            In context of unfolding or a cross--section measurement, the ``estimator'' might be the unfolded spectrum itself or, more often, a physics parameter extracted in a subsequent fit.
+            In context of unfolding or a cross--section measurement, the `estimator' might be the unfolded spectrum itself or, more often, a physics parameter extracted in a subsequent fit.
             %
             For example, \cref{chap:moment-unfolding} employed bootstrap resampling to propagate statistical uncertainty in the \textsc{Moment Unfolding} method.
             %
@@ -781,7 +848,7 @@ the maximum likelihood estimator is distributed as
             %
             Each bootstrap replica is like a pseudo--experiment drawn under the null hypothesis that ``the observed dataset is the true underlying distribution".
             %
-            By analysing all replicas identically, one can extract not just variances for each observable but the full covariance matrix $\mathrm{Cov}(O_i, O_j)$ via the sample covariance of the replica results~\cite{noauthor_evaluating_2021}.
+            By analysing all replicas identically, one can extract not just variances for each observable but the full covariance matrix via the sample covariance of the replica results~\cite{noauthor_evaluating_2021}.
             %
             As just two examples of many in \cite{Aad2024Underlying-eventDetector, noauthor_studies_2021} the ATLAS Collaboration uses bootstrapping as a straightforward way to estimate statistical correlations between bins of an unfolded cross section.
             %
@@ -803,7 +870,7 @@ the maximum likelihood estimator is distributed as
             %
             This is known as a cluster bootstrap or block bootstrap~\cite{cameron_bootstrap-based_2008, kunsch_jackknife_1989, field_bootstrapping_2007, mackinnon_cluster-robust_2022, loy_bootstrapping_2021}.
             %
-            With sufficient computational resources available, one could resample whole event with replacement to build each replica dataset, thus preserving intra--event correlations.
+            With sufficient computational resources available, one could resample whole event with replacement to build each replica dataset, thus preserving event correlations.
             
             Similarly, if data have an inherent time or spatial correlation, one might sample temporal or spatial blocks of consecutive events.
             %
@@ -826,12 +893,14 @@ the maximum likelihood estimator is distributed as
             But for small datasets or when quoting total rate uncertainties, this matters.
             
             A simple variant that addresses this is the so--called Poisson bootstrap~\cite{rubin_bayesian_1981, praestgaard_exchangeably_1993}.
-            %
-            Instead of drawing exactly $N$ samples each time, each original event is assigned a Poisson(1) random weight in each replica~\cite{Lyons:2011cli, Bohm:2013gla}.
-            %
-            This means we effectively decide for each event how many times it gets included \(\qty(0, 1, 2,\dots)\) by a Poisson draw with mean \(1\).
-            %
-            The expected total count in a bootstrap is then also $N$ (since $\sum_{i=1}^N \text{Poisson}_i(1) \sim \text{Poisson}(N)$), but the total count of any individual bootstrap is no longer fixed at \(N\).
+
+            \begin{definition}[Poisson bootstrap]
+                The \emph{Poisson bootstrap} is a variant of non-parametric bootstrap resampling in which instead of drawing exactly $N$ samples each time, each original event, \(x_i\), is assigned a Poisson(1) random weight, \(w_{ij}\) in each replica, \(j\)~\cite{Lyons:2011cli, Bohm:2013gla}.
+                %
+                \(x_i\) is then included in replica \(j\;w_{ij}\) times.
+            \end{definition}
+
+            The expected total count in any replica of a Poisson bootstrap is then also $N$ (since $\sum_{i=1}^N \text{Poisson}_i(1) \sim \text{Poisson}(N)$, which has expected value \(N\)), but the total count of any individual replica is no longer fixed at \(N\).
             %
             It is now a Poisson random variable that fluctuates around $N$.
             %
@@ -855,7 +924,7 @@ the maximum likelihood estimator is distributed as
             %
             This is the strategy followed in this work for evaluating unfolding uncertainties.
             %
-            The same detector--level data is fluctuated many times by resampling counts in each bin, run the unfolding algorithm each time and the spread in the unfolded solution is observed.
+            The same detector level data is fluctuated many times by resampling counts in each bin, run the unfolding algorithm each time and the spread in the unfolded solution is observed.
             
            In this way applying the procedure to bootstrapped detector level samples yields many sets of weights, whose variance indicates the uncertainty on the underlying truth distribution.
            %
@@ -865,7 +934,7 @@ the maximum likelihood estimator is distributed as
            %
            Unbinned unfolding with neural networks can be computationally expensive, so the number of bootstrap replicas $B$ may be limited by available computational resources.
 
-        \subsubsection{Parametric bootstrap: toy Monte Carlo simulations}
+        \subsubsection{Parametric bootstrap: Monte Carlo simulations.}
             The parametric bootstrap differs in that it assumes one has a generative model for the data.
             %
             Instead of resampling the observed events, one simulates new datasets from a known or fitted probability distribution.
@@ -873,19 +942,22 @@ the maximum likelihood estimator is distributed as
             In particle physics, this is synonymous with conducting many pseudo--experiments.
             %
             The procedure is laid out in \cref{alg:parametric-bootstrap}
-            \begin{algorithm}
-                \caption{Parametric bootstrap pseudo-experiments}
-                \label{alg:parametric-bootstrap}
-                \Require{Observed data $X_{1},\dots,X_{N}$, model $p(x\mid\theta)$, number of replicates $B$}
-                \Ensure{Bootstrap estimates $\{\hat\theta^{(b)}\}_{b=1}^{B}$ or distribution of a statistic}
-                
-                \State $\hat\theta \leftarrow \displaystyle\arg\max_{\theta}\,\prod_{i=1}^{n}f(X_{i};\theta)$
-                \For{$b\leftarrow 1$ \To $B$}
-                  \State Simulate pseudo-dataset $X_{1}^{(b)},\dots,X_{n}^{(b)}\;\overset{\text{i.i.d.}}{\sim}\;f(\cdot;\hat\theta)$
-                  \State Compute $\hat\theta^{(b)}$ by applying the same estimation procedure to $X_{1:n}^{(b)}$
-                \EndFor
-                \State \Return $\{\hat\theta^{(b)}\}_{b=1}^{B}$
-              \end{algorithm}
+\begin{algorithm}
+    \caption{Parametric bootstrap pseudo-experiments}
+    \label{alg:parametric-bootstrap}
+    \begin{algorithmic}
+    \algospacing
+    \Require{Observed data $X_{1},\dots,X_{N}$, model $p(x\mid\theta)$, number of replicates $B$}
+    \Ensure{Bootstrap estimates $\{\hat\theta^{(b)}\}_{b=1}^{B}$ or distribution of a statistic}
+    
+    \State $\hat\theta \leftarrow \displaystyle\arg\max_{\theta}\,\prod_{i=1}^{n}f(X_{i};\theta)$
+    \For{$b\leftarrow 1$ \textbf{to} $B$}
+      \State Simulate pseudo-dataset $X_{1}^{(b)},\dots,X_{n}^{(b)}\;\overset{\text{i.i.d.}}{\sim}\;f(\cdot;\hat\theta)$
+      \State Compute $\hat\theta^{(b)}$ by applying the same estimation procedure to $X_{1:n}^{(b)}$
+    \EndFor
+    \State \Return $\{\hat\theta^{(b)}\}_{b=1}^{B}$
+    \end{algorithmic}
+\end{algorithm}
             This approach is inherently model dependent---it relies on the assumption that our fitted model is a good representation of the underlying truth.
             %
             However, in many cases, especially when the goal is to test consistency with that model or to quote uncertainties assuming the model, this is perfectly acceptable.
@@ -901,7 +973,7 @@ the maximum likelihood estimator is distributed as
             If there is a nuisance parameter with some uncertainty, one can randomly vary that parameter for each pseudo--experiment, drawn from its uncertainty prior, so that the ensemble of pseudo--datasets reflects the lack of knowledge of the parameter.
             %
             In this way, the resulting spread of outcomes includes the effect of that systematic.\footnote{
-                This is analogous to the commonly used ``toy Monte Carlo'' approach of varying nuisance parameters within their errors to see the impact on a fit result.
+                This is analogous to the commonly used `toy Monte Carlo' approach of varying nuisance parameters within their errors to see the impact on a fit result.
                 %
                 Here one integrates it into the generation of each bootstrap.
             }
@@ -915,7 +987,7 @@ the maximum likelihood estimator is distributed as
             %
             For instance, the CL$_s$ method for setting limits on new physics involves generating many pseudo--datasets under the background only and signal + background hypotheses to determine the distribution of a test statistic~\cite{Read:2002hq, Harel:2011jyp, mandelkern_setting_2002, giere_allan_1977, Zech:1988un, birnbaum_foundations_1962, birnbaum_neyman-pearson_1977, Cowan2011AsymptoticPhysics, Fraser:2004ty, cousins_negatively_2011}.
             %
-            Similarly, when experiments quote an unfolding covariance matrix from ``toy MC,'' they have typically taken the central unfolded result as truth, re-simulated many fake datasets through detector simulation, unfolded each, and computed the covariance of the ensemble.
+            Similarly, when experiments quote an unfolding covariance matrix from `toy MC,' they have typically taken the central unfolded result as truth, re-simulated many fake datasets through detector simulation, unfolded each, and computed the covariance of the ensemble.
             %
             This can be interpreted as a parametric bootstrap of the unfolding result.
             %
@@ -925,7 +997,7 @@ the maximum likelihood estimator is distributed as
             %
             Instead it measures the uncertainty by numerically.
             %
-            For example, if one is unsure about the validity of Wilks' theorem in a complex fit, one can generate toy experiments at the best fit parameters and validate empirically what fraction of the time $\Delta\log\mathcal{L}$ exceeds a certain value.
+            For example, if one is unsure about the validity of Wilks' theorem in a complex fit, one can generate toy experiments at the best fit parameters and validate empirically what fraction of the time $\Delta\ln\mathcal{L}$ exceeds a certain value.
 
         The primary limitation of bootstrapping is the heavy computational load and potential model bias.
         %
@@ -933,7 +1005,7 @@ the maximum likelihood estimator is distributed as
         %
         In practice, one often uses a fast approximation such as a parametrised smearing or a fast detector simulation to make this feasible.
         %
-        \cite{noauthor_evaluating_2021} suggests that on the order of $B=1000$ replicas is a reasonable compromise in many cases, though even $B=10000$ is used for certain jet cross section covariance evaluations.
+        \cite{noauthor_evaluating_2021} suggests that on the order of $B=\num{1000}$ replicas is a reasonable compromise in many cases, though even $B=\num{10000}$ is used for certain jet cross section covariance evaluations.
         
         The exact choice of $B$ is particular to the specific analysis being conducted, and should be chosen by monitoring when the statistical error on the uncertainty estimate itself becomes negligible (\textit{vide} \cref{subsec:bartlett-corrections}).
         %
@@ -968,17 +1040,17 @@ the maximum likelihood estimator is distributed as
             %
             A few hundred replicas may suffice for stable estimates of variances, but for reliable estimation of the full covariance matrix, especially in high dimensions, or tails of distributions, one might need an order of magnitude more.
             %
-            It is good practice to check convergence of the uncertainty estimate: e.g. run $B=200$, $400$, $800$ and monitor if the reported uncertainty or key figure of merit changes appreciably.
+            It is good practice to check convergence of the uncertainty estimate: e.g. run \(B = \numlist{200;400;800}\) and monitor if the reported uncertainty or key figure of merit changes appreciably.
             %
             If it stabilises, $B$ is sufficient.
             
-            The standard error on a bootstrap derived standard deviation is $\nicefrac{\sigma}{\sqrt{2(B-1)}},$ so returns diminishing as $B$ grows.
+            The standard error on a bootstrap derived standard deviation is $\nicefrac{\sigma}{\sqrt{2(B-1)}},$ so increasing \(B\) yields diminishing returns.
         \paragraph{Computational cost and parallelisation.}
             Each bootstrap replica involves an independent analysis of the dataset, and so parallelisation can offer overwhelming computational gains.
             %
-            One should exploit parallel computing \footnote{e.g. multithreading} to run many bootstraps concurrently.
+            One should exploit parallel computing \footnote{E.g. multithreading.} to run many bootstraps concurrently.
             %
-            In a modern analysis framework, it is often feasible to distribute $B=1000$ jobs to a cluster and retrieve results in a few hours, where running them serially would be prohibitive.
+            In a modern analysis framework, it is often feasible to distribute $B=\num{1000}$ jobs to a cluster and retrieve results in a few hours, where running them serially would be prohibitive.
             %
             If the analysis involves training a machine learning model for each replica, one might need to reduce $B$ or use a pretrained model across replicas if appropriate.\footnote{Bearing in mind that if the model training itself is subject to statistical fluctuation, use of a pretrained model will fail to capture that source of variance.}
             
@@ -1017,13 +1089,13 @@ the maximum likelihood estimator is distributed as
         \paragraph{Incorporating systematic uncertainties.}
             So far, the discussion has focussed on statistical uncertainty from limited data samples.
             %
-            In a full measurement, one must also account for systematic uncertainties \footnote{from detector calibration, theory model choices, etc.}.
+            In a full measurement, one must also account for systematic uncertainties. \footnote{From detector calibration, theory model choices, etc.}
             %
             Bootstrapping can be extended to some systematic effects.
             %
-            One can, in principle, treat a systematic variation as producing an alternate ``truth" and then bootstrap around that.
+            One can, in principle, treat a systematic variation as producing an alternate `truth' and then bootstrap around that.
             
-            However, more common in HEP is to evaluate systematics separately by shifting calibrations and re--running the analysis a few times, and to then combine statistical and systematic errors.
+            However, more common in HEP is to evaluate systematics separately by shifting calibrations and re-running the analysis a few times, and to then combine statistical and systematic errors.
             %
             One must be careful not to mix these in the same replicas unless the systematic is itself statistical in nature.
             %
@@ -1031,10 +1103,10 @@ the maximum likelihood estimator is distributed as
             
             The overarching principle is to match the uncertainty evaluation method to the source of uncertainty, i.e. to use bootstraps or toys for random fluctuations, and to treat systematic shifts by exploring the parameter space of uncertainties, possibly with their own pseudo--experiments if they have uncertainty distributions.
             
-        \paragraph{Reporting and using bootstrap results}
+        \paragraph{Reporting and using bootstrap results.}
             When using bootstrap ensembles, one often obtains a covariance matrix for multiple observables or parameters as the primary output.
             %
-            This covariance can be used in downstream fits like treating the unfolded spectrum and its bootstrap covariance as ``data'' for a theory fit.
+            This covariance can be used in downstream fits like treating the unfolded spectrum and its bootstrap covariance as data for a theory fit.
             %
             It is important to regularise or smooth the covariance if $B$ is not extremely large, because being an empirical estimate, it can be noisy, and potentially not even positive definite if $B$ is too low relative to number of bins.
             
@@ -1045,26 +1117,27 @@ the maximum likelihood estimator is distributed as
             Tables or matrices of bootstrap correlations might be provided in an Appendix or auxiliary material if they are of interest.
             
         \paragraph{Common pitfalls.}
-            \begin{itemize}
-                \item \textbf{Bootstrap bias:}
+            \begin{description}
+                \item [Bootstrap bias:]
                     The bootstrap can sometimes reveal bias in an estimator, e.g., the average of bootstrap estimates differs from the original estimate.
                     %
                     If significant, one might use the bootstrap to correct the bias (bias-corrected estimates) or employ the BCa (bias-corrected and accelerated) percentile method for confidence intervals~\cite{puth_variety_2015}.
-                \item \textbf{Small sample issues:}
+                \item[Small sample issues:]
                     In regions with extremely few events, bootstrap samples may not be representative because one keeps drawing the same few events in different orders.
                     %
                     In such regimes, exact methods or simple conservative analytic bounds might be more reliable.
-                \item \textbf{Randomness:}
+                \item[Randomness:]
                     One should ensure reproducibility by fixing the random number seeds for bootstrapping procedures.
                     %
                     This allows others to regenerate the same replicas and verify results.
-                \item \textbf{Interpreting bootstrap outcomes:}
+                \item[Interpreting bootstrap outcomes:]
                     One should remember that the bootstrap gives an estimate of uncertainty, not a guarantee.
                     %
                     If the data are very sparse or the model very wrong, the bootstrap will dutifully reflect those.
                     %
                     Results should always be interpreted in the physical context and cross verified with sanity checks.
-            \end{itemize}
+            \end{description}
+            
     In conclusion, bootstrapping versus asymptotics is not an either--or choice but a complementary set of tools.
     %
     Asymptotic techniques are fast and illuminating;
@@ -1081,13 +1154,14 @@ the maximum likelihood estimator is distributed as
     
 \section{Case studies.}
 \label{sec:case-studies}
+\sectionminitoc
     \subsection{Setup.}
     \label{subsec:setup}
-        Define a ``truth'' particle--level distribution as a Gaussian with mean $\mu_{\text true}=0.2$ and variance $\sigma^2_{\text true}=0.81$.
+        A Truth distribution is constructed from a Gaussian with mean $\mu_{T}=0.2$ and variance $\sigma^2_{T}=0.81$.
         %
-        Draw $N_{\text{true}}=10^4$ events from this distribution to serve as the toy dataset at the particle--level.
+        \num{d4} events are drawn from this distribution to serve as the dataset at the particle level.
         %
-        In addition, a larger Monte Carlo (MC) sample of $10^5$ events is generated from a prior Gaussian with mean \(0.0\) and variance \(1.0.\)
+        In addition, a larger Monte Carlo (MC) sample of \num{e5} events is generated from a Gaussian with mean \(\mu_G = 0.0\) and variance \(\sigma^2_G = 1.0.\)
         %
         This Generation sample plays two roles---it provides an initial guess of the truth distribution for unfolding, and it is used to derive the detector response.
         %
@@ -1095,13 +1169,13 @@ the maximum likelihood estimator is distributed as
 
         Both the Truth and the Generation datasets are passed through a detector response model to simulate detector level measurements by smearing each particle level event with an independent Gaussian error of mean 0 and a certain resolution $\sigma_{\text{det}}$, representing finite detector resolution.
         %
-        Examine multiple smearing levels, with $\sigma_{\text{det}}$ ranging from \(0\), no smearing, i.e. a perfect detector, up to \(0.75\), substantial resolution degradation.
+        Multiple smearing levels are examined, with $\sigma_{\text{det}}$ ranging from \(0\), no smearing, i.e. a perfect detector, up to \(0.75\), substantial resolution degradation.
         %
         The smeared Truth sample represents the detector level Data that an experiment would observe, while the smeared Generation sample represents the detector level Simulation.
         
-    \subsection{Fully binned baseline}
+    \subsection{Fully binned baseline.}
     \label{subsec:fully_binned_demo}
-        To establish a baseline, first consider this simple one--dimensional unfolding scenario using a known Gaussian distribution and the traditional binned unfolding approach.
+        To establish a baseline, first consider this simple one dimensional unfolding scenario using a known Gaussian distribution and the traditional binned unfolding approach.
         %
         In this fully binned context, generate Gaussian particle level and detector level data, apply Iterative Bayesian Unfolding (IBU), and perform a standard binned parameter fit to the unfolded histogram.
         %
@@ -1111,25 +1185,26 @@ the maximum likelihood estimator is distributed as
         %
         This demonstration will highlight the importance of properly accounting for the covariance matrix of the unfolded result when making inferences on physics parameters.
         
-        Generate 500 independent pseudo--datasets from the Truth/Data model, each with a Poisson fluctuation in total event count with a expectation value of $10^4$ events per dataset to simulate realistic statistical scatter.
+         \num{500} independent pseudo--datasets are generated from the Truth/Data model, each with a Poisson fluctuation in total event count with a expectation value of \num{e4} events per dataset to simulate realistic statistical scatter.\footnote{The study as presented uses pseudo--experiments of a Poisson fluctuated size rather than a non-parametric Poisson bootstrap due to the ease of generating Gaussian examples, but essentially results were replicated using a non-parametric Poisson bootstrap proper, and the observations and analysis carry over essentially unchanged.}
         
         \subsubsection{Methodology.}
         \label{subsec:methodology}
-            Bin all the datasets using a fixed histogram binning (for this example, 15 uniform bins spanning the range $[-3,4]$).
+            Bin all the datasets using a fixed histogram binning. For this example, 15 uniform bins are used spanning the range $[-3,4]$.\footnote{The bin range chosen is asymmetric around 0 because \(\mu_T = 0.2 > 0\).}
             %
             The choice of binning is kept constant for the unfolding procedure and subsequent analysis.
             %
             An illustration of the distributions at truth level and detector level is shown in \cref{fig:distributions-1d}.
             %
-            \cref{fig:smearing-examples} shows the Simulation distribution at smearnings \(\sigma_{\text{det}}\in \qty{0.00, 0.25, 0.50, 0.75}\) and the corresponding response matrices.
+            \cref{fig:smearing-examples} shows the Simulation distribution at smearnings \(\sigma_{\text{det}}\in \qty{\numlist[list-final-separator = {, }]{0.00; 0.25; 0.50; 0.75}}\) and the corresponding response matrices.
+            
 \begin{figure}
   \centering
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-particle_level.pdf}
-    \caption{Particle level distributions comparing the Truth (blue) with parameters $\mu_{\text{true}} = 0.2$ and $\sigma^2_{\text{true}} = 0.81$ with the Generation distribution (orange) with parameters $\mu_{\text{prior}} = 0$ and $\sigma^2_{\text{prior}} = 1.00$.
+    \caption[]{Particle level distributions comparing Truth (blue) with parameters $\mu_{T} = 0.2, \sigma^2_{T} = 0.81$ with Generation (orange) with parameters $\mu_{G} = 0.0, \sigma^2_{G} = 1.00$.
     %
-    The histograms represent normalised frequency distributions from $N_{\text{true}} = 10^4$ and $N_{\text{MC}} = 10^5$ samples respectively, while the dashed curves show the corresponding analytical Gaussian probability density functions.}
+    The histograms represent normalised frequency distributions and the dashed curves show the analytic density.}
     \label{fig:particle-level}
   \end{subfigure}
   \hfill
@@ -1137,49 +1212,37 @@ the maximum likelihood estimator is distributed as
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-detector_level.pdf}
-    \caption{Detector level distributions after applying Gaussian smearing with resolution $\sigma_{\text{det}} = 1.0$. The Data distribution (blue) has parameters $\mu_{\text{data}} = 0.2$ and $\sigma^2_{\text{data}} = 1.81$, while the Simulation distribution (orange) has $\mu_{\text{sim}} = 0$ and $\sigma^2_{\text{sim}} = 2.00$.
-    %
-    The smearing particle to detector level is Gaussian with $\sigma^2_{\text{det}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{smearing}}$, demonstrating the convolution of detector resolution effects.}
+    \caption[]{Detector level distributions after applying Gaussian smearing with resolution $\sigma_{\text{det}} = 1.0$. Data (blue) has parameters $\mu_D = 0.2$ and $\sigma^2_D = 1.81$, while Simulation (orange) has $\mu_S = 0.0$ and $\sigma^2_S = 2.00$.}
     \label{fig:detector-level}
   \end{subfigure}
-  \caption[Detector and particle level distributions for the study on correlations during inference.]{Comparison of particle level and detector level distributions. Panel (a) shows the particle level distributions where the Truth (blue histogram and dashed curve) differs from the Generation (orange histogram and dashed curve). The true distribution is characterized by a shifted mean ($\mu_{\text{true}} = 0.2$) and reduced variance ($\sigma^2_{\text{true}} = 0.81$) compared to the Generation ($\mu_{\text{prior}} = 0$, $\sigma^2_{\text{prior}} = 1.00$).
-
-  
-  Panel (b) demonstrates the effect of finite detector resolution through Gaussian smearing with $\sigma_{\text{det}} = 1.0$, which convolves with the underlying distributions to produce broader observed distributions at the detector level.
-  %
-  The detector-level variances increase according to the quadrature sum $\sigma^2_{\text{detector}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{det}}$, yielding $\sigma^2_{\text{data}} = 1.81$ and $\sigma^2_{\text{sim}} = 2.00$ for the Data and Simulation respectively.
+  \caption[Detector and particle level distributions for the study on correlations during inference.]{Comparison of particle level and detector level distributions. \textbf{(a)} shows the particle level distributions where the Truth (blue histogram and dashed curve) differs from the Generation (orange histogram and dashed curve). \textbf{(b)} demonstrates the effect of finite detector resolution through Gaussian smearing with $\sigma_{\text{det}} = 1.0$, which convolves with the underlying distributions to produce broader observed distributions at the detector level.
   }
   \label{fig:distributions-1d}
 \end{figure}
+
 \begin{figure}
   \centering
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-smearing_examples.pdf}
-    \caption{Detector level distributions as a function of detector resolution $\sigma_{\text{det}}$.
+    \includegraphics[width=\linewidth]{figures/chapter-07/unbinned_cor-smearing_examples.pdf}
+    \caption[]{\small Detector level distributions as a function of detector resolution $\sigma_{\text{det}}$.
     %
-    Step histograms show the normalised density of Simulation samples ($N = 10^5$) after applying Gaussian smearing with $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Dashed curves represent the corresponding analytical Gaussian probability density functions with variance $\sigma^2_{\text{total}} = \sigma^2_{\text{MC}} + \sigma^2_{\text{det}} = 1 + \sigma^2_{\text{det}}$.
-    %
-    The progression from $\sigma_{\text{det}} = 0$ (perfect detector) to $\sigma_{\text{det}} = 0.75$ demonstrates how increasing detector resolution degrades the measurement precision, with total variances ranging from 1.00 to 1.56.}
+    Step histograms show the normalised density of Simulation after applying Gaussian smearing with $\sigma_{\text{det}} \in \{\numlist[list-final-separator = {, }]{0.00; 0.25; 0.50; 0.75}\}$. Dashed curves represent the corresponding analytic Gaussian with variance \(\sigma^2_{G} + \sigma^2_{\text{det}}\).
+    }
     \label{fig:smearing-examples}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
+  \end{subfigure}\hfill\begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/chapter-07/unbinned_cor-response_matrix.pdf}
-    \caption{Discretised response matrices $R(x_i|z_j)$ representing the conditional probability of measuring an event in detector level bin $i$ given that it was generated in particle level bin $j$.
-    %
-    Each matrix element is normalised such that $\sum_i R(x_i\mid z_j) = 1$ for all $j$.
-    The four panels correspond to detector resolutions $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$, showing the transition from a diagonal matrix (perfect resolution) to increasingly off diagonal structures as detector smearing increases. Cell values indicate migration probabilities.}
+    \includegraphics[width=\linewidth]{figures/chapter-07/unbinned_cor-response_matrix.pdf}
+    \caption[]{\small Discretised response matrices $R(\vb*\mu_i\,|\,\vb*\nu_j)$ for detector resolutions \numlist{0.00; 0.25; 0.50; 0.75}. Each row is normalised so that $\sum_i R(x_i\mid z_j) = 1$ for all $j$. Observe the transition from a diagonal matrix (perfect resolution) to increasingly off diagonal structures as detector smearing increases.}
     \label{fig:response-matrices}
   \end{subfigure}
-  \caption{Characterisation of detector response effects through progressive smearing of Monte Carlo simulation. Panel (a) illustrates the impact of finite detector resolution on the observed distributions, showing how the Generation is broadened by convolution with Gaussian response functions of width $\sigma_{\text{det}}$. The total observed variance follows the quadrature sum $\sigma^2_{\text{observed}} = \sigma^2_{\text{particle}} + \sigma^2_{\text{det}}$.
+  \caption[Detector response effects for smearings \numlist{0.00; 0.25;0.50;0.75}]{\small Characterisation of detector response effects through progressive smearing of Generation. \textbf{(a)} illustrates how Generation is broadened by convolution with Gaussians of width $\sigma_{\text{det}}$. The variance adds in quadrature: $\sigma^2_S = \sigma^2_G + \sigma^2_{\text{det}}$.
   %
-  Panel (b) presents the corresponding binned response matrices $R(x_i\mid z_j)$, which encode the probability of bin migration due to detector effects.
+    \textbf{(b)} presents the corresponding response matrices, which encode the probability of bin migration due to detector effects.
   %
   For perfect resolution ($\sigma_{\text{det}} = 0$), the response matrix is diagonal, indicating no bin migration.
   %
-  As detector resolution degrades, off diagonal elements become increasingly prominent, quantifying the probability of events generated in bin $j$ being reconstructed in neighbouring bins.
+  As detector resolution degrades, off diagonal elements become increasingly prominent, as events are reconstructed in neighbouring bins.
   }
   \label{fig:smearing-and-response}
 \end{figure}
@@ -1203,7 +1266,7 @@ the maximum likelihood estimator is distributed as
             %
             The bin--to--bin covariances arise from the finite statistics of the data and from the smearing correlations introduced by the unfolding procedure.
             
-            One can estimate the covariance matrix of the unfolded histogram by repeating the unfolding on many statistically independent pseudo experiments, similar to bootstrapping. 
+            One can estimate the covariance matrix of the unfolded histogram by repeating the unfolding on many statistically independent pseudo--experiments, similar to bootstrapping. 
             %
             After unfolding, perform a binned fit to extract the parameters of the underlying distribution (in this case, the Gaussian’s mean $\mu$ and variance $\sigma^2$).
             %
@@ -1228,39 +1291,48 @@ the maximum likelihood estimator is distributed as
             Use the above procedure to obtain an unfolded result and fit for each pseudo--experiment.
             %
             One can now examine the bias and variance of the estimates.
+            
 \begin{figure}
     \centering
-    % (a) mu uncertainty
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/chapter-07/mu_error_plot_with_errorbars_ratio.pdf}
-        \caption{Asymptotic uncertainty on the Gaussian mean parameter $\mu$ as a function of detector resolution $\sigma_{\text{det}}$.
-        %
-        The lower panel displays the ratio of diagonal to full covariance uncertainties, demonstrating systematic overestimation by factors reaching 1.4 at $\sigma_{\text{det}} = 1.0$.}
-        \label{fig:mu_error_plot_with_errorbars}
-    \end{subfigure}
-    \hfill
-    % (b) variance uncertainty
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/chapter-07/var_error_plot_with_errorbars_ratio.pdf}
-        \caption{Asymptotic uncertainty on the variance parameter $\sigma^2$ as a function of detector resolution $\sigma_{\text{det}}$.
-        %
-        The diagonal approximation increasingly overestimates the uncertainty as detector resolution degrades, with the ratio reaching approximately 1.5 at $\sigma_{\text{det}} = 1.0$, indicating that neglecting bin correlations leads to measurable over-coverage.}
-        \label{fig:var_error_plot_with_errorbars}
-    \end{subfigure}
-    \caption[Comparison of uncertainty estimation methods for binned unfolded distribution parameters as a function of detector resolution.]{Comparison of uncertainty estimation methods for binned unfolded distribution parameters as a function of detector resolution. Panels (a) and (b) show the asymptotic uncertainties for the Gaussian mean $\mu$ and variance $\sigma^2$ parameters, respectively. The analysis compares three approaches: (i) full covariance matrix treatment accounting for all correlations (green circles), (ii) diagonal covariance approximation that neglects off-diagonal terms (pink squares), and (iii) empirical validation through 500 independent pseudo-experiments (green stars). The excellent agreement between the full covariance asymptotic errors and bootstrap derived uncertainties validates the analytical error propagation framework. The diagonal approximation consistently overestimates uncertainties, with the discrepancy growing monotonically with detector smearing. This overestimation arises from neglecting negative correlations between bins introduced by the normalisation constraint in the unfolding procedure. Proper treatment of the full covariance structure is essential for when extracting distribution parameters through subsequent fits.}
+    \resizebox{!}{0.5\textheight}{%
+        \begin{minipage}{\textwidth}
+            \centering
+            % (a) mu uncertainty
+            \begin{subfigure}[t]{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/chapter-07/mu_error_plot_with_errorbars_ratio.pdf}
+                \caption[]{\small Asymptotic and bootstrap RMS uncertainty on the Gaussian mean $\mu$ as a function of $\sigma_{\text{det}}$.
+                %
+                The lower panel displays the ratio of asymptotics to the bootstrap RMS, demonstrating systematic overestimation of uncertainties when correlations are ignored.}
+                \label{fig:mu_error_plot_with_errorbars}
+            \end{subfigure}
+            \hfill
+            % (b) variance uncertainty
+            \begin{subfigure}[t]{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/chapter-07/var_error_plot_with_errorbars_ratio.pdf}
+                \caption[]{\small Asymptotic and bootstrap RMS uncertainty on $\sigma^2$ as a function of $\sigma_{\text{det}}$.
+                %
+                The diagonal approximation increasingly overestimates the uncertainty as resolution degrades, indicating that neglecting correlations leads to measurable over-coverage.}
+                \label{fig:var_error_plot_with_errorbars}
+            \end{subfigure}
+    \caption[Comparison of uncertainty estimates from asymptotics and bootstraps for binned unfolded distribution parameters as a function of detector resolution.]{\small Comparison of uncertainty estimates for binned unfolded distribution parameters as a function of resolution.  (a) and (b) show uncertainties for the mean $\mu$ and variance $\sigma^2$, respectively. The analysis compares (i) asymptotics using the full covariance matrix (green circles), (ii) asymptotics using the diagonal covariance approximation that neglects off-diagonal terms (pink squares), and (iii) empirical validation through 500 pseudo-experiments (green stars). The excellent agreement between the full covariance asymptotic errors and bootstrap derived uncertainties validates the analytical error propagation. The diagonal approximation consistently overestimates uncertainties, with the discrepancy growing with detector smearing. Thus, proper treatment of the full covariance is essential for when extracting distribution parameters.}
     \label{fig:uncertsfullybinned}
+    \end{minipage}
+    }
 \end{figure}
 
 \begin{figure}
     \centering
+    \resizebox{!}{0.5\textheight}{%
+        \begin{minipage}{\textwidth}
+        \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-07/mu_mean_values_with_errorbars_ratio.pdf}
-        \caption{Mean best-fit values of the Gaussian mean parameter $\mu$ as a function of detector resolution $\sigma_{\text{det}}$.
+        \caption{Mean best-fit values of $\mu$ as a function of $\sigma_{\text{det}}$.
         %
-        The lower panel shows the ratio to truth, demonstrating unbiased parameter extraction within statistical uncertainties across all detector resolutions.}
+        The lower panel shows the ratio to truth, demonstrating unbiased parameter extraction within statistical uncertainties across all resolutions.}
         \label{fig:mu_mean_values_with_errorbars}
     \end{subfigure}
     \hfill
@@ -1268,28 +1340,31 @@ the maximum likelihood estimator is distributed as
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/chapter-07/var_mean_values_with_errorbars_ratio.pdf}
-        \caption{Mean best-fit values of the variance parameter $\sigma^2$ as a function of detector resolution $\sigma_{\text{det}}$. The presentation follows panel (a). The slight systematic trend toward misestimation at large $\sigma_{\text{det}}$ may arise from regularization bias in the unfolding procedure or finite binning effects.}
+        \caption{Mean best-fit values of $\sigma^2$ as a function of $\sigma_{\text{det}}$. The slight systematic trend toward misestimation at large $\sigma_{\text{det}}$ may arise from regularisation bias in the unfolding or binning effects.}
         \label{fig:var_mean_values_with_errorbars}
     \end{subfigure}
-    \caption[Validation of unbiased parameter extraction from unfolded distributions across varying detector resolutions.]{Validation of unbiased parameter extraction from unfolded distributions across varying detector resolutions. Panels (a) and (b) display the mean best-fit values for the mean $\mu$ and variance $\sigma^2$ parameters, respectively, obtained by fitting unfolded distributions from 500 independent pseudo-experiments. The analysis demonstrates that both the full covariance matrix treatment (green circles) and diagonal approximation (pink squares) yield unbiased central values, recovering the true parameters (red dashed lines: $\mu_{\text{true}} = 0.2$, $\sigma^2_{\text{true}} = 0.81$) within statistical uncertainties across the full range of detector resolutions tested.
+    \caption[Validation of unbiased parameter extraction from unfolded distributions across varying detector resolutions.]{Parameter extraction from unfolded distributions across varying detector resolutions. \textbf{(a)} and \textbf{(b)} display the mean best-fit values for the mean $\mu$ and variance $\sigma^2$ obtained by fitting unfolded distributions. The analysis demonstrates that both the full covariance (green circles) and diagonal approximation (pink squares) yield unbiased central values, recovering the true parameters (red dashed lines) within statistical uncertainties across the full range of detector resolutions.
     %
-    Error bars represent the standard error of the mean over the ensemble of pseudo-experiments, quantifying the precision. The ratio panels confirm parameter recovery within uncertainties, of truth values, validating the unfolding procedure's ability to correct for detector effects without introducing systematic biases. The consistency between full and diagonal covariance approaches for central values indicates that while correlation treatment significantly impacts uncertainty estimation, it does not affect the the point estimates.
+    Error bars represent the standard error of the mean over the ensemble of pseudo-experiments. The ratio panels confirm parameter recovery within uncertainties, of truth values, validating the unfolding procedure's ability to correct for detector effects without introducing systematic biases.
     }
     \label{fig:centralvaluesfullybinned}
+        \end{minipage}
+    }
 \end{figure}
+
             The analysis is repeated for each value of the detector resolution $\sigma_{\text{det}}\in[0, 0.75]$ to see how worsening detector effects impact the inference.
             %
-            \cref{fig:mu_mean_values_with_errorbars} and \cref{fig:var_mean_values_with_errorbars} summarize the accuracy or bias of the method, showing the mean fitted $\mu$ and $\sigma^2$ across 500 trials as a function of the detector smearing.
+            \cref{fig:mu_mean_values_with_errorbars} and \cref{fig:var_mean_values_with_errorbars} summarise the accuracy or bias of the method, showing the mean fitted $\mu$ and $\sigma^2$ across 500 trials as a function of the detector smearing.
             %
-            Figure\ref{fig:uncertsfullybinned} focuses on the precision and uncertainty coverage, comparing the nominal 1$\sigma$ errors from the fits to the actual spread of the results.
+            \cref{fig:uncertsfullybinned} focuses on the precision and uncertainty coverage, comparing the nominal $1\sigma$ errors from the fits to the actual spread of the results.
             %
             These results demonstrate that the IBU unfolding followed by a proper binned fit recovers the true distribution parameters without significant bias.
             %
-            For all tested smearing levels, the average fitted mean $\langle \hat{\mu}\rangle$ remains within statistical uncertainty of the true value, \(0.2\), and the average fitted variance $\langle \hat{\sigma}^2\rangle$ within statistical uncertainty of \(0.81\).
+            For all tested smearing levels, the average fitted mean $\E\qty[\hat{\mu}]$ remains within statistical uncertainty of the true value, \(0.2\), and the average fitted variance $\E\qty[\hat{\sigma}^2]$ within statistical uncertainty of \(0.81\).
             %
-            In Fig.\ref{fig:mu_mean_values_with_errorbars} and Fig.\ref{fig:var_mean_values_with_errorbars}, the averaged best fit values lie on or around the horizontal red dashed lines marking the true parameters.
+            In \cref{fig:mu_mean_values_with_errorbars} and \cref{fig:var_mean_values_with_errorbars}, the averaged best fit values lie on or around the horizontal red dashed lines marking the true parameters.
             %
-            The deviations are well within the statistical error bars\footnote{the standard error of the mean over the 500 trials}, indicating no significant bias in the unfolding or fitting procedure.
+            The deviations are well within the statistical error bars\footnote{The standard error of the mean over the 500 trials.}, indicating no significant bias in the unfolding or fitting procedure.
             %
             Notably, the choice of using the full covariance versus only diagonal uncertainties in the fit has no effect on the central values obtained.
             %
@@ -1321,7 +1396,7 @@ the maximum likelihood estimator is distributed as
             This overly conservative error estimate would lead to over-coverage of confidence intervals.
             %
             The nominal 68\% interval contains the true value substantially more than 68\% of the time.
-            
+            %
             This indicates an inefficient use of information.
             %
             The fit is effectively double--counting fluctuations in each bin that in reality are anti--correlated with fluctuations in other bins.
@@ -1333,29 +1408,27 @@ the maximum likelihood estimator is distributed as
         The unfolded results, when analysed with their full covariance matrix, give parameter estimates whose uncertainties accurately reflect the true spread across experiments, ensuring correct confidence interval coverage.
         %
         The study also shows that simplifying assumptions like treating unfolded bins as independent can skew the uncertainty estimates, in this case, making them overly conservative, even though the point estimates remain correct.
-        %
+        
         These findings provide a firm baseline for comparison with the unbinned methods discussed in the next sections.
         %
         After a brief detour to discuss correlation diagnostics after unbinned unfolding, following section will investigate how unbinned unfolding techniques handle event correlations and whether they can achieve a similar level of statistical reliability as this fully binned approach.
         %
         The lessons learned here, particularly the necessity of accounting for induced correlations, will carry forward as one transitions to unbinned inference on correlated data.
         
-    \subsection{Correlation diagnostics after unbinned unfolding}
+    \subsection{Correlation diagnostics after unbinned unfolding.}
     \label{subsec:weight_correlations}
         Before confronting any inference procedure with an unbinned output, one must first quantify the statistical dependencies that the unfolding induces.
         %
         This subsection introduces two complementary diagnostics that make those correlations both visible and quantifiable.
         \begin{enumerate}
             \item The \textbf{pairwise weight–-distance correlation} $\rho(|x_i-x_j|)$ between all pairs unfolded events $i$ and $j$, and
-            \item The \textbf{bin--bin covariance matrix} $C_{ab} = \operatorname{Cov}[\,\vb*{\nu}_a,\vb*{\nu}_b\,]$ of a fine histogram binned {after} unfolding.
+            \item The \textbf{bin--bin covariance matrix}, \(\Sigma\) of a fine histogram binned {after} unfolding.
         \end{enumerate}
-        Both are evaluated for four detector resolutions $\sigma_{\det}\in\{0,0.25,0.50,0.75\}$ and for two distinct estimators, {KDE} and neural network (\textsc{NN}) conditional density estimators.
+        
+        Both are evaluated for four detector resolutions \numlist{0.00;0.25;0.50;0.75} and for two distinct estimators, KDE and neural network (NN) conditional density estimators.
 
 \begin{figure}
     \centering
-    % Store the footnote counter
-    \setcounter{footnote}{18}  % Set to whatever the current number should be minus 1
-    % (a) KDE correlations
     \begin{subfigure}[t]{\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-correlation-vs-distance-1d-set1.pdf}
@@ -1363,42 +1436,36 @@ the maximum likelihood estimator is distributed as
         \label{fig:weight-corr-kde}
     \end{subfigure}
     \stepcounter{footnote}
+    \caption[Event wise weight correlations as a function of separation distance for different unfolding methods.]{Average pairwise correlation between unfolding weights as a function of absolute distance $|x_i - x_j|$ between events in the observable space. Both panels show results $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Error bars represent the RMS variation of correlation values within each distance bin. \textbf{(a)} shows the KDE approach which exhibits more localised correlations. \textbf{(b)} displays the neural network (NN) method, which produces longer-range correlations.(Continued on next page)}
+    \label{fig:weight-correlation-vs-distance-1d}
+\end{figure}
+
+\begin{figure}
+    \ContinuedFloat
+    \centering
     \begin{subfigure}[t]{\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-correlation-vs-distance-1d-set2.pdf}
         \caption{NN-based \textsc{OmniFold}: Weight correlations exhibit rapid decay, becoming negligible beyond $|x_i - x_j| \approx 1$ for all detector resolutions~\cite{Desai:2025mpy}.\footnotemark}
         \label{fig:weight-corr-nn}
     \end{subfigure}
-    \caption[Event wise weight correlations as a function of separation distance for different unfolding methods.]{Average pairwise correlation between unfolding weights as a function of absolute distance $|x_i - x_j|$ between events in the observable space. Both panels show results $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Error bars represent the RMS variation of correlation values within each distance bin. Panel (a) shows the KDE approach which exhibits more localised correlations. Panel (b) displays the neural network (NN) method, which produces longer-range correlations. The characteristic correlation length scales approximately linearly with detector resolution. These correlation patterns have important implications for statistical analyses of unfolded data.
-    }
-    \label{fig:weight-correlation-vs-distance-1d}
+    \caption[]{(continued from previous page) The characteristic correlation length scales approximately linearly with detector resolution. Figure created by Owen Long~\cite{Desai:2025mpy}.}
 \end{figure}
-\addtocounter{footnote}{-2}
-\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
-\stepcounter{footnote}
-\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
 
         The results are displayed in \cref{fig:weight-correlation-vs-distance-1d} and \cref{fig:weight-histogram-covariance-1d}, respectively, and form the empirical basis for the coverage study in \cref{subsec:unbinned_data}.
         
         \subsubsection{Pairwise weight--distance correlations}
-        For every event, by considering the weight distributions across pseudo--experiments one can compute the correlation coefficient, defined as
-        \[
-            \rho_{ij} = \frac{\mathrm{Cov}(w_i,w_j)}{\sigma_{w_i}\,\sigma_{w_j}}
-        \]
-        One can then average $\rho_{ij}$ in bins of $\Delta x = |x_i-x_j|$, where $x$ is the unfolded observable.\footnote{
-            %
-            The average is taken after combining results from 500 pseudo–experiments; error bars in \cref{fig:weight-correlation-vs-distance-1d} denote the ensemble RMS of $\rho_{ij}$ in each $\Delta x$ bin, thereby incorporating both the statistical fluctuation correlations and any run-‐to-‐run variability of the unfolding.
-            }
+        For every event, by considering the weight distributions across pseudo--experiments one can compute the correlation coefficient, \(\rho\) as defined in \cref{def:correlation}.
+        %
+        One can then average $\rho_{ij}$ in bins of $\Delta x = |x_i-x_j|$, where $x$ is the unfolded observable.
             %
             A few different features of the resulting curves in \cref{fig:weight-correlation-vs-distance-1d} (\cref{fig:weight-corr-kde} for {KDE}, \cref{fig:weight-corr-nn} for {NN}) are worth nothing.
-            \begin{itemize}
-            \item \textbf{Perfect detector ($\sigma_{\det}=0$):}
-                %
-                One should expect the average pairwise correlation to be $\rho(|\Delta x|) \simeq 0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, \textsc{OmniFold} reproduces the {factorised likelihood} limit in which event weights are statistically independent~\cite{andreassen_omnifold_2020,Milton:2025mug}.
+            \begin{description}
+            \item[Perfect detector ($\sigma_{\det}=0$):] One should expect the average pairwise correlation to be $\rho(|\Delta x|) \simeq 0$ for all separations $\Delta x>0$, confirming that when no smearing is applied, \textsc{OmniFold} reproduces the {factorised likelihood} limit in which event weights are statistically independent~\cite{andreassen_omnifold_2020,Milton:2025mug}.
                 %
                 At $\Delta x = 0$ we trivially should expect $\rho(0)=1$ because every event is, of course, perfectly correlated with itself.
                 %
-                In both \cref{fig:weight-corr-kde, fig:weight-corr-nn}, it is correctly the case that \(\rho(0) = 1\) and \(\rho(|\Delta x| \gg 1 \simeq 0.\)
+                In both \cref{fig:weight-corr-kde,fig:weight-corr-nn}, it is correctly the case that \(\rho(0) = 1\) and \(\rho(|\Delta x| \gg 1 \simeq 0.\)
                 
                 In the truly ideal i.i.d. case, one would expect the fall off from $\rho(0)=1$ to $\rho(|\Delta  x|>0) = 0$ to resemble a Dirac $\delta$ at the origin.
                 %
@@ -1420,7 +1487,7 @@ the maximum likelihood estimator is distributed as
                 Although numerically tiny, this effect, whatever its underlying explanation sets the optimistic lower bound on variance reduction when working with neural networks.
                 %
                 Thus even the idealised zero--smearing case does not yield perfectly independent weights in practice, a useful caution when quoting statistical uncertainties from inference using ML processed data.
-            \item \emph{Mild smearing (\(\sigma_{\det}=0.25\)):}
+            \item[Mild smearing (\(\sigma_{\det}=0.25\)):]
                 %
                 Short range correlations of order \(\rho\gtrsim 0.5\) appear for \(\Delta x\lesssim0.4\).
                 %
@@ -1432,69 +1499,72 @@ the maximum likelihood estimator is distributed as
                   %
                   \(\rho < 0\) for \(\Delta \in [1, 2]\), as expected.
                   %
-                  For both the NN and the KDE, \(\rho\) exhibits the same damped oscillatory structure, as would be expected by the normalization imposed by the unfolding.
+                  For both the NN and the KDE, \(\rho\) exhibits the same damped oscillatory structure, as would be expected by the normalisation imposed by the unfolding.
                   %
                   \(\ell_{\text{KDE}}\) is noticeably smaller that \(\ell_{\text NN}\).
                   %
-                  The contrast is less pronounced than in the perfect-resolution case, yet still visible.
-            \item \emph{Moderate and large smearing ($\sigma_{\det}\ge0.5$):}
-                % 
-                Correlations develop a broad plateau {independent of distance}.
+                  The contrast is less pronounced than in the perfect resolution case, yet still visible.
+            \item[Moderate and large smearing ($\sigma_{\det}\ge0.5$):] Correlations develop a br\-oad plateau independent of method choice.
                 %
-                In that regime $N_\text{eff}$ collapses explaining why a naïve fit ignoring  correlations would significantly misestimate errors.
-            \end{itemize}
+                In that regime $N_\text{eff}$ collapses explaining why a na\"ive fit ignoring  correlations would significantly misestimate errors.
+            \end{description}
+            
             The \textsc{NN} generally yields more long range, but {slightly weaker} correlations than the \textsc{KDE} at the same resolution, suggesting that a higher capacity estimator might be able to better absorb detector noise. 
             %
             However, the qualitative behaviour is identical;
             any non-zero smearing produces, long range weight correlations that violate the i.i.d. assumption built into standard unbinned likelihoods.
         \subsubsection{Histogram covariance matrices.}
-            Since most downstream analyses eventually bin the unfolded events, a histogram covariance matrix can be effective to visualize the correlations.
+            Since most downstream analyses eventually bin the unfolded events, a histogram covariance matrix can be effective to visualise the correlations.
             %
             The impact on such \emph{binned} summaries can be visualised by filling a 40 bin histogram in the range $[-4,4]$ for each pseudo--experiment and computing
             \[
-              C_{ab} = \bigl\langle
-                         (N_a-\bar N_a)(N_b-\bar N_b)
-                       \bigr\rangle.
+              \Sigma_{ab} = \E\qty[(N_a-\bar N_a)(N_b-\bar N_b)].
             \]
-            %
+            
             The matrices, shown in \cref{fig:weight-histogram-covariance-1d}, reinforce the observations from the correlation curves.
             %
-            Even at zero smearing, while KDE produces a nearly diagonal $C_{ab},$ \textsc{OmniFold}'s weights exhibit small but noticable off diagonal elements.
+            Even at zero smearing, while KDE produces a nearly diagonal $\Sigma,$ \textsc{OmniFold}'s weights exhibit small but noticable off diagonal elements.
             %
             Growing the smearing leads to pronounced \emph{anti--correlations} along the first off diagonal and coherent positive correlations far from the diagonal.
             %
             For $\sigma_{\det}=0.75$ the largest off diagonal coefficient reaches $|\rho_{ab}|\simeq0.5$, echoing the plateau seen in $\rho(|\Delta x|)$.  These patterns are almost identical for KDE and NN analyses.
 
-            Such strong off diagonal structure rigorously explains why a $\chi^2$ fit that ignores covariances by using only the diagonal of $C$ leads to significant miscoverage.
+            Such strong off diagonal structure rigorously explains why a $\chi^2$ fit that ignores covariances by using only the diagonal of $\Sigma$ leads to significant miscoverage.
 \begin{figure}
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-histogram-covariance-1d.pdf}
-        \caption{KDE-based \textsc{OmniFold}: Covariance matrices exhibit concentrated correlation structures with significant values ($>0.1$) confined primarily to nearest and next to nearest neighbour bins.\footnotemark}
+        \caption{KDE-based \textsc{OmniFold}: Covariance matrices exhibit concentrated correlation structures with significant values ($>0.1$) confined primarily to nearest and next to nearest neighbour bins.}
         \label{fig:covar-kde}
     \end{subfigure}
     \stepcounter{footnote}
+    \caption[Covariance structure of binned unfolded distributions for KDE and NN-based methods.]{Covariance matrices of binned histograms constructed from unfolded distributions for $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Each axis represents the covariance structure of a 40--bin histogram over $[-4, 4]$ in the observable space, with bin width $\Delta x = 0.2$. Matrix elements $\rho_{ij}$ represent the correlation between bins $i$ and $j$.
+    %
+     \textbf{(a)} displays results from KDE and \textbf{(b)} shows NN results, both using \textsc{OmniFold}.
+     %
+     Both methods exhibit a clear progression from nearly diagonal matrices at perfect resolution to increasingly correlated structures as detector resolution degrades.
+    %
+    The integrated correlation strength, sum of absolute off-diagonal elements, increases approximately quadratically with $\sigma_{\text{det}}$, reflecting the information loss that must be compensated through correlated adjustments.
+     (Continued on next page)}
+    \label{fig:weight-histogram-covariance-1d}
+\end{figure}
+
+\begin{figure}
+    \ContinuedFloat
+    \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{figures/chapter-07/weight-histogram-covariance-1d-nn.pdf}
-        \caption{NN-based \textsc{OmniFold}: Covariance matrices exhibit broad correlation bands extending $\ge10$ bins from the diagonal at $\sigma_{\text{det}} = 0.75$.\footnotemark}
+        \caption{NN-based \textsc{OmniFold}: Covariance matrices exhibit broad correlation bands extending $\ge10$ bins from the diagonal at $\sigma_{\text{det}} = 0.75$.}
         \label{fig:covar-nn}
     \end{subfigure}
-    \caption[Covariance structure of binned unfolded distributions for KDE and NN-based methods.]{Covariance matrices of binned histograms constructed from unfolded distributions for $\sigma_{\text{det}} \in \{0.00, 0.25, 0.50, 0.75\}$. Each axis represents the covariance structure of a 40--bin histogram over $[-4, 4]$ in the observable space, with bin width $\Delta x = 0.2$. Matrix elements $\rho_{ij}$ represent the correlation between bins $i$ and $j$.
+    \caption[]{(Continued from previous page) 
     %
-    Panel (a) displays results from KDE and Panel (b) shows NN results, both using the \textsc{OmniFold} method. Both methods exhibit a clear progression from nearly diagonal matrices at perfect resolution to increasingly correlated structures as detector resolution degrades.
-    %
-    The integrated correlation strength, sum of absolute off-diagonal elements, increases approximately quadratically with $\sigma_{\text{det}}$, reflecting the information loss that must be compensated through correlated adjustments.
-    %
-    These covariance matrices are essential inputs for rigorous statistical analysis of unfolded data, and must be propagated through any subsequent fits or hypothesis tests to obtain correct uncertainties.}
-    \label{fig:weight-histogram-covariance-1d}
+    These covariance matrices are essential inputs for rigorous statistical analysis of unfolded data, and must be propagated through any subsequent fits or hypothesis tests to obtain correct uncertainties. Figure produced by Owen Long~\cite{Desai:2025mpy}.}
 \end{figure}
-\addtocounter{footnote}{-2}
-\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
-\stepcounter{footnote}
-\footnotetext{Figure produced by Owen Long~\cite{Desai:2025mpy}.}
-        \subsubsection{Implications}
+
+        \subsubsection{Implications.}
             The correlation diagnostics presented here {empirically validate} the theoretical expectation that \textsc{OmniFold} weights are correlated.
             %
             Quantifying the strength and range of those correlations enables a rough estimate of how badly an independence based error formula will fail.
@@ -1532,7 +1602,7 @@ the maximum likelihood estimator is distributed as
         %
         The Hessian (curvature) of the NLL at the optimum provides an asymptotic error estimate for $\theta$.
         %
-        Equivalently, one finds the $\Delta\ln L=0.5$ offset for a $1\sigma$ interval.
+        Equivalently, one finds the $\Delta\ln\mathcal L=0.5$ offset for a $1\sigma$ interval.
         
         This workflow assumes statistical independence of events~\cite{cowan_survey_2002, Blobel:2011fih, Blobel2013Unfolding}.
         %
@@ -1547,19 +1617,23 @@ the maximum likelihood estimator is distributed as
         For each resolution setting, the 500 pseudo--data samples are unfolded and then subjected to both the aforementioned inference procedures.
         %
         This allows a comparison of the bias, uncertainty estimation, and coverage of the two workflows against the fully binned baseline.
-        \subsubsection{Parameter bias}
+        \subsubsection{Parameter bias.}
 \begin{figure}
     \centering
+    \resizebox{!}{0.5\textheight}{%
+        \begin{minipage}{\textwidth}
+        \centering
     \includegraphics[width=0.95\linewidth]{figures/chapter-07/uncertainty-and-bias-vs-resolution-ibu-diag.pdf}
-    \caption[Comparison between binned and unbinned parameter inference with unbinned and binned unfolding methods as a function of detector resolution.]{Systematic comparison of inference uncertainty and bias for distribution parameters extracted from unfolded data as a function of $\sigma_{\text{det}}$.
+    \caption[Comparison between binned and unbinned parameter inference with unbinned and binned unfolding methods as a function of detector resolution.]{\small Comparison of inference uncertainty and bias for distribution parameters extracted from unfolded data as a function of $\sigma_{\text{det}}$.
     %
     (Top left) uncertainty on $\mu$, (top right) uncertainty on $\sigma^2$, (bottom left) bias in $\mu$ estimation, and (bottom right) bias in $\sigma^2$ estimation.
     %
-    Three unfolding and inference approaches are compared: (i) Unbinned Unfolding (UBU) with unbinned maximum likelihood (ML) fitting shown as blue circles, (ii) binned Iterative Bayesian Unfolding (IBU) with $\chi^2$ fitting using the full covariance matrix (orange triangles), and (iii) IBU with $\chi^2$ fitting using only diagonal covariance elements (green squares). The blue shaded band in each panel represents $\pm$ RMS inference uncertainty from the UBU+ML approach.\footnotemark
-}
+    Three unfolding and inference approaches are compared: (i) Unbinned Unfolding (UBU) with unbinned maximum likelihood (ML) fitting shown as blue circles, (ii) binned Iterative Bayesian Unfolding (IBU) with $\chi^2$ fitting using the full covariance matrix (orange triangles), and (iii) IBU with $\chi^2$ fitting using only diagonal covariance elements (green squares). The blue shaded band in each panel represents $\pm$ RMS inference uncertainty from the UBU+ML approach. Figure created by Owen Long~\cite{Desai:2025mpy}.
+    }
     \label{fig:uncertainty-and-bias-vs-resolution}
+    \end{minipage}
+    }
 \end{figure}
-\footnotetext{Figure created by Owen Long~\cite{Desai:2025mpy}.}
             Both unbinned workflows yield fitted parameter values that are consistent with those from the binned baseline.
             %
             There is no appreciable bias introduced by the unbinned unfolding step or the choice of inference method.
@@ -1576,7 +1650,7 @@ the maximum likelihood estimator is distributed as
             
             Notably, the bias observed in the naive unbinned ML fit is the same as that in the proper $\chi^2$ fit that accounts for the covariance of a given dataset. 
             %
-            This can be explained as both fits ultimately maximizing a likelihood, or minimizing a $\chi^2$, to match the unfolded distribution to the model;
+            This can be explained as both fits ultimately maximising a likelihood, or minimising a $\chi^2$, to match the unfolded distribution to the model;
             %
             if the model is correctly specified, the MLEs should coincide.
             %
@@ -1597,7 +1671,7 @@ the maximum likelihood estimator is distributed as
             
             These uncertainty panels (top) demonstrate that an unbinned asymptotic maximum likelihood (ML) fit on unbinned unfolded (UBU) data consistently underestimates statistical uncertainties across all detector resolutions, and is most similar to the results of of performing an asymptotic binned \(\chi^2\) fit on the same UBU results while ignoring off diagonal covariance element.
             %
-            The uncertainty degradation with increasing $\sigma_{\text{det}}$ follows the expected $\sqrt{1 + \sigma^2_{\text{det}}/\sigma^2_{\text{true}}}$ scaling for both parameters.
+            The uncertainty degradation with increasing $\sigma_{\text{det}}$ follows the expected $\displaystyle\sqrt{1 + \frac{\sigma^2_{\text{det}}}{\sigma^2_{\text{true}}}}$ scaling for both parameters.
 
             This behaviour is as expected and desired.
             %
@@ -1621,7 +1695,7 @@ the maximum likelihood estimator is distributed as
             %
             This suggests more strongly that it is difficult \textit{a priori} to determine the sign of miscoverage due to ignored correlations.
             
-            Intriguingly, the naive unbinned error bars hardly change with detector resolution---the orange curve in \cref{fig:uncertainty-and-bias-vs-resolution} is nearly flat---indicating that the fit is seemingly just as ``precise'' for a very smeared dataset as for a perfect detector.
+            Intriguingly, the naive unbinned error bars hardly change with detector resolution---the orange curve in \cref{fig:uncertainty-and-bias-vs-resolution} is nearly flat---indicating that the fit is seemingly just as `precise' for a very smeared dataset as for a perfect detector.
             %
             This unphysical result could be a direct consequence of ignoring the event correlations.
             %
@@ -1649,8 +1723,8 @@ the maximum likelihood estimator is distributed as
         %
         Such an approach largely retains the benefits of unbinned unfolding, with no information loss up to the point of inference, while yielding parameter uncertainties and coverage properties in line with a rigorous frequentist construction.
         %
-        Hence this ``unbinned unfolding + binned fit'' should be more precise than a fully binned analysis.
-        %
+        Hence this `unbinned unfolding + binned fit' should be more precise than a fully binned analysis.
+        
         For example, in \cref{fig:uncertainty-and-bias-vs-resolution} the full covariance UBU results achieve a similar or smaller uncertainty than the traditional IBU based results at each smearing value.
         %
         This suggests an advantage to delaying any binning as late in the analysis chain as possible, consistent with the intuition that using unbinned distributions throughout the unfolding can preserve more information for the final fit.
@@ -1659,7 +1733,7 @@ the maximum likelihood estimator is distributed as
         %
         UBU and IBU approaches do not differ vastly in precision.
         %
-        In higher dimensions the unbinned approach is expected to drastically outperform a binned analysis (since binning in many dimensions is impractical or introduces large discretization errors)~\cite{Pan:2024rfh, Butter2023MachineGeneration, Plehn:2022ftl}
+        In higher dimensions the unbinned approach is expected to drastically outperform a binned analysis (since binning in many dimensions is impractical or introduces large discretisation errors)~\cite{Pan:2024rfh, Butter2023MachineGeneration, Plehn:2022ftl}.
     
         While the hybrid method provides a sound stopgap, it somewhat undermines the original motivation for unbinned methods, which aims to avoid histogramming altogether.
         %
@@ -1699,28 +1773,28 @@ the maximum likelihood estimator is distributed as
         %
         To answer this question, one can therefore repeat the Gaussian study in two, four and six dimensions, keeping the experimental setup identical, except for adjusting the numerical parameters that define the Gaussians.
         %
-        The Gaussian parameters used in the multidimensional studies are listed in \cref{tab:highD-params}.
+        The Gaussian parameters used in the \numlist{2;4;6} dimensional studies are listed in \cref{tab:highD-params-2d,,tab:highD-params-4d,,tab:highD-params-6d} respectively.
         %
         Detector resolutions are scaled coordinate wise so that the signal to noise ratio in every dimension matches the \(d=1\) baseline.
 \input{tables/7-2}
         \subsubsection{Evaluation.}
+        
 \begin{figure}
     \centering
+    \centering
     \includegraphics[width=\linewidth]{figures/chapter-07/nn-uncertainties-vs-nd.pdf}
-    \caption[Validation of asymptotic uncertainty estimates across dimensionalities in unbinned unfolding.]{Comparison of empirical root-mean-square (RMS) parameter uncertainties with mean asymptotic uncertainty estimates for all model parameters across \(d = 1, 2, 4, 6\) unbinned unfolding studies. Each point represents a single parameter (mean or covariance matrix element) from the multivariate Gaussian models.
+    \caption[Validation of asymptotic uncertainty estimates across dimensionalities in unbinned unfolding.]{\small Comparison of empirical RMS parameter uncertainties with mean asymptotic uncertainty estimates for all model parameters across \(d = \numlist{1;2;4;6}\). Each point represents a single parameter (mean or covariance matrix element) from the multivariate Gaussian.
     %
     The blue circles denote components of the mean, and the orange diamonds denote components of the covariance.
     %
-    The grey dashed line indicates perfect agreement (unit slope), while the green solid line shows the least squares fit for each dimensionality, with slope equal to the mean RMS/asymptotic ratio. 
+    The grey dashed line indicates perfect agreement, while the green solid line shows the least squares fit for each dimension. 
     %
-    The systematic deviation above the unit line demonstrates that asymptotic uncertainties consistently underestimate the true parameter uncertainties, with the underestimation factor increasing from approximately 1.05 in \(d = 1\) to 1.25 in \(d = 6\).
+    The systematic deviation above the unit line demonstrates that asymptotic uncertainties consistently underestimate the true parameter uncertainties.
     %
-    This trend reflects the growing impact of finite sample effects and parameter correlations in higher dimensions, where the Fisher information matrix becomes less accurate. 
-    %
-    The increasing scatter with dimensionality indicates heterogeneous behaviour across different parameter types, with off diagonal correlation parameters typically showing larger deviations than mean parameters.\footnotemark}
+    The increasing scatter with dimension indicates heterogeneous behaviour across different parameter types, with off diagonal correlation parameters typically showing larger deviations than mean parameters. Figure created by Owen Long~\cite{Desai:2025mpy}.
+    }
     \label{fig:rms-asy-dim}
 \end{figure}
-\footnotetext{Figure create by Owen Long~\cite{Desai:2025mpy}.}
             For every fit parameter, that is, all $\mu_k$ and all unique $\sigma^2_{kl}$, compute the empirical RMS is computed over 500 pseudo--experiments, and the average asymptotic error reported by the na\"ive unbinned likelihood Hessian.
             %
             If the likelihood were well calibrated, these two quantities
@@ -1736,7 +1810,7 @@ the maximum likelihood estimator is distributed as
             %
             The analytic error bars understate the true variance by a factor of about \(\numrange{3}{4}\), consistent with the effective sample size argument~\cite{Yang2011EffectiveAnalyses, jones_effective_2021, geyer_introduction_2011}, \textit{vide} \cref{sec:formalism}.
             
-            \cref{fig:rms-asy-6D-res} repeats the \(d = 6\) study with detector resolution scaled by $0,1,2,$ and $3$ relative to the $\sigma_{\det}$ in \cref{tab:highD-params}.
+            \cref{fig:rms-asy-6D-res} repeats the \(d = 6\) study with detector resolution scaled by \numlist{0;1;2;3} relative to the $\sigma_{\det}$ in \cref{tab:highD-params-6d}.
             %
             The slope grows with the smearing factor, confirming that weight correlations, not intrinsic variance, drive the failure~\cite{Langenbruch:2019nwe}.
 
@@ -1757,18 +1831,17 @@ the maximum likelihood estimator is distributed as
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/chapter-07/nn-uncertainties-6d-res-var.pdf}
-    \caption[Impact of detector resolution on asymptotic uncertainty reliability in 6-dimensional unfolding.]{Comparison of empirical RMS uncertainties with asymptotic estimates for the six dimensional unfolding study across four detector smearing configurations. The analysis uses smearing scale factors of 0, 1, 2, and 3, where the scale factor multiplies the baseline detector resolution parameters $\boldsymbol{\sigma}_{\text{det}}$ listed in Table~\ref{tab:highD-params}.
+    \includegraphics[width=\linewidth]{figures/chapter-07/nn-uncertainties-6d-res-var.pdf}
+    \caption[Impact of detector resolution on asymptotic uncertainty reliability in 6 dimensional unfolding.]{Comparison of empirical RMS uncertainties with asymptotic estimates for the six dimensional unfolding study for \numlist{1;2;3;4}$\,\times\, \boldsymbol{\sigma}_{\text{det}}$ listed in \cref{tab:highD-params-6d}.
     %
     The grey dashed line indicates perfect agreement, while green line shows least squares fits for each smearing level.
     %
-    The RMS/asymptotic ratio increases monotonically with detector smearing, from 1.15 at perfect resolution to 1.45 at \(3\times\) smearing, demonstrating that asymptotic uncertainties become increasingly optimistic as detector effects worsen. This degradation arises from increased parameter correlations induced by the unfolding process when compensating for information loss and the breakdown of the local quadratic approximation underlying the Fisher information matrix when the likelihood surface becomes more complex.
+    The RMS/asymptotic ratio increases monotonically with detector smearing, from 1.15 at perfect resolution to 1.45 at \(3\times\) smearing, demonstrating that asymptotic uncertainties become increasingly optimistic as detector effects worsen. This degradation arises from increased correlations induced by the unfolding process.
     %
-    The vertical spread of points also increases with smearing, indicating that the reliability of asymptotic estimates becomes more parameter dependent. Correlation parameters (off-diagonal elements of $\boldsymbol{\rho}$) show particularly poor estimation at high smearing levels, with some parameters exhibiting RMS/asymptotic ratios exceeding 2.0. These findings emphasize that careful uncertainty validation is essential when applying unbinned unfolding to experiments with significant detector effects.\footnotemark
+    The vertical spread of points also increases with smearing, indicating that the reliability of asymptotic estimates becomes more parameter dependent. Correlation parameters (off-diagonal elements of $\boldsymbol{\rho}$) show particularly poor estimation at high smearing, with some parameters exhibiting RMS/asymptotic ratios exceeding 2.0. Careful uncertainty validation is essential when applying unbinned unfolding to experiments with significant detector effects. Figure created by Owen Long~\cite{Desai:2025mpy}.
     }
     \label{fig:rms-asy-6D-res}
     \end{figure}
-\footnotetext{Figure create by Owen Long~\cite{Desai:2025mpy}.}
 
 \section{Conclusions and outlook.}
     This chapter presented a detailed study of parameter inference performed on an unbinned unfolded dataset, using a controlled Gaussian simulation.
@@ -1777,21 +1850,21 @@ the maximum likelihood estimator is distributed as
     
     The Gaussian studies demonstrated that preserving event level information until the final fit can indeed confer a tangible advantage: an unbinned unfolding followed by binned parameter estimation was observed to outperform a fully binned analysis in terms of fit precision.
     %
-    This validates the intuitive principle that one should delay information reductio as much as possible in the analysis chain, thereby maximising the use of available information.
+    This validates the intuitive principle that one should delay information reduction as much as possible in the analysis chain, thereby maximising the use of available information.
     %
     Importantly, however, the findings also exposed critical caveats that must temper this optimism, especially when interpreting unbinned results with standard inference techniques.
 
     A central observation is that the output of an unfolding procedure violates the usual assumption of statistical independence among events.
     %
-    In these studies, the iterative \textsc{OmniFold} procedure produces a weighted set of ``unfolded'' events that are correlated with one another.
+    In these studies, the iterative \textsc{OmniFold} procedure produces a weighted set of `unfolded' events that are correlated with one another.
     %
     A na\"ive unbinned likelihood based inference, which treats the unfolded events as if they were independent observations, fails to yield reliable uncertainty estimates.
     %
-    In particular, when event--to--event correlations are ignored, the standard asymptotic formulae for parameter uncertainties\footnote{derived from a Fisher information or Hessian approximation} become invalid.
+    In particular, when event--to--event correlations are ignored, the standard asymptotic formulae for parameter uncertainties\footnote{Derived from a Fisher information or Hessian approximation.} become invalid.
     
     Concretely, the na\"ive application of an unbinned maximum likelihood fit significantly underestimates the true uncertainty on the fitted parameters in Gaussian examples.
     %
-    This underestimation was evidenced by comparing the analytic errors to the empirical spread of fit results across many pseudo-=experiments.
+    This underestimation was evidenced by comparing the analytic errors to the empirical spread of fit results across many pseudo-experiments.
     %
     The analytic errors, assuming independence, were significantly smaller than the actual RMS of the fitted parameters.
     
@@ -1809,7 +1882,7 @@ the maximum likelihood estimator is distributed as
     %
     This serves as an important proof of principle.
     %
-    If one properly accounts for the covariance between events\footnote{or as the case may be, between event weights} in the unbinned dataset, inference methods can yield correct confidence intervals and hypothesis tests even in the unbinned paradigm.
+    If one properly accounts for the covariance between events\footnote{Or as the case may be, between event weights} in the unbinned dataset, inference methods can yield correct confidence intervals and hypothesis tests even in the unbinned paradigm.
     %
     However, it should also be emphasised that currently available unbinned covariance aware treatments are computationally challenging to scale.
     
@@ -1867,6 +1940,6 @@ the maximum likelihood estimator is distributed as
     %
     These conclusions, drawn in a simplified setting, strongly motivate the development of improved tools and methods before applying unbinned inference to precision measurements.
     %
-    As the field moves toward ever more complex and high-dimensional data analyses, the insights gained here will guide the creation of a robust statistical framework for unbinned cross section measurements, one that maximizes information usage while properly accounting for the complex correlations introduced by the unfolding process.
+    As the field moves toward ever more complex and high dimensional data analyses, the insights gained here will guide the creation of a robust statistical framework for unbinned cross section measurements, one that maximizes information usage while properly accounting for the complex correlations introduced by the unfolding process.
     %
     The lessons of this chapter therefore serve as both a caution and a call to action, laying the groundwork for more reliable unbinned inference techniques in high energy physics.

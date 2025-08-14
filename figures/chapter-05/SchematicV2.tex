@@ -1,0 +1,225 @@
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, decorations.markings, calc}
+\usepackage{graphicx}
+\begin{document}
+\begin{tikzpicture}[
+  font=\sffamily,
+  % Global styles
+  node distance=1.2cm and 2.0cm,
+  >=latex,
+  box/.style={
+    rectangle, rounded corners, thick, draw=black, align=center,
+    minimum width=2.7cm, minimum height=1.0cm,
+  },
+  momentbox/.style={
+    rectangle, rounded corners, thick, draw=black, align=center,
+    minimum width=2.2cm, minimum height=0.8cm,
+    font=\footnotesize
+  },
+  bigbox/.style={
+    rectangle, dashed, draw=black!70, rounded corners,
+    inner sep=0.4cm
+  },
+  arrowstyle/.style={->, thick},
+  doublearrow/.style={<->, thick},
+  titlebox/.style={font=\bfseries\Large},
+  matrixbox/.style={
+    rectangle, rounded corners, thick, draw=purple!70!black, align=center,
+    minimum width=3.5cm, minimum height=1.2cm,
+    fill=purple!5
+  }
+]
+
+\tikzset{
+  computer fill/.initial=blue!20,
+}
+
+\tikzset{
+  computer/.style n args={1}{%
+    inner sep=0, % remove inner spacing so we have full control
+    % Force a phantom so that the node gets a proper size.
+    execute at begin node={\phantom{\rule{2cm}{1.75cm}}},
+    draw=none, % don't draw the node's border
+    % Everything is drawn in the path picture
+    path picture={
+      % Force the node's overall drawing area to include the base.
+      \path[use as bounding box] (0,0) rectangle (2,1.75);
+      % Draw the monitor rectangle.
+      \draw[fill=\pgfkeysvalueof{/tikz/computer fill}] (0,0.25) rectangle (2,1.75);
+      % Draw the two "leg" lines.
+      \draw[fill=\pgfkeysvalueof{/tikz/computer fill}] (0.875,0.125) rectangle (1.125,.25);
+      % Draw the base rectangle.
+      \draw[fill=\pgfkeysvalueof{/tikz/computer fill}] (0.5,0) rectangle (1.5,0.125);
+      % Place the text inside the monitor. (Here the monitor is 2cm wide and 1.5cm tall.)
+      \node[anchor=center, align=center] at (1,1) {#1};
+    }
+  }
+}
+
+% ------------------------------------------------------------------------
+% Main title box
+% ------------------------------------------------------------------------
+\node[bigbox, label={[titlebox, yshift=.75cm]north:\textcolor{black}{Moment Unfolding Framework}}] (MUBox)
+  at (5, 1) [minimum width=18cm, minimum height=10cm] {};
+
+% ------------------------------------------------------------------------
+% Two large dashed boxes for Particle Level (left) and Detector Level (right)
+% ------------------------------------------------------------------------
+\node[bigbox, label={[titlebox, xshift=-1cm, yshift=-1cm]north west:\textcolor{green!40!black}{Particle Level}}] (particleBox)
+  at (1.5, 1) [minimum width=7.5cm, minimum height=7.5cm] {};
+
+\node[bigbox, label={[titlebox, xshift=1cm, yshift=-1cm]north east:\textcolor{blue!60!black}{Detector Level}}] (detectorBox)
+  at (9.5, 1) [minimum width=7.5cm, minimum height=7.5cm] {};
+
+% ------------------------------------------------------------------------
+% PARTICLE LEVEL NODES (within particleBox)
+% ------------------------------------------------------------------------
+% Generation (top)
+\node[computer={\textbf{Generation}\\\footnotesize{(Pythia)}}, computer fill=green!20]
+    (gen) at ([xshift=2.5cm, yshift=-2.5cm] particleBox.north west){};
+
+% Truth physics
+\node[align=center, opacity=0.75] (truth) [right=1.5cm of gen, inner sep=0pt, 
+    label={[xshift=0.25cm,yshift=0.25cm]center:{\shortstack{\textbf{Truth}\\ \footnotesize{(Reference)}}}]{
+    \includegraphics[width=0.145\linewidth]{figures/Collision.pdf}
+};
+
+% Particle-level moments
+\node[box, fill=green!10]
+  (particlemoments) [below=1.5cm of gen, xshift=1cm]
+  {\textbf{Particle-level}\\\textbf{Moments}\\$\langle \mathcal{O}_p \rangle$};
+
+% Individual moment boxes
+\node[momentbox, fill=green!5]
+  (pm1) [below=0.3cm of particlemoments, xshift=-1.5cm]
+  {$\langle p_T \rangle$};
+  
+\node[momentbox, fill=green!5]
+  (pm2) [right=0.2cm of pm1]
+  {$\langle p_T^2 \rangle$};
+  
+\node[momentbox, fill=green!5]
+  (pm3) [right=0.2cm of pm2]
+  {$\langle \eta \cdot p_T \rangle$};
+
+% Arrows in particle level
+\draw[arrowstyle, green!60!black] (gen) -- node[midway, left, font=\footnotesize] {extract} (particlemoments);
+\draw[arrowstyle, green!60!black] (truth) -- node[midway, right, font=\footnotesize] {validate} (particlemoments);
+
+% ------------------------------------------------------------------------
+% DETECTOR LEVEL NODES (within detectorBox)
+% ------------------------------------------------------------------------
+% Simulation (top)
+\node[computer={\textbf{Simulation}\\\footnotesize{(Geant4)}}, computer fill=blue!20]
+  (sim) at ([xshift=2.5cm, yshift=-2.5cm]detectorBox.north west)
+  {};
+
+% Data
+\node[align=center, opacity=0.75] (data) [right=1.5cm of sim, inner sep=0pt, 
+    label={center:{\shortstack{\textbf{Data}\\ \footnotesize{(Measured)}}}]{
+    \includegraphics[width=0.145\linewidth]{figures/Collider.pdf}
+};
+
+% Detector-level moments
+\node[box, fill=blue!10]
+  (detectormoments) [below=1.5cm of sim, xshift=1cm]
+  {\textbf{Detector-level}\\\textbf{Moments}\\$\langle \mathcal{O}_d \rangle$};
+
+% Individual moment boxes
+\node[momentbox, fill=blue!5]
+  (dm1) [below=0.3cm of detectormoments, xshift=-1.5cm]
+  {$\langle E_T \rangle$};
+  
+\node[momentbox, fill=blue!5]
+  (dm2) [right=0.2cm of dm1]
+  {$\langle E_T^2 \rangle$};
+  
+\node[momentbox, fill=blue!5]
+  (dm3) [right=0.2cm of dm2]
+  {$\langle \eta \cdot E_T \rangle$};
+
+% Arrows in detector level
+\draw[arrowstyle, blue!60!black] (sim) -- node[midway, left, font=\footnotesize] {extract} (detectormoments);
+\draw[arrowstyle, blue!60!black] (data) -- node[midway, right, font=\footnotesize] {measure} (detectormoments);
+
+% ------------------------------------------------------------------------
+% CENTRAL UNFOLDING COMPONENTS
+% ------------------------------------------------------------------------
+
+% Response Matrix
+\node[matrixbox]
+  (response) at (5.5, 2.5)
+  {\textbf{Response Matrix}\\$\mathbf{R}_{ij} = \langle \mathcal{O}_d^i | \mathcal{O}_p^j \rangle$\\
+  \footnotesize{(from simulation)}};
+
+% Unfolding Algorithm
+\node[matrixbox, draw=red!70!black, fill=red!5]
+  (unfold) at (5.5, 0)
+  {\textbf{Unfolding}\\$\mathbf{R}^{-1} \cdot \langle \mathcal{O}_d \rangle \rightarrow \langle \mathcal{O}_p \rangle$\\
+  \footnotesize{(SVD/Bayesian/...)}};
+
+% Unfolded Results
+\node[box, fill=orange!10, draw=orange!70!black]
+  (unfolded) at (5.5, -2.5)
+  {\textbf{Unfolded}\\\textbf{Moments}\\$\langle \hat{\mathcal{O}}_p \rangle$};
+
+% ------------------------------------------------------------------------
+% CONNECTIONS
+% ------------------------------------------------------------------------
+
+% From particle moments to response matrix
+\draw[arrowstyle, green!60!black, dashed] 
+  (particlemoments.east) -- node[above, font=\footnotesize] {calibrate} (response.west);
+
+% From detector moments to unfolding
+\draw[arrowstyle, blue!60!black, line width=1.5pt] 
+  (detectormoments.south) |- (unfold.east);
+
+% From response matrix to unfolding
+\draw[arrowstyle, purple!70!black, line width=1.5pt] 
+  (response) -- node[midway, right, font=\footnotesize] {invert} (unfold);
+
+% From unfolding to unfolded results
+\draw[arrowstyle, red!70!black, line width=1.5pt] 
+  (unfold) -- node[midway, right, font=\footnotesize] {produce} (unfolded);
+
+% Validation arrow back to particle level
+\draw[arrowstyle, orange!70!black, dashed, line width=1.2pt]
+  (unfolded.west) to[out=180, in=270] 
+  node[pos=0.5, below, font=\footnotesize] {validate} 
+  (particlemoments.south);
+
+% ------------------------------------------------------------------------
+% Detector effects arrow
+% ------------------------------------------------------------------------
+\draw[arrowstyle, gray!70, line width=2pt, dashed,
+  decoration={
+    markings,
+    mark=at position 0.5 with {\node[above, font=\normalsize, text=gray!70] {Detector Effects};}
+  },
+  postaction={decorate}
+]
+  (particleBox.east) -- (detectorBox.west);
+
+% ------------------------------------------------------------------------
+% Statistical uncertainties annotation
+% ------------------------------------------------------------------------
+\node[align=center, font=\footnotesize\itshape, text=gray!70] 
+  at (5.5, -4)
+  {Statistical and systematic uncertainties\\propagated through unfolding};
+
+% ------------------------------------------------------------------------
+% Legend/Key
+% ------------------------------------------------------------------------
+\node[align=left, font=\footnotesize] at (11, -4) {
+  \textbf{Key:}\\
+  \textcolor{green!60!black}{$\bullet$ Particle-level quantities}\\
+  \textcolor{blue!60!black}{$\bullet$ Detector-level quantities}\\
+  \textcolor{purple!70!black}{$\bullet$ Transfer functions}\\
+  \textcolor{red!70!black}{$\bullet$ Unfolding process}\\
+  \textcolor{orange!70!black}{$\bullet$ Results}
+};
+
+\end{tikzpicture}
+\end{document}

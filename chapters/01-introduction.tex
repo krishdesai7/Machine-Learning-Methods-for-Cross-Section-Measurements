@@ -7,7 +7,7 @@
 \sectionminitoc
     Even though nature does not establish preferred units, the physics that describes it requires establishing a common language and framework.
     %
-    In high energy physics, the choice of units reflects a not simply an arbitrary choice, but a philosophical stance about the nature of reality.
+    In high energy physics, the choice of units reflects not simply an arbitrary choice, but a philosophical stance about the nature of reality.
     %
     While everyday experience suggests that meters, kilograms, and seconds might be the most suitable units to express the physical world, particle physics reveals that speed, action, and energy form more natural rulers for measuring the universe at its smallest scales.
     %
@@ -71,9 +71,24 @@ For massless particles, differences in \(\eta\) remain invariant under longitudi
     \]
     where \(\varphi\) is the azimuthal angle around the beam axis.
     %
-    This metric approximates the geometric angle between particles in the detector while remaining approximately boost invariant.
+    This metric approximates the geometric angle between particles in the detector while remaining approximately longitudinally boost invariant.
 \end{definition}
+
+    \subsection{Some common sets and groups.}
+    The standard notation adopted for frequently occurring sets and groups is listed in \cref{tab:notation}.
+    %
+    \input{tables/1-2}
+    While these conventions are widely used in the mathematical literature, they are listed here to avoid ambiguity and provide a convenient reference.
+    
     \subsection{Statistical frameworks and uncertainty quantification.}
+
+        \begin{note*} Some basic notation:
+            \begin{itemize}
+                \item \(\P(\cdot)\) denotes the probability of an event.
+                \item \(\E_{p}[\cdot]\) denotes the expected value of a random variable under probability density function \(p.\) The probability density function may be omitted if it is clear from context.
+            \end{itemize}
+        \end{note*}
+        
         In modern particle physics analyses, every measurement emerges from millions of interaction events, each carrying both statistical and systematic uncertainties.
         %
         \begin{definition}[Poisson distribution.]
@@ -81,7 +96,7 @@ For massless particles, differences in \(\eta\) remain invariant under longitudi
             %
             For \(n\) observed events with expected value \(\lambda\),
             \[
-                \P(n\mid\lambda) = \frac{\lambda^n e^{-\lambda}}{n!}
+                \P(n\mid\lambda) = \frac{\lambda^n e^{-\lambda}}{n!}\;.
             \]
         \end{definition}
 
@@ -175,24 +190,24 @@ For massless particles, differences in \(\eta\) remain invariant under longitudi
     \subsubsection{Four dataset categories.}
         The intersection of these two dimensions yields four fundamental dataset categories.
         \begin{description}
-            \item[Truth]  represents nature at the particle level---the actual physical distributions HEP experiments ultimately seek to measure.
+            \item[Truth\(\,\sim p(z)\)]  represents nature at the particle level---the actual physical distributions HEP experiments ultimately seek to measure.
             %
             These distributions are never directly observable but represent the ground truth that all analyses attempt to approach.
             %
             In practice, truth distributions are estimated through unfolding procedures from the information contained in the other three distributions.
-            \item [Data] comprises natural events after detector effects.
+            \item [Data\(\,\sim p(x)\)] comprises natural events after detector effects.
             %
             It is the raw experimental output of all measurements.
             %
             Data embodies the convolution of the physics of interest with instrumental effects, making it the starting point for any experimental analysis.
             %
             The challenge lies in disentangling the physics content from the detector effects.
-            \item [Generation] comprises Monte Carlo events at the particle level, providing a controlled means to understanding theoretical predictions.
+            \item [Generation\(\,\sim q(z)\)] comprises Monte Carlo events at the particle level, providing a controlled means to understanding theoretical predictions.
             %
             Generation allows the study of particle level distributions with perfect knowledge and unlimited statistics, subject to theoretical modelling uncertainties.
             %
             Generated events serve as proxies for truth in developing and validating analysis methods.
-            \item [Simulation] represents Monte Carlo events processed through detailed detector modelling, creating artificial detector level datasets with known particle level origins.
+            \item [Simulation\(\,\sim q(x)\)] represents Monte Carlo events processed through detailed detector modelling, creating artificial detector level datasets with known particle level origins.
             %
             Simulation enables the study the detector response function by providing matched pairs of particle level and detector level quantities.
             %
@@ -205,7 +220,7 @@ For massless particles, differences in \(\eta\) remain invariant under longitudi
 
         For natural events, this transfer function represents the actual physical processes of particle interaction with detector material---ionisation in tracking chambers, showering in calorimeters, and signal processing in readout electronics.
         %
-        For simulated events, the detector simulation models these processes through programs like \textsc{Geant4} that track particles through detailed detector geometries, applying the current best understanding of particle matter interactions.
+        For simulated events, the detector simulation models these processes through programs like \textsc{Geant4}~\cite{allison_recent_2016,Allison:2006ve,GEANT4:2002zbu} that track particles through detailed detector geometries, applying the current best understanding of particle matter interactions.
 
     \subsubsection{Operational framework.}
         In practice, these four dataset categories work in concert to enable precision measurements.
@@ -673,8 +688,14 @@ Their use dates all the way back to Rutherford's scattering experiments that rev
 \section{Thesis scope and physics impact.}
 
 This dissertation focuses on developing, analysing, and applying novel machine learning methods for cross section measurements in particle physics, with particular emphasis on unbinned approaches that overcome limitations of traditional techniques. The work spans the spectrum from improving binned methods with neural posterior estimation to completely unbinned approaches for both full distributions and statistical moments.
+%
+All of the original research presented in this dissertation represents collaborative efforts with many brilliant scientists, to each of whom I am deeply grateful.
+%
+The views I present here my personal perspective on these developments.
+%
+Where I discuss or present specific results primarily generated by my collaborators, I explicitly indicate this attribution. The collaborative nature of this work has been one of its greatest strengths, and I am indebted to all those who contributed their expertise and insights to these projects.
 
-The primary contributions of this thesis include:
+The primary contributions of this dissertation include:
 
 \begin{enumerate}
 \item Development of \textsc{Neural Posterior Unfolding} (NPU), enhancing binned approaches through normalising flows and amortised inference.

@@ -450,7 +450,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         %
         However, this unavoidably discards information---regularised solutions cannot resolve features finer than the detector resolution or distinguish theories predicting distributions within the regularisation bias~\cite{Bohm2025IntroductionPhysicists,multhei_iterative_1987}.
 
-    \subsection{Limitations and practical challenges.}  
+    \subsection{Limitations and practical challenges.}
         \subsubsection{Subjectivity--objectivity trade off.}  
             All regularisation methods inject subjective choices---smoothness scales, prior distributions, stopping criteria and so on—--that bias results.
             %
@@ -494,7 +494,8 @@ However, it requires careful basis function placement to prevent endpoint spikes
         %
         As detector granularity increases, developing dimension agnostic regularisation schemes remains an open challenge requiring collaboration between statisticians and physicists to design methods that are statistically sound and suitable for the physics being analysed.
         
-\section{Unbinned methods: statistical considerations.}  
+\section{Unbinned methods: statistical considerations.}
+\label{sec:theoretical-foundations.unbinned-methods}
 \sectionminitoc
     The evolution from binned to unbinned unfolding methodologies represents a paradigm shift in high energy physics, driven by the need to preserve fine grained kinematic information while managing the statistical and computational complexities of high dimensional phase spaces.
     %
@@ -903,6 +904,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \end{definition}
 
             \begin{definition}[Correlation matrix.]
+            \label{def:correlation}
                 A useful, related measure is the \emph{correlation matrix}, \(\vb*{\rho}\), defined as the normalised covariance matrix,
                 \begin{equation}
                     \rho_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}\Sigma_{jj}}},
