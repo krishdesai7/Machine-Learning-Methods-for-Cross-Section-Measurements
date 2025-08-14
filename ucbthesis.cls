@@ -172,6 +172,10 @@
     defstar=true,
     proofref=false
 ]{note}{Note}
+
+\RequirePackage{thmtools}
+\declaretheorem[name=Definition,numberwithin=section,refname={definition,definitions},Refname={Definition,Definitions}]{definition}
+
 % ============================================================================
 % FRONT MATTER VARIABLES
 % ============================================================================

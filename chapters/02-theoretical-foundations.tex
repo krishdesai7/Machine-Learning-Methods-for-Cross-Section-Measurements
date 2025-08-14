@@ -38,6 +38,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
     %
     Given a set of measured data \(\mathbf{X}_{i=1}^N\), the likelihood function for a proposed truth distribution \(p(z; \theta)\), parametrised by \(\theta\), is
     \begin{equation}
+        \label{eq:likelihood-function}
         \mathcal{L}(\theta; \mathbf{X}) = \prod_{i=1}^{N} p(x_i;\; \theta),
     \end{equation}
     where
@@ -48,10 +49,15 @@ Regularisation techniques are therefore essential to stabilise the solution.
     %
     Regularisation can be incorporated into this framework by adding penalty terms to the likelihood or by constraining the parameter space.
 
+    \begin{note*}
+        The likelihood function in \cref{eq:likelihood-function} represents the probability of the data \(\mathbf{X}\) given the parameters \(\theta\) for relative cross sections.
+        %
+        If one were to use the likelihood function for absolute cross sections, the likelihood would also depend on the luminosity, and therefore include a poisson term for \(N\).
+    \end{note*}
     \subsection{Regularisation techniques.}
         Regularisation mitigates the instability of unfolding by imposing constraints on the solution.
         %
-        Common approaches include Tikhonov Regularization~\cite{Karl2005RegularizationReconstruction}, in which one adds a penalty term proportional to the norm of the second derivative of \(p(z)\), enforcing smoothness, and iterative methods which gradually refine estimates of \(p(z)\), regularising by stopping before convergence.
+        Common approaches include Tikhonov regularisation~\cite{Karl2005RegularizationReconstruction}, in which one adds a penalty term proportional to the norm of the second derivative of \(p(z)\), enforcing smoothness, and iterative methods which gradually refine estimates of \(p(z)\), regularising by stopping before convergence.
         %
         These techniques balance fidelity to the measured data (prior independence) with stability of the unfolded solution.
 
@@ -169,7 +175,7 @@ Regularisation techniques are therefore essential to stabilise the solution.
         %
         While traditional unfolding requires inverting matrices that grow exponentially with dimension, unbinned methods typically employ gradient based optimisation that scales polynomially.
         %
-        This trade off exchanges the well understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimisation.
+        This trade-off exchanges the well understood numerical properties of linear algebra for the more complex but ultimately more scalable challenges of machine learning optimisation.
 
         It is important to acknowledge that this transition introduces new sensitivities to model and hyperparameter choices that traditional methods avoid.
         %
@@ -386,7 +392,7 @@ where \(\mathbf{L}\) is typically the discrete curvature operator\footnote{E.g.,
 %
 L--curve optimisation balances the residual norm against the solution norm to choose \(\lambda\)~\cite{cowan_highlights_2011}.
 %
-The choice of \(\lambda\) sets the bias variance trade off.
+The choice of \(\lambda\) sets the bias variance trade-off.
 %
 \(\lambda \rightarrow 0\) represents the high variance, low bias limit and \(\lambda \rightarrow \infty (\implies \hat{\boldsymbol{\nu}} \rightarrow \boldsymbol{\nu}_0)\) represents the low variance, high bias limit.
 %
@@ -394,9 +400,9 @@ This method is implemented through the TUnfold package, which also provides auto
 %
 However Tikhonov regularisation struggles with non-differentiable features like threshold effects due to biased curvature penalties, and requires \textit{ad hoc} \(\lambda\) selection via L--curve curvature maximisation.
 
-\begin{note}
+\begin{note*}
     The RooUnfold package~\cite{adye_unfolding_2011} provides implementations of bin--bin--bin corrections, matrix inversion, IBU, SVD, and TUnfold.
-\end{note}
+\end{note*}
 \subsection{Template fitting.}  
 Template fitting is a method suitable in cases where \(N_{\text{Sim.}} \gg N_{\text{Gen.}}\).
 %
@@ -451,10 +457,10 @@ However, it requires careful basis function placement to prevent endpoint spikes
         However, this unavoidably discards information---regularised solutions cannot resolve features finer than the detector resolution or distinguish theories predicting distributions within the regularisation bias~\cite{Bohm2025IntroductionPhysicists,multhei_iterative_1987}.
 
     \subsection{Limitations and practical challenges.}
-        \subsubsection{Subjectivity--objectivity trade off.}  
+        \subsubsection{Subjectivity--objectivity trade-off.}  
             All regularisation methods inject subjective choices---smoothness scales, prior distributions, stopping criteria and so on—--that bias results.
             %
-            This trade off reveals a deeper epistemological issue: regularisation transforms the question from ``what does the data show?'' to ``what does the data show given our assumptions about smoothness?''
+            This trade-off reveals a deeper epistemological issue: regularisation transforms the question from ``what does the data show?'' to ``what does the data show given our assumptions about smoothness?''
             
             While \cite{zech_regularization_2011,kuusela_uncertainty_2016} argue for publishing unregularised results alongside regularised ones, this approach, though transparent, may be insufficient.
             %
@@ -462,7 +468,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
             
             A more nuanced approach would involve explicitly testing regularisation assumptions against physical models where possible, and developing domain specific regularisation schemes that incorporate known physical constraints rather than generic smoothness priors.
             %
-            This would shift the subjectivity from mathematical convenience to physics informed choices, making the trade offs more scientifically meaningful rather than purely computational.
+            This would shift the subjectivity from mathematical convenience to physics informed choices, making the trade-offs more scientifically meaningful rather than purely computational.
 
         \subsubsection{High dimensional regimes.}  
             Traditional methods fail catastrophically in \(d \gtrsim 4\) phase spaces and struggle even before that for multiple reasons.
@@ -884,7 +890,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         \end{equation}
         where \(\text{Bias}(\hat{t}) = \mathbb{E}[\hat{t}] - t\) and \(\text{Var}(\hat{t}) = \mathbb{E}[(\hat{t} - \mathbb{E}[\hat{t}])^2]\). 
         
-        This decomposition is particularly valuable for understanding the trade--offs inherent in regularised unfolding methods, where stronger regularisation typically reduces variance at the expense of increased bias.
+        This decomposition is particularly valuable for understanding the trade-offs inherent in regularised unfolding methods, where stronger regularisation typically reduces variance at the expense of increased bias.
         %
         Different applications might prioritise minimising one component over the other, making this decomposition important for method selection and hyperparameter choices.
 
@@ -992,7 +998,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
         %
         To study the convergence behaviour, one plots metric values (e.g., \(\chi^2\) or NLL) as a function of iteration number.
         %
-        One then compares unfolded distributions at different iterations to assess stability and analyse how the bias--variance trade off evolves with iteration number.
+        One then compares unfolded distributions at different iterations to assess stability and analyse how the bias--variance trade-off evolves with iteration number.
 
         \subsubsection{Bayesian methods.}
             {\tolerance=1000

@@ -215,7 +215,7 @@
 
         Unfolding more finely, or in more dimensions, inherently means extracting more parameters.\footnote{In effect, more bins worth of information.} from the same finite dataset.
         %
-        This trade off means individual elements of the unfolded spectrum will have larger statistical uncertainties than if the data were aggregated into a few bins or moments.
+        This trade-off means individual elements of the unfolded spectrum will have larger statistical uncertainties than if the data were aggregated into a few bins or moments.
         %
         For example, unfolding 100 bins will yield each bin count with larger uncertainty than if one had combined them into 1 bin, since the the bin count of 1 bin is simply the total count.
         %
@@ -460,7 +460,7 @@
     
     Treating moments as fundamental constraints, as opposed to bin by bin values, establishes a pathway from a limited set of summary statistics to a complete unfolded spectrum.
     %
-    This section first develops the theoretical foundation connecting moments and probability distributions,\footnote{Including moment generating functions and maximum entropy arguments.} then surveys classical and modern unfolding methods that rely on moment constraints.\footnote{Such as regularization and entropy based techniques.}
+    This section first develops the theoretical foundation connecting moments and probability distributions,\footnote{Including moment generating functions and maximum entropy arguments.} then surveys classical and modern unfolding methods that rely on moment constraints.\footnote{Such as regularisation and entropy based techniques.}
     %
     This is followed by a discussion of the advantages and pitfalls of moment based unfolding, notably issues relating ill posedness and non uniqueness, and the regularisation strategies to mitigate them.
     %
@@ -649,7 +649,7 @@ Equivalently, writing $\dd\mu=f\,\dd z$ and $\dd\nu=g\,\dd z$ when they exist,
             
             ML based methods are moving toward treating unfolding as a fitting problem, using flexible function approximators and powerful statistical distances (e.g. Wasserstein distance) to overcome binning and to handle large dimensional data.
             %
-            These methods still must address ill posedness\footnote{E.g. through network architecture choices, training tricks, or implicit regularization like early stopping}, but they offer a way to directly target the entire set of distributional degrees of freedom rather than pre-selecting a fixed set of basis functions.
+            These methods still must address ill posedness\footnote{E.g. through network architecture choices, training tricks, or implicit regularisation like early stopping}, but they offer a way to directly target the entire set of distributional degrees of freedom rather than pre-selecting a fixed set of basis functions.
     \subsection{Benefits and challenges of \textsc{Moment Unfolding}.}
         Focusing on moments as the quantities to unfold offers several clear benefits.
         %
@@ -703,7 +703,7 @@ Equivalently, writing $\dd\mu=f\,\dd z$ and $\dd\nu=g\,\dd z$ when they exist,
         %
         In the adversarial \textsc{Moment Unfolding} approach, the number of moments $n$ chosen to unfold acts as a regularisation knob: a small $n$ strongly regularises, since it ignores any structure beyond the $n$th moment, while a larger $n$ allows more detailed structure at the cost of higher variance and potential instability.
         %
-        This is analogous to the bias--variance trade--off in classic unfolding: using fewer moments yields a biased but low variance estimate; using more moments approaches an unbiased full result but with higher variance and higher risk of over fitting data fluctuations.
+        This is analogous to the bias--variance trade-off in classic unfolding: using fewer moments yields a biased but low variance estimate; using more moments approaches an unbiased full result but with higher variance and higher risk of over fitting data fluctuations.
         
         Another limitation of any reweighting based unfolding, moment based or otherwise, is the requirement of support overlap.
         %
@@ -773,7 +773,7 @@ Equivalently, writing $\dd\mu=f\,\dd z$ and $\dd\nu=g\,\dd z$ when they exist,
         %
         Focusing on a handful of parameters $\beta_a$ is much simpler than attempting to learn a full function as a normal generative algorithm would.
         %
-        In essence, it reduces the unfolding task to a parameter fitting problem under the hood, albeit a high dimensional, simulation informed and adversarially solved one. This focus provided a built in regularization through the number of moments unfolded.
+        In essence, it reduces the unfolding task to a parameter fitting problem under the hood, albeit a high dimensional, simulation informed and adversarially solved one. This focus provided a built in regularisation through the number of moments unfolded.
         %
         The results in \cref{sec:moment-unfolding.case-studies} showed that even with $n$ as small as \(2\) one can capture key shape characteristics of distributions.
         
@@ -835,8 +835,8 @@ Equivalently, writing $\dd\mu=f\,\dd z$ and $\dd\nu=g\,\dd z$ when they exist,
         %
         However, this power comes with technical challenges: the loss landscape is more complex and the risk of failure to converge is higher when the models essentially have as many `parameters' as there are events.
         %
-        The implementation of a RAN thus requires additional care in training\footnote{E.g., gradient penalty terms for WGAN, spectral normalization, etc.} to ensure convergence to a physically sensible solution that generalises and does not chase statistical fluctuations.
-        %
+        The implementation of a RAN thus requires additional care in training\footnote{E.g., gradient penalty terms for WGAN, spectral normalisation, etc.} to ensure convergence to a physically sensible solution that generalises and does not chase statistical fluctuations.
+        %   
         The success of RANs in toy examples and simulated jet data applications demonstrates that it is indeed possible to go from moments to complete spectra.
 
 In this way, the progression from \textsc{Moment Unfolding} to full distribution unfolding can be seen as a continuum.
@@ -873,7 +873,7 @@ The moments are the fingerprints of the distribution, and once one learns to rel
         %
         Many ML based approaches avoid explicit binning but must still combat the same amplification of statistical noise.
         %
-        Often, the regularization in ML approaches is \emph{implicit}, coming from network architectures and training protocols.
+        Often, the regularisation in ML approaches is \emph{implicit}, coming from network architectures and training protocols.
         
         For example, deep neural networks have a finite capacity and tend to learn simpler patterns first, a form of Occam’s razor that can act as an ansatz.
         %
@@ -1771,7 +1771,7 @@ The inset has linear scaling. Exp exhibits rapid growth for moderately large inp
             %
             IBU is extremely fast for one dimensional histograms, but extending IBU to many dimensions would be combinatorially expensive in terms of computational cost, and practically impossible due to a lack of enough data to fill the bins of high dimensional histograms, whereas RANs and \textsc{OmniFold} scale gracefully to high dimensional data.
             %
-            Thus, a RAN offers an attractive trade--off: it achieves equal or better accuracy than \textsc{OmniFold} on these benchmark tasks, while being simpler to use, since it has no iterative loop to manage, and potentially more efficient.
+            Thus, a RAN offers an attractive trade-off: it achieves equal or better accuracy than \textsc{OmniFold} on these benchmark tasks, while being simpler to use, since it has no iterative loop to manage, and potentially more efficient.
 
     \subsubsection{Generality of results.}
         Combined with the findings from the Gaussian experiments, these jet experiments suggest that a RAN’s advantages are not specific to a particular distribution but rather reflect general features of the algorithm.

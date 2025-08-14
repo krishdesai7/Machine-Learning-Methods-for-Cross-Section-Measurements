@@ -22,7 +22,7 @@
     %
     This work presents a {progressive evolution} of unfolding methodologies, each building upon the insights of its predecessors while addressing specific limitations.
     
-    \textbf{\textsc{Neural Posterior Unfolding} (NPU)} enhanced traditional binned approaches by replacing point estimates with full posterior distributions, leveraging normalizing flows to capture complex uncertainty structures while maintaining the computational advantages of amortised inference.
+    \textbf{\textsc{Neural Posterior Unfolding} (NPU)} enhanced traditional binned approaches by replacing point estimates with full posterior distributions, leveraging normalising flows to capture complex uncertainty structures while maintaining the computational advantages of amortised inference.
     %
     NPU as a method embodies the recognition that unfolding is fundamentally about \emph{uncertainty quantification}, not just central value estimation, and highlights the necessity of machine learning based approaches as the future of unfolding.
     
@@ -130,7 +130,7 @@
         %
         The RAN method uses the Wasserstein distance and gradient penalties to ensure stable training.
         %
-        In addition to this, the unconstrained generator in a RAN in comparison to the constrained generator of \textsc{Moment Unfolding} requires further regularisation through methods such as spectral normalization or entropy regularisation in order to prevent training instability.
+        In addition to this, the unconstrained generator in a RAN in comparison to the constrained generator of \textsc{Moment Unfolding} requires further regularisation through methods such as spectral normalisation or entropy regularisation in order to prevent training instability.
         %
         Despite their diversity, regularisation in all these forms serves the same purpose---preventing the ill posed inverse problem from amplifying statistical fluctuations into unphysical features.
 
@@ -143,7 +143,7 @@
         
         In general, the shift from binned to unbinned unfolded cross section results poses a fundamental challenge to uncertainty quantification for parameter estimation, and demands a new statistical framework that can appropriately account for the correlations introduced by the unfolding process.
 
-        \subsubsection{Computational trade offs.}
+        \subsubsection{Computational trade-offs.}
         
         This leads to the third theme of \emph{computational trade-offs} as an unavoidable reality of any unfolding method.
         %
@@ -157,7 +157,7 @@
         %
         Modern ML based approaches are significantly more computationally expensive, and pose challenges for downstream inference, but are able to jointly unfold multiple observables, thereby capturing inter-observables correlations, and do not introduce binning artifacts into the unfolded results.
 
-        Within a the methodological framework of any given method too, same same trade offs manifest more locally. Whether in the choice of computational resources devoted to training a neural network, or specific binning scheme chosen for a traditional method, every analysis involves almost a fractal of increasingly low level and local trade offs that guide and shape the analysis.
+        Within a the methodological framework of any given method too, same same trade-offs manifest more locally. Whether in the choice of computational resources devoted to training a neural network, or specific binning scheme chosen for a traditional method, every analysis involves almost a fractal of increasingly low level and local trade-offs that guide and shape the analysis.
 
     These common themes express a few important lessons for the development and evaluation of any unfolding method.
     %
@@ -575,11 +575,11 @@
     %
     By embracing unbinned and high--dimensional analysis, we treat the data in its most natural and information--rich form.
     %
-    Ideas like adversarial reweighting, normalizing flow posteriors, and Boltzmann inspired model architectures allow us to preserve structural information that would otherwise be lost in formats natural to the data.
+    Ideas like adversarial reweighting, normalising flow posteriors, and Boltzmann inspired model architectures allow us to preserve structural information that would otherwise be lost in formats natural to the data.
     %
     As a result, analyses can be performed without discarding complexity.
     %
-    Correlations between observables, full spectrum shapes, and subtle distribution tails are all retained and utilized.
+    Correlations between observables, full spectrum shapes, and subtle distribution tails are all retained and utilised.
     %
     The broader vision is that, as a community, we move toward data analysis paradigms where nothing essential is neglected.
     %

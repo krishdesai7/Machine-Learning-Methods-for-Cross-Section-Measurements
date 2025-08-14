@@ -1160,7 +1160,7 @@ p_X(x)
         \paragraph{Limitations.}
             Despite their theoretical elegance, normalising flows face several practical challenges in HEP applications.
             %
-            Each version of the model makes different trade offs between expressivity, computational efficiency, and ease of training.
+            Each version of the model makes different trade-offs between expressivity, computational efficiency, and ease of training.
             
             While normalising flows learn to transform from a simple base distribution (typically Gaussian) to the target distribution, this transformation is not unique---different choices of base distribution and flow architecture can lead to different learned mappings.
             %
@@ -1702,7 +1702,7 @@ p_X(x)
 \sectionminitoc
     The preceding sections have introduced a diverse landscape of machine learning approaches to the unfolding problem, from discriminative methods to generative models and adversarial frameworks.
     %
-    This section provides a comparative synthesis to guide method selection, analyse performance trade offs, and identify emerging best practices from experimental implementations.
+    This section provides a comparative synthesis to guide method selection, analyse performance trade-offs, and identify emerging best practices from experimental implementations.
     \subsection{Method selection framework.}
         The choice of unfolding method depends critically on the interplay between measurement requirements, computational constraints, particularities of the data available and prior knowledge.
         %
@@ -1726,9 +1726,9 @@ p_X(x)
         %
         For observables defined through complex, non-linear transformations of detector quantities,\footnote{Such as jet substructure variables computed from constituent particles.} methods that can learn these transformations implicitly, such as graph neural networks combined with adversarial training~\cite{Shlomi2020GraphPhysics}, may outperform approaches requiring explicit feature engineering.
         
-    \subsection{Performance trade offs.}
+    \subsection{Performance trade-offs.}
     
-        A quantitative comparison of ML based unfolding methods reveals fundamental trade offs that must be balanced against analysis requirements.
+        A quantitative comparison of ML based unfolding methods reveals fundamental trade-offs that must be balanced against analysis requirements.
         %
         Computational scaling presents the most immediate practical constraint.
         %
@@ -1912,7 +1912,7 @@ The familiarity of binned representations also facilitates communication with th
     
     The key insight of INN based unfolding lies in modelling the detector response as an invertible transformation.
     %
-    Bellagente et al. pioneered this approach for high energy physics applications, demonstrating that conditional normalizing flows could learn the mapping between detector level and particle level distributions~\cite{bellagente_how_2020}.
+    Bellagente et al. pioneered this approach for high energy physics applications, demonstrating that conditional normalising flows could learn the mapping between detector level and particle level distributions~\cite{bellagente_how_2020}.
     %
     Their method conditions the flow on detector level observations to generate samples from the particle level distribution, effectively learning the inverse of the detector response function.
     %

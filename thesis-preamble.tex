@@ -108,6 +108,21 @@
 \crefname{phfthm@theorem}{Theorem}{Theorems}
 \crefname{phfthm@definition}{Definition}{Definitions}
 
+% Open the glossary file on first run
+\newwrite\glossaryfile
+\immediate\openout\glossaryfile=definitions.tex
+
+% Command to save a definition to the glossary file
+\newcommand{\savedefinition}[2]{%
+  \immediate\write\glossaryfile{\noexpand\glossaryentry{#1}{#2}}%
+}
+
+% How each glossary entry is typeset
+\newcommand{\glossaryentry}[2]{%
+  \par\noindent\textbf{#1}\par
+  #2\par\medskip
+}
+
 % ============================================================================
 % CUSTOM MATHEMATICAL NOTATION
 % ============================================================================
