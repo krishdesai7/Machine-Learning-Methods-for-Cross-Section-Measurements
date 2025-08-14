@@ -62,8 +62,11 @@
 \algrenewcommand{\alglinenumber}[1]{\small\textcolor{gray}{#1}}
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
+\newlength{\algomargin}
 \setlength{\algomargin}{1em}
-\renewcommand{\algospacing}{\setlength{\baselineskip}{2\baselineskip}}
+\newcommand{\algospacing}{%
+  \setlength{\baselineskip}{2\dimexpr\baselineskip\relax}%
+}
 \usepackage{listings}
 \usepackage{pdflscape}  % For landscape pages
 
@@ -81,7 +84,7 @@
 \usepackage[
     backend=biber,
     style=numeric-comp,
-    sorting=none,
+    sorting=ydnt,
     maxbibnames=99,
     giveninits=true
 ]{biblatex}
@@ -107,21 +110,6 @@
 \crefname{subparagraph}{Section}{Sections}
 \crefname{phfthm@theorem}{Theorem}{Theorems}
 \crefname{phfthm@definition}{Definition}{Definitions}
-
-% Open the glossary file on first run
-\newwrite\glossaryfile
-\immediate\openout\glossaryfile=definitions.tex
-
-% Command to save a definition to the glossary file
-\newcommand{\savedefinition}[2]{%
-  \immediate\write\glossaryfile{\noexpand\glossaryentry{#1}{#2}}%
-}
-
-% How each glossary entry is typeset
-\newcommand{\glossaryentry}[2]{%
-  \par\noindent\textbf{#1}\par
-  #2\par\medskip
-}
 
 % ============================================================================
 % CUSTOM MATHEMATICAL NOTATION

@@ -778,7 +778,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
 
         This metric is accounts for both the magnitude and location of discrepancies between distributions, and is hence helpful for comparing distributions with sharp cutoffs or low statistics regions.
 
-        Table~\ref{tab:dist_metrics} summarises the various distributional metrics and their relative strengths for unfolding evaluation.
+        \cref{tab:dist_metrics} summarises the various distributional metrics and their relative strengths for unfolding evaluation.
         \input{tables/2-2}
 
         \subsection{Uncertainty quantification metrics.}
@@ -975,11 +975,11 @@ However, it requires careful basis function placement to prevent endpoint spikes
             \[
                 \sigma^2_S = \frac{\qty(\sum_{i=1}^N w_i)^2}{ N_{\mathrm{eff}}}.
             \]
-            Solving for $N_{\mathrm{eff}}$ yields~\eqref{eq:n-eff}.
+            Solving for $N_{\mathrm{eff}}$ yields~\cref{eq:n-eff}.
             \end{proof}
 
 
-            If $\rho(w_i,w_j)=0$ for all $i\ne j$, the denominator reduces to $\sum_i w_i^2$ and $N_{\mathrm{eff}}$ simplifies to the familiar independent–weights expression $N_{\mathrm{eff}} = (\sum_i w_i)^2/\sum_i w_i^2$. In unfolding applications, nearby events in phase space often have $\rho(w_i,w_j)>0$, modifying the denominator of~\eqref{eq:n-eff} and thus reducing $N_{\mathrm{eff}}$, which quantifies the corresponding change of statistical power.
+            If $\rho(w_i,w_j)=0$ for all $i\ne j$, the denominator reduces to $\sum_i w_i^2$ and $N_{\mathrm{eff}}$ simplifies to the familiar independent–weights expression $N_{\mathrm{eff}} = (\sum_i w_i)^2/\sum_i w_i^2$. In unfolding applications, nearby events in phase space often have $\rho(w_i,w_j)>0$, modifying the denominator of~\cref{eq:n-eff} and thus reducing $N_{\mathrm{eff}}$, which quantifies the corresponding change of statistical power.
              
             \cref{fig:corr-decay} illustrates how event correlations typically decay with distance, with the correlation length scale increasing with detector resolution effects.
 

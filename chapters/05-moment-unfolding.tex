@@ -56,7 +56,7 @@
             where $P_k$ are the moments of the splitting functions~\cite{Ellis:1996mzs, salam_elements_2011, Schoeffel:1998tz, Strozik-Kotlorz:2014xga, Simonelli:2024vyh}.
             %
             This formulation converts the complex integro--differential evolution equations into a set of simple ordinary differential equations, one for each moment independently.
-
+            \end{definition}
         \subsubsection{Operator product expansion.}
             The operator product expansion (OPE) in QCD naturally expresses deep inelastic scattering structure functions in terms of moments~\cite{Gockeler:2006nq}.
             %
@@ -380,12 +380,12 @@ At $d^\star$,
 \end{theorem}
 
 \begin{proof}[*lem:opt-disc]
-Varying $d$ in \eqref{eq:mlc-perfect} gives
+Varying $d$ in \cref{eq:mlc-perfect} gives
 \[
     \frac{\delta L}{\delta d(z)} = -\frac{p(z)}{d(z)+\qt(z)}.
 \]
 
-Hence $d^\star(z)=\nicefrac{p(z)}{\qt(z)}$. Substituting and using $\int p=\int \qt=1$ gives \eqref{eq:Lstar}.
+Hence $d^\star(z)=\nicefrac{p(z)}{\qt(z)}$. Substituting and using $\int p=\int \qt=1$ gives \cref{eq:Lstar}.
 \end{proof}
 
 \begin{theorem}[Closure under perfect response]\label{thm:perfect-closure}
@@ -418,12 +418,12 @@ Since $\pdv{\ln P}{\beta_a} = -\E_{\qt}[Z^a]$, thus
 = -\int p(z)\Big(z^a - \E_{\qt}[Z^a]\Big)\,\dd z\\
 = -\Big(\E_{p}[Z^a]-\E_{\qt}[Z^a]\Big).
 \end{gather}
-At any stationary point, this vanishes for $a=1,\dots,n$, proving \eqref{eq:moment-match-perfect}.
+At any stationary point, this vanishes for $a=1,\dots,n$, proving \cref{eq:moment-match-perfect}.
 \end{proof}
 
 \subsubsection{Universal but imperfect detector response.}
 
-For $g$ as in \eqref{eq:g}, define
+For $g$ as in \cref{eq:g}, define
 \begin{equation}\label{eq:tildeq-x}
     \tilde q(x)\;=\;\int r(x\mid z)\,q(z)\,g(z)\,dz.
 \end{equation}
@@ -472,7 +472,7 @@ Using \cref{eq:dgdBeta} and $\qt(z)=q(z)\,g(z)$ gives
        \Big(\int \frac{p(x)}{\qt(x)}\,r(x\mid z)\,dx\Big)\qt(z)\,\dd z\\
 = -\Big(\E_{p_{\mathrm{mod}}}[Z^a]-\E_{\qt}[Z^a]\Big),
 \end{gather}
-where $p_{\mathrm{mod}}$ is as in \eqref{eq:pmod}. Stationarity enforces \eqref{eq:moment-match-univ}.
+where $p_{\mathrm{mod}}$ is as in \cref{eq:pmod}. Stationarity enforces \cref{eq:moment-match-univ}.
 \end{proof}
 
 \begin{theorem}[Transfer operator representation]\label{prop:transfer}
@@ -498,7 +498,7 @@ Substitute $p(x)=\int r(x\mid z')\,p(z')\,\dd z'$ into \cref{eq:pmod} and exchan
 p_{\mathrm{mod}}(z) = \iint \frac{r(x\mid z)\,\qt(z)}{\qt(x)}\,r(x\mid z')\,\dd x\,p(z')\,\dd z'\\
 =\int \qty(\int \qt(z\mid x)\,r(x\mid z')\,\dd x) p(z')\,\dd z'.
 \end{gather}
-If $r(x\mid z)=\delta(x-z)$, then $\tilde q(z\mid x)=\delta(z-x)$ and \eqref{eq:f} gives $f(z\mid z')=\delta(z-z')$.
+If $r(x\mid z)=\delta(x-z)$, then $\tilde q(z\mid x)=\delta(z-x)$ and \cref{eq:f} gives $f(z\mid z')=\delta(z-z')$.
 \end{proof}
 
 \paragraph{On closure and its obstructions.}

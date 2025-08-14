@@ -156,7 +156,6 @@
 % ============================================================================
 % THEOREM ENVIRONMENTS
 % ============================================================================
-% Define theorem style with horizontal lines
 \RequirePackage[
     thmset=default,
     sepcounters=true,
@@ -172,9 +171,6 @@
     defstar=true,
     proofref=false
 ]{note}{Note}
-
-\RequirePackage{thmtools}
-\declaretheorem[name=Definition,numberwithin=section,refname={definition,definitions},Refname={Definition,Definitions}]{definition}
 
 % ============================================================================
 % FRONT MATTER VARIABLES

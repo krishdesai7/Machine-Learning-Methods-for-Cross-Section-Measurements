@@ -5,25 +5,7 @@
 \documentclass[doublespace]{ucbthesis}
 
 \input{thesis-preamble}
-\AtBeginDocument{%
-  \newwrite\glossaryfile
-  \immediate\openout\glossaryfile=glossary.tex
-}
 
-\NewEnviron{glossdef}[1]{%
-  \begin{definition}[#1]
-    \BODY
-  \end{definition}
-  \begingroup
-    \let\protect\string
-    \immediate\write\glossaryfile{\noexpand\glossaryentry{#1}{\detokenize\expandafter{\BODY}}}%
-  \endgroup
-}
-
-\newcommand{\glossaryentry}[2]{%
-  \par\noindent\textbf{#1}\par
-  #2\par\medskip
-}
 \begin{document}
 % Metadata
 \title{Machine Learning Methods for Cross Section Measurements}
@@ -88,16 +70,16 @@
 
 % Main chapters
 \include{chapters/01-introduction}
-% \include{chapters/02-theoretical-foundations}
-% \include{chapters/03-ml-for-unfolding}
-% \include{chapters/04-npu}
-% \include{chapters/05-moment-unfolding}
-% \include{chapters/06-ran}
-% \include{chapters/07-unbinned-inference}
-% %\input{chapters/08-profiling}
-% \include{chapters/09-symmetrygan}
-% %\input{chapters/10-comparative-analysis}
-% \include{chapters/11-conclusions}
+\include{chapters/02-theoretical-foundations}
+\include{chapters/03-ml-for-unfolding}
+\include{chapters/04-npu}
+\include{chapters/05-moment-unfolding}
+\include{chapters/06-ran}
+\include{chapters/07-unbinned-inference}
+%\input{chapters/08-profiling}
+\include{chapters/09-symmetrygan}
+%\input{chapters/10-comparative-analysis}
+\include{chapters/11-conclusions}
 
 % ============================================================================
 % BIBLIOGRAPHY
@@ -110,7 +92,7 @@
 % ============================================================================
 \appendix
 \include{appendices/A-glossary}
-% \include{appendices/B-implementation}
+\include{appendices/B-implementation}
 % \include{appendices/C-supplementary-results}
 
 \end{document}

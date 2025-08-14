@@ -1,8 +1,601 @@
-\chapter{Implementation Details}
-\begin{itemize}
-    \item Datasets
-    \item Specific network architectures
-    \item Hyperparamter sets
-    \item Optimization startegies
-    \item Code repositories
-\end{itemize}
+\chapter{Theorems and Proofs}
+% === Automatically extracted theorems and proofs ===
+
+\section{Theorems and Proofs}
+
+\setcounter{phfthm@theorem}{0}
+
+\begin{theorem}[Scaling of relative uncertainty]
+\noproofref
+                
+                Consider a \(d\) dimensional measurement space partitioned into histogram bins of widths \(\Delta z_1,\dots,\Delta z_d\), and let \(N_{\text{events}}\) denote the total number of events uniformly distributed over the full measurement range.
+                %
+                Then the relative uncertainty in the estimated differential event density in any given bin obeys
+                \begin{equation}
+                    \text{Rel.\ uncertainty} = \frac{\sigma_{Q}}{Q} \propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i},
+                \end{equation}
+                where \(Q\) is the differential quantity (events per unit hypervolume).
+            \end{theorem}
+
+\begin{proof}[*thm:relative-uncertainty]
+            
+                A single histogram bin occupies hypervolume
+                \[
+                    V = \prod_{i=1}^d \Delta z_i
+                \]
+                in the measurement space.
+                %
+                Under the uniform--density assumption, the expected number of events in that bin scales as
+                \[
+                    N_{\text{bin}} \propto N_{\text{events}}\;V.
+                \]
+                %
+                By Poisson statistics the absolute uncertainty on the bin count is
+                \[
+                    \sigma_{N_{\text{bin}}} = \sqrt{N_{\text{bin}}},
+                \]
+                %
+                and hence the relative uncertainty on \(N_{\text{bin}}\) is
+                \[
+                    \frac{\sigma_{N_{\text{bin}}}}{N_{\text{bin}}} = \frac{1}{\sqrt{N_{\text{bin}}}} \propto \frac{1}{\sqrt{N_{\text{events}}\,V}}\;.
+                \]
+                
+                Since the differential measurement is \(Q = N_{\text{bin}}/V\), its relative uncertainty coincides with that of the bin count.
+                \begin{align}
+                    \frac{\sigma_Q}{Q} &= \frac{(\sigma_{N_{\text{bin}}}/V)}{(N_{\text{bin}}/V)} \\
+                    &= \frac{\sigma_{N_{\text{bin}}}}{N_{\text{bin}}} \\
+                    &\propto \frac{1}{\sqrt{N_{\text{events}}}\;\prod_{i=1}^d\Delta z_i}\;,
+                \end{align}
+                %
+                which establishes the claimed scaling.
+            \end{proof}
+
+\begin{theorem}[Asymptotic standard normality of pulls]
+\noproofref
+            
+            Let \(\hat\theta_n\) be an estimator of a scalar parameter \(\theta\) based on \(n\) independent events, and let \(\sigma_n\) denote the reported (\(1\sigma\)) uncertainty for \(\hat\theta_n\). Assume:
+            \begin{description}
+                \item[Asymptotic unbiasedness:] \(\mathbb{E}[\hat\theta_n] - \theta \to 0\) as \(n\to\infty\).
+                \item[Variance calibration:] \(\sigma_n^2 / \operatorname{Var}(\hat\theta_n) \xrightarrow{\,p\,} 1\).
+                \item[Asymptotic normality:] \(\sqrt{n}\,(\hat\theta_n-\theta) \Rightarrow \mathcal N(0,\tau^2)\) for some \(\tau^2>0\).
+            \end{description}
+            For the \emph{pull}, \(P_n\) defined according to \cref{def:pull-distribution},
+            \begin{equation}
+                \lim_{n\to\infty} P_n \sim \mathcal N(0,1).
+            \end{equation}
+            That is to say, across pseudo-experiments, the empirical distribution of pulls converges to the standard normal law.
+            \end{theorem}
+
+\begin{proof}[*thm:pull-normality]
+            By asymptotic normality,
+            \[
+                \lim_{n\to\infty} \frac{\hat\theta_n-\theta}{\sqrt{\operatorname{Var}(\hat\theta_n)}} \sim \mathcal N(0,1).
+            \]
+            By variance calibration,
+            \[
+                \lim_{n\to\infty} \frac{\sqrt{\operatorname{Var}(\hat\theta_n)}}{\sigma_n} = 1.
+            \]
+            Hence, by Slutsky's theorem~\cite{slutsky_uber_1925},
+            \[
+              \lim_{n\to\infty} P_n 
+              = \lim_{n\to\infty} \frac{\hat\theta_n-\theta}{\sqrt{\operatorname{Var}(\hat\theta_n)}}
+                \cdot \lim_{n\to\infty} \frac{\sqrt{\operatorname{Var}(\hat\theta_n)}}{\sigma_n}
+              \sim \mathcal N(0,1)\cdot 1 
+              = \mathcal N(0,1)
+            \]
+            \end{proof}
+
+\begin{theorem}[Effective sample size with correlated event weights]
+\noproofref
+                
+                Let $w_1,\dots,w_N$ be event weights, and let $\rho(w_i,w_j)$ denote the correlation coefficient between the contributions of events $i$ and $j$ to a given observable. The \emph{effective sample size} accounting for correlations defined in \cref{eq:n-eff} computes the ratio of the squared total weight to the variance of the weighted sum of $N$ correlated unit--variance contributions.
+            \end{theorem}
+
+\begin{proof}[*thm:neff-corr]
+            Consider the weighted sum $S \coloneqq \sum_{i=1}^N w_i X_i$ with mean $\mu$ and variance \(1\) for all $i$.
+            %
+            The variance of \(S\) is
+            \begin{gather}
+                \sigma^2_S = \sum_{i=1}^N w_i^2\,\sigma^2_i + 2\sum_{1\le i<j\le N} w_i\, w_j\,{\Sigma}_{ij}\\
+                = \sum_{i=1}^N w_i^2 + 2\sum_{1\le i<j\le N} w_i w_j\rho(w_i,w_j).
+            \end{gather}
+            The definition of effective sample size equates $\sigma^2_S$ to the variance of $N_{\mathrm{eff}}$ independent, equally weighted observations of variance $1$.
+            \[
+                \sigma^2_S = \frac{\qty(\sum_{i=1}^N w_i)^2}{ N_{\mathrm{eff}}}.
+            \]
+            Solving for $N_{\mathrm{eff}}$ yields~\cref{eq:n-eff}.
+            \end{proof}
+
+
+
+\begin{theorem}[Universal Approximation Theorem]
+\noproofref
+            \noproofref
+            
+        \begin{align}
+            &\forall (\sigma, g, \epsilon)\in C^0(\R)\times C^0([0, 1]^n)\times (0,\infty)\;\exists M\in(0, \infty)\\
+            \nonumber&\quad \Bigg[\forall x\in\R\;|\sigma(x)| < M \implies \exists N\in\mathbb{N}\;\exists (c, b, W)\in \R^N\times \R^N\times \R^{N\times n}\\
+            \nonumber&\qquad\qty{\forall z\in[0, 1]^n\;\norm{c^T\sigma(Wz + b) - g(z)} <\epsilon} \lor \qty{\exists A\in\R\;\forall x\in\R\;\sigma(x) = A}\Bigg]\;.
+            \end{align}
+        \end{theorem}
+
+\begin{theorem}[Change of variables for pushforward densities]
+\noproofref
+            For all probability spaces \((\Omega,\mathcal{F},\P)\), for all random variables \(Z:\Omega\to\R^d\) with measure law \(\mu_Z\ll\lambda^d\) and density \(p_Z=\frac{d\mu_Z}{d\lambda^d}\), for all open sets \(U,V\subseteq\R^d\) and for all \(C^1\) bijections with \(C^1\) inverses (i.e. \(C^1\) diffeomorphisms) \(f:U\to V, X=f(Z)\) has measure law \(\mu_X=f_{\#}\mu_Z\) \emph{only if} \(\mu_X\ll\lambda^d\) and its Radon--Nikod\'ym derivative~\cite{fremlin_measure_2000, noauthor_measure_nodate} is, for almost every $x\in\R^d$,
+        \[
+            \frac{\dd\mu_X}{\dd\lambda^d}(x) =
+            \begin{cases}
+                p_Z \qty(f\inv(x))\qty|\det D f^{-1}(x)| & x\in V,\\
+                0                                       & x\notin V.
+        \end{cases}
+        \]
+        Equivalently, if $x=f(z)$ the for almost every \(z\in U,\)
+        \[
+        \frac{\dd\mu_X}{\dd\lambda^d}\qty(f(z))
+        =
+        \frac{p_Z(z)}{\qty|\det D f(z)|}
+        \]
+        \end{theorem}
+
+\begin{proof}[*thm:cov-measure]
+    Let \(g: \mathbb{R}^d\to\mathbb{R}\) be an arbitrary Borel function.
+    %
+    By the definition of the pushforward,
+    \[
+    
+        \int_{\R^d} g(x)\, \dd\mu_X(x) = \int_{\Omega} g\circ f\circ Z(\omega)\,\dd\P(\omega) =
+        \int_{\R^d} g\circ f(z)\, p_Z(z)\, \dd\lambda^d(z).
+    \]
+    Apply the classical change--of--variables theorem for \(C^1\) diffeomorphisms (equivalently, the area formula for diffeomorphisms) to the integrand \(\psi(z):=g(f(z))\,p_Z(z)\).
+    \[
+        \int_{U} \psi(z)\, \dd\lambda^d(z) = \int_{V} \psi\circ f\inv(x)\, \qty|\det D f\inv(x)|\, \dd\lambda^d(x).
+    \]
+    Since \(p_Z\) is zero almost everywhere outside \(U\), one may restrict the domain of integration to \(U\).
+    %
+    This yields
+    \[
+    
+        \int_{\R^d} g\circ(f(z)\, p_Z(z)\, \dd\lambda^d(z) = \int_{V} g(x)\, p_Z\circ f\inv(x)\, \qty|\det D f\inv(x)|\, \dd\lambda^d(x).
+    \]
+    Combining \cref{eq:3.41,eq:3.43} yields
+    \[
+        \int_{\R^d} g(x)\, \dd\mu_X(x) = \int_{\R^d} g(x)\, 
+        \qty[ \mathbbm{1}_V(x)\, p_Z\circ f^{-1}(x)\, \qty|\det D f^{-1}(x)| ]\, \dd\lambda^d(x).
+    \]
+    Since the above equality holds for every bounded Borel function \(g\), for almost every \(x\) the Radon--Nikod\'ym theorem yields
+    \[
+        \frac{\dd\mu_X}{\dd\lambda^d}(x)=\mathbbm{1}_V(x)\, p_Z\circ f\inv(x)\, \qty|\det D f\inv(x)|.
+    \]
+as claimed. The equivalent form follows from
+\[\qty|\det D f\inv(f(z))|=\frac1{\qty|\det D f(z)|}.
+\]
+\end{proof}
+
+
+\begin{theorem}[Entropy projection with moment constraints]
+\noproofref
+Under the assumptions above, the minimiser of $D_{\mathrm{KL}}(\ell\,\|\,q)$ over densities all $\ell$ subject to
+\(
+\E_{\ell}[Z^a]=\E_{p}[Z^a]\,,\; a=0,1,\dots,n
+\)
+(where $a=0$ enforces normalisation) exists in the exponential family
+\begin{equation}
+    \ell^\star(z) = q(z)\,\exp(-1-\sum_{a=0}^n \beta_a z^a),
+\end{equation}
+for some Lagrange multipliers $\{\beta_a\}_{a=0}^n$.
+\end{theorem}
+
+\begin{proof}[*lem:exp-family]
+Form the Lagrangian
+\begin{equation}
+    \mathcal{L}(\ell,\beta) = D_{\mathrm{KL}}(\ell\|q)  + \sum_{a=0}^n \beta_a\,\qty(\int z^a\ell(z)\,\dd z - \E_{p}\qty[Z^a]).
+\end{equation}
+
+A standard variational calculation gives the Gâteaux derivative
+\[
+\frac{\delta\mathcal{L}}{\delta \ell(z)} = \ln\frac{\ell(z)}{q(z)}+1+\sum_{a=0}^n \beta_a\, z^a.
+\]
+
+Setting this to zero yields \cref{eq:ell-solution}. Feasibility (i.e., choice of $\beta$) enforces the constraints.
+\end{proof}
+
+\begin{theorem}[Optimal discriminator and reduced objective]
+\noproofref
+For fixed $g$, the unique maximiser of $d\mapsto -L(d,g)$ is
+\(
+d^\star(z)=\frac{p(z)}{\qt(z)}.
+\)
+At $d^\star$,
+\begin{equation}
+    \tilde L(g) = L(d^\star,g) = - D_{\mathrm{KL}}\qty(p\|\qt).
+\end{equation}
+\end{theorem}
+
+\begin{proof}[*lem:opt-disc]
+Varying $d$ in \cref{eq:mlc-perfect} gives
+\[
+    \frac{\delta L}{\delta d(z)} = -\frac{p(z)}{d(z)+\qt(z)}.
+\]
+
+Hence $d^\star(z)=\nicefrac{p(z)}{\qt(z)}$. Substituting and using $\int p=\int \qt=1$ gives \cref{eq:Lstar}.
+\end{proof}
+
+\begin{theorem}[Closure under perfect response]
+\noproofref
+Any stationary point of $g\mapsto \tilde L(g)$ of the form \cref{eq:g} satisfies
+\begin{equation}
+    \forall a\in \{1,\dots, n\}\;\E_{\qt}[Z^a] = \E_{p}[Z^a].
+\end{equation}
+\end{theorem}
+
+\begin{proof}[*thm:perfect-closure]
+From \cref{eq:Lstar},
+\[
+    \tilde L(g) = -\int p(z)\,\ln\qt(z)\,\dd z + \mathrm{const}.
+\]
+
+    Hence, the functional derivative with respect to $g$ is
+    \begin{equation}
+        \frac{\delta \tilde L}{\delta g(z)} =\frac{p(z)}{g(z)}.
+    \end{equation}
+    
+For the parametrisation \cref{eq:g},
+\begin{equation}
+    \forall a\in \{1,\dots, n\}\;\frac{\partial g(z)}{\partial \beta_a} = -g(z)\qty(z^a - \E_{\qt}[Z^a]).
+\end{equation}
+
+Since $\pdv{\ln P}{\beta_a} = -\E_{\qt}[Z^a]$, thus
+\begin{gather}
+    \frac{\partial \tilde L}{\partial \beta_a}
+= \int \frac{\delta \tilde L}{\delta g(z)}\frac{\partial g(z)}{\partial \beta_a}\,\dd z\\
+= -\int p(z)\Big(z^a - \E_{\qt}[Z^a]\Big)\,\dd z\\
+= -\Big(\E_{p}[Z^a]-\E_{\qt}[Z^a]\Big).
+\end{gather}
+At any stationary point, this vanishes for $a=1,\dots,n$, proving \cref{eq:moment-match-perfect}.
+\end{proof}
+
+\begin{theorem}[Reduced objective at detector level]
+\noproofref
+For the discriminator acting on $x$, the discriminator optimised MLC loss is
+\begin{equation}
+    \tilde L(g) = - D_{\mathrm{KL}} \qty(p(x)\,\|\,\qt(x)).
+\end{equation}
+\end{theorem}
+
+\begin{proof}[*lem:detector-L]
+Identical to \cref{lem:opt-disc} after replacing $z$ by $x$ and using \cref{eq:tildeq-x}.
+\end{proof}
+
+\begin{theorem}[Moment matching]
+\noproofref
+Under the assumptions above, any stationary point of $g\mapsto \tilde L(g)$ in the class \cref{eq:g} satisfies
+\begin{equation}
+    \forall a\in \qty{1, \dots, n}\;\E_{\qt}[Z^a] = \E_{p_{\mathrm{mod}}}[Z^a],
+\end{equation}
+where the modified particle level density $p_{\mathrm{mod}}$ is
+\begin{equation}
+    p_{\mathrm{mod}}(z) = \int \frac{p(x)\,r(x\mid z)\,\qt(z)}{\qt(x)}\,\dd x.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[*thm:universal]
+By \cref{eq:Lstar-det} and the chain rule for functional derivatives,
+\[
+\frac{\partial \tilde L}{\partial \beta_a}
+=\iint \frac{\delta \tilde L}{\delta \qt(x)}\,
+      \frac{\delta \qt(x)}{\delta g(z)}\,
+      \frac{\partial g(z)}{\partial \beta_a}\,\dd z\,\dd x.
+\]
+\[\frac{\delta \tilde L}{\delta \qt(x)}=\frac{p(x)}{\qt(x)}
+\]
+and
+\[
+    \frac{\delta \qt(x)}{\delta g(z)} = r(x\mid z)\,q(z).
+\]
+
+Using \cref{eq:dgdBeta} and $\qt(z)=q(z)\,g(z)$ gives
+\begin{gather}
+\frac{\partial \tilde L}{\partial \beta_a}
+= -\int \Big(z^a-\E_{\qt}[Z^a]\Big)
+       \Big(\int \frac{p(x)}{\qt(x)}\,r(x\mid z)\,dx\Big)\qt(z)\,\dd z\\
+= -\Big(\E_{p_{\mathrm{mod}}}[Z^a]-\E_{\qt}[Z^a]\Big),
+\end{gather}
+where $p_{\mathrm{mod}}$ is as in \cref{eq:pmod}. Stationarity enforces \cref{eq:moment-match-univ}.
+\end{proof}
+
+\begin{theorem}[Transfer operator representation]
+\noproofref
+Let
+\begin{equation}
+    \qt(z\mid x) :=\frac{r(x\mid z)\,\qt(z)}{\qt(x)}.
+\end{equation}
+
+Define the transfer kernel
+\begin{equation}
+    f(z\mid z') := \int \qt(z\mid x)\,r(x\mid z')\,\dd x.
+\end{equation}
+Then
+\begin{equation}
+    p_{\mathrm{mod}}(z) = \int f(z\mid z')\,p(z')\,\dd z'.
+\end{equation}
+Moreover, if $r(x\mid z)=\delta(x-z)$ (perfect detector), then $f(z\mid z')=\delta(z-z')$ and $p_{\mathrm{mod}}=p$.
+\end{theorem}
+
+\begin{proof}[*prop:transfer]
+Substitute $p(x)=\int r(x\mid z')\,p(z')\,\dd z'$ into \cref{eq:pmod} and exchange integrals
+\begin{gather}
+p_{\mathrm{mod}}(z) = \iint \frac{r(x\mid z)\,\qt(z)}{\qt(x)}\,r(x\mid z')\,\dd x\,p(z')\,\dd z'\\
+=\int \qty(\int \qt(z\mid x)\,r(x\mid z')\,\dd x) p(z')\,\dd z'.
+\end{gather}
+If $r(x\mid z)=\delta(x-z)$, then $\tilde q(z\mid x)=\delta(z-x)$ and \cref{eq:f} gives $f(z\mid z')=\delta(z-z')$.
+\end{proof}
+
+
+\begin{theorem}[Moment representation of a random variable~\cite{alma9914845810606531,Hausdorff1921,hornik_multilayer_1989,weierstras_uber_1885,taylor_methodus_1715}.]
+\noproofref
+\noproofref
+
+Let $\lambda$ denote Lebesgue measure on $R$ and $\mathcal{P}(\R)$ the set of Borel probability measures on $\R$. Then
+
+\[
+\forall\, m:\N\to\R\;\Bigg[
+    m(0) = 1 \implies \forall\, \mu\in\mathcal{P}(\R)\]
+    \[\nonumber\Bigg\{
+        \mu\ll\lambda
+        \land\;\qty(
+            \forall n\in\N\; \int_{\R} z^n\,\dd\mu(z)=m(n))
+    \]
+    \[\nonumber \land\;\qty(\exists\text{ open }I\subseteq\R\;\land 0\in I\;\forall t\in I\;
+\int_{\R} e^{t\,z}\,\dd\mu(z)<\infty)\]
+\[\nonumber
+\implies \forall\, (\nu, n)\in\mathcal{P}(\R)\times\N\;\int_{\R} z^n\,\dd\nu(z)=m(n)
+\implies \nu=\mu\Bigg\}\Bigg].
+\]
+
+Equivalently, writing $\dd\mu=f\,\dd z$ and $\dd\nu=g\,\dd z$ when they exist,
+
+\[
+\forall n\in\mathbb{N}\; \int_{\R} z^n\, f(z)\,\dd z=\int_{\R} z^n\, g(z)\,\dd z \land \exists\text{ open }I\ni 0\;\forall t\in I
+\]
+\[\nonumber
+\int_{\R} e^{t\,z} f(z)\,\dd z<\infty
+\implies f=g\ \text{almost everywhere}
+\]
+\end{theorem}
+
+
+\begin{theorem}[Equicorrelated sampling error and effective sample size]
+\noproofref
+
+For every $N\in\N_{\ge2}$, and for every set of real valued random variables $\qty{X_i}_{i=1}^N$, if:
+\[
+\begin{split}
+\exists(\mu,\sigma,\rho)\in\R\times(0,\infty)\times\qty[-\frac1{N-1},1]\;\forall i\in \N_{\le N}\;\E(X_i) = \mu \\\land\; \forall i, j\in \N_{\le N}^2\;\Sigma_{ij} = \sigma^2\qty[(1 - \rho)\delta_{ij} + \rho]
+\end{split}
+\]
+i.e.
+\[
+\Sigma_{ij}=
+\begin{cases}
+\sigma^2,& i=j,\\[2pt]
+\rho\,\sigma^2,& i\ne j.
+\end{cases}
+\]
+Then:
+\begin{enumerate}
+\item $\Sigma\succeq 0$ iff $\Sigma\in\big[-\tfrac{1}{N-1},\,1\big]$ and $R(\rho)\succ 0$ iff $\rho\in\big(-\tfrac{1}{N-1},\,1\big)$.
+\item For the sample mean $\bar X \equiv \frac{1}{N}\sum_{i=1}^N X_i$,
+\begin{equation}
+\mathrm{Err}(\bar X)\equiv\sqrt{\operatorname{Var}(\bar X)}=\sigma\,\sqrt{\frac{1}{N}+\Big(1-\frac{1}{N}\Big)\rho}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[*thm:equicorr-mean]
+(1) The matrix \(\Sigma\) has eigenvalue $\sigma^2(1+(N-1)\rho)$ with eigenvector $\mqty[1&1&\dots&1]^T$ and eigenvalue $\sigma^2(1-\rho)$ with multiplicity $N-1$.
+%
+Hence $\Sigma\succeq 0$ iff $\sigma^2(1-\rho\ge 0)$ and $\sigma^2(1+(N-1)\rho\ge 0)$, i.e. $\rho\in[-1/(N-1),1]$, and $R(\rho)\succ 0$ iff both inequalities are strict.
+
+(2) Using $\bar X= N^{-1}\sum_i X_i$,
+\[
+\operatorname{Var}(\bar X)
+=\frac{1}{N^2}\sum_{i,j=1}^N \Sigma_{ij}
+    =\frac{N\sigma^2}{N^2}\qty(1+(N-1)\rho)
+=\sigma^2\qty(\frac{1}{N}+\qty(1-\frac{1}{N})\rho),
+\]
+which yields the stated $\mathrm{Err}(\bar X)$.
+\end{proof}
+
+\begin{theorem}[Asymptotic Normality of the MLE~\cite{tseng_inverse_2025,chong_likelihood_2025,ly_tutorial_2017,%
+           mccormack_information_2023,xie_local_2025,%
+           cowan_statistics_2021,Cowan2011AsymptoticPhysics}]
+\noproofref
+    Consider a set of i.i.d. observations \(\qty{X_j}_{j = 1}^N\) and a model parametrised by parameter \(\theta\in\Omega\subseteq\mathbb{R}^{d}\). The likelihood is
+    \[
+        \mathcal L(\theta) =\prod_{i=1}^{N} p(X_{j}\, | \,\theta),
+    \] and the Fisher information matrix is
+    \[
+        I(\theta) =\mathbb{E}_{\theta}\qty[\laplacian_{\theta}(-\log\mathcal L(\theta))]\,.
+    \]
+Under regularity conditions ensuring consistency and differentiability,
+the maximum likelihood estimator is distributed as
+\[
+    \lim_{N\to\infty} \hat\theta \sim \mathcal N\qty(\theta_{\text{true}}, I\qty(\theta_{\text{true}})\inv)
+\]
+\end{theorem}
+
+\begin{theorem}[Wilks~\cite{Wilks1938TheHypotheses}]
+\noproofref
+\noproofref
+    Let \(\qty{X_j}_{j=1}^N\) be a set of i.i.d measurements with likelihood
+    \[
+        L(\theta)=\prod_{i=1}^{N}p(X_{i}\mid\theta), \quad \theta\in\Omega\subseteq\mathbb{R}^{d}.
+    \]
+    Let the null hypothesis be
+    \[
+        H_{0}:\theta\in\Theta_{0},\quad \dim\Theta_{0}=r,
+    \]
+    and the alternative is \(H_{1}:\theta\in\Theta_{1}\), with \(\Omega=\Theta_{0}\cup\Theta_{1}\). The generalised likelihood ratio statistic is
+    \[
+        \mathcal L = \frac{\sup_{\theta\in\Omega}L(\theta)}
+            {\sup_{\theta\in\Theta_{0}}L(\theta)}.
+    \]
+    Under standard regularity conditions and assuming \(H_{0}\) is true, 
+    \[
+        \lim_{N\to\infty} -2\log \mathcal L \sim\chi^2_{d-r}
+    \]
+\end{theorem}
+
+\begin{theorem}[Godambe Information~\cite{godambe_estimating_1991}]
+\noproofref
+            \noproofref
+            
+                Let \(\qty{X_j}_{j=1}^N\) be i.i.d.\ observations modelled by \(p(x\mid\theta)\), \(\theta\in\Omega\subseteq\mathbb{R}^{d}\).  Consider an estimating function
+                \[
+                    U(\theta) =\sum_{j=1}^{N}u(X_{j}\mid\theta),
+                \]
+                where 
+                \[
+                    \forall\theta\in\Omega\quad\mathbb{E}_{\theta}\qty[u(X_{j}\mid\theta)]=0
+                \]
+                such that standard regularity conditions hold ensuring consistency and asymptotic normality of the root \(\hat\theta\) solving \(U(\theta)=0\).  Let
+                \[
+                    H(\theta) =-\mathbb{E}_{\theta}\qty[\pdv{u(X_{j}\mid\theta)}{\theta}] \quad\text{(the \emph{sensitivity} matrix), and}
+                \]
+                \[
+                    J(\theta) =\Var_{\theta}\qty[u(X_{j}\mid\theta)] \quad\text{(the \emph{variability} matrix).}
+                \]
+                Then the \emph{Godambe information matrix} can be computed as,
+                \[
+                    G(\theta) \;=\; H(\theta)^{T}\,J(\theta)^{-1}\,H(\theta).
+                \]
+                and
+                \[
+                \lim_{N\to\infty}\hat\theta \sim \mathcal{N}\qty(\theta,\;\frac1NG(\theta)^{-1}).
+                \]
+                That is to say, the asymptotic covariance of \(\hat\theta\) is \(N^{-1}G(\theta)^{-1}\).
+            \end{theorem}
+
+\begin{theorem}[Extension of \cref{thm:godambe-information}~\cite{varin_overview_2011, Mulzer2019Five, chernoff_measure_1952, lin_past_2014}]
+\noproofref
+            \noproofref
+            If the estimating function is the score of a correctly specified likelihood,
+            \[
+                u(X_j\mid\theta)\;=\;-\grad_{\theta}\log p(X_j\mid\theta),
+            \]
+            then
+            \[
+                H = -\mathbb{E}[\nabla^2 \ln \mathcal{L}],
+            \]
+            \[
+                J = \mathrm{Var}(\nabla \ln \mathcal{L}),
+            \]
+            and the sandwich (or Godambe) information matrix is given by
+            \[
+                G(\hat{\theta}) \;=\; H(\hat{\theta})\, J(\hat{\theta})^{-1}\, H(\hat{\theta}) \,,
+            \]
+            \end{theorem}
+
+\begin{theorem}[Bartlett correction~\cite{bartlett_properties_1997, lawley_general_1956}]
+\noproofref
+\noproofref
+    Let \(\qty{X_j}_{j=1}^N\) be i.i.d. according a model \(p(x\mid\theta)\) and let the hypotheses be
+    \[
+        H_{0}:\theta\in\Theta_{0} \quad H_{1}:\theta\in\Theta_{1}\quad \Omega = \Theta_0\cup\Theta_1,
+    \]
+    with \(\dim\Omega=d\), \(\dim\Theta_{0}=r\), and the usual likelihood‐ratio statistic
+    \[
+        \mathcal L = \frac{\sup_{\theta\in\Theta_{0}}L(\theta)}{\sup_{\theta\in\Omega}L(\theta)}.
+    \]
+    Under standard regularity conditions and assuming \(H_{0}\) is true,
+    \[
+        \exists c\in\R\quad c\frac{\cdot\mathbb{E}_{\Theta_{0}}[-\log\mathcal L]}{d-r} = 1 + \frac{B}{N} + \mathcal{O}(N^{-2}),
+    \]
+    with \(B\) determined by lower order cumulants of the log‐-likelihood.\footnote{B can be worked out via the third and fourth derivatives of the log‐-likelihood~\cite{lawley_tests_1956}}
+\end{theorem}
+
+\begin{theorem}[Asymptotics of the Bartlett correction]
+\noproofref
+\noproofref
+    The Bartlett corrected statistic
+    \[
+        \widetilde{\mathcal L} = c\cdot \mathcal L
+    \]
+    satisfies
+    \[
+        \mathbb{E}_{\Theta_{0}}[\widetilde{\mathcal L}] = d-r
+        \quad\text{and}\quad
+        \lim_{N\to\infty}\widetilde{\mathcal L}\;\sim\;\chi^{2}_{\,d-r}.
+    \]
+\end{theorem}
+
+
+% Theorems and Proofs from 09-symmetrygan.tex
+
+
+\begin{theorem}[Iwasawa Decomposition of the Affine Group~\cite{iwasawa_types_1949}]
+\noproofref
+\noproofref
+
+Let 
+\[
+    \operatorname{Aff}(n)= GL(n, \R)\ltimes\R^n
+\]
+be the real affine group.  Define the subgroups
+\[
+\begin{aligned}
+Z &= \{\pm I_n\}\cong \mathbb{Z}_2,\\
+K &= SO(n),\\
+A &= \bigl\{D(\vb r)=\operatorname{diag}(r_1,\dots,r_n)\;\big|\;r_i\in(0,\infty)\bigr\},\\
+N &= \bigl\{S(u) \;\big|\;S_{ii}=1,\ S_{i < j}\in\R, S_{i>j}=0\bigr\},\\
+V &= \qty{\vb v \mid v_i\in\R }\cong\R^n.
+\end{aligned}
+\]
+Then every element $M\in\operatorname{Aff}_n(\R)$ admits a unique factorisation
+\[
+M \;=\;
+\sqrt{|\det M|}\;\bigl(\pm I_n\bigr)^{\frac{1-\text{sgn}(\det M)}{2}}
+\;R(\vb\theta)\;D(\vb r)\;S(u) + \vb v,
+\]
+where
+\(
+\pm I_n\in Z,\quad R(\vb\theta)\in K,\quad D(\vb r)\in A,\quad S(u)\in N,\quad \vb v\in V.
+\)
+\end{theorem}
+
+\begin{theorem}[Symmetry-Adapted Cramér–Rao Bound~\cite{Cramer1946MathematicalStatistics, RadhakrishnaRao1945InformationParameters, rao_selected_1994, darmois_sur_1945, aitken_xvestimation_1942, deming_letters_1970}]
+\noproofref
+
+    Let \(\hat\theta\) be any unbiased estimator of \(\theta\in\mathbb R^d\) based on \(N\) i.i.d.\ samples, and assume the statistical model \(p(x\mid\theta)\) is \(G\)-equivariant.
+Then the covariance matrix obeys the lower bound
+\[
+  \Sigma(\hat\theta)
+  \;\succeq\;
+  \frac{1}{N}\,\mathcal I_G^{-1}(\theta),
+\]
+where \(\succeq\) denotes the Loewner partial order.  The lower bound is saturated if and only if the score vectors projected onto the invariant subspace are linear in \((\hat\theta-\theta)\).
+\end{theorem}
+
+\begin{proof}[*thm:symmetry-adapted-cramer]
+(Sketch) The classical information inequality states that
+\(\Sigma(\hat\theta)\succeq N^{-1}\mathcal I^{-1}(\theta)\).
+Because the model and the estimator respect the group action, both sides commute with \(P_G\).  
+Projecting the score function onto the invariant subspace and using \(P_G^2=P_G\) yields  
+\(\operatorname{Cov}(\hat\theta)\succeq N^{-1}(P_G\mathcal I P_G)^{-1}=N^{-1}\mathcal I_G^{-1}\,\).
+\end{proof}
+
+\begin{theorem}[Variance Reduction for Finite Symmetries]
+\noproofref
+\noproofref
+For a discrete group \(G\) of order \(|G|\) if  
+\[\rho=\frac{\E\qty[\pdv{\log \mathcal L}{\theta}\pdv{\log \mathcal L\circ g}{\theta}]}{\E\qty[\qty(\pdv{\log L}{\theta})^2]};
+\] for the average pairwise correlation of score functions across group orbits,  
+then
+\[
+  \frac{\operatorname{Var}(\hat\theta_{\text{sym}})}
+       {\operatorname{Var}(\hat\theta_{\text{unconstrained}})}\;,
+  \;=\;
+  \frac{1}{|G|}+\frac{|G|-1}{|G|}\,\rho.
+\]
+This means that symmetry is maximally beneficial (\(\rho \to 0\)) when orbit scores are uncorrelated, recovering the \(1/|G|\) ideal reduction factor.
+\end{theorem}
