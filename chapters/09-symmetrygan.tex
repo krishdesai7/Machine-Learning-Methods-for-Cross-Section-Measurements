@@ -49,7 +49,7 @@
     
         It is instructive to compare symmetry discovery and unfolding side by side to appreciate their complementary roles.
         %
-        \cref{tab:unfolding_vs_symmetry} summarises the differences and points of contact between the two.
+        \cref{tab:unfolding-vs-symmetry} summarises the differences and points of contact between the two.
     
         While unfolding typically requires an explicit model of the measurement process\footnote{E.g., a response matrix or a parametrised detector simulation.} and often relies on supervised learning or iterative inversion techniques, symmetry discovery can be pursued in an unsupervised manner, requiring only the dataset and a class of transformations to probe.
         %
@@ -87,7 +87,7 @@
                 
 \input{tables/9-1}
 
-         Being symmetry aware in a measurement can mean two things.
+        Being symmetry aware in a measurement can mean two things.
         %
         First, verifying that expected symmetries are indeed present, within uncertainties, in the data, and second, leveraging those symmetries to improve the measurement.
         %
@@ -1468,7 +1468,7 @@ Several complementary checks can be employed to determine whether the discovered
         \caption{}
         \label{fig:LHCO_ii}
     \end{subfigure}
-    \caption[Symmetries discovered by a \textsc{SymmetrGAN} in transverse momentum data of dijet events in a \(SO(2)\times SO(2)\) search space, and the symmetry discovery map for the training dynamics.\)]{Symmetry discovery on transverse momenta of dijet events using a \textsc{SymmetryGAN} with a $SO(2) \times SO(2)$ search space, where each jet undergoes independent azimuthal rotation $g_{\theta_1,\theta_2}(\mathbf{p}) = (R(\theta_1)\mathbf{p}_1, R(\theta_2)\mathbf{p}_2)$. \textbf{(a)} Distribution of converged parameters $(\theta_1^f, \theta_2^f)$ from independent training runs initialised uniformly in $[0, 2\pi)^2$. The discovered symmetries cluster along the diagonal $\theta_1 = \theta_2$ (blue line), confirming that only simultaneous rotations preserve the dijet distribution, a direct consequence of transverse momentum conservation. \textbf{(b)} Symmetry discovery map $\Omega: (\theta_1^i, \theta_2^i) \mapsto \theta^f$ revealing the loss landscape dynamics. The final rotation angle follows $\theta^f = \frac{\theta_1^i + \theta_2^i}{2}$ when $|\theta_1^i - \theta_2^i| < \pi$ (shown in green), and $\theta^f = \frac{\theta_1^i + \theta_2^i}{2} - \pi$ when $|\theta_1^i - \theta_2^i| > \pi$ (shown in blue). This bisection rule represents the path of steepest ascent in the loss landscape, demonstrating how gradient dynamics naturally discover the physical constraint without prior knowledge.}
+    \caption[Symmetries discovered by a \textsc{SymmetrGAN} in transverse momentum data of dijet events in a \(SO(2)\times SO(2)\) search space, and the symmetry discovery map for the training dynamics.]{Symmetry discovery on transverse momenta of dijet events using a \textsc{SymmetryGAN} with a $SO(2) \times SO(2)$ search space, where each jet undergoes independent azimuthal rotation $g_{\theta_1,\theta_2}(\mathbf{p}) = (R(\theta_1)\mathbf{p}_1, R(\theta_2)\mathbf{p}_2)$. \textbf{(a)} Distribution of converged parameters $(\theta_1^f, \theta_2^f)$ from independent training runs initialised uniformly in $[0, 2\pi)^2$. The discovered symmetries cluster along the diagonal $\theta_1 = \theta_2$ (blue line), confirming that only simultaneous rotations preserve the dijet distribution, a direct consequence of transverse momentum conservation. \textbf{(b)} Symmetry discovery map $\Omega: (\theta_1^i, \theta_2^i) \mapsto \theta^f$ revealing the loss landscape dynamics. The final rotation angle follows $\theta^f = \frac{\theta_1^i + \theta_2^i}{2}$ when $|\theta_1^i - \theta_2^i| < \pi$ (shown in green), and $\theta^f = \frac{\theta_1^i + \theta_2^i}{2} - \pi$ when $|\theta_1^i - \theta_2^i| > \pi$ (shown in blue). This bisection rule represents the path of steepest ascent in the loss landscape, demonstrating how gradient dynamics naturally discover the physical constraint without prior knowledge.}
     \label{fig:LHCO}
 \end{figure}
            This experiment was also repeated on the transverse momenta of dijet events from CMS Open Data~\cite{komiske_cms_2019}.

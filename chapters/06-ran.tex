@@ -154,11 +154,11 @@
             %
             In summary, any analysis where internal structure, charge assignments, or other detailed event properties matter will benefit from (or even require) full spectral unfolding rather than a few summary numbers.
         \item[Multidifferential and high dimensional measurements:]
-            The ultimate form of ``full'' spectral measurement is unfolding in multiple kinematic dimensions simultaneously, effectively measuring a multi differential cross section over a high dimensional phase space.
+            The ultimate form of `full' spectral measurement is unfolding in multiple kinematic dimensions simultaneously, effectively measuring a multi differential cross section over a high dimensional phase space.
             %
             While this is extremely challenging, certain physics questions demand correlating several observables.
             
-            For example, consider measuring an observable $O$ as a function of another variable (or collection of variables) $\vb*\Q$.\footnote{Say, the distribution of jet charge $q$ in bins of jet $p_T$ or event energy $Q$.}
+            For example, consider measuring an observable $O$ as a function of another variable (or collection of variables) $\vb*Q$.\footnote{Say, the distribution of jet charge $q$ in bins of jet $p_T$ or event energy $Q$.}
             %
             With traditional methods, one would perform a two dimensional unfolding, choosing a projection \(Q_j\) of \(\vb*Q\) if needed (bins in $O$ vs bins in $Q_j$) in order to then extract moments or other features as a function of $Q$~\cite{CMS:2011xqa, ATLAS:2010jvh, ATLAS:2020ccu, CMS:2014eaj, ATLAS:2022zbu, DAgostini:265717}.
             %
@@ -1337,6 +1337,7 @@ The inset has linear scaling. Exp exhibits rapid growth for moderately large inp
         \]
         \State $\theta \leftarrow\theta + \eta_d\,\grad_{\theta}L_d$    
       \EndFor
+    \EndFor
     \algstore{wgangp}
     \end{algorithmic}
 \end{algorithm}
@@ -1346,6 +1347,7 @@ The inset has linear scaling. Exp exhibits rapid growth for moderately large inp
     \begin{algorithmic}
     \algospacing
     \algrestore{wgangp}
+    \For{iteration $=1,2,\dots$}
       \State \Comment{Generator updates}
       \For{\(j\) in \(1\dots n_g\)}
         \State Sample fresh $\{x_i^{\text{data}}\}_{i=1}^B\sim p(x)$

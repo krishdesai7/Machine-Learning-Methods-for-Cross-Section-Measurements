@@ -1,13 +1,12 @@
-\clearpage
 \begin{longtable}{@{}l p{0.395\textwidth} p{0.395\textwidth}@{}}
     \caption[Relationship between unfolding and symmetry discovery in particle physics.]{\normalsize Relationship between unfolding and symmetry discovery approaches in HEP. While unfolding aims to correct detector effects to recover true physical distributions, symmetry discovery seeks to identify invariance properties directly from data. These complementary techniques can be combined synergistically: unfolding provides cleaner distributions where symmetries become more apparent, while discovered symmetries can constrain and regularise the unfolding process. This bidirectional relationship enables more robust extraction of physical information from experimental data, particularly in scenarios where detector effects might obscure underlying symmetries or where symmetry constraints can help guide unfolding.}
-    \label{tab:unfolding_vs_symmetry} \\
+    \label{tab:unfolding-vs-symmetry} \\
     \toprule
     \textbf{Aspect} & \textbf{Unfolding} & \textbf{Symmetry discovery} \\
     \midrule
     \endfirsthead
     
-    \multicolumn{3}{c}{\textit{\cref{tab:unfolding_vs_symmetry} continued from previous page}} \\
+    \multicolumn{3}{c}{\cref{tab:unfolding-vs-symmetry} \textit{continued from previous page}} \\
     \toprule
     \textbf{Aspect} & \textbf{Unfolding} & \textbf{Symmetry discovery} \\
     \midrule
@@ -22,26 +21,26 @@
     \midrule
     \textbf{Inputs} & 
     \begin{tabular}[t]{@{}l@{}}
-    • Measured data\\
-    • Detector response matrix\\
-    • Regularisation scheme
+    \textbullet{} Measured data\\
+    \textbullet{}  Detector response matrix\\
+    \textbullet{}  Regularisation scheme
     \end{tabular} & 
     \begin{tabular}[t]{@{}l@{}}
-    • Measured or unfolded data\\
-    • Parametrised groups\\
-    • Invariance test statistics
+    \textbullet{}  Measured or unfolded data\\
+    \textbullet{}  Parametrised groups\\
+    \textbullet{}  Invariance test statistics
     \end{tabular} \\
     \midrule
     \textbf{Outputs} & 
     \begin{tabular}[t]{@{}l@{}}
-    • Differential cross sections\\
-    • Probability density\\
-    • Uncertainties/correlations
+    \textbullet{}  Differential cross sections\\
+    \textbullet{}  Probability density\\
+    \textbullet{}  Uncertainties/correlations
     \end{tabular} & 
     \begin{tabular}[t]{@{}l@{}}
-    • Symmetry generators\\
-    • Invariance confidence levels\\
-    • Conserved quantities
+    \textbullet{}  Symmetry generators\\
+    \textbullet{}  Invariance confidence levels\\
+    \textbullet{}  Conserved quantities
     \end{tabular} \\
     \midrule
     \textbf{Basis} & 
@@ -49,8 +48,8 @@
     Tests generic transformation classes allowing data driven discovery of invariances \\
     \midrule
     \textbf{Approach} & 
-    Statistical inference problem. Invert \(p(x) =\int r(x| z)p(z)\dd z\) & 
-    Hypothesis testing to evaluate $p({x}) \stackrel{?}{=} p(g({x}))\cdot|g'(x)|$ \\
+    Statistical inference problem. Invert \(p(x) =\int r(x\mid z)p(z)\dd z\) & 
+    Hypothesis testing to evaluate $p(x) \stackrel{?}{=} p(g(x))\cdot|g'(x)|$ \\
     \midrule
     \textbf{Benefit} & 
     Produces distributions where true physical symmetries manifest more clearly, enabling validation of theoretical predictions and discovery of emergent invariances & 

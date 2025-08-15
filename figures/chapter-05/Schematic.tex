@@ -124,7 +124,7 @@
   },
   postaction={decorate}
 ]
-  plot [smooth] coordinates {(regen.north east) (sim) ($(resim.north)+(0.2, 0)$)};
+  plot [smooth, tension=0.0] coordinates {(regen.north east) (sim) ($(resim.north)+(0.2, 0)$)};
 
 % ------------------------------------------------------------------------
 % Double arrow between Data and Re-weighted Simulation (the discriminator)

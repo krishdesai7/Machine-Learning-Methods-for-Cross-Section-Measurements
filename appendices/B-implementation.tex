@@ -138,14 +138,13 @@
         \end{theorem}
 
 \begin{proof}[*thm:cov-measure]
-    Let \(g: \mathbb{R}^d\to\mathbb{R}\) be an arbitrary Borel function.
+    Let \(g: \R^d\to\R\) be an arbitrary Borel function.
     %
     By the definition of the pushforward,
-    \[
-    
-        \int_{\R^d} g(x)\, \dd\mu_X(x) = \int_{\Omega} g\circ f\circ Z(\omega)\,\dd\P(\omega) =
+    \begin{equation}
+        \int_{\R^d} g(x)\, \dd\mu_X(x) = \int_{\Omega} g\circ f\circ Z (\omega)\,\dd\P(\omega) =
         \int_{\R^d} g\circ f(z)\, p_Z(z)\, \dd\lambda^d(z).
-    \]
+    \end{equation}
     Apply the classical change--of--variables theorem for \(C^1\) diffeomorphisms (equivalently, the area formula for diffeomorphisms) to the integrand \(\psi(z):=g(f(z))\,p_Z(z)\).
     \[
         \int_{U} \psi(z)\, \dd\lambda^d(z) = \int_{V} \psi\circ f\inv(x)\, \qty|\det D f\inv(x)|\, \dd\lambda^d(x).
@@ -154,7 +153,6 @@
     %
     This yields
     \[
-    
         \int_{\R^d} g\circ(f(z)\, p_Z(z)\, \dd\lambda^d(z) = \int_{V} g(x)\, p_Z\circ f\inv(x)\, \qty|\det D f\inv(x)|\, \dd\lambda^d(x).
     \]
     Combining \cref{eq:3.41,eq:3.43} yields

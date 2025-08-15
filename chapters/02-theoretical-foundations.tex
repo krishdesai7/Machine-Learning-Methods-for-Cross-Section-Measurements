@@ -575,6 +575,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
           \nu^{(k)}(x)\;=\;\frac{C_{\text{det}}^{(k)}(x)}{1 - C_{\text{det}}^{(k)}(x)}
           \quad\forall x
         \]
+    \EndFor
       \algstore{omnifold}
     \end{algorithmic}
 \end{algorithm}
@@ -585,7 +586,7 @@ However, it requires careful basis function placement to prevent endpoint spikes
   \begin{algorithmic}[1]
   \algospacing
     \algrestore{omnifold}
-    
+    \For{$k\leftarrow1$ \textbf{to} $K$}
     \State \textbf{Pull-back weights:}
     \ForAll{pairs $(z_i,x_i)$}
       \State $\omega_i^{(k)} \leftarrow \nu^{(k)}(x_i)$
