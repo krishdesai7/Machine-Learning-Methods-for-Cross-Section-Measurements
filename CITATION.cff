@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the dissertation below."
+title: "Machine Learning Methods for Cross Section Measurements"
+type: software
+authors:
+  - family-names: "Desai"
+    given-names: "Krish"
+repository-code: "https://github.com/krishdesai7/Machine-Learning-Methods-for-Cross-Section-Measurements"
+url: "https://github.com/krishdesai7/Machine-Learning-Methods-for-Cross-Section-Measurements"
+abstract: "Source repository for the PhD dissertation 'Machine Learning Methods for Cross Section Measurements'."
+keywords:
+  - "machine learning"
+  - "cross sections"
+  - "high-energy physics"
+  - "particle physics"
+  - "unfolding"
+  - "deconvolution"
+version: "1.0.0"
+date-released: 2026-03-08
+
+preferred-citation:
+  type: thesis
+  authors:
+    - family-names: "Desai"
+      given-names: "Krish"
+  title: "Machine Learning Methods for Cross Section Measurements"
+  institution: "University of California, Berkeley"
+  date-published: 2025-08-15
+  thesis-type: "PhD dissertation"
